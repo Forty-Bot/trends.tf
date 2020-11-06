@@ -220,6 +220,27 @@ def import_log(c, logid, log):
                                  :hits
                              );""", weapon)
 
+    for (seq, msg) in enumerate(log['chat']):
+        # poor man's goto...
+        first = True
+        while True:
+            try:
+                c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (?, ?, ?, ?);",
+                          (logid, SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None,
+                           seq, msg['msg']))
+            # Spectator?
+            except sqlite3.IntegrityError:
+                if not first:
+                    raise
+                first = False
+
+                c.execute("""INSERT INTO player_stats (
+                               logid, steamid64, name, kills, assists, deaths, dmg, lks, healing
+                           ) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0);""",
+                          (logid, SteamID(msg['steamid']), msg['name']))
+                continue
+            break
+
     for (healer, healees) in log['healspread'].items():
         healer = SteamID(healer)
         for (healee, healing) in healees.items():

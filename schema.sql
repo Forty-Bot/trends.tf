@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid),
 	steamid64 INT,
 	name TEXT NOT NULL,
-	team TEXT NOT NULL REFERENCES team (name),
+	team TEXT REFERENCES team (name), -- May be NULL for spectators
 	kills INT NOT NULL,
 	assists INT NOT NULL,
 	deaths INT NOT NULL,
@@ -136,5 +136,16 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL))
 	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
 ) WITHOUT ROWID;
+
+CREATE TABLE IF NOT EXISTS chat (
+	logid INT NOT NULL,
+	steamid64 INT, -- May be NULL for Console messages
+	seq INT NOT NULL, -- Message sequence, starting at 0; earlier messages have lower sequences
+	msg TEXT NOT NULL,
+	PRIMARY KEY (logid, seq),
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
+) WITHOUT ROWID;
+
+-- CREATE INDEX IF NOT EXISTS chat_player ON chat (steamid64);
 
 COMMIT;
