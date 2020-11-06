@@ -220,6 +220,22 @@ def import_log(c, logid, log):
                                  :hits
                              );""", weapon)
 
+    for (healer, healees) in log['healspread'].items():
+        healer = SteamID(healer)
+        for (healee, healing) in healees.items():
+            healee = SteamID(healee)
+            try:
+                # Sometimes we get the same row more than once (e.g. with different text
+                # representations of the same steamid). It appears that later rows are a result of
+                # healing being logged more than once, and aren't distinct instances of healing.
+                c.execute("""INSERT OR IGNORE INTO heal_stats (logid, healer, healee, healing)
+                             VALUES (?, ?, ?, ?);""",
+                          (logid, healer, healee, healing))
+            # Sometimes a player only shows up in rounds and healspread...
+            except sqlite3.IntegrityError:
+                logging.warning("Either %s or %s is only present in healspread for log %s",
+                                healer, healee, logid)
+
 def parse_args(*args, **kwargs):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):

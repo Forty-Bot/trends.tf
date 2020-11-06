@@ -82,6 +82,17 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	       (advantages_lost ISNULL AND biggest_advantage_lost ISNULL))
 ) WITHOUT ROWID;
 
+CREATE TABLE IF NOT EXISTS heal_stats (
+	logid INT,
+	healer INT,
+	healee INT,
+	healing INT NOT NULL,
+	PRIMARY KEY (logid, healer, healee),
+	-- Should reference medic_stats, but some very old logs only report one class per player
+	FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
+	FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64)
+) WITHOUT ROWID;
+
 CREATE TABLE IF NOT EXISTS class (
 	name TEXT PRIMARY KEY
 ) WITHOUT ROWID;
