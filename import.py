@@ -119,31 +119,62 @@ def import_log(c, logid, log):
             player['ic'] = None
         player['suicides'] = info.get('suicides')
 
-        try:
-            uber_types = player['ubertypes'];
-            player['medigun_ubers'] = uber_types.get('medigun', 0)
-            player['kritz_ubers'] = uber_types.get('kritzkrieg', 0)
-            # Sometimes other_ubers is missing and needs to be inferred
-            other_ubers = player['ubers'] - player['medigun_ubers'] - player['kritz_ubers']
-            player['other_ubers'] = uber_types.get('unknown', other_ubers)
-        except KeyError:
-            player['medigun_ubers'] = None
-            player['kritz_ubers'] = None
-            player['other_ubers'] = None
-
         c.execute("""INSERT INTO player_stats (
                          logid, steamid64, team, name, kills, assists, deaths, suicides, dmg,
-                         dmg_real, dt, dt_real, hr, lks, airshots, ubers, medigun_ubers,
-                         kritz_ubers, other_ubers, drops, medkits, medkits_hp, backstabs, headshots,
-                         headshots_hit, sentries, healing, cpc, ic
+                         dmg_real, dt, dt_real, hr, lks, airshots, medkits, medkits_hp, backstabs,
+                         headshots, headshots_hit, sentries, healing, cpc, ic
                      ) VALUES (
                          :logid, :steamid, :team, :name, :kills, :assists, :deaths, :suicides, :dmg,
-                         :dmg_real, :dt, :dt_real, :hr, :lks, :as, :ubers, :medigun_ubers,
-                         :kritz_ubers, :other_ubers, :drops, :medkits, :medkits_hp, :backstabs,
-                         :headshots, :headshots_hit, :sentries, :heal, :cpc, :ic
+                         :dmg_real, :dt, :dt_real, :hr, :lks, :as, :medkits, :medkits_hp,
+                         :backstabs, :headshots, :headshots_hit, :sentries, :heal, :cpc, :ic
                      );""", player)
 
+
         for cls in player['class_stats']:
+            # 99% of these contain no info which can't be inferred from player_stats
+            if cls['type'] == 'undefined' or cls['type'] == 'unknown' or cls['type'] == '':
+                continue
+
+            if cls['type'] == 'medic':
+                medic = player.get('medicstats', {})
+                medic['logid'] = logid
+                medic['steamid'] = steamid
+                medic['ubers'] = player['ubers']
+                medic['drops'] = player['drops']
+
+                try:
+                    uber_types = player['ubertypes'];
+                    medic['medigun_ubers'] = uber_types.get('medigun', 0)
+                    medic['kritz_ubers'] = uber_types.get('kritzkrieg', 0)
+                    # Sometimes other_ubers is missing and needs to be inferred
+                    other_ubers = player['ubers'] - player['medigun_ubers'] - player['kritz_ubers']
+                    medic['other_ubers'] = uber_types.get('unknown', other_ubers)
+                except KeyError:
+                    medic['medigun_ubers'] = None
+                    medic['kritz_ubers'] = None
+                    medic['other_ubers'] = None
+
+                # All of these could be missing
+                for prop in ('avg_time_before_healing', 'avg_time_before_using',
+                             'avg_time_to_build', 'avg_uber_length', 'advantages_lost',
+                             'biggest_advantage_lost', 'deaths_within_20s_after_uber',
+                             'deaths_with_95_99_uber'):
+                    medic[prop] = medic.get(prop)
+
+                c.execute("""INSERT INTO medic_stats (
+                                 logid, steamid64, ubers, medigun_ubers, kritz_ubers,
+                                 other_ubers, drops, advantages_lost, biggest_advantage_lost,
+                                 avg_time_before_healing, avg_time_before_using,
+                                 avg_time_to_build, avg_uber_duration, deaths_after_uber,
+                                 deaths_before_uber
+                             ) VALUES (
+                                 :logid, :steamid, :ubers, :medigun_ubers, :kritz_ubers,
+                                 :other_ubers, :drops, :advantages_lost,
+                                 :biggest_advantage_lost, :avg_time_before_healing,
+                                 :avg_time_before_using, :avg_time_to_build, :avg_uber_length,
+                                 :deaths_within_20s_after_uber, :deaths_with_95_99_uber
+                            );""", medic)
+
             cls['logid'] = logid
             cls['steamid'] = steamid
 

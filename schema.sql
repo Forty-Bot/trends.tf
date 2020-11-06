@@ -42,11 +42,6 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	hr INT, -- Heals Received
 	lks INT NOT NULL, -- Longest KillStreak
 	airshots INT, -- "as" in the json
-	ubers INT NOT NULL,
-	medigun_ubers INT,
-	kritz_ubers INT,
-	other_ubers INT,
-	drops INT NOT NULL,
 	medkits INT, -- Medkits taken (small: 1, medium: 2, large: 4)
 	medkits_hp INT, -- HP from medkits
 	backstabs INT,
@@ -57,13 +52,35 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	cpc INT, -- Capture Point Captures
 	ic INT, -- Intel Captures
 	PRIMARY KEY (logid, steamid64),
-	CHECK ((medigun_ubers ISNULL AND kritz_ubers ISNULL AND other_ubers ISNULL) OR
-	       (medigun_ubers NOTNULL AND kritz_ubers NOTNULL AND other_ubers NOTNULL)),
-	CHECK (medigun_ubers ISNULL OR ubers == medigun_ubers + kritz_ubers + other_ubers)
 	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
 ) WITHOUT ROWID;
 
 CREATE INDEX IF NOT EXISTS player_stats_id ON player_stats (steamid64);
+
+CREATE TABLE IF NOT EXISTS medic_stats (
+	logid INT,
+	steamid64 INT,
+	ubers INT NOT NULL,
+	medigun_ubers INT,
+	kritz_ubers INT,
+	other_ubers INT,
+	drops INT NOT NULL,
+	advantages_lost INT,
+	biggest_advantage_lost INT,
+	avg_time_before_healing REAL,
+	avg_time_before_using REAL,
+	avg_time_to_build REAL,
+	avg_uber_duration REAL,
+	deaths_after_uber INT, -- within 20s
+	deaths_before_uber INT, -- 95-99%
+	PRIMARY KEY (logid, steamid64),
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64),
+	CHECK ((medigun_ubers ISNULL AND kritz_ubers ISNULL AND other_ubers ISNULL) OR
+	       (medigun_ubers NOTNULL AND kritz_ubers NOTNULL AND other_ubers NOTNULL)),
+	CHECK (medigun_ubers ISNULL OR ubers == medigun_ubers + kritz_ubers + other_ubers),
+	CHECK ((advantages_lost NOTNULL AND biggest_advantage_lost NOTNULL) OR
+	       (advantages_lost ISNULL AND biggest_advantage_lost ISNULL))
+) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS class (
 	name TEXT PRIMARY KEY
