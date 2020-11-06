@@ -137,6 +137,31 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
 ) WITHOUT ROWID;
 
+CREATE TABLE IF NOT EXISTS event (
+	name TEXT PRIMARY KEY
+) WITHOUT ROWID;
+
+INSERT OR IGNORE INTO event (name) VALUES ('kill'), ('death'), ('assist');
+
+CREATE TABLE IF NOT EXISTS event_stats (
+	logid INT,
+	steamid64 INT,
+	event TEXT REFERENCES event (name),
+	demoman INT NOT NULL,
+	engineer INT NOT NULL,
+	heavyweapons INT NOT NULL,
+	medic INT NOT NULL,
+	pyro INT NOT NULL,
+	scout INT NOT NULL,
+	sniper INT NOT NULL,
+	soldier INT NOT NULL,
+	spy INT NOT NULL,
+	PRIMARY KEY (logid, steamid64, event),
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
+) WITHOUT ROWID;
+
+-- CREATE INDEX IF NOT EXISTS event_stats_player ON event_stats (steamid64);
+
 CREATE TABLE IF NOT EXISTS chat (
 	logid INT NOT NULL,
 	steamid64 INT, -- May be NULL for Console messages

@@ -129,6 +129,32 @@ def import_log(c, logid, log):
                          :backstabs, :headshots, :headshots_hit, :sentries, :heal, :cpc, :ic
                      );""", player)
 
+        for (prop, event) in (('classkills', 'kill'), ('classdeaths', 'death'),
+                              ('classkillassists', 'assist')):
+            if not log.get(prop):
+                continue
+
+            # If they never got a kill/assist/death then don't bother
+            events = log[prop].get(steamid_str)
+            if not events:
+                continue
+
+            events['logid'] = logid
+            events['steamid'] = steamid
+            events['event'] = event
+            for cls in ('demoman', 'engineer', 'heavyweapons', 'medic', 'pyro', 'scout', 'sniper',
+                        'soldier', 'spy'):
+                events[cls] = events.get(cls, 0)
+
+            # There are also 'unknown' events, but we skip them; they can be determined by the
+            # difference between the sum of this event and the event in player_stats
+            c.execute("""INSERT INTO event_stats (
+                             logid, steamid64, event, demoman, engineer, heavyweapons, medic, pyro,
+                             scout, sniper, soldier, spy
+                         ) VALUES (
+                             :logid, :steamid, :event, :demoman, :engineer, :heavyweapons, :medic,
+                             :pyro, :scout, :sniper, :soldier, :spy
+                         );""", events)
 
         for cls in player['class_stats']:
             # 99% of these contain no info which can't be inferred from player_stats
