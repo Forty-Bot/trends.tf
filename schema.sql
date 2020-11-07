@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS log (
 	-- Some logs may be duplicates or subsets of another log
 	duplicate_of INT REFERENCES log (logid),
 	-- All duplicates must be earlier (and have smaller logids) than what they are duplicates of
+	-- This prevents cycles (though it does admit chains of finite length)
 	CHECK (logid < duplicate_of)
 );
 

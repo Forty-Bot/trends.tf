@@ -297,6 +297,43 @@ def import_log(c, logid, log):
                 logging.warning("Either %s or %s is only present in healspread for log %s",
                                 healer, healee, logid)
 
+def delete_dup_logs(c):
+    """Delete duplicate logs
+
+    Process (perhaps to be amended in the future):
+    1. Find logs with duplicate rounds
+    2. Delete all data from the earlier logs (by logid) except the log itself
+    3. Set log.duplicate_of of the earlier logs
+
+    :param sqlite.Connection c: The database connection
+    :return: The number of logs deduplicated
+    :rtype: int
+    :raises sqlite3.DatabaseError: if there was a problem accessing the database
+    """
+
+    c.execute("""CREATE TEMP TABLE dupes AS SELECT
+                     r1.logid AS logid,
+                     max(r2.logid) AS of
+                 FROM round AS r1
+                 JOIN round AS r2 USING (
+                     seq, time, duration, winner, firstcap, red_score, blue_score, red_kills,
+                     blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
+                 ) WHERE r1.logid < r2.logid
+                 GROUP BY r1.logid;""")
+
+    # Done in reverse order as import_log
+    for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
+                  'player_stats', 'round'):
+        c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM temp.dupes);".format(table))
+
+    c.execute("""UPDATE log
+                 SET duplicate_of=temp.dupes.of
+                 FROM temp.dupes
+                 WHERE log.logid=temp.dupes.logid;""")
+    (ret,) = c.execute("SELECT count(*) FROM temp.dupes;").fetchone()
+    c.execute("DROP TABLE temp.dupes;")
+    return ret
+
 def parse_args(*args, **kwargs):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -394,6 +431,10 @@ def main():
     logging.info("Committing %s imported log(s)...", count)
     c.execute("COMMIT;");
     c.execute("PRAGMA optimize;")
+
+    c.execute("BEGIN;")
+    logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
+    c.execute("COMMIT;")
 
 if __name__ == "__main__":
     main()
