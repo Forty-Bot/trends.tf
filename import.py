@@ -52,6 +52,13 @@ def import_log(c, logid, log):
         info['red_score'] = info['Red']['score']
         info['blue_score'] = info['Blue']['score']
 
+    c.execute("""INSERT INTO log (
+                     logid, time, duration, title, map, red_score, blue_score
+                 ) VALUES (
+                     :logid, :date, :total_length, :title, :map, :red_score, :blue_score
+                 );""",
+              info)
+
     rounds = None
     try:
         rounds = log['rounds']
@@ -59,30 +66,37 @@ def import_log(c, logid, log):
         # Old-style rounds
         rounds = log['info']['rounds']
 
-    # All rounds have a "winner", but it might just be whoever had the lead in points when time ran
-    # out. Instead, try and detect if there was a stalemate by seeing if the points changed from the
-    # penultimate round to the ultimate round.
-    info['final_duration'] = rounds[-1]['length']
-    try:
-        # Older logs have Red and Blue directly under the round
-        ult_teams = rounds[-1].get('team', rounds[-1])
-        penult_teams = rounds[-2].get('team', rounds[-2])
-        # Some logs have no scores for the ult rounds, so assume no stalemate
-        info['final_stalemate'] = \
-            ult_teams['Red'].get('score') == penult_teams['Red']['score'] and \
-            ult_teams['Blue'].get('score') == penult_teams['Blue']['score']
-    except IndexError:
-        # In games with only one round, there was a stalemate if there was no round winner
-        info['final_stalemate'] = rounds[-1]['winner'] is None
+    for (seq, round) in enumerate(rounds):
+        teams = round.get('team', round)
+        red = teams['Red']
+        blue = teams['Blue']
 
-    c.execute("""INSERT INTO log (
-                     logid, time, duration, title, map, red_score, blue_score,
-                     final_round_stalemate, final_round_duration
-                 ) VALUES (
-                     :logid, :date, :total_length, :title, :map, :red_score, :blue_score,
-                     :final_stalemate, :final_duration
-                 );""",
-              info)
+        round['logid'] = logid
+        round['seq'] = seq
+        round['start_time'] = round.get('start_time')
+        round['firstcap'] = round.get('firstcap')
+
+        round['red_score'] = red.get('score', info['red_score'])
+        round['blue_score'] = blue.get('score', info['blue_score'])
+        round['red_kills'] = red['kills']
+        round['blue_kills'] = blue['kills']
+        try:
+            round['red_dmg'] = red['dmg']
+            round['blue_dmg'] = blue['dmg']
+        except KeyError:
+            round['red_dmg'] = red['damage']
+            round['blue_dmg'] = blue['damage']
+        round['red_ubers'] = red['ubers']
+        round['blue_ubers'] = blue['ubers']
+
+        c.execute("""INSERT INTO round (
+                         logid, seq, time, duration, winner, firstcap, red_score, blue_score,
+                         red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
+                     ) VALUES (
+                         :logid, :seq, :start_time, :length, :winner, :firstcap, :red_score,
+                         :blue_score, :red_kills, :blue_kills, :red_dmg, :blue_dmg, :red_ubers,
+                         :blue_ubers
+                     );""", round)
 
     for steamid_str, player in log['players'].items():
         steamid = SteamID(steamid_str)

@@ -17,14 +17,32 @@ CREATE TABLE IF NOT EXISTS log (
 	map TEXT NOT NULL,
 	red_score INT NOT NULL,
 	blue_score INT NOT NULL,
-	final_round_stalemate BOOLEAN NOT NULL,
-	final_round_duration INT NOT NULL,
-	CHECK (final_round_stalemate IN (TRUE, FALSE)),
-	CHECK (final_round_duration <= duration)
+	-- Some logs may be duplicates or subsets of another log
+	duplicate_of INT REFERENCES log (logid),
+	-- All duplicates must be earlier (and have smaller logids) than what they are duplicates of
+	CHECK (logid < duplicate_of)
 );
 
-CREATE INDEX IF NOT EXISTS log_time ON log (time);
-CREATE INDEX IF NOT EXISTS log_map ON log (map);
+-- CREATE INDEX IF NOT EXISTS log_time ON log (time);
+-- CREATE INDEX IF NOT EXISTS log_map ON log (map);
+
+CREATE TABLE IF NOT EXISTS round (
+	logid INT NOT NULL REFERENCES log (logid),
+	seq INT NOT NULL, -- Round number, starting at 0
+	time INT, -- Unix time
+	duration INT NOT NULL,
+	winner TEXT REFERENCES team (name),
+	firstcap TEXT REFERENCES team (name),
+	red_score INT NOT NULL,
+	blue_score INT NOT NULL,
+	red_kills INT NOT NULL,
+	blue_kills INT NOT NULL,
+	red_dmg INT NOT NULL,
+	blue_dmg INT NOT NULL,
+	red_ubers INT NOT NULL,
+	blue_ubers INT NOT NULL,
+	PRIMARY KEY (logid, seq)
+) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid) NOT NULL,
