@@ -4,7 +4,7 @@
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS team (
-	name TEXT PRIMARY KEY
+	name TEXT PRIMARY KEY NOT NULL
 ) WITHOUT ROWID;
 
 INSERT OR IGNORE INTO team (name) VALUES ('Red'), ('Blue');
@@ -27,8 +27,8 @@ CREATE INDEX IF NOT EXISTS log_time ON log (time);
 CREATE INDEX IF NOT EXISTS log_map ON log (map);
 
 CREATE TABLE IF NOT EXISTS player_stats (
-	logid INT REFERENCES log (logid),
-	steamid64 INT,
+	logid INT REFERENCES log (logid) NOT NULL,
+	steamid64 INT NOT NULL,
 	name TEXT NOT NULL,
 	team TEXT REFERENCES team (name), -- May be NULL for spectators
 	kills INT NOT NULL,
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS player_stats (
 CREATE INDEX IF NOT EXISTS player_stats_id ON player_stats (steamid64);
 
 CREATE TABLE IF NOT EXISTS medic_stats (
-	logid INT,
-	steamid64 INT,
+	logid INT NOT NULL,
+	steamid64 INT NOT NULL,
 	ubers INT NOT NULL,
 	medigun_ubers INT,
 	kritz_ubers INT,
@@ -83,9 +83,9 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 ) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS heal_stats (
-	logid INT,
-	healer INT,
-	healee INT,
+	logid INT NOT NULL,
+	healer INT NOT NULL,
+	healee INT NOT NULL,
 	healing INT NOT NULL,
 	PRIMARY KEY (logid, healer, healee),
 	-- Should reference medic_stats, but some very old logs only report one class per player
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS heal_stats (
 ) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS class (
-	name TEXT PRIMARY KEY
+	name TEXT PRIMARY KEY NOT NULL
 ) WITHOUT ROWID;
 
 INSERT OR IGNORE INTO class (name) VALUES
@@ -109,8 +109,8 @@ INSERT OR IGNORE INTO class (name) VALUES
 	('spy');
 
 CREATE TABLE IF NOT EXISTS class_stats (
-	logid INT,
-	steamid64 INT,
+	logid INT NOT NULL,
+	steamid64 INT NOT NULL,
 	class TEXT NOT NULL REFERENCES class (name),
 	kills INT NOT NULL,
 	assists INT NOT NULL,
@@ -122,10 +122,10 @@ CREATE TABLE IF NOT EXISTS class_stats (
 ) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS weapon_stats (
-	logid INT,
-	steamid64 INT,
-	class TEXT,
-	weapon TEXT,
+	logid INT NOT NULL,
+	steamid64 INT NOT NULL,
+	class TEXT NOT NULL,
+	weapon TEXT NOT NULL,
 	kills INT NOT NULL,
 	dmg INT,
 	avg_dmg REAL,
@@ -144,8 +144,8 @@ CREATE TABLE IF NOT EXISTS event (
 INSERT OR IGNORE INTO event (name) VALUES ('kill'), ('death'), ('assist');
 
 CREATE TABLE IF NOT EXISTS event_stats (
-	logid INT,
-	steamid64 INT,
+	logid INT NOT NULL,
+	steamid64 INT NOT NULL,
 	event TEXT REFERENCES event (name),
 	demoman INT NOT NULL,
 	engineer INT NOT NULL,
