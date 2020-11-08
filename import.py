@@ -335,6 +335,24 @@ def delete_dup_logs(c):
     c.execute("DROP TABLE temp.dupes;")
     return ret
 
+def delete_dup_rounds(c):
+    """Delete duplicate rounds
+
+    Some logs have duplicate rounds. Delete them.
+
+    :param sqlite.Connection c: The database connection:
+    """
+
+    c.execute("""DELETE FROM round
+                 WHERE (logid, seq) IN (
+                     SELECT r1.logid, r1.seq
+                     FROM round AS r1
+                     JOIN round AS r2 USING (
+                         logid, time, duration, winner, firstcap, red_score, blue_score, red_dmg,
+                         blue_dmg, red_kills, blue_kills, red_ubers, blue_ubers
+                     ) WHERE r1.seq > r2.seq
+                 );""")
+
 def parse_args(*args, **kwargs):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -432,6 +450,7 @@ def main():
 
     c.execute("BEGIN;")
     logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
+    delete_dup_rounds(c)
     c.execute("COMMIT;")
 
 if __name__ == "__main__":
