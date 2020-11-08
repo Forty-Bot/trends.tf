@@ -353,6 +353,24 @@ def delete_dup_rounds(c):
                      ) WHERE r1.seq > r2.seq
                  );""")
 
+def update_stalemates(c):
+    """Find stalemates and mark the winner as NULL
+
+    This should be run after removing duplicate rounds
+
+    :param sqlite.Connection c: The database connection:
+    """
+
+    c.execute("""UPDATE round
+                 SET winner = NULL
+                 WHERE (logid, seq) IN (
+                     SELECT logid, max(seq)
+                     FROM log
+                     JOIN round USING (logid)
+                     GROUP BY logid
+                     HAVING count(winner) > (log.red_score + log.blue_score)
+                 );""")
+
 def parse_args(*args, **kwargs):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -451,6 +469,7 @@ def main():
     c.execute("BEGIN;")
     logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
     delete_dup_rounds(c)
+    update_stalemates(c)
     c.execute("COMMIT;")
 
 if __name__ == "__main__":
