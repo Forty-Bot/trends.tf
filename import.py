@@ -371,6 +371,49 @@ def update_stalemates(c):
                      HAVING count(winner) > (log.red_score + log.blue_score)
                  );""")
 
+def update_formats(c):
+    """Set the format for all logs
+
+    See the SQL comments for details on this heuristic.
+
+    :param sqlite.Connection c: The database connection:
+    """
+
+    c.execute("""UPDATE log
+                 SET format = tmp.format
+                 FROM (SELECT
+                         logid,
+                         coalesce(
+                             -- If the difference between total and average is too high, then the
+                             -- total player count is more accurate. This is because some logs have
+                             -- broken playtime (e.g. average players of 8.5 with 12 total players).
+                             CASE WHEN total_players - avg_players > 2 THEN ft.name END,
+                             -- Otherwise, prefer average playtime, since it detects sixes vs
+                             -- prolander better
+                             fa.name,
+                             ft.name,
+                             'other'
+                         ) AS format
+                     FROM (SELECT
+                             logid,
+                             total(class_stats.duration) / log.duration AS avg_players,
+                             count(DISTINCT player_stats.steamid64) AS total_players
+                         FROM log
+                         JOIN player_stats USING (logid)
+                         JOIN class_stats USING (logid, steamid64)
+                         -- Only set the format if it isn't already set
+                         WHERE log.format ISNULL
+                         GROUP BY logid
+                     ) LEFT JOIN format AS fa ON (
+                         -- By inspection, almost all games in a format have players in this range
+                         -- This has some slight overlap between sixes and prolander (oh well)
+                         avg_players BETWEEN fa.players - 1 AND fa.players + 1
+                     ) LEFT JOIN format AS ft ON (
+                         total_players BETWEEN ft.players - 1 AND ft.players + 1
+                     )
+                 ) AS tmp
+                 WHERE log.logid = tmp.logid;""")
+
 def parse_args(*args, **kwargs):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -470,6 +513,7 @@ def main():
     logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
     delete_dup_rounds(c)
     update_stalemates(c)
+    update_formats(c)
     c.execute("COMMIT;")
 
 if __name__ == "__main__":
