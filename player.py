@@ -98,8 +98,40 @@ def get_logs(c, steamid, limit=100, offset=0):
 @app.route('/player/<int:steamid>')
 def player_overview(steamid):
     with db_connect(DATABASE) as c:
+        classes = c.cursor().execute(
+            """SELECT
+                   *,
+                   (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
+               FROM (
+                   SELECT
+                       name,
+                       sum(CASE WHEN mostly THEN round_wins > round_losses END) AS wins,
+                       sum(CASE WHEN mostly THEN round_wins < round_losses END) AS losses,
+                       sum(CASE WHEN mostly THEN round_wins == round_losses END) AS ties,
+                       total(duration) time,
+                       sum(dmg) * 60.0 / sum(duration) AS dpm,
+                       total(hits) / sum(shots) AS acc
+                   FROM (
+                       SELECT
+                           class.name,
+                           cs.duration * 1.5 > log_wlt.duration AS mostly,
+                           round_wins,
+                           round_losses,
+                           cs.duration,
+                           cs.dmg,
+                           sum(hits) AS hits,
+                           sum(shots) AS shots
+                       FROM class
+                       LEFT JOIN class_stats cs ON (cs.class=class.name AND steamid64=?)
+                       LEFT JOIN log_wlt USING (logid, steamid64)
+                       LEFT JOIN weapon_stats USING (logid, steamid64, class)
+                       GROUP BY logid, steamid64, class.name
+               )
+               GROUP BY name
+               ORDER BY name
+               );""", (steamid,))
         return flask.render_template("player/overview.html", player=get_player(c, steamid),
-                                     logs=get_logs(c, steamid, limit=25))
+                                     logs=get_logs(c, steamid, limit=25), classes=classes)
 
 @app.route('/player/<int:steamid>/logs')
 def player_logs(steamid):

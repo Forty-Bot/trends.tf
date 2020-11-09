@@ -6,6 +6,34 @@
 {% block title %}Overview - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
+	<h2>Classes</h>
+	<table>
+		<thead>
+			<tr>
+				<th>Class</th>
+				<th><abbr title="Wins-Losses-Ties, without ties under 60s">
+					W-L-T
+				</abbr></th>
+				<th><abbr title="Winrate, ties count as 0.5 wins">Winrate</th>
+				<th><abbr title="Average Damage per Minute">D/M</abbr></th>
+				<th><abbr title="Average Accuracy">Acc</abbr></th>
+				<th>Time Played</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% for cls in classes %}
+			<tr>
+				<td>{{ cls['name'] }}</td>
+				<td>{{ wlt(cls['wins'], cls['losses'], cls['ties']) }}</td>
+				<td>{{ "{:.2%}".format(cls['winrate'])
+					if cls['winrate'] != None }}</td>
+				<td>{{ cls['dpm'] | int if cls['dpm'] != None }}</td>
+				<td>{{ "{:.0%}".format(cls['acc']) if cls['acc'] != None }}</td>
+				<td>{{ cls['time'] | duration }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	<h2>Recent Logs</h2>
 	{{ log_table(logs) }}
 {% endblock %}
