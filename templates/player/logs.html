@@ -1,0 +1,13 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/logs.html" import log_table %}
+{% extends "player/base.html" %}
+{% block title %}Logs - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Logs</h2>
+	{{ navigation(logs, url_for('player_logs', steamid=player['steamid64']), limit, offset) }}
+	{{ log_table(logs, extra=True) }}
+	{{ navigation(logs, url_for('player_logs', steamid=player['steamid64']), limit, offset) }}
+{% endblock %}

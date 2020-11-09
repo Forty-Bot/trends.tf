@@ -100,3 +100,12 @@ def player_overview(steamid):
     with db_connect(DATABASE) as c:
         return flask.render_template("player/overview.html", player=get_player(c, steamid),
                                      logs=get_logs(c, steamid, limit=25))
+
+@app.route('/player/<int:steamid>/logs')
+def player_logs(steamid):
+    with db_connect(DATABASE) as c:
+        limit = flask.request.args.get('limit', 100, int)
+        offset = flask.request.args.get('offset', 0, int)
+        logs = get_logs(c, steamid, limit=limit, offset=offset).fetchall()
+        return flask.render_template("player/logs.html", player=get_player(c, steamid), logs=logs,
+                                     limit=limit, offset=offset)
