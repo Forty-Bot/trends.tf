@@ -1,0 +1,52 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/pagination.html" import navigation %}
+{% extends "player/base.html" %}
+{% block title %}Peers - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Peers</h2>
+	{{ navigation(peers, url_for('player_peers', steamid=player['steamid64']), limit, offset) }}
+	<table>
+		<thead>
+			<tr>
+				<th>Player</th>
+				<th>Logs With</th>
+				<th><abbr title="Winrate With, ties count as 0.5 wins">
+					Winrate With
+				</abbr></th>
+				<th>Time Played With</td>
+				<th>Logs Against</th>
+				<th><abbr title="Winrate Against, ties count as 0.5 wins">
+					Winrate Against
+				</abbr></th>
+				<th>Time Played Against</td>
+				<th><abbr title="Damage per Minute With">D/M With</abbr></th>
+				<th><abbr title="Damage Taken per Minute With">DT/M With</abbr></th>
+				<th><abbr title="Healing per Minute With">H/M With</abbr></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for peer in peers %}
+			<tr>
+				<td><a href="{{ url_for('player_overview',
+				                        steamid=peer['steamid64']) }}">
+					{{ peer['name'] }}
+				</a></td>
+				<td>{{ peer['with'] | int }}</td>
+				<td>{{ "{:.2%}".format(peer['winrate_with'])
+					if peer['winrate_with'] != None }}</td>
+				<td>{{ peer['time_with'] | duration }}</td>
+				<td>{{ peer['against'] | int }}</td>
+				<td>{{ "{:.2%}".format(peer['winrate_against'])
+					if peer['winrate_against'] != None }}</td>
+				<td>{{ peer['time_against'] | duration }}</td>
+				<td>{{ peer['dpm'] | int if peer['dpm'] != None }}</td>
+				<td>{{ peer['dtm'] | int if peer['dtm'] != None }}</td>
+				<td>{{ peer['hpm'] | int if peer['hpm'] != None }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ navigation(peers, url_for('player_peers', steamid=player['steamid64']), limit, offset) }}
+{% endblock %}

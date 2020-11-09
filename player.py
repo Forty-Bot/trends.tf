@@ -109,3 +109,50 @@ def player_logs(steamid):
         logs = get_logs(c, steamid, limit=limit, offset=offset).fetchall()
         return flask.render_template("player/logs.html", player=get_player(c, steamid), logs=logs,
                                      limit=limit, offset=offset)
+
+@app.route('/player/<int:steamid>/peers')
+def player_peers(steamid):
+    with db_connect(DATABASE) as c:
+        limit = flask.request.args.get('limit', 100, int)
+        offset = flask.request.args.get('offset', 0, int)
+        peers = c.execute("""SELECT
+                                 steamid64,
+                                 name,
+                                 total(with) AS with,
+                                 total(against) AS against,
+                                 (sum(CASE WHEN with THEN win END) +
+                                     0.5 * sum(CASE WHEN with THEN tie END))
+                                     / sum(with) AS winrate_with,
+                                 (sum(CASE WHEN against THEN win END) +
+                                     0.5 * sum(CASE WHEN against THEN tie END))
+                                     / sum(against) AS winrate_against,
+                                 sum(CASE WHEN with THEN dmg END) * 60.0 /
+                                     sum(CASE WHEN with THEN duration END) AS dpm,
+                                 sum(CASE WHEN with THEN dt END) * 60.0 /
+                                     sum(CASE WHEN with THEN duration END) AS dtm,
+                                 sum(CASE WHEN with THEN healing END) * 60.0 /
+                                     sum(CASE WHEN with THEN duration END) AS hpm,
+                                 total(CASE WHEN with THEN duration END) as time_with,
+                                 total(CASE WHEN against THEN duration END) as time_against
+                             FROM (
+                                 SELECT
+                                     p2.steamid64,
+                                     p2.name,
+                                     p1.team = p2.team AS with,
+                                     p1.team != p2.team AS against,
+                                     p1.round_wins > p1.round_losses AS win,
+                                     p1.round_wins = p1.round_losses AS tie,
+                                     p1.dmg,
+                                     p1.dt,
+                                     p1.healing,
+                                     p1.duration
+                                 FROM log_wlt AS p1
+                                 JOIN log_wlt AS p2 USING (logid)
+                                 WHERE p1.steamid64 = ?
+                                    AND p2.steamid64 != p1.steamid64
+                                    AND p2.team NOTNULL
+                             ) GROUP BY steamid64
+                             ORDER BY count(*) DESC
+                             LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
+        return flask.render_template("player/peers.html", player=get_player(c, steamid),
+                                     peers=peers, limit=limit, offset=offset)
