@@ -1,0 +1,7 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% macro wlt(wins, losses, ties) %}
+{% if wins != None and losses != None and ties != None %}
+	{{ "{:.0f}-{:.0f}-{:.0f}".format(wins, losses, ties) }}
+{% endif %}
+{% endmacro %}

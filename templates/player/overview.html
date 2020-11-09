@@ -1,0 +1,11 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/logs.html" import log_table %}
+{% from "macros/wlt.html" import wlt %}
+{% extends "player/base.html" %}
+{% block title %}Overview - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Recent Logs</h2>
+	{{ log_table(logs) }}
+{% endblock %}

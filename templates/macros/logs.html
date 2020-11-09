@@ -1,0 +1,53 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/wlt.html" import wlt %}
+{% macro log_table(logs, extra=False) %}
+<table>
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Map</th>
+			<th><abbr title="Classes, ordered by playtime">Classes</abbr></th>
+			<th><abbr title="Rounds Won-Lost-Tied, without ties under 60s">
+				W-L-T
+			</abbr></th>
+			<th>Format</th>
+			<th>Duration</th>
+			<th><abbr title="Kills">K</abbr></th>
+			<th><abbr title="Deaths">D</abbr></th>
+			<th><abbr title="Assists">A</abbr></th>
+			{% if extra %}
+			<th><abbr title="Damage per Minute">D/M</abbr></th>
+			<th><abbr title="Damage Taken per Minute">DT/M</abbr></th>
+			<th><abbr title="Accuracy">Acc</abbr></th>
+			<th><abbr title="Healing per Minute">H/M</abbr></th>
+			{% endif %}
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for log in logs %}
+		<tr>
+			<td><a href="https://logs.tf/{{ log['logid'] }}">
+					{{ log['title'] }}
+			</a></td>
+			<td>{{ log['map'] }}</td>
+			<td>{{ log['classes'] }}</td>
+			<td>{{ wlt(log['wins'], log['losses'], log['ties']) }}</td>
+			<td>{{ log['format'] }}</td>
+			<td>{{ log['duration'] | duration }}</td>
+			<td>{{ log['kills'] }}</td>
+			<td>{{ log['deaths'] }}</td>
+			<td>{{ log['assists'] }}</td>
+			{% if extra %}
+			<td>{{ log['dpm'] | int }}</td>
+			<td>{{ log['dtm'] | int if log['dtm'] != None }}</td>
+			<td>{{ "{:.0%}".format(log['acc']) if log['acc'] != None }}</td>
+			<td>{{ log['hpm'] | int }}</td>
+			{% endif %}
+			<td>{{ "{:%b %-d, %Y %-I:%M %p}".format(log['time'] | date) }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endmacro %}
