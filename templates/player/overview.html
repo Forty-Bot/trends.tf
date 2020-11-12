@@ -6,7 +6,9 @@
 {% block title %}Overview - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
-	<h2>Classes</h>
+
+	<h2>Overview</h2>
+	<h3>Classes</h3>
 	<table>
 		<thead>
 			<tr>
@@ -34,6 +36,45 @@
 			{% endfor %}
 		</tbody>
 	</table>
+
+	<h3>Averages</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Number&hellip;</th>
+				<th>Scout</th>
+				<th>Soldier</th>
+				<th>Pyro</th>
+				<th>Demo</th>
+				<th>Heavy</th>
+				<th>Engineer</th>
+				<th>Medic</th>
+				<th>Sniper</th>
+				<th>Spy</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for event in event_stats %}
+			<tr>
+				<td>&hellip;{{ {
+					'kill': "killed",
+					'assist': "assisted killing",
+					'death': "died to",
+					}[event['event']] }}</td>
+				<td>{{ "{:.2f}".format(event['scout']) }}</td>
+				<td>{{ "{:.2f}".format(event['soldier']) }}</td>
+				<td>{{ "{:.2f}".format(event['pyro']) }}</td>
+				<td>{{ "{:.2f}".format(event['demoman']) }}</td>
+				<td>{{ "{:.2f}".format(event['heavyweapons']) }}</td>
+				<td>{{ "{:.2f}".format(event['engineer']) }}</td>
+				<td>{{ "{:.2f}".format(event['medic']) }}</td>
+				<td>{{ "{:.2f}".format(event['sniper']) }}</td>
+				<td>{{ "{:.2f}".format(event['spy']) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
 	<h2>Recent Logs</h2>
 	{{ log_table(logs) }}
 {% endblock %}

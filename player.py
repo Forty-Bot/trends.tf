@@ -130,8 +130,28 @@ def player_overview(steamid):
                GROUP BY name
                ORDER BY name
                );""", (steamid,))
+        event_stats = c.cursor().execute(
+                """SELECT
+                       event,
+                       avg(demoman) AS demoman,
+                       avg(engineer) AS engineer,
+                       avg(heavyweapons) AS heavyweapons,
+                       avg(medic) AS medic,
+                       avg(pyro) AS pyro,
+                       avg(scout) AS scout,
+                       avg(sniper) AS sniper,
+                       avg(soldier) AS soldier,
+                       avg(spy) AS spy
+                   FROM (
+                       SELECT *
+                       FROM event
+                       LEFT JOIN event_stats ON (event_stats.event=event.name AND steamid64=?)
+                   ) GROUP BY event
+                   -- Dirty hack to fix ordering
+                   ORDER BY event DESC;""", (steamid,))
         return flask.render_template("player/overview.html", player=get_player(c, steamid),
-                                     logs=get_logs(c, steamid, limit=25), classes=classes)
+                                     logs=get_logs(c, steamid, limit=25), classes=classes,
+                                     event_stats=event_stats)
 
 @app.route('/player/<int:steamid>/logs')
 def player_logs(steamid):
