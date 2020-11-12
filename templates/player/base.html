@@ -2,35 +2,35 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/wlt.html" import wlt %}
 {% extends "base.html" %}
-{% block title %}{{ player['name'] }}{% endblock %}
+{% block title %}{{ g.player['name'] }}{% endblock %}
 {% block content %}
 	{{ super() }}
-	<h1>{{ player['name'] }}</h1>
+	<h1>{{ g.player['name'] }}</h1>
 	<ul>
 		<li>
 			<abbr title="Wins-Losses-Ties">W-L-T</abbr>:
-			{{ wlt(player['wins'], player['losses'], player['ties']) }}
+			{{ wlt(g.player['wins'], g.player['losses'], g.player['ties']) }}
 		</li>
 		<li>
 			<abbr title="Ties count as 0.5 wins">Winrate</abbr>:
-			{{ "{:.2%}".format(player['winrate']) }}
+			{{ "{:.2%}".format(g.player['winrate']) }}
 		</li>
 		<li>
 			<abbr title="Wins-Losses-Ties, without ties under 60s">
 				Round W-L-T</abbr>:
-			{{ wlt(player['round_wins'], player['round_losses'],
-			       player['round_ties']) }}
+			{{ wlt(g.player['round_wins'], g.player['round_losses'],
+			       g.player['round_ties']) }}
 		</li>
 		<li>
 			<abbr title="Ties count as 0.5 wins">Round Winrate</abbr>:
-			{{ "{:.2%}".format(player['round_winrate']) }}
+			{{ "{:.2%}".format(g.player['round_winrate']) }}
 		</li>
 	</ul>
 
-	<a href="{{ url_for('player_overview', steamid=player['steamid64']) }}">Overview</a>
-	<a href="{{ url_for('player_logs', steamid=player['steamid64']) }}">Logs</a>
-	<a href="{{ url_for('player_peers', steamid=player['steamid64']) }}">Peers</a>
-	<a href="{{ url_for('player_totals', steamid=player['steamid64']) }}">Totals</a>
-	<a href="{{ url_for('player_weapons', steamid=player['steamid64']) }}">Weapons</a>
-	<a href="{{ url_for('player_trends', steamid=player['steamid64']) }}">Trends</a>
+	<a href="{{ url_for('.overview', steamid=g.player['steamid64']) }}">Overview</a>
+	<a href="{{ url_for('.logs', steamid=g.player['steamid64']) }}">Logs</a>
+	<a href="{{ url_for('.peers', steamid=g.player['steamid64']) }}">Peers</a>
+	<a href="{{ url_for('.totals', steamid=g.player['steamid64']) }}">Totals</a>
+	<a href="{{ url_for('.weapons', steamid=g.player['steamid64']) }}">Weapons</a>
+	<a href="{{ url_for('.trends', steamid=g.player['steamid64']) }}">Trends</a>
 {% endblock %}

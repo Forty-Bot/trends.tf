@@ -6,7 +6,7 @@
 {% block content %}
 	{{ super() }}
 	<h2>Peers</h2>
-	{{ navigation(peers, url_for('player_peers', steamid=player['steamid64']), limit, offset) }}
+	{{ navigation(peers, request.path, limit, offset) }}
 	<table>
 		<thead>
 			<tr>
@@ -29,8 +29,7 @@
 		<tbody>
 			{% for peer in peers %}
 			<tr>
-				<td><a href="{{ url_for('player_overview',
-				                        steamid=peer['steamid64']) }}">
+				<td><a href="{{ url_for('.overview', steamid=peer['steamid64']) }}">
 					{{ peer['name'] }}
 				</a></td>
 				<td>{{ peer['with'] | int }}</td>
@@ -48,5 +47,5 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	{{ navigation(peers, url_for('player_peers', steamid=player['steamid64']), limit, offset) }}
+	{{ navigation(peers, request.path, limit, offset) }}
 {% endblock %}

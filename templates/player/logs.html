@@ -7,7 +7,7 @@
 {% block content %}
 	{{ super() }}
 	<h2>Logs</h2>
-	{{ navigation(logs, url_for('player_logs', steamid=player['steamid64']), limit, offset) }}
+	{{ navigation(logs, request.path, limit, offset) }}
 	{{ log_table(logs, extra=True) }}
-	{{ navigation(logs, url_for('player_logs', steamid=player['steamid64']), limit, offset) }}
+	{{ navigation(logs, request.path, limit, offset) }}
 {% endblock %}

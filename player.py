@@ -1,17 +1,14 @@
-#!/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
 from datetime import datetime, timedelta
 import flask
 
-from sql import db_connect
+from trends import get_db
 
-app = flask.Flask(__name__)
+player = flask.Blueprint('player', __name__)
 
-DATABASE = "logs.db"
-
-@app.template_filter('duration')
+@player.app_template_filter('duration')
 def duration_filter(timestamp):
     mm, ss = divmod(timestamp, 60)
     hh, mm = divmod(mm, 60)
@@ -24,12 +21,14 @@ def duration_filter(timestamp):
     else:
         return "{:.0f}:{:02.0f}".format(mm, ss)
 
-@app.template_filter('date')
+@player.app_template_filter('date')
 def date_filter(timestamp):
     return datetime.fromtimestamp(timestamp)
 
-def get_player(c, steamid):
-    cur = c.cursor().execute(
+@player.url_value_preprocessor
+def get_player(endpoint, values):
+    flask.g.steamid = values['steamid']
+    cur = get_db().cursor().execute(
         """SELECT
              *,
              (wins + 0.5 * ties) /
@@ -51,10 +50,11 @@ def get_player(c, steamid):
              FROM log_wlt
              WHERE steamid64 = ?
              GROUP BY steamid64
-        );""", (steamid,))
+        );""", (values['steamid'],))
 
     for row in cur:
-        return row
+        flask.g.player = row
+        break
     else:
         flask.abort(404)
 
@@ -95,172 +95,163 @@ def get_logs(c, steamid, limit=100, offset=0):
                ORDER BY logid DESC
                LIMIT ? OFFSET ?;""", (steamid, limit, offset))
 
-@app.route('/player/<int:steamid>')
-def player_overview(steamid):
-    with db_connect(DATABASE) as c:
-        classes = c.cursor().execute(
-            """SELECT
-                   *,
-                   (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
+@player.route('/')
+def overview(steamid):
+    c = get_db()
+    classes = c.cursor().execute(
+        """SELECT
+               *,
+               (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
+           FROM (
+               SELECT
+                   name,
+                   sum(CASE WHEN mostly THEN round_wins > round_losses END) AS wins,
+                   sum(CASE WHEN mostly THEN round_wins < round_losses END) AS losses,
+                   sum(CASE WHEN mostly THEN round_wins == round_losses END) AS ties,
+                   total(duration) time,
+                   sum(dmg) * 60.0 / sum(duration) AS dpm,
+                   total(hits) / sum(shots) AS acc
                FROM (
                    SELECT
-                       name,
-                       sum(CASE WHEN mostly THEN round_wins > round_losses END) AS wins,
-                       sum(CASE WHEN mostly THEN round_wins < round_losses END) AS losses,
-                       sum(CASE WHEN mostly THEN round_wins == round_losses END) AS ties,
-                       total(duration) time,
-                       sum(dmg) * 60.0 / sum(duration) AS dpm,
-                       total(hits) / sum(shots) AS acc
-                   FROM (
-                       SELECT
-                           class.name,
-                           cs.duration * 1.5 > log_wlt.duration AS mostly,
-                           round_wins,
-                           round_losses,
-                           cs.duration,
-                           cs.dmg,
-                           sum(hits) AS hits,
-                           sum(shots) AS shots
-                       FROM class
-                       LEFT JOIN class_stats cs ON (cs.class=class.name AND steamid64=?)
-                       LEFT JOIN log_wlt USING (logid, steamid64)
-                       LEFT JOIN weapon_stats USING (logid, steamid64, class)
-                       GROUP BY logid, steamid64, class.name
-               )
-               GROUP BY name
-               ORDER BY name
-               );""", (steamid,))
-        event_stats = c.cursor().execute(
-                """SELECT
-                       event,
-                       avg(demoman) AS demoman,
-                       avg(engineer) AS engineer,
-                       avg(heavyweapons) AS heavyweapons,
-                       avg(medic) AS medic,
-                       avg(pyro) AS pyro,
-                       avg(scout) AS scout,
-                       avg(sniper) AS sniper,
-                       avg(soldier) AS soldier,
-                       avg(spy) AS spy
-                   FROM (
-                       SELECT *
-                       FROM event
-                       LEFT JOIN event_stats ON (event_stats.event=event.name AND steamid64=?)
-                   ) GROUP BY event
-                   -- Dirty hack to fix ordering
-                   ORDER BY event DESC;""", (steamid,))
-        return flask.render_template("player/overview.html", player=get_player(c, steamid),
-                                     logs=get_logs(c, steamid, limit=25), classes=classes,
-                                     event_stats=event_stats)
+                       class.name,
+                       cs.duration * 1.5 > log_wlt.duration AS mostly,
+                       round_wins,
+                       round_losses,
+                       cs.duration,
+                       cs.dmg,
+                       sum(hits) AS hits,
+                       sum(shots) AS shots
+                   FROM class
+                   LEFT JOIN class_stats cs ON (cs.class=class.name AND steamid64=?)
+                   LEFT JOIN log_wlt USING (logid, steamid64)
+                   LEFT JOIN weapon_stats USING (logid, steamid64, class)
+                   GROUP BY logid, steamid64, class.name
+           )
+           GROUP BY name
+           ORDER BY name
+           );""", (steamid,))
+    event_stats = c.cursor().execute(
+            """SELECT
+                   event,
+                   avg(demoman) AS demoman,
+                   avg(engineer) AS engineer,
+                   avg(heavyweapons) AS heavyweapons,
+                   avg(medic) AS medic,
+                   avg(pyro) AS pyro,
+                   avg(scout) AS scout,
+                   avg(sniper) AS sniper,
+                   avg(soldier) AS soldier,
+                   avg(spy) AS spy
+               FROM (
+                   SELECT *
+                   FROM event
+                   LEFT JOIN event_stats ON (event_stats.event=event.name AND steamid64=?)
+               ) GROUP BY event
+               -- Dirty hack to fix ordering
+               ORDER BY event DESC;""", (steamid,))
+    return flask.render_template("player/overview.html",
+                                 logs=get_logs(c, steamid, limit=25), classes=classes,
+                                 event_stats=event_stats)
 
-@app.route('/player/<int:steamid>/logs')
-def player_logs(steamid):
-    with db_connect(DATABASE) as c:
+@player.route('/logs')
+def logs(steamid):
         limit = flask.request.args.get('limit', 100, int)
         offset = flask.request.args.get('offset', 0, int)
-        logs = get_logs(c, steamid, limit=limit, offset=offset).fetchall()
-        return flask.render_template("player/logs.html", player=get_player(c, steamid), logs=logs,
-                                     limit=limit, offset=offset)
+        logs = get_logs(get_db(), steamid, limit=limit, offset=offset).fetchall()
+        return flask.render_template("player/logs.html", logs=logs, limit=limit, offset=offset)
 
-@app.route('/player/<int:steamid>/peers')
-def player_peers(steamid):
-    with db_connect(DATABASE) as c:
-        limit = flask.request.args.get('limit', 100, int)
-        offset = flask.request.args.get('offset', 0, int)
-        peers = c.execute("""SELECT
-                                 steamid64,
-                                 name,
-                                 total(with) AS with,
-                                 total(against) AS against,
-                                 (sum(CASE WHEN with THEN win END) +
-                                     0.5 * sum(CASE WHEN with THEN tie END))
-                                     / sum(with) AS winrate_with,
-                                 (sum(CASE WHEN against THEN win END) +
-                                     0.5 * sum(CASE WHEN against THEN tie END))
-                                     / sum(against) AS winrate_against,
-                                 sum(CASE WHEN with THEN dmg END) * 60.0 /
-                                     sum(CASE WHEN with THEN duration END) AS dpm,
-                                 sum(CASE WHEN with THEN dt END) * 60.0 /
-                                     sum(CASE WHEN with THEN duration END) AS dtm,
-                                 sum(CASE WHEN with THEN healing END) * 60.0 /
-                                     sum(CASE WHEN with THEN duration END) AS hpm,
-                                 total(CASE WHEN with THEN duration END) as time_with,
-                                 total(CASE WHEN against THEN duration END) as time_against
-                             FROM (
-                                 SELECT
-                                     p2.steamid64,
-                                     p2.name,
-                                     p1.team = p2.team AS with,
-                                     p1.team != p2.team AS against,
-                                     p1.round_wins > p1.round_losses AS win,
-                                     p1.round_wins = p1.round_losses AS tie,
-                                     p1.dmg,
-                                     p1.dt,
-                                     p1.healing,
-                                     p1.duration
-                                 FROM log_wlt AS p1
-                                 JOIN log_wlt AS p2 USING (logid)
-                                 WHERE p1.steamid64 = ?
-                                    AND p2.steamid64 != p1.steamid64
-                                    AND p2.team NOTNULL
-                             ) GROUP BY steamid64
-                             ORDER BY count(*) DESC
-                             LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
-        return flask.render_template("player/peers.html", player=get_player(c, steamid),
-                                     peers=peers, limit=limit, offset=offset)
+@player.route('/peers')
+def peers(steamid):
+    limit = flask.request.args.get('limit', 100, int)
+    offset = flask.request.args.get('offset', 0, int)
+    peers = get_db().execute(
+        """SELECT
+               steamid64,
+               name,
+               total(with) AS with,
+               total(against) AS against,
+               (sum(CASE WHEN with THEN win END) +
+                   0.5 * sum(CASE WHEN with THEN tie END)) / sum(with) AS winrate_with,
+               (sum(CASE WHEN against THEN win END) +
+                   0.5 * sum(CASE WHEN against THEN tie END)) / sum(against) AS winrate_against,
+               sum(CASE WHEN with THEN dmg END) * 60.0 /
+                   sum(CASE WHEN with THEN duration END) AS dpm,
+               sum(CASE WHEN with THEN dt END) * 60.0 /
+                   sum(CASE WHEN with THEN duration END) AS dtm,
+               sum(CASE WHEN with THEN healing END) * 60.0 /
+                   sum(CASE WHEN with THEN duration END) AS hpm,
+               total(CASE WHEN with THEN duration END) as time_with,
+               total(CASE WHEN against THEN duration END) as time_against
+           FROM (
+               SELECT
+                   p2.steamid64,
+                   p2.name,
+                   p1.team = p2.team AS with,
+                   p1.team != p2.team AS against,
+                   p1.round_wins > p1.round_losses AS win,
+                   p1.round_wins = p1.round_losses AS tie,
+                   p1.dmg,
+                   p1.dt,
+                   p1.healing,
+                   p1.duration
+               FROM log_wlt AS p1
+               JOIN log_wlt AS p2 USING (logid)
+               WHERE p1.steamid64 = ?
+                  AND p2.steamid64 != p1.steamid64
+                  AND p2.team NOTNULL
+           ) GROUP BY steamid64
+           ORDER BY count(*) DESC
+           LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
+    return flask.render_template("player/peers.html", peers=peers, limit=limit, offset=offset)
 
-@app.route('/player/<int:steamid>/totals')
-def player_totals(steamid):
-    with db_connect(DATABASE) as c:
-        totals = c.cursor().execute(
-            """SELECT
-                   total(kills) AS kills,
-                   total(deaths) AS deaths,
-                   total(assists) AS assists,
-                   total(duration) AS duration,
-                   total(dmg) AS dmg,
-                   total(dt) AS dt,
-                   total(hr) AS hr,
-                   total(airshots) AS airshots,
-                   total(medkits) AS medkits,
-                   total(medkits_hp) AS medkits_hp,
-                   total(backstabs) AS backstabs,
-                   total(headshots) AS headshots,
-                   total(headshots_hit) AS headshots_hit,
-                   total(sentries) AS sentries,
-                   total(healing) AS healing,
-                   total(cpc) AS cpc,
-                   total(ic) AS ic,
-                   total(ubers) AS ubers,
-                   total(drops) AS drops,
-                   total(advantages_lost) AS advantages_lost,
-                   total(deaths_after_uber) AS deaths_after_uber,
-                   total(deaths_before_uber) AS deaths_before_uber
-               FROM log
-               JOIN player_stats USING (logid)
-               LEFT JOIN medic_stats USING (logid, steamid64)
-               WHERE steamid64 = ?;""", (steamid,)).fetchone()
-        return flask.render_template("player/totals.html", player=get_player(c, steamid),
-                                     totals=totals)
+@player.route('/totals')
+def totals(steamid):
+    totals = get_db().cursor().execute(
+        """SELECT
+               total(kills) AS kills,
+               total(deaths) AS deaths,
+               total(assists) AS assists,
+               total(duration) AS duration,
+               total(dmg) AS dmg,
+               total(dt) AS dt,
+               total(hr) AS hr,
+               total(airshots) AS airshots,
+               total(medkits) AS medkits,
+               total(medkits_hp) AS medkits_hp,
+               total(backstabs) AS backstabs,
+               total(headshots) AS headshots,
+               total(headshots_hit) AS headshots_hit,
+               total(sentries) AS sentries,
+               total(healing) AS healing,
+               total(cpc) AS cpc,
+               total(ic) AS ic,
+               total(ubers) AS ubers,
+               total(drops) AS drops,
+               total(advantages_lost) AS advantages_lost,
+               total(deaths_after_uber) AS deaths_after_uber,
+               total(deaths_before_uber) AS deaths_before_uber
+           FROM log
+           JOIN player_stats USING (logid)
+           LEFT JOIN medic_stats USING (logid, steamid64)
+           WHERE steamid64 = ?;""", (steamid,)).fetchone()
+    return flask.render_template("player/totals.html", totals=totals)
 
-@app.route('/player/<int:steamid>/weapons')
-def player_weapons(steamid):
-    with db_connect(DATABASE) as c:
-        weapons = c.cursor().execute(
-            """SELECT
-                   weapon,
-                   avg(ws.kills) as kills,
-                   sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN duration END) AS dpm,
-                   total(hits) / sum(shots) AS acc
-               FROM weapon_stats AS ws
-               JOIN class_stats USING (logid, steamid64, class)
-               WHERE steamid64 = ?
-               GROUP BY weapon;""", (steamid,))
-        return flask.render_template("player/weapons.html", player=get_player(c, steamid),
-                                      weapons=weapons)
+@player.route('/weapons')
+def weapons(steamid):
+    weapons = get_db().cursor().execute(
+        """SELECT
+               weapon,
+               avg(ws.kills) as kills,
+               sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN duration END) AS dpm,
+               total(hits) / sum(shots) AS acc
+           FROM weapon_stats AS ws
+           JOIN class_stats USING (logid, steamid64, class)
+           WHERE steamid64 = ?
+           GROUP BY weapon;""", (steamid,))
+    return flask.render_template("player/weapons.html", weapons=weapons)
 
-@app.route('/player/<int:steamid>/trends')
-def player_trends(steamid):
+@player.route('/trends')
+def trends(steamid):
     args = flask.request.args
     cls = args.get('class', None, str) or None
     weapon = args.get('weapon', None, str) or None
@@ -273,45 +264,40 @@ def player_trends(steamid):
     if date_to:
         date_to = date_to.timestamp()
 
-    with db_connect(DATABASE) as c:
-        cur = c.cursor().execute(
-            """SELECT
-                   logid,
-                   time,
-                   (sum(round_wins > round_losses) OVER win +
-                       0.5 * sum(round_wins = round_losses) OVER win) /
-                       count(*) OVER win AS winrate,
-                   (sum(round_wins + 0.5 * round_ties) OVER win)
-                       / sum(round_wins + round_losses + round_ties) OVER win AS round_winrate,
-                   avg(log.kills) OVER win AS kills,
-                   avg(log.deaths) OVER win AS deaths,
-                   avg(log.assists) OVER win AS assists,
-                   sum(log.dmg) OVER win * 60.0 /
-                       sum(CASE WHEN log.dmg THEN log.duration END) OVER win AS dpm,
-                   sum(log.dt) OVER win * 60.0 /
-                       sum(CASE WHEN log.dt THEN log.duration END) OVER win AS dtm,
-                   sum(log.healing) OVER win * 60.0 /
-                       sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm,
-                   total(hits) OVER win / sum(shots) OVER win AS acc
-               FROM log_wlt AS log
-               JOIN class_stats USING (logid, steamid64)
-               JOIN weapon_stats USING (logid, steamid64, class)
-               WHERE steamid64 = ?
-                   AND class = ifnull(?, class)
-                   AND weapon = ifnull(?, weapon)
-                   AND format = ifnull(?, format)
-                   AND map LIKE ifnull(?, map)
-                   AND time >= ifnull(?, time)
-                   AND time <= ifnull(?, time)
-               GROUP BY logid, steamid64
-               WINDOW win AS (
-                   PARTITION BY steamid64
-                   ORDER BY logid
-                   GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
-               )""", (steamid, cls, weapon, fmt, map, date_from, date_to))
-        # transpose results for easier data-parsing on the json side
-        #trends = cur.fetchall()
-        #trends = { key: [row[key] for row in trends] for (key,_,_,_,_,_,_) in cur.description }
-        trends = list(dict(row) for row in cur)
-        return flask.render_template("player/trends.html", player=get_player(c, steamid),
-                                      trends=trends)
+    cur = get_db().cursor().execute(
+        """SELECT
+               logid,
+               time,
+               (sum(round_wins > round_losses) OVER win +
+                   0.5 * sum(round_wins = round_losses) OVER win) /
+                   count(*) OVER win AS winrate,
+               (sum(round_wins + 0.5 * round_ties) OVER win)
+                   / sum(round_wins + round_losses + round_ties) OVER win AS round_winrate,
+               avg(log.kills) OVER win AS kills,
+               avg(log.deaths) OVER win AS deaths,
+               avg(log.assists) OVER win AS assists,
+               sum(log.dmg) OVER win * 60.0 /
+                   sum(CASE WHEN log.dmg THEN log.duration END) OVER win AS dpm,
+               sum(log.dt) OVER win * 60.0 /
+                   sum(CASE WHEN log.dt THEN log.duration END) OVER win AS dtm,
+               sum(log.healing) OVER win * 60.0 /
+                   sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm,
+               total(hits) OVER win / sum(shots) OVER win AS acc
+           FROM log_wlt AS log
+           JOIN class_stats USING (logid, steamid64)
+           JOIN weapon_stats USING (logid, steamid64, class)
+           WHERE steamid64 = ?
+               AND class = ifnull(?, class)
+               AND weapon = ifnull(?, weapon)
+               AND format = ifnull(?, format)
+               AND map LIKE ifnull(?, map)
+               AND time >= ifnull(?, time)
+               AND time <= ifnull(?, time)
+           GROUP BY logid, steamid64
+           WINDOW win AS (
+               PARTITION BY steamid64
+               ORDER BY logid
+               GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
+           )""", (steamid, cls, weapon, fmt, map, date_from, date_to))
+    trends = list(dict(row) for row in cur)
+    return flask.render_template("player/trends.html", trends=trends)
