@@ -242,3 +242,19 @@ def player_totals(steamid):
                WHERE steamid64 = ?;""", (steamid,)).fetchone()
         return flask.render_template("player/totals.html", player=get_player(c, steamid),
                                      totals=totals)
+
+@app.route('/player/<int:steamid>/weapons')
+def player_weapons(steamid):
+    with db_connect(DATABASE) as c:
+        weapons = c.cursor().execute(
+            """SELECT
+                   weapon,
+                   avg(ws.kills) as kills,
+                   sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN duration END) AS dpm,
+                   total(hits) / sum(shots) AS acc
+               FROM weapon_stats AS ws
+               JOIN class_stats USING (logid, steamid64, class)
+               WHERE steamid64 = ?
+               GROUP BY weapon;""", (steamid,))
+        return flask.render_template("player/weapons.html", player=get_player(c, steamid),
+                                      weapons=weapons)
