@@ -258,3 +258,60 @@ def player_weapons(steamid):
                GROUP BY weapon;""", (steamid,))
         return flask.render_template("player/weapons.html", player=get_player(c, steamid),
                                       weapons=weapons)
+
+@app.route('/player/<int:steamid>/trends')
+def player_trends(steamid):
+    args = flask.request.args
+    cls = args.get('class', None, str) or None
+    weapon = args.get('weapon', None, str) or None
+    fmt = args.get('format', None, str) or None
+    map = args.get('map', None, str) or None
+    date_from = args.get('date_from', None, datetime.fromisoformat)
+    if date_from:
+        date_from = date_from.timestamp()
+    date_to = args.get('date_to', None, datetime.fromisoformat)
+    if date_to:
+        date_to = date_to.timestamp()
+
+    with db_connect(DATABASE) as c:
+        cur = c.cursor().execute(
+            """SELECT
+                   logid,
+                   time,
+                   (sum(round_wins > round_losses) OVER win +
+                       0.5 * sum(round_wins = round_losses) OVER win) /
+                       count(*) OVER win AS winrate,
+                   (sum(round_wins + 0.5 * round_ties) OVER win)
+                       / sum(round_wins + round_losses + round_ties) OVER win AS round_winrate,
+                   avg(log.kills) OVER win AS kills,
+                   avg(log.deaths) OVER win AS deaths,
+                   avg(log.assists) OVER win AS assists,
+                   sum(log.dmg) OVER win * 60.0 /
+                       sum(CASE WHEN log.dmg THEN log.duration END) OVER win AS dpm,
+                   sum(log.dt) OVER win * 60.0 /
+                       sum(CASE WHEN log.dt THEN log.duration END) OVER win AS dtm,
+                   sum(log.healing) OVER win * 60.0 /
+                       sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm,
+                   total(hits) OVER win / sum(shots) OVER win AS acc
+               FROM log_wlt AS log
+               JOIN class_stats USING (logid, steamid64)
+               JOIN weapon_stats USING (logid, steamid64, class)
+               WHERE steamid64 = ?
+                   AND class = ifnull(?, class)
+                   AND weapon = ifnull(?, weapon)
+                   AND format = ifnull(?, format)
+                   AND map LIKE ifnull(?, map)
+                   AND time >= ifnull(?, time)
+                   AND time <= ifnull(?, time)
+               GROUP BY logid, steamid64
+               WINDOW win AS (
+                   PARTITION BY steamid64
+                   ORDER BY logid
+                   GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
+               )""", (steamid, cls, weapon, fmt, map, date_from, date_to))
+        # transpose results for easier data-parsing on the json side
+        #trends = cur.fetchall()
+        #trends = { key: [row[key] for row in trends] for (key,_,_,_,_,_,_) in cur.description }
+        trends = list(dict(row) for row in cur)
+        return flask.render_template("player/trends.html", player=get_player(c, steamid),
+                                      trends=trends)

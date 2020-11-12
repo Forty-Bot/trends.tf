@@ -1,0 +1,55 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% extends "player/base.html" %}
+{% block title %}Trends - {{ super() }}{% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/c3@0.7.20/c3.css">
+	<script id="trend-data" type="application/json">{{ trends | tojson }}</script>
+	<script type="text/javascript" src="https://d3js.org/d3.v5{#.min#}.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/npm/c3@0.7.20/c3{#.min#}.js"></script>
+	<script type="text/javascript"
+		src="{{ url_for('static', filename="js/trends.js") }}"></script>
+{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Filter</h2>
+	<form>
+		<label>Class:
+			<select name="class">
+				<option></option>
+				<option value="scout">Scout</option>
+				<option value="soldier">Soldier</option>
+				<option value="pyro">Pyro</option>
+				<option value="demoman">Demo</option>
+				<option value="heavyweapons">Heavy</option>
+				<option value="engineer">Engineer</option>
+				<option value="medic">Medic</option>
+				<option value="sniper">Sniper</option>
+				<option value="spy">Spy</option>
+			</select>
+		</label>
+		<label>Weapon: <input type="text" name="weapon"></label>
+		<label>Format:
+			<select name="format">
+				<option></option>
+				<option value="sixes">Sixes</option>
+				<option value="highlander">Highlander</option>
+				<option value="prolander">Prolander</option>
+				<option value="fours">Fours</option>
+				<option value="ultiduo">Ultiduo</option>
+				<option value="other">Other</option>
+			</select>
+		</label>
+		<label>Map: <input type="text" name="map"></label>
+		<label>From: <input type="date" name="date_from"></label>
+		<label>To: <input type="date" name="date_to"></label>
+		<button type-"submit">Filter</button>
+	</form>
+	<h2>Trends</h2>
+	Moving averages of the last 20 games.
+	<div id="pm-chart"></div>
+	<div id="kda-chart"></div>
+	<div id="wr-chart"></div>
+{% endblock %}
