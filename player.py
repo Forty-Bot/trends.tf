@@ -208,3 +208,37 @@ def player_peers(steamid):
                              LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
         return flask.render_template("player/peers.html", player=get_player(c, steamid),
                                      peers=peers, limit=limit, offset=offset)
+
+@app.route('/player/<int:steamid>/totals')
+def player_totals(steamid):
+    with db_connect(DATABASE) as c:
+        totals = c.cursor().execute(
+            """SELECT
+                   total(kills) AS kills,
+                   total(deaths) AS deaths,
+                   total(assists) AS assists,
+                   total(duration) AS duration,
+                   total(dmg) AS dmg,
+                   total(dt) AS dt,
+                   total(hr) AS hr,
+                   total(airshots) AS airshots,
+                   total(medkits) AS medkits,
+                   total(medkits_hp) AS medkits_hp,
+                   total(backstabs) AS backstabs,
+                   total(headshots) AS headshots,
+                   total(headshots_hit) AS headshots_hit,
+                   total(sentries) AS sentries,
+                   total(healing) AS healing,
+                   total(cpc) AS cpc,
+                   total(ic) AS ic,
+                   total(ubers) AS ubers,
+                   total(drops) AS drops,
+                   total(advantages_lost) AS advantages_lost,
+                   total(deaths_after_uber) AS deaths_after_uber,
+                   total(deaths_before_uber) AS deaths_before_uber
+               FROM log
+               JOIN player_stats USING (logid)
+               LEFT JOIN medic_stats USING (logid, steamid64)
+               WHERE steamid64 = ?;""", (steamid,)).fetchone()
+        return flask.render_template("player/totals.html", player=get_player(c, steamid),
+                                     totals=totals)

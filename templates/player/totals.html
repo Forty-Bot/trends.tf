@@ -1,0 +1,36 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% extends "player/base.html" %}
+{% block title %}Totals - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+
+	<h2>Totals</h2>
+	<ul>
+		<li>Kills: {{ "{:,.0f}".format(totals['kills']) }}</li>
+		<li>Deaths: {{ "{:,.0f}".format(totals['deaths']) }}</li>
+		<li>Assists: {{ "{:,.0f}".format(totals['assists']) }}</li>
+		<li>Time Played: {{ totals['duration'] | duration }}</li>
+		<li>Damage: {{ "{:,.0f}".format(totals['dmg']) }}</li>
+		<li>Damage Taken: {{ "{:,.0f}".format(totals['dt']) }}</li>
+		<li>Heals Received: {{ "{:,.0f}".format(totals['hr']) }}</li>
+		<li>Airshots: {{ "{:,.0f}".format(totals['airshots']) }}</li>
+		<li><abbr title="Medkits taken: small = 1, medium = 2, large = 3">
+			Medkits Taken</abbr>: {{ "{:,.0f}".format(totals['medkits']) }}</li>
+		<li>Healing From Medkits: {{ "{:,.0f}".format(totals['medkits_hp']) }}</li>
+		<li>Backstabs: {{ "{:,.0f}".format(totals['backstabs']) }}</li>
+		<li>Headshots: {{ "{:,.0f}".format(totals['headshots_hit']) }}</li>
+		<li>Headshot Kills: {{ "{:,.0f}".format(totals['headshots']) }}</li>
+		<li><abbr title="Sentries Built: level 1 = 1, level 2 = 2, level 3 = 3">
+				Sentries Built</abbr>:
+				{{ "{:,.0f}".format(totals['sentries']) }}</li>
+		<li>Healing: {{ "{:,.0f}".format(totals['healing']) }}</li>
+		<li>Capture Points Captured: {{ "{:,.0f}".format(totals['cpc']) }}</li>
+		<li>Intelligences Captured: {{ "{:,.0f}".format(totals['ic']) }}</li>
+		<li>Ubers: {{ "{:,.0f}".format(totals['ubers']) }}</li>
+		<li>Drops: {{ "{:,.0f}".format(totals['drops']) }}</li>
+		<li>Advantages Lost: {{ "{:,.0f}".format(totals['advantages_lost']) }}</li>
+		<li>Deaths After Uber: {{ "{:,.0f}".format(totals['deaths_after_uber']) }}</li>
+		<li>Deaths Before Uber: {{ "{:,.0f}".format(totals['deaths_before_uber']) }}</li>
+	</ul>
+{% endblock %}
