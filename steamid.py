@@ -60,7 +60,7 @@ class SteamID:
         self.instance = SteamID.Instance["ALL"]
 
         if not input:
-            return
+            raise ValueError("Unknown ID: {}".format(input))
 
         reg = re.compile("^STEAM_([0-5]):([0-1]):([0-9]+)$")
         reg3 = re.compile("^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]")
@@ -90,9 +90,6 @@ class SteamID:
                 self.type = SteamID.Type["CHAT"]
             else:
                 self.type = getTypeFromChar(typeChar)
-
-        elif not input:
-            raise ValueError("Unknown ID: {}".format(input))
         else:
             input = int(input)
             # Credit to the python steam modual, for the bit operations
