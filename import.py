@@ -448,8 +448,8 @@ def parse_args(*args, **kwargs):
     b.add_argument("-s", "--since", type=datetime.fromisoformat,
                    default=datetime.fromtimestamp(0), metavar="DATE",
                    help="Only fetch logs created since DATE")
-    b.add_argument("-c", "--count", type=int, default=1000,
-                        help="Fetch up to COUNT logs, defaults to 1000")
+    b.add_argument("-c", "--count", type=int, default=None,
+                        help="Fetch up to COUNT logs, defaults to unlimited")
     l = sub.add_parser("list", help="Import a list of logs from logs.tf")
     l.set_defaults(fetcher=ListFetcher)
     l.add_argument("-i", "--id", action='append', type=int, metavar="LOGID",
