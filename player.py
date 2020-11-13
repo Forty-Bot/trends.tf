@@ -4,7 +4,7 @@
 from datetime import datetime, timedelta
 import flask
 
-from trends import get_db
+from sql import get_db
 
 player = flask.Blueprint('player', __name__)
 

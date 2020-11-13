@@ -4,7 +4,7 @@
 import flask
 import sqlite3
 
-from trends import get_db
+from sql import get_db
 from steamid import SteamID
 
 root = flask.Blueprint('root', __name__)

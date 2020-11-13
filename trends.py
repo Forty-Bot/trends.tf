@@ -4,25 +4,14 @@
 
 import flask
 
-from sql import db_connect, db_init
-
-def get_db():
-    if not getattr(flask.g, 'db_conn', None):
-        flask.g.db_conn = db_connect(flask.current_app.config['DATABASE'])
-    return flask.g.db_conn
-
-def put_db(exception):
-    db = getattr(flask.g, 'db_conn', None)
-    if db:
-        db.close()
+from player import player
+from root import root
+from sql import db_connect, db_init, get_db, put_db
 
 class DefaultConfig:
     DATABASE = "logs.db"
 
 def create_app():
-    from player import player
-    from root import root
-
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
     app.config.from_envvar('CONFIG', silent=True)

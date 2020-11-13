@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+import flask
 import os
 import sqlite3
 
@@ -24,3 +25,13 @@ def db_init(c):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
         c.execute("PRAGMA journal_mode = WAL;")
         c.executescript(schema.read())
+
+def get_db():
+    if not getattr(flask.g, 'db_conn', None):
+        flask.g.db_conn = db_connect(flask.current_app.config['DATABASE'])
+    return flask.g.db_conn
+
+def put_db(exception):
+    db = getattr(flask.g, 'db_conn', None)
+    if db:
+        db.close()
