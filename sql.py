@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+import os
 import sqlite3
+
 from steamid import SteamID
 
 def db_connect(url):
@@ -19,6 +21,6 @@ def db_connect(url):
     return c
 
 def db_init(c):
-    with open("schema.sql") as schema:
+    with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
         c.execute("PRAGMA journal_mode = WAL;")
         c.executescript(schema.read())
