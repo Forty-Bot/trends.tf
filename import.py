@@ -325,7 +325,8 @@ def delete_dup_logs(c):
     c.execute("""CREATE TEMP TABLE dupes AS SELECT
                      r1.logid AS logid,
                      max(r2.logid) AS of
-                 FROM round AS r1
+                 FROM temp.new_log
+                 JOIN round AS r1 ON (r1.logid=temp.new_log.logid)
                  JOIN round AS r2 USING (
                      seq, time, duration, winner, firstcap, red_score, blue_score, red_kills,
                      blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
@@ -356,7 +357,8 @@ def delete_dup_rounds(c):
     c.execute("""DELETE FROM round
                  WHERE (logid, seq) IN (
                      SELECT r1.logid, r1.seq
-                     FROM round AS r1
+                     FROM temp.new_log
+                     JOIN round AS r1 USING (logid)
                      JOIN round AS r2 USING (
                          logid, time, duration, winner, firstcap, red_score, blue_score, red_dmg,
                          blue_dmg, red_kills, blue_kills, red_ubers, blue_ubers
@@ -375,7 +377,8 @@ def update_stalemates(c):
                  SET winner = NULL
                  WHERE (logid, seq) IN (
                      SELECT logid, max(seq)
-                     FROM log
+                     FROM temp.new_log
+                     JOIN log USING (logid)
                      JOIN round USING (logid)
                      GROUP BY logid
                      HAVING count(winner) > (log.red_score + log.blue_score)
@@ -390,7 +393,7 @@ def update_formats(c):
     """
 
     c.execute("""UPDATE log
-                 SET format = tmp.format
+                 SET format = new.format
                  FROM (SELECT
                          logid,
                          coalesce(
@@ -408,7 +411,8 @@ def update_formats(c):
                              logid,
                              total(class_stats.duration) / log.duration AS avg_players,
                              count(DISTINCT player_stats.steamid64) AS total_players
-                         FROM log
+                         FROM temp.new_log
+                         JOIN log USING (logid)
                          JOIN player_stats USING (logid)
                          JOIN class_stats USING (logid, steamid64)
                          -- Only set the format if it isn't already set
@@ -421,8 +425,8 @@ def update_formats(c):
                      ) LEFT JOIN format AS ft ON (
                          total_players BETWEEN ft.players - 1 AND ft.players + 1
                      )
-                 ) AS tmp
-                 WHERE log.logid = tmp.logid;""")
+                 ) AS new
+                 WHERE log.logid = new.logid;""")
 
 def parse_args(*args, **kwargs):
     class LogAction(argparse.Action):
@@ -488,6 +492,7 @@ def main():
     c = db_connect(args.database)
     db_init(c)
     # Only commit every 15s for performance
+    c.execute("CREATE TEMP TABLE new_log (logid INTEGER PRIMARY KEY);")
     c.execute("BEGIN;");
 
     def commit():
@@ -495,6 +500,7 @@ def main():
         delete_dup_rounds(c)
         update_stalemates(c)
         update_formats(c)
+        c.execute("DELETE FROM new_log;")
         c.execute("COMMIT;")
         c.execute("PRAGMA optimize;")
 
@@ -513,11 +519,13 @@ def main():
             logging.error("Could not import log %s", logid)
             raise
 
+        c.execute("INSERT INTO new_log (logid) VALUES (?);", (logid,))
+
         count += 1
         now = datetime.now()
         if (now - start).total_seconds() > 15:
-            logging.info("Committing %s imported log(s)...", count)
             commit()
+            logging.info("Commited %s imported log(s)...", count)
             c.execute("BEGIN;")
             count = 0
             start = now
