@@ -477,8 +477,16 @@ def main():
 
     c = db_connect(args.database)
     db_init(c)
-    # Only commit every 10s for performance
+    # Only commit every 15s for performance
     c.execute("BEGIN;");
+
+    def commit():
+        logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
+        delete_dup_rounds(c)
+        update_stalemates(c)
+        update_formats(c)
+        c.execute("COMMIT;")
+        c.execute("PRAGMA optimize;")
 
     count = 0
     start = datetime.now()
@@ -497,23 +505,15 @@ def main():
 
         count += 1
         now = datetime.now()
-        if (now - start).total_seconds() > 10:
+        if (now - start).total_seconds() > 15:
             logging.info("Committing %s imported log(s)...", count)
-            c.execute("COMMIT;")
+            commit()
             c.execute("BEGIN;")
             count = 0
             start = now
 
     logging.info("Committing %s imported log(s)...", count)
-    c.execute("COMMIT;");
-    c.execute("PRAGMA optimize;")
-
-    c.execute("BEGIN;")
-    logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
-    delete_dup_rounds(c)
-    update_stalemates(c)
-    update_formats(c)
-    c.execute("COMMIT;")
+    commit()
 
 if __name__ == "__main__":
     main()
