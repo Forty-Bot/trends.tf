@@ -1,12 +1,15 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
 {% extends "player/base.html" %}
 {% block title %}Totals - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
-
+	<h2>Filter</h2>
+	{{ filter(filters, filter_class=False) }}
 	<h2>Totals</h2>
 	<ul>
+		<li>Logs: {{ totals['logs'] }}</li>
 		<li>Kills: {{ "{:,.0f}".format(totals['kills']) }}</li>
 		<li>Deaths: {{ "{:,.0f}".format(totals['deaths']) }}</li>
 		<li>Assists: {{ "{:,.0f}".format(totals['assists']) }}</li>

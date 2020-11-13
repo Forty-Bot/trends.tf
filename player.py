@@ -220,8 +220,10 @@ def get_filters(args):
 
 @player.route('/totals')
 def totals(steamid):
+    filters = get_filters(flask.request.args)
     totals = get_db().cursor().execute(
         """SELECT
+               count(*) AS logs,
                total(kills) AS kills,
                total(deaths) AS deaths,
                total(assists) AS assists,
@@ -247,8 +249,14 @@ def totals(steamid):
            FROM log
            JOIN player_stats USING (logid)
            LEFT JOIN medic_stats USING (logid, steamid64)
-           WHERE steamid64 = ?;""", (steamid,)).fetchone()
-    return flask.render_template("player/totals.html", totals=totals)
+           WHERE steamid64 = ?
+               AND format = ifnull(?, format)
+               AND map LIKE ifnull(?, map)
+               AND time >= ifnull(?, time)
+               AND time <= ifnull(?, time);""",
+        (steamid, filters['format'], filters['map'], filters['date_from'], filters['date_to'])
+    ).fetchone()
+    return flask.render_template("player/totals.html", totals=totals, filters=filters)
 
 @player.route('/weapons')
 def weapons(steamid):
