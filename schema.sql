@@ -179,6 +179,8 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
 
+CREATE INDEX IF NOT EXISTS class_stats_id ON class_stats (steamid64);
+
 CREATE TABLE IF NOT EXISTS weapon_stats (
 	logid INT NOT NULL,
 	steamid64 INT NOT NULL,
@@ -218,7 +220,7 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
 
--- CREATE INDEX IF NOT EXISTS event_stats_player ON event_stats (steamid64);
+CREATE INDEX IF NOT EXISTS event_stats_player ON event_stats (steamid64);
 
 CREATE TABLE IF NOT EXISTS chat (
 	logid INT NOT NULL,
