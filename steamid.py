@@ -1,5 +1,10 @@
 # SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 # Copyright (c) 2017 Nate the great
+# Copyright (c) 2015 Alexander Corn
+# This file is copied from the python-steamid project, licensed under MIT
+# All changes licensed under AGPL-3.0-only
 
 import re
 
