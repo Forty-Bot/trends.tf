@@ -9,7 +9,7 @@ import sqlite3
 
 from fetch import ListFetcher, BulkFetcher, FileFetcher
 from steamid import SteamID
-from sql import db_connect
+from sql import db_connect, db_init
 
 def filter_logids(c, logids):
     """Filter log ids to exclude those already present in the database.
@@ -476,8 +476,7 @@ def main():
     logging.basicConfig(level=log_level)
 
     c = db_connect(args.database)
-    with open("schema.sql") as schema:
-        c.executescript(schema.read())
+    db_init(c)
     # Only commit every 10s for performance
     c.execute("BEGIN;");
 

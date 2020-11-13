@@ -4,7 +4,7 @@
 
 import flask
 
-from sql import db_connect
+from sql import db_connect, db_init
 
 def get_db():
     if not getattr(flask.g, 'db_conn', None):
@@ -26,6 +26,9 @@ def main():
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
     app.config.from_envvar('CONFIG', silent=True)
+
+    with db_connect(app.config['DATABASE']) as c:
+        db_init(c)
 
     app.teardown_appcontext(put_db)
 
