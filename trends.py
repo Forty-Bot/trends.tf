@@ -21,6 +21,7 @@ class DefaultConfig:
 
 def main():
     from player import player
+    from root import root
 
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
@@ -28,6 +29,7 @@ def main():
 
     app.teardown_appcontext(put_db)
 
+    app.register_blueprint(root)
     app.register_blueprint(player, url_prefix='/player/<int:steamid>')
 
     app.run()

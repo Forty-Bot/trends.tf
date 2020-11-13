@@ -7,5 +7,9 @@
 	{% endblock %}</head>
 <body>
 	<a href="{{ url_for('root.index') }}">Tracker.tf</a>
+	<form action="{{ url_for('root.search') }}" role="search">
+		<input type="search" name="q" placeholder="Player name or SteamID"
+		 value="{{ q }}">
+	</form>
 	{% block content %}{% endblock %}
 </body>

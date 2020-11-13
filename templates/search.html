@@ -1,0 +1,18 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/pagination.html" import navigation %}
+{% extends "base.html" %}
+{% block title %}Search results for {{ q }}- {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h1>Search results for {{ q }}</h1>
+	{{ navigation(logs, request.path, limit, offset) }}
+	<ul>
+		{% for player in results %}
+			<li><a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
+				{{ player['name'] }}
+			</a></li>
+		{% endfor %}
+	</ul>
+	{{ navigation(logs, request.path, limit, offset) }}
+{% endblock %}

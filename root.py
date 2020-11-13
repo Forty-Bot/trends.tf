@@ -12,3 +12,31 @@ root = flask.Blueprint('root', __name__)
 @root.route('/')
 def index():
     return flask.render_template("index.html")
+
+@root.route('/search')
+def search():
+    args = flask.request.args
+    limit = args.get('limit', 100, int)
+    offset = args.get('offset', 0, int)
+    q = args.get('q', '', str)
+
+    try:
+        steamid = SteamID(q)
+        return flask.redirect(flask.url_for('player.overview', steamid=str(steamid)), 302)
+    except ValueError:
+        pass
+
+    error = None
+    results = []
+    results = get_db().cursor().execute(
+        """SELECT
+               steamid64,
+               player_name.name
+           FROM player_name
+           JOIN player_stats ON (player_name.rowid=player_stats.rowid)
+           WHERE player_name MATCH ?
+           GROUP BY steamid64
+           ORDER BY rank
+           LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset)).fetchall()
+    return flask.render_template("search.html", q=q, results=results, error=error, offset=offset,
+                                 limit=limit)

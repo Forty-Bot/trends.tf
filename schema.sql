@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	ic INT, -- Intel Captures
 	PRIMARY KEY (logid, steamid64),
 	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
-) WITHOUT ROWID;
+);
 
 CREATE INDEX IF NOT EXISTS player_stats_id ON player_stats (steamid64);
 
@@ -101,6 +101,19 @@ FROM log
 JOIN round USING (logid)
 JOIN player_stats AS ps USING (logid)
 GROUP BY logid, steamid64;
+
+CREATE VIRTUAL TABLE IF NOT EXISTS player_name USING fts5(name, content = 'player_stats');
+
+CREATE TRIGGER IF NOT EXISTS player_name_insert AFTER INSERT ON player_stats BEGIN
+	INSERT INTO player_name (rowid, name) VALUES (new.rowid, new.name);
+END;
+CREATE TRIGGER IF NOT EXISTS player_name_update AFTER UPDATE ON player_stats BEGIN
+	INSERT INTO player_name (player_name, rowid, name) VALUES ('delete', old.rowid, old.name);
+	INSERT INTO player_name (rowid, name) VALUES (new.rowid, new.name);
+END;
+CREATE TRIGGER IF NOT EXISTS player_name_delete AFTER DELETE ON player_stats BEGIN
+	INSERT INTO player_name (player_name, rowid, name) VALUES ('delete', old.rowid, old.name);
+END;
 
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,
