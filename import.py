@@ -100,7 +100,12 @@ def import_log(c, logid, log):
                      );""", round)
 
     for steamid_str, player in log['players'].items():
-        steamid = SteamID(steamid_str)
+        steamid = None
+        try:
+            steamid = SteamID(steamid_str)
+        except ValueError:
+            continue
+
         player['logid'] = logid
         player['steamid'] = steamid
         player['name'] = log['names'][steamid_str] 
@@ -283,7 +288,12 @@ def import_log(c, logid, log):
             break
 
     for (healer, healees) in log['healspread'].items():
-        healer = SteamID(healer)
+        healer = None
+        try:
+            healer = SteamID(healer)
+        except ValueError:
+            continue
+
         for (healee, healing) in healees.items():
             healee = SteamID(healee)
             try:
