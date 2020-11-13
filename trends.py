@@ -19,7 +19,7 @@ def put_db(exception):
 class DefaultConfig:
     DATABASE = "logs.db"
 
-def main():
+def create_app():
     from player import player
     from root import root
 
@@ -35,7 +35,9 @@ def main():
     app.register_blueprint(root)
     app.register_blueprint(player, url_prefix='/player/<int:steamid>')
 
-    app.run()
+    return app
+
+application = create_app()
 
 if __name__ == '__main__':
-    main()
+    application.run()
