@@ -204,6 +204,20 @@ def peers(steamid):
            LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
     return flask.render_template("player/peers.html", peers=peers, limit=limit, offset=offset)
 
+def get_filters(args):
+    ret = {}
+
+    ret['class'] = args.get('class', None, str) or None
+    ret['format'] = args.get('format', None, str) or None
+    ret['map'] = args.get('map', None, str) or None
+    date_from = args.get('date_from', None, datetime.fromisoformat)
+    ret['date_from'] = date_from.timestamp() if date_from else None
+    date_to = args.get('date_to', None, datetime.fromisoformat)
+    ret['date_to'] = args.get('date_to', None, datetime.fromisoformat)
+    ret['date_from'] = date_to.timestamp() if date_to else None
+
+    return ret
+
 @player.route('/totals')
 def totals(steamid):
     totals = get_db().cursor().execute(
@@ -252,18 +266,7 @@ def weapons(steamid):
 
 @player.route('/trends')
 def trends(steamid):
-    args = flask.request.args
-    cls = args.get('class', None, str) or None
-    weapon = args.get('weapon', None, str) or None
-    fmt = args.get('format', None, str) or None
-    map = args.get('map', None, str) or None
-    date_from = args.get('date_from', None, datetime.fromisoformat)
-    if date_from:
-        date_from = date_from.timestamp()
-    date_to = args.get('date_to', None, datetime.fromisoformat)
-    if date_to:
-        date_to = date_to.timestamp()
-
+    filters = get_filters(flask.request.args)
     cur = get_db().cursor().execute(
         """SELECT
                logid,
@@ -281,14 +284,11 @@ def trends(steamid):
                sum(log.dt) OVER win * 60.0 /
                    sum(CASE WHEN log.dt THEN log.duration END) OVER win AS dtm,
                sum(log.healing) OVER win * 60.0 /
-                   sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm,
-               total(hits) OVER win / sum(shots) OVER win AS acc
+                   sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm
            FROM log_wlt AS log
            JOIN class_stats USING (logid, steamid64)
-           JOIN weapon_stats USING (logid, steamid64, class)
            WHERE steamid64 = ?
                AND class = ifnull(?, class)
-               AND weapon = ifnull(?, weapon)
                AND format = ifnull(?, format)
                AND map LIKE ifnull(?, map)
                AND time >= ifnull(?, time)
@@ -298,6 +298,7 @@ def trends(steamid):
                PARTITION BY steamid64
                ORDER BY logid
                GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
-           )""", (steamid, cls, weapon, fmt, map, date_from, date_to))
+           )""", (steamid, filters['class'], filters['format'], filters['map'],
+                  filters['date_from'], filters['date_to']))
     trends = list(dict(row) for row in cur)
-    return flask.render_template("player/trends.html", trends=trends)
+    return flask.render_template("player/trends.html", trends=trends, filters=filters)

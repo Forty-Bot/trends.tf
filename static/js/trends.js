@@ -16,7 +16,7 @@ function draw() {
 				return (new Date(data[index].time * 1000)).toLocaleString()
 			},
 			value: function (value, ratio, id, index) {
-				if (['acc', 'winrate', 'round_winrate'].includes(id))
+				if (['winrate', 'round_winrate'].includes(id))
 					return pct_format(value);
 				else
 					return int_format(value);
@@ -40,14 +40,6 @@ function draw() {
 				min: 0,
 				padding: 0,
 			},
-			y2: {
-				min: 0,
-				max: 1,
-				padding: 0,
-				tick: {
-					format: d3.format(".0%"),
-				},
-			},
 		},
 		tooltip: tooltip,
 		point: {
@@ -60,23 +52,15 @@ function draw() {
 	pm_config.data = {
 		json: data,
 		keys: {
-			value: ['dpm', 'dtm', 'hpm', 'acc'],
+			value: ['dpm', 'dtm', 'hpm'],
 		},
 		names: {
 			dpm: "D/M",
 			dtm: "DT/M",
 			hpm: "HP/M",
-			acc: "Acc",
-		},
-		axes: {
-			dpm: 'y',
-			dtm: 'y',
-			hpm: 'y',
-			acc: 'y2',
 		},
 		onclick: onclick,
 	};
-	pm_config.axis.y2.show = true;
 	c3.generate(pm_config);
 
 	kda_config = {...base_config};
@@ -93,7 +77,6 @@ function draw() {
 		},
 		onclick: onclick,
 	};
-	kda_config.axis.y2.show = false;
 	c3.generate(kda_config);
 
 	wr_config = {...base_config};

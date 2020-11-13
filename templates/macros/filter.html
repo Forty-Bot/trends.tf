@@ -1,0 +1,46 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% macro create_options(default, options) %}
+{% for key, content in options.items() %}
+	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
+{% endfor %}
+{% endmacro %}
+{% macro filter(filters, filter_class=True) %}
+<form>
+	{% if filter_class %}
+	<label>Class:
+		<select name="class">
+			<option></option>
+			{{ create_options(filters['class'], {
+				'scout': "Scout", 
+				'soldier': "Soldier", 
+				'pyro': "Pyro", 
+				'demoman': "Demo", 
+				'heavyweapons': "Heavy", 
+				'engineer': "Engineer", 
+				'medic': "Medic", 
+				'sniper': "Sniper", 
+				'spy': "Spy"}) }}
+		</select>
+	</label>
+	{% endif %}
+	<label>Format:
+		<select name="format">
+			<option></option>
+			{{ create_options(filters['format'], {
+				'sixes': "Sixes",
+				'highlander': "Highlander",
+				'prolander': "Prolander",
+				'fours': "Fours",
+				'ultiduo': "Ultiduo",
+				'other': "Other"}) }}
+		</select>
+	</label>
+	<label>Map: <input type="text" name="map" value="{{ filters['map'] or "" }}"></label>
+	<label>From:
+		<input type="date" name="date_from" value="{{ filters['date_from'] or "" }}">
+	</label>
+	<label>To: <input type="date" name="date_to" value="{{ filters['date_to'] or "" }}"></label>
+	<button type-"submit">Filter</button>
+</form>
+{% endmacro %}
