@@ -3,8 +3,9 @@
 <head>
 	{% block head %}
 	<meta charset="UTF-8">
-	<title>{% block title %}{% endblock %} - graphs.tf</title>
+	<title>{% block title %}tracker.tf{% endblock %}</title>
 	{% endblock %}</head>
 <body>
+	<a href="{{ url_for('root.index') }}">Tracker.tf</a>
 	{% block content %}{% endblock %}
 </body>

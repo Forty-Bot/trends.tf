@@ -4,7 +4,6 @@
 
 import flask
 
-import player
 from sql import db_connect
 
 def get_db():
@@ -21,13 +20,15 @@ class DefaultConfig:
     DATABASE = "logs.db"
 
 def main():
+    from player import player
+
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
     app.config.from_envvar('CONFIG', silent=True)
 
     app.teardown_appcontext(put_db)
 
-    app.register_blueprint(player.player, url_prefix='/player/<int:steamid>')
+    app.register_blueprint(player, url_prefix='/player/<int:steamid>')
 
     app.run()
 

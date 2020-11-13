@@ -2,7 +2,7 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/wlt.html" import wlt %}
 {% extends "base.html" %}
-{% block title %}{{ g.player['name'] }}{% endblock %}
+{% block title %}{{ g.player['name'] }} - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
 	<h1>{{ g.player['name'] }}</h1>
