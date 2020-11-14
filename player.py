@@ -196,7 +196,7 @@ def peers(steamid):
                    p1.healing,
                    p1.duration
                FROM log_wlt AS p1
-               JOIN log_wlt AS p2 USING (logid)
+               JOIN player_stats AS p2 USING (logid)
                WHERE p1.steamid64 = ?
                   AND p2.steamid64 != p1.steamid64
                   AND p2.team NOTNULL
