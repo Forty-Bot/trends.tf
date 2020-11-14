@@ -6,3 +6,5 @@ logs/*
 
 *.pyc
 *.db
+*.db-shm
+*.db-wal
