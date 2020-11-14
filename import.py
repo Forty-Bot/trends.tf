@@ -326,12 +326,27 @@ def delete_dup_logs(c):
                      r1.logid AS logid,
                      max(r2.logid) AS of
                  FROM temp.new_log
-                 JOIN round AS r1 ON (r1.logid=temp.new_log.logid)
-                 JOIN round AS r2 USING (
-                     seq, time, duration, winner, firstcap, red_score, blue_score, red_kills,
-                     blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
-                 ) WHERE r1.logid < r2.logid
-                 GROUP BY r1.logid;""")
+                 JOIN log AS l1 ON (l1.logid=temp.new_log.logid)
+                 JOIN round AS r1 ON (r1.logid=l1.logid)
+                 JOIN log AS l2 ON (
+                     l2.logid > l1.logid
+                     AND l2.time BETWEEN l1.time - 24 * 60 * 60 AND l1.time + 24 * 60 * 60)
+                 JOIN round AS r2 ON (
+                     r2.logid=l2.logid
+                     AND r2.seq=r1.seq
+                     AND r2.time=r1.time
+                     AND r2.duration=r1.duration
+                     AND r2.winner=r1.winner
+                     AND r2.firstcap=r1.firstcap
+                     AND r2.red_score=r1.red_score
+                     AND r2.blue_score=r1.blue_score
+                     AND r2.red_kills=r1.red_kills
+                     AND r2.blue_kills=r1.blue_kills
+                     AND r2.red_dmg=r1.red_dmg
+                     AND r2.blue_dmg=r1.blue_dmg
+                     AND r2.red_ubers=r1.red_ubers
+                     AND r2.blue_ubers=r1.blue_ubers
+                 ) GROUP BY r1.logid;""")
 
     # Done in reverse order as import_log
     for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
