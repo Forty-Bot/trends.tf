@@ -508,7 +508,7 @@ def main():
 
     c = db_connect(args.database)
     db_init(c)
-    # Only commit every 15s for performance
+    # Only commit every 60s for performance
     c.execute("CREATE TEMP TABLE new_log (logid INTEGER PRIMARY KEY);")
     c.execute("BEGIN;");
 
@@ -540,7 +540,7 @@ def main():
 
         count += 1
         now = datetime.now()
-        if (now - start).total_seconds() > 15:
+        if (now - start).total_seconds() > 60:
             commit()
             logging.info("Commited %s imported log(s)...", count)
             c.execute("BEGIN;")
