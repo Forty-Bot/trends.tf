@@ -6,7 +6,7 @@
 {% block content %}
 	{{ super() }}
 	<h1>Search results for {{ q }}</h1>
-	{{ navigation(logs, request.path, limit, offset) }}
+	{{ navigation(results, "{}?q={}&".format(request.path, q), limit, offset) }}
 	<ul>
 		{% for player in results %}
 			<li><a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
@@ -14,5 +14,5 @@
 			</a></li>
 		{% endfor %}
 	</ul>
-	{{ navigation(logs, request.path, limit, offset) }}
+	{{ navigation(results, "{}?q={}&".format(request.path, q), limit, offset) }}
 {% endblock %}

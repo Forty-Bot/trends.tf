@@ -6,7 +6,7 @@
 {% block content %}
 	{{ super() }}
 	<h2>Peers</h2>
-	{{ navigation(peers, request.path, limit, offset) }}
+	{{ navigation(peers, "{}?".format(request.path), limit, offset) }}
 	<table>
 		<thead>
 			<tr>
@@ -47,5 +47,5 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	{{ navigation(peers, request.path, limit, offset) }}
+	{{ navigation(peers, "{}?".format(request.path), limit, offset) }}
 {% endblock %}
