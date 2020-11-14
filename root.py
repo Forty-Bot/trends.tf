@@ -11,7 +11,10 @@ root = flask.Blueprint('root', __name__)
 
 @root.route('/')
 def index():
-    return flask.render_template("index.html")
+    c = get_db()
+    (logs,) = c.cursor().execute("SELECT count(*) FROM log").fetchone()
+    (players,) = c.cursor().execute("SELECT count(DISTINCT steamid64) FROM player_stats").fetchone()
+    return flask.render_template("index.html", players=players, logs=logs)
 
 @root.route('/search')
 def search():

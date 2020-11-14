@@ -4,6 +4,9 @@
 {% block title %}Team Fortress 2 Statistics - {{ super() }}{% endblock %}
 {% block content %}
 	<h1>Team Fortress 2 Stats and Trends</h1>
-
-	Very WIP; help appreciated!
+	<ul>
+		<li>Logs: {{ "{:,}".format(logs) }}</li>
+		<li>Players: {{ "{:,}".format(players) }}</li>
+	</ul>
+	<a href="https://github.com/Forty-Bot/trends.tf/issues/new">Suggestions</a>
 {% endblock %}
