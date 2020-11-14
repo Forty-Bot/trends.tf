@@ -152,7 +152,7 @@ class ListFetcher(Fetcher):
 
 class BulkFetcher(ListFetcher):
     """Fetcher for parameters of logs to get from logs.tf"""
-    def __init__(self, players=None, since=None, count=None, **kwargs):
+    def __init__(self, players=None, since=None, count=None, offset=None, **kwargs):
         """Create a ``ListFetcher``
 
         :param players: Steam ids that fetched log ids must include
@@ -164,11 +164,12 @@ class BulkFetcher(ListFetcher):
         self.players = players
         self.since = since.timestamp()
         self.count = count
+        self.offset = offset
         super().__init__(**kwargs)
 
     def get_logids(self):
         return fetch_players_logids(self.s, players=self.players, since=self.since,
-                                    count=self.count)
+                                    count=self.count, offset=self.offset)
 
 class FileFetcher(Fetcher):
     """Fetcher for logs from local files"""

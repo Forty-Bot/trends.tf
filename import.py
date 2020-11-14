@@ -464,6 +464,8 @@ def parse_args(*args, **kwargs):
                    help="Only fetch logs created since DATE")
     b.add_argument("-c", "--count", type=int, default=None,
                         help="Fetch up to COUNT logs, defaults to unlimited")
+    b.add_argument("-o", "--offset", type=int, default=0,
+                        help="Start at OFFSET")
     l = sub.add_parser("list", help="Import a list of logs from logs.tf")
     l.set_defaults(fetcher=ListFetcher)
     l.add_argument("-i", "--id", action='append', type=int, metavar="LOGID",
