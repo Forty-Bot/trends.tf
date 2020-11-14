@@ -111,9 +111,10 @@ def overview(steamid):
                    total(duration) time,
                    sum(dmg) * 60.0 / sum(duration) AS dpm,
                    total(hits) / sum(shots) AS acc
-               FROM (
+               FROM class
+               LEFT JOIN (
                    SELECT
-                       class.name,
+                       class,
                        cs.duration * 1.5 > log_wlt.duration AS mostly,
                        round_wins,
                        round_losses,
@@ -121,12 +122,12 @@ def overview(steamid):
                        cs.dmg,
                        sum(hits) AS hits,
                        sum(shots) AS shots
-                   FROM class
-                   LEFT JOIN class_stats cs ON (cs.class=class.name AND steamid64=?)
-                   LEFT JOIN log_wlt USING (logid, steamid64)
-                   LEFT JOIN weapon_stats USING (logid, steamid64, class)
-                   GROUP BY logid, steamid64, class.name
-           )
+                   FROM log_wlt
+                   JOIN class_stats cs USING (logid, steamid64)
+                   JOIN weapon_stats USING (logid, steamid64, class)
+                   WHERE steamid64 = ?
+                   GROUP BY logid, steamid64, class
+               ) ON (class=name)
            GROUP BY name
            ORDER BY name
            );""", (steamid,))
