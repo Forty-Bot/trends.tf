@@ -288,14 +288,17 @@ def import_log(c, logid, log):
             break
 
     for (healer, healees) in log['healspread'].items():
-        healer = None
         try:
             healer = SteamID(healer)
         except ValueError:
             continue
 
         for (healee, healing) in healees.items():
-            healee = SteamID(healee)
+            try:
+                healee = SteamID(healee)
+            except ValueError:
+                continue
+
             try:
                 # Sometimes we get the same row more than once (e.g. with different text
                 # representations of the same steamid). It appears that later rows are a result of
