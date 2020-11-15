@@ -20,10 +20,14 @@
 		<dd>{{ "{:.2%}".format(g.player['round_winrate']) }}</dd>
 	</dl>
 
-	<a href="{{ url_for('.overview', steamid=g.player['steamid64']) }}">Overview</a>
-	<a href="{{ url_for('.logs', steamid=g.player['steamid64']) }}">Logs</a>
-	<a href="{{ url_for('.peers', steamid=g.player['steamid64']) }}">Peers</a>
-	<a href="{{ url_for('.totals', steamid=g.player['steamid64']) }}">Totals</a>
-	<a href="{{ url_for('.weapons', steamid=g.player['steamid64']) }}">Weapons</a>
-	<a href="{{ url_for('.trends', steamid=g.player['steamid64']) }}">Trends</a>
+	<ul class="nav">
+	{% for (endpoint, name) in (('.overview', "Overview"), ('.logs', "Logs"),
+	                            ('.peers', "Peers"), ('.totals', "Totals"),
+	                            ('.weapons', "Weapons"), ('.trends', "Trends")) %}
+		{% set url = url_for(endpoint, steamid=g.player['steamid64']) %}
+		<li class="nav"><a class="{{ "active" if url == request.path }}" href="{{ url }}">
+			{{ name }}
+		</a></li>
+	{% endfor %}
+	</ul>
 {% endblock %}
