@@ -29,7 +29,13 @@ def search():
 
     try:
         steamid = SteamID(q)
-        return flask.redirect(flask.url_for('player.overview', steamid=str(steamid)), 302)
+        steamid = get_db().cursor().execute(
+            """SELECT steamid64
+               FROM player_stats
+               WHERE steamid64 = ?
+               LIMIT 1""", (steamid,))
+        for (steamid,) in steamid:
+            return flask.redirect(flask.url_for('player.overview', steamid=steamid), 302)
     except ValueError:
         pass
 
