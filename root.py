@@ -35,15 +35,18 @@ def search():
 
     error = None
     results = []
-    results = get_db().cursor().execute(
-        """SELECT
-               steamid64,
-               player_name.name
-           FROM player_name
-           JOIN player_stats ON (player_name.rowid=player_stats.rowid)
-           WHERE player_name MATCH ?
-           GROUP BY steamid64
-           ORDER BY rank
-           LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset)).fetchall()
+    if len(q) >= 3:
+        results = get_db().cursor().execute(
+            """SELECT
+                   steamid64,
+                   player_name.name
+               FROM player_name
+               JOIN player_stats ON (player_name.rowid=player_stats.rowid)
+               WHERE player_name MATCH ?
+               GROUP BY steamid64
+               ORDER BY rank
+               LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset)).fetchall()
+    else:
+        error = "Searches must contain at least 3 characters"
     return flask.render_template("search.html", q=q, results=results, error=error, offset=offset,
                                  limit=limit)
