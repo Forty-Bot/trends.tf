@@ -1,0 +1,89 @@
+/* Global variables for changing colours across the site */
+:root {
+	--heading: #f3a957;
+	--main: #000;
+	--lowlight: #fff2b3;
+	--highlight: #f9d483;
+	--border: #aaa;
+	--bg: #fffcf7;
+	--link: #3F56AD;
+	--visited: #3e3c2a;
+}
+
+body {
+	background: var(--bg);
+	color: var(--main);
+	font-family: sans-serif;
+	display: block;
+	text-align: left;
+}
+
+div.header, div.footer {
+	display: inline;
+	overflow: hidden;
+}
+
+div.content {
+	margin: 0 5%;
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+}
+
+a:visited {
+	color: var(--visited);
+}
+
+a:hover, a:focus {
+	text-decoration: underline;
+}
+
+ul.nav {
+	list-style-type: none;
+	background-color: var(--heading);
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+li.nav {
+	float: left;
+}
+
+li.nav a {
+	display: block;
+	color: var(--main);
+	text-align: center;
+	text-decoration: none;
+	padding: 14px 16px;
+}
+
+ul.nav li.nav a:hover:not(.active){
+	background-color: var(--highlight);
+}
+
+.active {
+	background-color: var(--highlight);
+}
+
+table {
+	padding: 0.4em;
+}
+
+th, td {
+	padding: 0.1em, 0.8em;
+}
+
+th {
+	background-color: var(--heading);
+}
+
+td {
+	text-align: right;
+}
+
+td.left {
+	text-align: left;
+}
