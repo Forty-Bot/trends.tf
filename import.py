@@ -285,6 +285,8 @@ def import_log(c, logid, log):
                            ) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0);""",
                           (logid, SteamID(msg['steamid']), msg['name']))
                 continue
+            except ValueError:
+                break
             break
 
     for (healer, healees) in log['healspread'].items():
