@@ -28,13 +28,13 @@
 	<tbody>
 		{% for log in logs %}
 		<tr>
-			<td><a href="https://logs.tf/{{ log['logid'] }}">
+			<td class="left"><a href="https://logs.tf/{{ log['logid'] }}">
 					{{ log['title'] }}
 			</a></td>
-			<td>{{ log['map'] }}</td>
-			<td>{{ log['classes'] }}</td>
+			<td class="left">{{ log['map'] }}</td>
+			<td class="left">{{ log['classes'] }}</td>
 			<td>{{ wlt(log['wins'], log['losses'], log['ties']) }}</td>
-			<td>{{ log['format'] }}</td>
+			<td class="left">{{ log['format'] }}</td>
 			<td>{{ log['duration'] | duration }}</td>
 			<td>{{ log['kills'] }}</td>
 			<td>{{ log['deaths'] }}</td>
@@ -45,7 +45,7 @@
 			<td>{{ "{:.0%}".format(log['acc']) if log['acc'] != None }}</td>
 			<td>{{ log['hpm'] | int }}</td>
 			{% endif %}
-			<td>{{ "{:%b %-d, %Y %-I:%M %p}".format(log['time'] | date) }}</td>
+			<td class="left">{{ "{:%b %-d, %Y %-I:%M %p}".format(log['time'] | date) }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>

@@ -25,7 +25,7 @@
 		<tbody>
 			{% for cls in classes %}
 			<tr>
-				<td>{{ cls['name'] }}</td>
+				<td class="left">{{ cls['name'] }}</td>
 				<td>{{ wlt(cls['wins'], cls['losses'], cls['ties']) }}</td>
 				<td>{{ "{:.2%}".format(cls['winrate'])
 					if cls['winrate'] != None }}</td>

@@ -17,7 +17,7 @@
 		<tbody>
 			{% for weapon in weapons %}
 			<tr>
-				<td>{{ weapon['weapon'] }}</td>
+				<td class="left">{{ weapon['weapon'] }}</td>
 				<td>{{ "{:.2f}".format(weapon['kills']) }}</td>
 				<td>{{ weapon['dpm'] | int if weapon['dpm'] != None }}</td>
 				<td>{{ "{:.0%}".format(weapon['acc'])
