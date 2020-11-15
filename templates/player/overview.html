@@ -75,6 +75,6 @@
 		</tbody>
 	</table>
 
-	<h2>Recent Logs</h2>
+	<h2><a href="{{ url_for('.logs', steamid=g.player['steamid64']) }}">Recent Logs</a></h2>
 	{{ log_table(logs) }}
 {% endblock %}
