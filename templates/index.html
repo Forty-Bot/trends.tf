@@ -5,8 +5,9 @@
 {% block content %}
 	<h1>Team Fortress 2 Stats and Trends</h1>
 	<ul>
-		<li>Logs: {{ "{:,}".format(logs) }}</li>
 		<li>Players: {{ "{:,}".format(players) }}</li>
+		<li>Logs: {{ "{:,}".format(logstat['count']) }}</li>
+		<li>Earliest log: {{ logstat['earliest'] | date }}</li>
 	</ul>
 	<a href="https://github.com/Forty-Bot/trends.tf/issues/new">Suggestions</a>
 {% endblock %}
