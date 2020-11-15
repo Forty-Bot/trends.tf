@@ -8,26 +8,17 @@
 	<h1><a href="http://steamcommunity.com/profiles/{{ g.player['steamid64'] }}">
 			{{ g.player['name'] }}
 	</a></h1>
-	<ul>
-		<li>
-			<abbr title="Wins-Losses-Ties">W-L-T</abbr>:
-			{{ wlt(g.player['wins'], g.player['losses'], g.player['ties']) }}
-		</li>
-		<li>
-			<abbr title="Ties count as 0.5 wins">Winrate</abbr>:
-			{{ "{:.2%}".format(g.player['winrate']) }}
-		</li>
-		<li>
-			<abbr title="Wins-Losses-Ties, without ties under 60s">
-				Round W-L-T</abbr>:
-			{{ wlt(g.player['round_wins'], g.player['round_losses'],
-			       g.player['round_ties']) }}
-		</li>
-		<li>
-			<abbr title="Ties count as 0.5 wins">Round Winrate</abbr>:
-			{{ "{:.2%}".format(g.player['round_winrate']) }}
-		</li>
-	</ul>
+	<dl>
+		<dt><abbr title="Wins-Losses-Ties">W-L-T</abbr></dt>
+		<dd>{{ wlt(g.player['wins'], g.player['losses'], g.player['ties']) }}</dd>
+		<dt><abbr title="Ties count as 0.5 wins">Winrate</abbr></dt>
+		<dd>{{ "{:.2%}".format(g.player['winrate']) }}</dd>
+		<dt><abbr title="Wins-Losses-Ties, without ties under 60s">Round W-L-T</abbr></dt>
+		<dd>{{ wlt(g.player['round_wins'], g.player['round_losses'],
+		       g.player['round_ties']) }}</dd>
+		<dt><abbr title="Ties count as 0.5 wins">Round Winrate</abbr></dt>
+		<dd>{{ "{:.2%}".format(g.player['round_winrate']) }}</dd>
+	</dl>
 
 	<a href="{{ url_for('.overview', steamid=g.player['steamid64']) }}">Overview</a>
 	<a href="{{ url_for('.logs', steamid=g.player['steamid64']) }}">Logs</a>

@@ -8,32 +8,56 @@
 	<h2>Filter</h2>
 	{{ filter(filters, filter_class=False) }}
 	<h2>Totals</h2>
-	<ul>
-		<li>Logs: {{ totals['logs'] }}</li>
-		<li>Kills: {{ "{:,.0f}".format(totals['kills']) }}</li>
-		<li>Deaths: {{ "{:,.0f}".format(totals['deaths']) }}</li>
-		<li>Assists: {{ "{:,.0f}".format(totals['assists']) }}</li>
-		<li>Time Played: {{ totals['duration'] | duration }}</li>
-		<li>Damage: {{ "{:,.0f}".format(totals['dmg']) }}</li>
-		<li>Damage Taken: {{ "{:,.0f}".format(totals['dt']) }}</li>
-		<li>Heals Received: {{ "{:,.0f}".format(totals['hr']) }}</li>
-		<li>Airshots: {{ "{:,.0f}".format(totals['airshots']) }}</li>
-		<li><abbr title="Medkits taken: small = 1, medium = 2, large = 3">
-			Medkits Taken</abbr>: {{ "{:,.0f}".format(totals['medkits']) }}</li>
-		<li>Healing From Medkits: {{ "{:,.0f}".format(totals['medkits_hp']) }}</li>
-		<li>Backstabs: {{ "{:,.0f}".format(totals['backstabs']) }}</li>
-		<li>Headshots: {{ "{:,.0f}".format(totals['headshots_hit']) }}</li>
-		<li>Headshot Kills: {{ "{:,.0f}".format(totals['headshots']) }}</li>
-		<li><abbr title="Sentries Built: level 1 = 1, level 2 = 2, level 3 = 3">
-				Sentries Built</abbr>:
-				{{ "{:,.0f}".format(totals['sentries']) }}</li>
-		<li>Healing: {{ "{:,.0f}".format(totals['healing']) }}</li>
-		<li>Capture Points Captured: {{ "{:,.0f}".format(totals['cpc']) }}</li>
-		<li>Intelligences Captured: {{ "{:,.0f}".format(totals['ic']) }}</li>
-		<li>Ubers: {{ "{:,.0f}".format(totals['ubers']) }}</li>
-		<li>Drops: {{ "{:,.0f}".format(totals['drops']) }}</li>
-		<li>Advantages Lost: {{ "{:,.0f}".format(totals['advantages_lost']) }}</li>
-		<li>Deaths After Uber: {{ "{:,.0f}".format(totals['deaths_after_uber']) }}</li>
-		<li>Deaths Before Uber: {{ "{:,.0f}".format(totals['deaths_before_uber']) }}</li>
-	</ul>
+	<dl>
+		<dt>Logs</dt>
+		<dd>{{ totals['logs'] }}</dd>
+		<dt>Kills</dt>
+		<dd>{{ "{:,.0f}".format(totals['kills']) }}</dd>
+		<dt>Deaths</dt>
+		<dd>{{ "{:,.0f}".format(totals['deaths']) }}</dd>
+		<dt>Assists</dt>
+		<dd>{{ "{:,.0f}".format(totals['assists']) }}</dd>
+		<dt>Time Played</dt>
+		<dd>{{ totals['duration'] | duration }}</dd>
+		<dt>Damage</dt>
+		<dd>{{ "{:,.0f}".format(totals['dmg']) }}</dd>
+		<dt>Damage Taken</dt>
+		<dd>{{ "{:,.0f}".format(totals['dt']) }}</dd>
+		<dt>Heals Received</dt>
+		<dd>{{ "{:,.0f}".format(totals['hr']) }}</dd>
+		<dt>Airshots</dt>
+		<dd>{{ "{:,.0f}".format(totals['airshots']) }}</dd>
+		<dt><abbr title="Medkits taken: small = 1, medium = 2, large = 3">
+			Medkits Taken
+		</abbr></dt>
+		<dd>{{ "{:,.0f}".format(totals['medkits']) }}</dd>
+		<dt>Healing From Medkits</dt>
+		<dd>{{ "{:,.0f}".format(totals['medkits_hp']) }}</dd>
+		<dt>Backstabs</dt>
+		<dd>{{ "{:,.0f}".format(totals['backstabs']) }}</dd>
+		<dt>Headshots</dt>
+		<dd>{{ "{:,.0f}".format(totals['headshots_hit']) }}</dd>
+		<dt>Headshot Kills</dt>
+		<dd>{{ "{:,.0f}".format(totals['headshots']) }}</dd>
+		<dt><abbr title="Sentries Built: level 1 = 1, level 2 = 2, level 3 = 3">
+			Sentries Built
+		</abbr></dt>
+		<dd>{{ "{:,.0f}".format(totals['sentries']) }}</dd>
+		<dt>Healing</dt>
+		<dd>{{ "{:,.0f}".format(totals['healing']) }}</dd>
+		<dt>Capture Points Captured</dt>
+		<dd>{{ "{:,.0f}".format(totals['cpc']) }}</dd>
+		<dt>Intelligences Captured</dt>
+		<dd>{{ "{:,.0f}".format(totals['ic']) }}</dd>
+		<dt>Ubers</dt>
+		<dd>{{ "{:,.0f}".format(totals['ubers']) }}</dd>
+		<dt>Drops</dt>
+		<dd>{{ "{:,.0f}".format(totals['drops']) }}</dd>
+		<dt>Advantages Lost</dt>
+		<dd>{{ "{:,.0f}".format(totals['advantages_lost']) }}</dd>
+		<dt>Deaths After Uber</dt>
+		<dd>{{ "{:,.0f}".format(totals['deaths_after_uber']) }}</dd>
+		<dt>Deaths Before Uber</dt>
+		<dd>{{ "{:,.0f}".format(totals['deaths_before_uber']) }}</dd>
+	</dl>
 {% endblock %}

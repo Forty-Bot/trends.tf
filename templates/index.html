@@ -4,10 +4,13 @@
 {% block title %}Team Fortress 2 Statistics - {{ super() }}{% endblock %}
 {% block content %}
 	<h1>Team Fortress 2 Stats and Trends</h1>
-	<ul>
-		<li>Players: {{ "{:,}".format(players) }}</li>
-		<li>Logs: {{ "{:,}".format(logstat['count']) }}</li>
-		<li>Earliest log: {{ logstat['earliest'] | date }}</li>
-	</ul>
+	<dl>
+		<dt>Players</dt>
+		<dd>{{ "{:,}".format(players) }}</dd>
+		<dt>Logs</dt>
+		<dd>{{ "{:,}".format(logstat['count']) }}</dd>
+		<dt>Earliest log</dt>
+		<dd>{{ logstat['earliest'] | date }}</dt>
+	</dl>
 	<a href="https://github.com/Forty-Bot/trends.tf/issues/new">Suggestions</a>
 {% endblock %}
