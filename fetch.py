@@ -150,6 +150,32 @@ class ListFetcher(Fetcher):
         except (ValueError, KeyError):
             logging.exception("Could not parse log %s", logid)
 
+class ReverseFetcher(ListFetcher):
+    """Fetch logs in reverse order from some maximum"""
+    def __init__(self, **kwargs):
+        """Create a ``ReverseFetcher``
+
+        :param max: Max log
+        :type logs: (int, str)
+        """
+
+        super().__init__(**kwargs)
+
+    def get_logids(self):
+        try:
+            resp = self.s.get("https://logs.tf/api/v1/log")
+            resp.raise_for_status()
+            log_list = resp.json()
+            if not log_list['success']:
+                raise APIError(log_list['error'])
+
+            return range(log_list['logs'][0]['id'] + 1, 0, -1)
+        except OSError:
+            logging.exception("Could not fetch log list")
+        except (ValueError, KeyError):
+            logging.exception("Could not parse log list")
+        return iter(())
+
 class BulkFetcher(ListFetcher):
     """Fetcher for parameters of logs to get from logs.tf"""
     def __init__(self, players=None, since=None, count=None, offset=None, **kwargs):

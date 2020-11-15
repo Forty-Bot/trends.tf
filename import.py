@@ -7,7 +7,7 @@ from datetime import datetime
 import logging
 import sqlite3
 
-from fetch import ListFetcher, BulkFetcher, FileFetcher
+from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher
 from steamid import SteamID
 from sql import db_connect, db_init
 
@@ -490,8 +490,10 @@ def parse_args(*args, **kwargs):
     l.set_defaults(fetcher=ListFetcher)
     l.add_argument("-i", "--id", action='append', type=int, metavar="LOGID",
                    dest='logids', help="Fetch log LOGID")
+    r = sub.add_parser("reverse", help="Import all logs in reverse order from logs.tf")
+    r.set_defaults(fetcher=ReverseFetcher)
 
-    for p in (f, b, l):
+    for p in (f, b, l, r):
         p.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
                             help=("Print additional debug information. May be specified multiple "
                                   "times for increased verbosity."))
