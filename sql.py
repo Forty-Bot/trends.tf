@@ -25,6 +25,7 @@ def db_init(c):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
         c.execute("PRAGMA journal_mode = WAL;")
         c.execute("PRAGMA synchronous = NORMAL;")
+        c.execute("PRAGMA auto_vacuum = FULL;")
         c.executescript(schema.read())
 
 def get_db():
