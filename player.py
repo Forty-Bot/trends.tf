@@ -82,9 +82,12 @@ def get_logs(c, steamid, limit=100, offset=0):
                JOIN (SELECT
                        logid,
                        steamid64,
-                       group_concat(class) AS classes
+                       group_concat(class) OVER (
+                           PARTITION BY logid, steamid64
+                           ORDER BY duration DESC
+                           RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                       ) AS classes
                    FROM class_stats
-                   GROUP BY logid, steamid64
                ) USING (logid, steamid64)
                LEFT JOIN weapon_stats USING (logid, steamid64)
                WHERE steamid64 = ?

@@ -32,7 +32,13 @@
 					{{ log['title'] }}
 			</a></td>
 			<td class="left">{{ log['map'] }}</td>
-			<td class="left">{{ log['classes'] }}</td>
+			<td class="left">
+			{% for cls in log['classes'].split(',') %}
+				<img class="classicon"
+				 src="{{ url_for('static', filename="img/{}.png".format(cls)) }}"
+			         alt="{{ cls }}">
+			{% endfor %}
+			</td>
 			<td>{{ wlt(log['wins'], log['losses'], log['ties']) }}</td>
 			<td class="left">{{ log['format'] }}</td>
 			<td>{{ log['duration'] | duration }}</td>

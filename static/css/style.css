@@ -87,3 +87,7 @@ td {
 td.left {
 	text-align: left;
 }
+
+.classicon {
+	height: 1.1em;
+}
