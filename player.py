@@ -88,12 +88,14 @@ def get_logs(c, steamid, limit=100, offset=0):
                            RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
                        ) AS classes
                    FROM class_stats
+                   -- Duplicate of below, but sqlite is dumb...
+                   WHERE steamid64 = ?
                ) USING (logid, steamid64)
                LEFT JOIN weapon_stats USING (logid, steamid64)
                WHERE steamid64 = ?
                GROUP BY logid
                ORDER BY logid DESC
-               LIMIT ? OFFSET ?;""", (steamid, limit, offset))
+               LIMIT ? OFFSET ?;""", (steamid, steamid, limit, offset))
 
 @player.route('/')
 def overview(steamid):
