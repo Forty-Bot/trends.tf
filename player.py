@@ -59,43 +59,43 @@ def get_player(endpoint, values):
         flask.abort(404)
 
 def get_logs(c, steamid, limit=100, offset=0):
-        return c.cursor().execute(
-            """SELECT
-                   logid,
-                   title,
-                   map,
-                   classes,
-                   round_wins AS wins,
-                   round_losses AS losses,
-                   round_ties AS ties,
-                   format,
-                   log.duration,
-                   log.kills,
-                   log.deaths,
-                   log.assists,
-                   log.dmg * 60.0 / log.duration AS dpm,
-                   log.dt * 60.0 / log.duration AS dtm,
-                   total(hits) / total(shots) AS acc,
-                   healing * 60.0 / log.duration AS hpm,
-                   time
-               FROM log_wlt AS log
-               JOIN (SELECT
-                       logid,
-                       steamid64,
-                       group_concat(class) OVER (
-                           PARTITION BY logid, steamid64
-                           ORDER BY duration DESC
-                           RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-                       ) AS classes
-                   FROM class_stats
-                   -- Duplicate of below, but sqlite is dumb...
-                   WHERE steamid64 = ?
-               ) USING (logid, steamid64)
-               LEFT JOIN weapon_stats USING (logid, steamid64)
-               WHERE steamid64 = ?
-               GROUP BY logid
-               ORDER BY logid DESC
-               LIMIT ? OFFSET ?;""", (steamid, steamid, limit, offset))
+    return c.cursor().execute(
+        """SELECT
+               logid,
+               title,
+               map,
+               classes,
+               round_wins AS wins,
+               round_losses AS losses,
+               round_ties AS ties,
+               format,
+               log.duration,
+               log.kills,
+               log.deaths,
+               log.assists,
+               log.dmg * 60.0 / log.duration AS dpm,
+               log.dt * 60.0 / log.duration AS dtm,
+               total(hits) / total(shots) AS acc,
+               healing * 60.0 / log.duration AS hpm,
+               time
+           FROM log_wlt AS log
+           JOIN (SELECT
+                     logid,
+                     steamid64,
+                     group_concat(class) OVER (
+                         PARTITION BY logid, steamid64
+                         ORDER BY duration DESC
+                         RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                     ) AS classes
+                 FROM class_stats
+                 -- Duplicate of below, but sqlite is dumb...
+                 WHERE steamid64 = ?
+           ) USING (logid, steamid64)
+           LEFT JOIN weapon_stats USING (logid, steamid64)
+           WHERE steamid64 = ?
+           GROUP BY logid
+           ORDER BY logid DESC
+           LIMIT ? OFFSET ?;""", (steamid, steamid, limit, offset))
 
 @player.route('/')
 def overview(steamid):
