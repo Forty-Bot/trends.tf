@@ -30,27 +30,28 @@ def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
     cur = get_db().cursor().execute(
         """SELECT
-             *,
-             (wins + 0.5 * ties) /
-                 (wins + losses + ties) AS winrate,
-             (round_wins + 0.5 * round_ties) /
-                 (round_wins + round_losses + round_ties) AS round_winrate
-        FROM (
-             SELECT
-                 steamid64,
-                 last_value(name) OVER (
-                     ORDER BY logid
-                 ) as name,
-                 sum(round_wins) AS round_wins,
-                 sum(round_losses) AS round_losses,
-                 sum(round_ties) AS round_ties,
-                 sum(round_wins > round_losses) AS wins,
-                 sum(round_wins < round_losses) AS losses,
-                 sum(round_wins == round_losses) AS ties
-             FROM log_wlt
-             WHERE steamid64 = ?
-             GROUP BY steamid64
-        );""", (values['steamid'],))
+               *,
+               (wins + 0.5 * ties) /
+                   (wins + losses + ties) AS winrate,
+               (round_wins + 0.5 * round_ties) /
+                   (round_wins + round_losses + round_ties) AS round_winrate
+           FROM (
+                SELECT
+                    steamid64,
+                    last_value(name) OVER win AS name,
+                    sum(round_wins) OVER win AS round_wins,
+                    sum(round_losses) OVER win AS round_losses,
+                    sum(round_ties) OVER win AS round_ties,
+                    sum(round_wins > round_losses) OVER win AS wins,
+                    sum(round_wins < round_losses) OVER win AS losses,
+                    sum(round_wins == round_losses) OVER win AS ties
+                FROM log_wlt
+                WHERE steamid64 = ?
+                WINDOW win AS (
+                        ORDER BY logid
+                        RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                )
+           );""", (values['steamid'],))
 
     for row in cur:
         flask.g.player = row
