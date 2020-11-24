@@ -18,7 +18,8 @@ def db_connect(url):
     sqlite3.register_adapter(SteamID, str)
     c = sqlite3.connect(url, isolation_level=None)
     c.row_factory = sqlite3.Row
-    c.execute("PRAGMA foreign_keys = TRUE;");
+    c.execute("PRAGMA foreign_keys = TRUE;")
+    c.execute("PRAGMA temp_store = MEMORY;")
     return c
 
 def db_init(c):
