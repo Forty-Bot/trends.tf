@@ -42,15 +42,34 @@ def search():
     error = None
     results = []
     if len(q) >= 3:
+        # Use a CTE here so we can use the results twice. SQLite doesn't optimize the second
+        # subselect, so we need to add a WHERE ... IN clause to help it out.
         results = get_db().cursor().execute(
-            """SELECT
+            """WITH results AS (
+                   SELECT DISTINCT
+                       steamid64,
+                       rank,
+                       player_name.name AS alias
+                   FROM player_name
+                   JOIN player_stats ON (player_name.rowid=player_stats.rowid)
+                   WHERE player_name MATCH ?
+                   ORDER BY rank
+               ) SELECT
                    steamid64,
-                   player_name.name
-               FROM player_name
-               JOIN player_stats ON (player_name.rowid=player_stats.rowid)
-               WHERE player_name MATCH ?
+                   name,
+                   group_concat(alias, ', ') AS aliases
+               FROM results
+               JOIN (
+                   SELECT
+                       steamid64,
+                       max(logid) AS newest_logid,
+                       name
+                   FROM player_stats
+                   WHERE steamid64 IN (SELECT steamid64 FROM results)
+                   GROUP BY steamid64
+               ) USING (steamid64)
                GROUP BY steamid64
-               ORDER BY rank
+               ORDER BY min(rank), newest_logid
                LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset)).fetchall()
     else:
         error = "Searches must contain at least 3 characters"
