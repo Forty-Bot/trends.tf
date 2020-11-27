@@ -8,9 +8,9 @@
 		<dt>Logs</dt>
 		<dd>{{ "{:,}".format(logstat['count']) }}</dd>
 		<dt>Newest log</dt>
-		<dd>{{ logstat['newest'] | date }}</dt>
+		<dd class="date" timestamp="{{ logstat['newest'] }}"></dt>
 		<dt>Oldest log</dt>
-		<dd>{{ logstat['oldest'] | date }}</dt>
+		<dd class="date" timestamp="{{ logstat['oldest'] }}"></dt>
 	</dl>
 	<a href="https://github.com/Forty-Bot/trends.tf/issues/new">Suggestions</a>
 {% endblock %}

@@ -51,9 +51,7 @@
 			<td>{{ "{:.0%}".format(log['acc']) if log['acc'] != None }}</td>
 			<td>{{ log['hpm'] | int }}</td>
 			{% endif %}
-			<td class="left">
-				{{ "{:%b %-d, %Y %-I:%M %p}".format(log['time'] | date) }}
-			</td>
+			<td class="left date" timestamp="{{ log['time'] }}"></td>
 		</tr>
 		{% endfor %}
 	</tbody>
