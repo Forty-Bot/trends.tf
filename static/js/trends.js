@@ -11,12 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		}).click();
 	}
 
-	var pct_format = d3.format(".2%")
-	var int_format = d3.format(".0f")
+	var pct_format = d3.format(".2%");
+	var int_format = d3.format(".0f");
 	var tooltip = {
 		format: {
 			title: function (x, index) {
-				return (new Date(data[index].time * 1000)).toLocaleString()
+				return time_formatter.format(new Date(data[index].time * 1000));
 			},
 			value: function (value, ratio, id, index) {
 				if (['winrate', 'round_winrate'].includes(id))
