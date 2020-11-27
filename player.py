@@ -21,10 +21,6 @@ def duration_filter(timestamp):
     else:
         return "{:.0f}:{:02.0f}".format(mm, ss)
 
-@player.app_template_filter('date')
-def date_filter(timestamp):
-    return datetime.fromtimestamp(timestamp)
-
 @player.url_value_preprocessor
 def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
