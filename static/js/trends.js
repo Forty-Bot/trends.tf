@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
-function draw() {
+document.addEventListener('DOMContentLoaded', () => {
 	var data = JSON.parse(d3.select("#trend-data").text());
 
 	function onclick(d) {
@@ -100,6 +100,4 @@ function draw() {
 		format: d3.format(".0%"),
 	};
 	c3.generate(wr_config);
-}
-
-window.onload = draw
+})
