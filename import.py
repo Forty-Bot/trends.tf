@@ -552,7 +552,8 @@ def main():
             logging.info("Commited %s imported log(s)...", count)
             c.execute("BEGIN;")
             count = 0
-            start = now
+            # Committing may take a while, so start the timer when we can actually import stuff
+            start = datetime.now()
 
     logging.info("Committing %s imported log(s)...", count)
     commit()
