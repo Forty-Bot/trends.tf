@@ -34,19 +34,17 @@ def get_player(endpoint, values):
            FROM (
                 SELECT
                     steamid64,
-                    last_value(name) OVER win AS name,
-                    sum(round_wins) OVER win AS round_wins,
-                    sum(round_losses) OVER win AS round_losses,
-                    sum(round_ties) OVER win AS round_ties,
-                    sum(round_wins > round_losses) OVER win AS wins,
-                    sum(round_wins < round_losses) OVER win AS losses,
-                    sum(round_wins == round_losses) OVER win AS ties
+                    last_name AS name,
+                    sum(round_wins) AS round_wins,
+                    sum(round_losses) AS round_losses,
+                    sum(round_ties) AS round_ties,
+                    sum(round_wins > round_losses) AS wins,
+                    sum(round_wins < round_losses) AS losses,
+                    sum(round_wins == round_losses) AS ties
                 FROM log_wlt
+                JOIN player USING (steamid64)
                 WHERE steamid64 = ?
-                WINDOW win AS (
-                        ORDER BY logid
-                        RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-                )
+                GROUP BY steamid64
            );""", (values['steamid'],))
 
     for row in cur:
@@ -167,7 +165,8 @@ def peers(steamid):
     peers = get_db().execute(
         """SELECT
                steamid64,
-               name,
+               max(logid),
+               last_name AS name,
                total(with) AS with,
                total(against) AS against,
                (sum(CASE WHEN with THEN win END) +
@@ -184,8 +183,8 @@ def peers(steamid):
                total(CASE WHEN against THEN duration END) as time_against
            FROM (
                SELECT
+                   logid,
                    p2.steamid64,
-                   p2.name,
                    p1.team = p2.team AS with,
                    p1.team != p2.team AS against,
                    p1.round_wins > p1.round_losses AS win,
@@ -199,7 +198,8 @@ def peers(steamid):
                WHERE p1.steamid64 = ?
                   AND p2.steamid64 != p1.steamid64
                   AND p2.team NOTNULL
-           ) GROUP BY steamid64
+           ) JOIN player USING (steamid64)
+           GROUP BY steamid64
            ORDER BY count(*) DESC
            LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
     return flask.render_template("player/peers.html", peers=peers, limit=limit, offset=offset)
