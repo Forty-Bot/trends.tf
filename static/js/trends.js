@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		}).click();
 	}
 
-	var pct_format = d3.format(".2%");
-	var int_format = d3.format(".0f");
+	var pm_format = d3.format(".0f");
+	var kda_format = d3.format(".1f");
+	var wr_format = d3.format(".2%");
 	var tooltip = {
 		format: {
 			title: function (x, index) {
@@ -20,9 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			},
 			value: function (value, ratio, id, index) {
 				if (['winrate', 'round_winrate'].includes(id))
-					return pct_format(value);
+					return wr_format(value);
+				else if (['kills', 'deaths', 'assists'].includes(id))
+					return kda_format(value);
 				else
-					return int_format(value);
+					return pm_format(value);
 			},
 		},
 	};
