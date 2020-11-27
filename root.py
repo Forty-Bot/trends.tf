@@ -17,8 +17,7 @@ def index():
                count(*) AS count,
                min(time) AS earliest
            FROM log""").fetchone()
-    (players,) = c.cursor().execute("SELECT count(DISTINCT steamid64) FROM player_stats").fetchone()
-    return flask.render_template("index.html", players=players, logstat=logstat)
+    return flask.render_template("index.html", logstat=logstat)
 
 @root.route('/search')
 def search():
