@@ -59,9 +59,16 @@ CREATE TABLE IF NOT EXISTS round (
 	PRIMARY KEY (logid, seq)
 ) WITHOUT ROWID;
 
+-- Automatically updated via triggers
+CREATE TABLE IF NOT EXISTS player (
+	steamid64 INTEGER PRIMARY KEY,
+	last_logid INT REFERENCES log (logid) NOT NULL, -- Most recent log
+	last_name TEXT NOT NULL -- Most recent name
+);
+
 CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid) NOT NULL,
-	steamid64 INT NOT NULL,
+	steamid64 INT REFERENCES player (steamid64) NOT NULL,
 	name TEXT NOT NULL,
 	team TEXT REFERENCES team (name), -- May be NULL for spectators
 	kills INT NOT NULL,
@@ -89,6 +96,25 @@ CREATE TABLE IF NOT EXISTS player_stats (
 );
 
 CREATE INDEX IF NOT EXISTS player_stats_id ON player_stats (steamid64);
+
+CREATE TRIGGER IF NOT EXISTS player_insert BEFORE INSERT ON player_stats BEGIN
+	INSERT INTO player (steamid64, last_name, last_logid)
+	VALUES (new.steamid64, new.name, new.logid)
+	ON CONFLICT (steamid64) DO
+		UPDATE SET
+			last_name=new.name,
+			last_logid=new.logid
+		WHERE new.logid > last_logid;
+END;
+
+CREATE TRIGGER IF NOT EXISTS player_update AFTER UPDATE ON player_stats BEGIN
+	UPDATE player SET
+		last_name=new.name,
+		last_played=new.logid
+	WHERE old.logid = last_played;
+END;
+
+-- No ON DELETE because idk what to do for that
 
 CREATE VIEW IF NOT EXISTS log_wlt AS
 SELECT
