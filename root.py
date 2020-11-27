@@ -15,8 +15,9 @@ def index():
     logstat = c.cursor().execute(
         """SELECT
                count(*) AS count,
-               min(time) AS earliest
-           FROM log""").fetchone()
+               max(time) AS newest,
+               min(time) AS oldest
+           FROM log;""").fetchone()
     return flask.render_template("index.html", logstat=logstat)
 
 @root.route('/search')

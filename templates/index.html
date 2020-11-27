@@ -7,8 +7,10 @@
 	<dl>
 		<dt>Logs</dt>
 		<dd>{{ "{:,}".format(logstat['count']) }}</dd>
-		<dt>Earliest log</dt>
-		<dd>{{ logstat['earliest'] | date }}</dt>
+		<dt>Newest log</dt>
+		<dd>{{ logstat['newest'] | date }}</dt>
+		<dt>Oldest log</dt>
+		<dd>{{ logstat['oldest'] | date }}</dt>
 	</dl>
 	<a href="https://github.com/Forty-Bot/trends.tf/issues/new">Suggestions</a>
 {% endblock %}
