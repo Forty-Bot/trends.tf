@@ -1,12 +1,15 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+<!DOCTYPE html>
+<html>
 <head>
-	{% block head %}
+{% block head %}
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css"
 	 href="{{ url_for('static', filename='css/style.css') }}">
 	<title>{% block title %}trends.tf{% endblock %}</title>
-	{% endblock %}</head>
+{% endblock %}
+</head>
 <body>
 	<div class='header'>
 		<a href="{{ url_for('root.index') }}">Trends.tf</a>
@@ -28,3 +31,4 @@
 		</a>
 	</div>
 </body>
+</html>
