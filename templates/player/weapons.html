@@ -1,9 +1,12 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
 {% extends "player/base.html" %}
 {% block title %}Weapons - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
+	<h2>Filter</h2>
+	{{ filter(filters) }}
 	<h2>Weapons</h2>
 	<table>
 		<thead>

@@ -260,17 +260,26 @@ def totals(steamid):
 
 @player.route('/weapons')
 def weapons(steamid):
+    filters = get_filters(flask.request.args)
     weapons = get_db().cursor().execute(
         """SELECT
                weapon,
                avg(ws.kills) as kills,
-               sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN duration END) AS dpm,
+               sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN class_stats.duration END) AS dpm,
                total(hits) / sum(shots) AS acc
            FROM weapon_stats AS ws
            JOIN class_stats USING (logid, steamid64, class)
+           JOIN log USING (logid)
            WHERE steamid64 = ?
-           GROUP BY weapon;""", (steamid,))
-    return flask.render_template("player/weapons.html", weapons=weapons)
+               AND class = ifnull(?, class)
+               AND format = ifnull(?, format)
+               AND map LIKE ifnull(?, map)
+               AND time >= ifnull(?, time)
+               AND time <= ifnull(?, time)
+           GROUP BY weapon;""",
+        (steamid, filters['class'], filters['format'], filters['map'], filters['date_from'],
+         filters['date_to']))
+    return flask.render_template("player/weapons.html", weapons=weapons, filters=filters)
 
 @player.route('/trends')
 def trends(steamid):
