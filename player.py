@@ -253,7 +253,8 @@ def totals(steamid):
                AND format = ifnull(?, format)
                AND map LIKE ifnull(?, map)
                AND time >= ifnull(?, time)
-               AND time <= ifnull(?, time);""",
+               AND time <= ifnull(?, time)
+           GROUP BY steamid64;""",
         (steamid, filters['format'], filters['map'], filters['date_from'], filters['date_to'])
     ).fetchone()
     return flask.render_template("player/totals.html", totals=totals, filters=filters)
