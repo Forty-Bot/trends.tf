@@ -6,10 +6,10 @@
 {% block head %}
 	{{ super() }}
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/c3@0.7.20/c3.css">
+	<script type="text/javascript" defer>steamid64 = "{{ g.player['steamid64'] }}";</script>
 	<script id="trend-data" type="application/json">{{ trends | tojson }}</script>
 	<script type="module" src="https://d3js.org/d3.v5.min.js"></script>
-	<script type="module"
-		src="https://cdn.jsdelivr.net/npm/c3@0.7.20/c3.min.js"></script>
+	<script type="module" src="https://cdn.jsdelivr.net/npm/c3@0.7.20/c3.min.js"></script>
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/trends.js") }}" defer></script>
 {% endblock %}
