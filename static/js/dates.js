@@ -9,7 +9,4 @@ function format_dates() {
 			new Date(date.getAttribute('timestamp') * 1000));
 }
 
-if (document.readyState === 'loading')
-	document.addEventListener('DOMContentLoaded', format_dates);
-else
-	format_dates();
+document.addEventListener('DOMContentLoaded', format_dates);
