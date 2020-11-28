@@ -23,7 +23,7 @@ def index():
 @root.route('/search')
 def search():
     args = flask.request.args
-    limit = args.get('limit', 100, int)
+    limit = args.get('limit', 25, int)
     offset = args.get('offset', 0, int)
     q = args.get('q', '', str)
 
