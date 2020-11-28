@@ -287,7 +287,7 @@ def trends(steamid):
     filters = get_filters(flask.request.args)
     cur = get_db().cursor().execute(
         """SELECT
-               logid,
+               log.logid,
                time,
                (sum(round_wins > round_losses) OVER win +
                    0.5 * sum(round_wins = round_losses) OVER win) /
@@ -304,19 +304,22 @@ def trends(steamid):
                sum(log.healing) OVER win * 60.0 /
                    sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm
            FROM log_wlt AS log
-           JOIN class_stats USING (logid, steamid64)
-           WHERE steamid64 = ?
-               AND class = ifnull(?, class)
+           LEFT JOIN class_stats AS cs ON (
+               cs.logid=log.logid
+               AND cs.steamid64=log.steamid64
+               AND cs.duration * 1.5 >= log.duration
+           ) WHERE log.steamid64 = ?
+               AND class IS ifnull(?, class)
                AND format = ifnull(?, format)
                AND map LIKE ifnull(?, map)
                AND time >= ifnull(?, time)
                AND time <= ifnull(?, time)
-           GROUP BY logid, steamid64
+           GROUP BY log.logid, log.steamid64
            WINDOW win AS (
-               PARTITION BY steamid64
-               ORDER BY logid
+               PARTITION BY log.steamid64
+               ORDER BY log.logid
                GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
-           )""", (steamid, filters['class'], filters['format'], filters['map'],
+           );""", (steamid, filters['class'], filters['format'], filters['map'],
                   filters['date_from'], filters['date_to']))
     trends = list(dict(row) for row in cur)
     return flask.render_template("player/trends.html", trends=trends, filters=filters)
