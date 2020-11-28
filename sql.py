@@ -24,10 +24,14 @@ def db_connect(url):
 
 def db_init(c):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
-        c.execute("PRAGMA journal_mode = WAL;")
-        c.execute("PRAGMA synchronous = NORMAL;")
-        c.execute("PRAGMA auto_vacuum = FULL;")
-        c.executescript(schema.read())
+        try:
+            c.execute("PRAGMA journal_mode = WAL;")
+            c.execute("PRAGMA synchronous = NORMAL;")
+            c.execute("PRAGMA auto_vacuum = FULL;")
+            c.executescript(schema.read())
+        # Don't worry if the database is locked
+        except sqlite3.OperationalError:
+            pass
 
 def get_db():
     if not getattr(flask.g, 'db_conn', None):
