@@ -370,6 +370,22 @@ def delete_dup_logs(c):
     c.execute("DROP TABLE temp.dupes;")
     return ret
 
+def delete_bogus_logs(c):
+    """Delete bogus logs
+
+    In some logs, players have negative damage. There are not very many, so just delete them.
+    """
+
+    c.execute("""CREATE TEMP TABLE bogus AS SELECT
+                    DISTINCT logid
+                 FROM temp.new_log
+                 JOIN weapon_stats USING (logid)
+                 WHERE dmg < 0;""")
+    for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
+                  'player_stats', 'round'):
+        c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM temp.bogus);".format(table))
+    c.execute("DROP TABLE temp.bogus");
+
 def delete_dup_rounds(c):
     """Delete duplicate rounds
 
@@ -525,6 +541,7 @@ def main():
 
     def commit():
         logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
+        delete_bogus_logs(c)
         delete_dup_rounds(c)
         update_stalemates(c)
         update_formats(c)
