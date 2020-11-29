@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS log (
 );
 
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
--- CREATE INDEX IF NOT EXISTS log_map ON log (map);
 
 CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),
@@ -91,11 +90,11 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	healing INT NOT NULL,
 	cpc INT, -- Capture Point Captures
 	ic INT, -- Intel Captures
-	PRIMARY KEY (logid, steamid64),
+	PRIMARY KEY (steamid64, logid),
 	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
-);
+) WITHOUT ROWID;
 
-CREATE INDEX IF NOT EXISTS player_stats_id ON player_stats (steamid64);
+CREATE INDEX IF NOT EXISTS player_stats_logid ON player_stats (logid);
 
 CREATE TRIGGER IF NOT EXISTS player_insert BEFORE INSERT ON player_stats BEGIN
 	INSERT INTO player (steamid64, last_name, last_logid)
@@ -110,8 +109,8 @@ END;
 CREATE TRIGGER IF NOT EXISTS player_update AFTER UPDATE ON player_stats BEGIN
 	UPDATE player SET
 		last_name=new.name,
-		last_played=new.logid
-	WHERE old.logid = last_played;
+		last_logid=new.logid
+	WHERE old.logid = last_logid;
 END;
 
 -- No ON DELETE because idk what to do for that
@@ -128,18 +127,13 @@ JOIN round USING (logid)
 JOIN player_stats AS ps USING (logid)
 GROUP BY logid, steamid64;
 
-CREATE VIRTUAL TABLE IF NOT EXISTS player_name USING fts5(name, content = 'player_stats');
+CREATE VIRTUAL TABLE IF NOT EXISTS player_name USING fts5(steamid64 UNINDEXED, name);
 
 CREATE TRIGGER IF NOT EXISTS player_name_insert AFTER INSERT ON player_stats BEGIN
-	INSERT INTO player_name (rowid, name) VALUES (new.rowid, new.name);
+	INSERT INTO player_name (steamid64, name) VALUES (new.steamid64, new.name);
 END;
-CREATE TRIGGER IF NOT EXISTS player_name_update AFTER UPDATE ON player_stats BEGIN
-	INSERT INTO player_name (player_name, rowid, name) VALUES ('delete', old.rowid, old.name);
-	INSERT INTO player_name (rowid, name) VALUES (new.rowid, new.name);
-END;
-CREATE TRIGGER IF NOT EXISTS player_name_delete AFTER DELETE ON player_stats BEGIN
-	INSERT INTO player_name (player_name, rowid, name) VALUES ('delete', old.rowid, old.name);
-END;
+
+-- No ON UPDATE or ON DELETE because we don't store logid
 
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,
@@ -157,7 +151,7 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	avg_uber_duration REAL,
 	deaths_after_uber INT, -- within 20s
 	deaths_before_uber INT, -- 95-99%
-	PRIMARY KEY (logid, steamid64),
+	PRIMARY KEY (steamid64, logid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64),
 	CHECK ((medigun_ubers ISNULL AND kritz_ubers ISNULL AND other_ubers ISNULL) OR
 	       (medigun_ubers NOTNULL AND kritz_ubers NOTNULL AND other_ubers NOTNULL)),
@@ -165,6 +159,8 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	CHECK ((advantages_lost NOTNULL AND biggest_advantage_lost NOTNULL) OR
 	       (advantages_lost ISNULL AND biggest_advantage_lost ISNULL))
 ) WITHOUT ROWID;
+
+CREATE INDEX IF NOT EXISTS medic_stats_logid ON medic_stats (logid);
 
 CREATE TABLE IF NOT EXISTS heal_stats (
 	logid INT NOT NULL,
@@ -201,11 +197,9 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	deaths INT NOT NULL,
 	dmg INT NOT NULL,
 	duration INT NOT NULL,
-	PRIMARY KEY (logid, steamid64, class),
+	PRIMARY KEY (steamid64, logid, class),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
-
-CREATE INDEX IF NOT EXISTS class_stats_id ON class_stats (steamid64);
 
 CREATE TABLE IF NOT EXISTS weapon_stats (
 	logid INT NOT NULL,
@@ -217,7 +211,7 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	avg_dmg REAL,
 	shots INT,
 	hits INT,
-	PRIMARY KEY (logid, steamid64, class, weapon),
+	PRIMARY KEY (steamid64, logid, class, weapon),
 	FOREIGN KEY (logid, steamid64, class) REFERENCES class_stats (logid, steamid64, class),
 	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL))
 	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
@@ -242,11 +236,9 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	sniper INT NOT NULL,
 	soldier INT NOT NULL,
 	spy INT NOT NULL,
-	PRIMARY KEY (logid, steamid64, event),
+	PRIMARY KEY (steamid64, event, logid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
-
-CREATE INDEX IF NOT EXISTS event_stats_player ON event_stats (steamid64);
 
 CREATE TABLE IF NOT EXISTS chat (
 	logid INT NOT NULL,
@@ -256,7 +248,5 @@ CREATE TABLE IF NOT EXISTS chat (
 	PRIMARY KEY (logid, seq),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
-
--- CREATE INDEX IF NOT EXISTS chat_player ON chat (steamid64);
 
 COMMIT;

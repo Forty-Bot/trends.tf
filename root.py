@@ -51,9 +51,8 @@ def search():
                    SELECT
                        steamid64,
                        min(rank) AS rank,
-                       group_concat(DISTINCT player_name.name) AS aliases
+                       group_concat(DISTINCT name) AS aliases
                    FROM player_name
-                   JOIN player_stats ON (player_name.rowid=player_stats.rowid)
                    WHERE player_name MATCH ?
                    GROUP BY steamid64
                    ORDER BY rank

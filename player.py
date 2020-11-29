@@ -246,8 +246,8 @@ def totals(steamid):
                total(advantages_lost) AS advantages_lost,
                total(deaths_after_uber) AS deaths_after_uber,
                total(deaths_before_uber) AS deaths_before_uber
-           FROM log
-           JOIN player_stats USING (logid)
+           FROM player_stats
+           JOIN log USING (logid)
            LEFT JOIN medic_stats USING (logid, steamid64)
            WHERE steamid64 = ?
                AND format = ifnull(?, format)
