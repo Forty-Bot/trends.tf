@@ -8,6 +8,8 @@
 	{{ super() }}
 
 	<h2>Overview</h2>
+	<div class="clearfix">
+	<div class="float">
 	<h3>Classes</h3>
 	<table>
 		<thead>
@@ -36,7 +38,9 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	</div>
 
+	<div class="float">
 	<h3>Averages</h3>
 	<table>
 		<thead>
@@ -74,6 +78,8 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	</div>
+	</div>
 
 	<h2><a href="{{ url_for('.logs', steamid=g.player['steamid64']) }}">Recent Logs</a></h2>
 	{{ log_table(logs) }}

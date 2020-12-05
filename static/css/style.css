@@ -92,3 +92,13 @@ td.left {
 .classicon {
 	height: 1.1em;
 }
+
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.float {
+	float: left;
+}
