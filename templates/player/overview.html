@@ -41,6 +41,26 @@
 	</div>
 
 	<div class="float">
+	<h3>Aliases</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Count</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for alias in aliases %}
+			<tr>
+				<td class="left">{{ alias['name'] }}</td>
+				<td>{{ alias['count'] }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+
+	<div class="float">
 	<h3>Averages</h3>
 	<table>
 		<thead>

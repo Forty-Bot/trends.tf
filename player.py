@@ -147,9 +147,18 @@ def overview(steamid):
                ) GROUP BY event
                -- Dirty hack to fix ordering
                ORDER BY event DESC;""", (steamid,))
+    aliases = c.cursor().execute(
+            """SELECT
+                   name,
+                   count(*) AS count
+               FROM player_stats
+               WHERE steamid64 = ?
+               GROUP BY steamid64, name
+               ORDER BY count(*) DESC
+               LIMIT 10""", (steamid,))
     return flask.render_template("player/overview.html",
                                  logs=get_logs(c, steamid, limit=25), classes=classes,
-                                 event_stats=event_stats)
+                                 event_stats=event_stats, aliases=aliases)
 
 @player.route('/logs')
 def logs(steamid):
