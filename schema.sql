@@ -94,7 +94,9 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
 ) WITHOUT ROWID;
 
-CREATE INDEX IF NOT EXISTS player_stats_logid ON player_stats (logid);
+-- This index includes steamid64 and team so that it can be used as a covering index for the peers
+-- query. This avoids a bunch of costly random reads to player_stats.
+CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid, steamid64, team);
 
 CREATE TRIGGER IF NOT EXISTS player_insert BEFORE INSERT ON player_stats BEGIN
 	INSERT INTO player (steamid64, last_name, last_logid)
