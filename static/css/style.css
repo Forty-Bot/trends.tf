@@ -70,6 +70,7 @@ ul.nav li.nav a:hover:not(.active){
 
 table {
 	padding: 0.4em;
+	white-space: nowrap;
 }
 
 th, td {
