@@ -9,7 +9,8 @@
 {% macro filter(filters, filter_class=True) %}
 <form>
 	{% if filter_class %}
-	<label>Class:
+	<label>
+		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">
 			<option></option>
 			{{ create_options(filters['class'], class_map) }}
