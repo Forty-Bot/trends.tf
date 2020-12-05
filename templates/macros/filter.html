@@ -6,9 +6,8 @@
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
 {% endfor %}
 {% endmacro %}
-{% macro filter(filters, filter_class=True) %}
+{% macro filter(filters) %}
 <form>
-	{% if filter_class %}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">
@@ -16,7 +15,6 @@
 			{{ create_options(filters['class'], class_map) }}
 		</select>
 	</label>
-	{% endif %}
 	<label>Format:
 		<select name="format">
 			<option></option>
