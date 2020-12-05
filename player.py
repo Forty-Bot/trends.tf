@@ -233,11 +233,11 @@ def totals(steamid):
     totals = get_db().cursor().execute(
         """SELECT
                count(*) AS logs,
-               total(kills) AS kills,
-               total(deaths) AS deaths,
-               total(assists) AS assists,
-               total(duration) AS duration,
-               total(dmg) AS dmg,
+               total(ps.kills) AS kills,
+               total(ps.deaths) AS deaths,
+               total(ps.assists) AS assists,
+               total(log.duration) AS duration,
+               total(ps.dmg) AS dmg,
                total(dt) AS dt,
                total(hr) AS hr,
                total(airshots) AS airshots,
@@ -255,16 +255,24 @@ def totals(steamid):
                total(advantages_lost) AS advantages_lost,
                total(deaths_after_uber) AS deaths_after_uber,
                total(deaths_before_uber) AS deaths_before_uber
-           FROM player_stats
-           JOIN log USING (logid)
-           LEFT JOIN medic_stats USING (logid, steamid64)
-           WHERE steamid64 = ?
+           FROM player_stats AS ps
+           JOIN log ON (ps.logid=log.logid)
+           LEFT JOIN medic_stats AS ms ON (
+               ps.logid=ms.logid
+               AND ps.steamid64=ms.steamid64)
+           LEFT JOIN class_stats AS cs ON (
+               cs.logid=ps.logid
+               AND cs.steamid64=ps.steamid64
+               AND cs.duration * 1.5 >= log.duration
+           ) WHERE ps.steamid64 = ?
+               AND class IS ifnull(?, class)
                AND format = ifnull(?, format)
                AND map LIKE ifnull(?, map)
                AND time >= ifnull(?, time)
                AND time <= ifnull(?, time)
-           GROUP BY steamid64;""",
-        (steamid, filters['format'], filters['map'], filters['date_from'], filters['date_to'])
+           GROUP BY ps.steamid64;""",
+        (steamid, filters['class'], filters['format'], filters['map'], filters['date_from'],
+         filters['date_to'])
     ).fetchone()
     return flask.render_template("player/totals.html", totals=totals, filters=filters)
 
