@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/class.html" import class_map %}
 {% from "macros/logs.html" import log_table %}
 {% from "macros/wlt.html" import wlt %}
 {% extends "player/base.html" %}
@@ -27,7 +28,7 @@
 		<tbody>
 			{% for cls in classes %}
 			<tr>
-				<td class="left">{{ cls['name'] }}</td>
+				<td class="left">{{ class_map[cls['name']] }}</td>
 				<td>{{ wlt(cls['wins'], cls['losses'], cls['ties']) }}</td>
 				<td>{{ "{:.2%}".format(cls['winrate'])
 					if cls['winrate'] != None }}</td>
