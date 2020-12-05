@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/class.html" import class_map %}
 {% macro create_options(default, options) %}
 {% for key, content in options.items() %}
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
@@ -11,16 +12,7 @@
 	<label>Class:
 		<select name="class">
 			<option></option>
-			{{ create_options(filters['class'], {
-				'scout': "Scout", 
-				'soldier': "Soldier", 
-				'pyro': "Pyro", 
-				'demoman': "Demo", 
-				'heavyweapons': "Heavy", 
-				'engineer': "Engineer", 
-				'medic': "Medic", 
-				'sniper': "Sniper", 
-				'spy': "Spy"}) }}
+			{{ create_options(filters['class'], class_map) }}
 		</select>
 	</label>
 	{% endif %}
