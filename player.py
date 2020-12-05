@@ -269,8 +269,7 @@ def totals(steamid):
                AND format = ifnull(?, format)
                AND map LIKE ifnull(?, map)
                AND time >= ifnull(?, time)
-               AND time <= ifnull(?, time)
-           GROUP BY ps.steamid64;""",
+               AND time <= ifnull(?, time);""",
         (steamid, filters['class'], filters['format'], filters['map'], filters['date_from'],
          filters['date_to'])
     ).fetchone()
