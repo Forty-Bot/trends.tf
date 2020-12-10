@@ -18,7 +18,8 @@ def index():
                max(time) AS newest,
                min(time) AS oldest
            FROM log;""").fetchone()
-    return flask.render_template("index.html", logstat=logstat)
+    players = c.cursor().execute("SELECT count(*) AS players FROM player;").fetchone()
+    return flask.render_template("index.html", logstat=logstat, players=players[0])
 
 @root.route('/search')
 def search():

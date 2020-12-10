@@ -5,6 +5,8 @@
 {% block content %}
 	<h1>Team Fortress 2 Stats and Trends</h1>
 	<dl>
+		<dt>Players</dt>
+		<dd>{{ "{:,}".format(players) }}</dd>
 		<dt>Logs</dt>
 		<dd>{{ "{:,}".format(logstat['count']) }}</dd>
 		<dt>Newest log</dt>
