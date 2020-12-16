@@ -74,6 +74,8 @@ def get_logs(c, steamid, limit=100, offset=0):
                healing * 60.0 / log.duration AS hpm,
                time
            FROM log_wlt AS log
+           JOIN map USING (mapid)
+           JOIN format USING (formatid)
            JOIN (SELECT
                      logid,
                      steamid64,
@@ -257,6 +259,8 @@ def totals(steamid):
                total(deaths_before_uber) AS deaths_before_uber
            FROM player_stats AS ps
            JOIN log ON (ps.logid=log.logid)
+           JOIN format USING (formatid)
+           JOIN map USING (mapid)
            LEFT JOIN medic_stats AS ms ON (
                ps.logid=ms.logid
                AND ps.steamid64=ms.steamid64)
@@ -287,6 +291,8 @@ def weapons(steamid):
            FROM weapon_stats AS ws
            JOIN class_stats USING (logid, steamid64, class)
            JOIN log USING (logid)
+           JOIN format USING (formatid)
+           JOIN map USING (mapid)
            WHERE steamid64 = ?
                AND class = ifnull(?, class)
                AND format = ifnull(?, format)
@@ -320,6 +326,8 @@ def trends(steamid):
                sum(log.healing) OVER win * 60.0 /
                    sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm
            FROM log_wlt AS log
+           JOIN format USING (formatid)
+           JOIN map USING (mapid)
            LEFT JOIN class_stats AS cs ON (
                cs.logid=log.logid
                AND cs.steamid64=log.steamid64

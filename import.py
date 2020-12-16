@@ -53,10 +53,12 @@ def import_log(c, logid, log):
         info['red_score'] = info['Red']['score']
         info['blue_score'] = info['Blue']['score']
 
+    c.execute("INSERT OR IGNORE INTO map (map) VALUES (:map)", info)
     c.execute("""INSERT INTO log (
-                     logid, time, duration, title, map, red_score, blue_score
+                     logid, time, duration, title, mapid, red_score, blue_score
                  ) VALUES (
-                     :logid, :date, :total_length, :title, :map, :red_score, :blue_score
+                     :logid, :date, :total_length, :title,
+                     (SELECT mapid FROM map WHERE map = :map), :red_score, :blue_score
                  );""",
               info)
 
@@ -433,21 +435,23 @@ def update_formats(c):
     """
 
     c.execute("""UPDATE log
-                 SET format = new.format
-                 FROM (SELECT
+                 SET formatid = new.formatid
+                 FROM (
+                     SELECT
                          logid,
                          coalesce(
                              -- If the difference between total and average is too high, then the
                              -- total player count is more accurate. This is because some logs have
                              -- broken playtime (e.g. average players of 8.5 with 12 total players).
-                             CASE WHEN total_players - avg_players > 2 THEN ft.name END,
+                             CASE WHEN total_players - avg_players > 2 THEN ft.formatid END,
                              -- Otherwise, prefer average playtime, since it detects sixes vs
                              -- prolander better
-                             fa.name,
-                             ft.name,
-                             'other'
-                         ) AS format
-                     FROM (SELECT
+                             fa.formatid,
+                             ft.formatid,
+                             fo.formatid
+                         ) AS formatid
+                     FROM (
+                         SELECT
                              logid,
                              total(class_stats.duration) / log.duration AS avg_players,
                              count(DISTINCT player_stats.steamid64) AS total_players
@@ -456,7 +460,7 @@ def update_formats(c):
                          JOIN player_stats USING (logid)
                          JOIN class_stats USING (logid, steamid64)
                          -- Only set the format if it isn't already set
-                         WHERE log.format ISNULL
+                         WHERE log.formatid ISNULL
                          GROUP BY logid
                      ) LEFT JOIN format AS fa ON (
                          -- By inspection, almost all games in a format have players in this range
@@ -464,6 +468,8 @@ def update_formats(c):
                          avg_players BETWEEN fa.players - 1 AND fa.players + 1
                      ) LEFT JOIN format AS ft ON (
                          total_players BETWEEN ft.players - 1 AND ft.players + 1
+                     ) JOIN format AS fo ON (
+                         fo.format = 'other'
                      )
                  ) AS new
                  WHERE log.logid = new.logid;""")

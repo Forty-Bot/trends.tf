@@ -10,11 +10,12 @@ CREATE TABLE IF NOT EXISTS team (
 INSERT OR IGNORE INTO team (name) VALUES ('Red'), ('Blue');
 
 CREATE TABLE IF NOT EXISTS format (
-	name TEXT PRIMARY KEY NOT NULL,
+	formatid INTEGER PRIMARY KEY,
+	format TEXT NOT NULL UNIQUE,
 	players INT
-) WITHOUT ROWID;
+);
 
-INSERT OR IGNORE INTO format (name, players) VALUES
+INSERT OR IGNORE INTO format (format, players) VALUES
 	('ultiduo', 4),
 	('fours', 8),
 	('sixes', 12),
@@ -22,15 +23,20 @@ INSERT OR IGNORE INTO format (name, players) VALUES
 	('highlander', 18),
 	('other', NULL);
 
+CREATE TABLE IF NOT EXISTS map (
+	mapid INTEGER PRIMARY KEY,
+	map TEXT NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS log (
 	logid INTEGER PRIMARY KEY, -- SQLite won't infer a rowid alias unless the type is INTEGER
 	time INT NOT NULL, -- End time
 	duration INT NOT NULL,
 	title TEXT NOT NULL,
-	map TEXT NOT NULL,
+	mapid INT NOT NULL REFERENCES map (mapid),
 	red_score INT NOT NULL,
 	blue_score INT NOT NULL,
-	format TEXT REFERENCES format (name),
+	formatid INT REFERENCES format (formatid),
 	-- Some logs may be duplicates or subsets of another log
 	duplicate_of INT REFERENCES log (logid),
 	-- All duplicates must be earlier (and have smaller logids) than what they are duplicates of
