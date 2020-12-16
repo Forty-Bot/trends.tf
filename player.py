@@ -80,7 +80,7 @@ def get_logs(c, steamid, limit=100, offset=0):
                      group_concat(class) OVER (
                          PARTITION BY logid, steamid64
                          ORDER BY duration DESC
-                         RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                         ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
                      ) AS classes
                  FROM class_stats
                  -- Duplicate of below, but sqlite is dumb...
