@@ -46,18 +46,20 @@ def search():
         results = get_db().cursor().execute(
             """SELECT
                    steamid64,
-                   last_name AS name,
+                   name,
                    aliases
                FROM (
                    SELECT
                        steamid64,
                        min(rank) AS rank,
                        group_concat(DISTINCT name) AS aliases
-                   FROM player_name
-                   WHERE player_name MATCH ?
+                   FROM name_fts AS n
+                   JOIN player_stats AS ps ON (ps.nameid=n.rowid)
+                   WHERE name_fts MATCH ?
                    GROUP BY steamid64
                    ORDER BY rank
                ) JOIN player USING (steamid64)
+               JOIN name ON (name.nameid=last_nameid)
                ORDER BY rank, last_logid
                LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset)).fetchall()
     else:

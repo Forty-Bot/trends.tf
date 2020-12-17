@@ -64,17 +64,35 @@ CREATE TABLE IF NOT EXISTS round (
 	PRIMARY KEY (logid, seq)
 ) WITHOUT ROWID;
 
+CREATE TABLE IF NOT EXISTS name (
+	nameid INTEGER PRIMARY KEY,
+	name TEXT NOT NULL UNIQUE
+);
+
+-- FTS "index"
+CREATE VIRTUAL TABLE IF NOT EXISTS name_fts USING fts5 (name, content=name, content_rowid=nameid);
+CREATE TRIGGER IF NOT EXISTS name_insert AFTER INSERT ON name BEGIN
+	INSERT INTO name_fts(rowid, name) VALUES (new.nameid, new.name);
+END;
+CREATE TRIGGER IF NOT EXISTS name_update AFTER UPDATE ON name BEGIN
+	DELETE FROM name_fts WHERE rowid = old.nameid;
+	INSERT INTO name_fts (rowid, name) VALUES (new.nameid, new.name);
+END;
+CREATE TRIGGER IF NOT EXISTS name_delete AFTER DELETE ON name BEGIN
+	DELETE FROM name_fts WHERE rowid = old.nameid;
+END;
+
 -- Automatically updated via triggers
 CREATE TABLE IF NOT EXISTS player (
 	steamid64 INTEGER PRIMARY KEY,
 	last_logid INT REFERENCES log (logid) NOT NULL, -- Most recent log
-	last_name TEXT NOT NULL -- Most recent name
+	last_nameid INT NOT NULL REFERENCES name (nameid) -- Most recent name
 );
 
 CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid) NOT NULL,
 	steamid64 INT REFERENCES player (steamid64) NOT NULL,
-	name TEXT NOT NULL,
+	nameid INT NOT NULL REFERENCES name (nameid),
 	team TEXT REFERENCES team (name), -- May be NULL for spectators
 	kills INT NOT NULL,
 	assists INT NOT NULL,
@@ -104,19 +122,22 @@ CREATE TABLE IF NOT EXISTS player_stats (
 -- query. This avoids a bunch of costly random reads to player_stats.
 CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid, steamid64, team);
 
+-- Covering index for name FTS queries
+CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats (nameid, steamid64);
+
 CREATE TRIGGER IF NOT EXISTS player_insert BEFORE INSERT ON player_stats BEGIN
-	INSERT INTO player (steamid64, last_name, last_logid)
-	VALUES (new.steamid64, new.name, new.logid)
+	INSERT INTO player (steamid64, last_nameid, last_logid)
+	VALUES (new.steamid64, new.nameid, new.logid)
 	ON CONFLICT (steamid64) DO
 		UPDATE SET
-			last_name=new.name,
+			last_nameid=new.nameid,
 			last_logid=new.logid
 		WHERE new.logid > last_logid;
 END;
 
 CREATE TRIGGER IF NOT EXISTS player_update AFTER UPDATE ON player_stats BEGIN
 	UPDATE player SET
-		last_name=new.name,
+		last_nameid=new.nameid,
 		last_logid=new.logid
 	WHERE old.logid = last_logid;
 END;
@@ -134,14 +155,6 @@ FROM log
 JOIN round USING (logid)
 JOIN player_stats AS ps USING (logid)
 GROUP BY logid, steamid64;
-
-CREATE VIRTUAL TABLE IF NOT EXISTS player_name USING fts5(steamid64 UNINDEXED, name);
-
-CREATE TRIGGER IF NOT EXISTS player_name_insert AFTER INSERT ON player_stats BEGIN
-	INSERT INTO player_name (steamid64, name) VALUES (new.steamid64, new.name);
-END;
-
--- No ON UPDATE or ON DELETE because we don't store logid
 
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,

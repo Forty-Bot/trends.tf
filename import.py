@@ -145,14 +145,16 @@ def import_log(c, logid, log):
             player['ic'] = None
         player['suicides'] = info.get('suicides')
 
+        c.execute("INSERT OR IGNORE INTO name (name) VALUES (:name)", player)
         c.execute("""INSERT INTO player_stats (
-                         logid, steamid64, team, name, kills, assists, deaths, suicides, dmg,
+                         logid, steamid64, team, nameid, kills, assists, deaths, suicides, dmg,
                          dmg_real, dt, dt_real, hr, lks, airshots, medkits, medkits_hp, backstabs,
                          headshots, headshots_hit, sentries, healing, cpc, ic
                      ) VALUES (
-                         :logid, :steamid, :team, :name, :kills, :assists, :deaths, :suicides, :dmg,
-                         :dmg_real, :dt, :dt_real, :hr, :lks, :as, :medkits, :medkits_hp,
-                         :backstabs, :headshots, :headshots_hit, :sentries, :heal, :cpc, :ic
+                         :logid, :steamid, :team, (SELECT nameid FROM name WHERE name = :name),
+                         :kills, :assists, :deaths, :suicides, :dmg, :dmg_real, :dt, :dt_real, :hr,
+                         :lks, :as, :medkits, :medkits_hp, :backstabs, :headshots, :headshots_hit,
+                         :sentries, :heal, :cpc, :ic
                      );""", player)
 
         for (prop, event) in (('classkills', 'kill'), ('classdeaths', 'death'),
@@ -286,9 +288,13 @@ def import_log(c, logid, log):
                     raise
                 first = False
 
+
+                c.execute("INSERT OR IGNORE INTO name (name) VALUES (:name)", msg)
                 c.execute("""INSERT INTO player_stats (
-                               logid, steamid64, name, kills, assists, deaths, dmg, lks, healing
-                           ) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0);""",
+                               logid, steamid64, nameid, kills, assists, deaths, dmg, lks, healing
+                           ) VALUES (
+                               ?, ?, (SELECT nameid FROM name WHERE name = ?), 0, 0, 0, 0, 0, 0
+                           );""",
                           (logid, SteamID(msg['steamid']), msg['name']))
                 continue
             except ValueError:

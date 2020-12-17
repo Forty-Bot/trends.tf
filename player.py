@@ -34,7 +34,7 @@ def get_player(endpoint, values):
            FROM (
                 SELECT
                     steamid64,
-                    last_name AS name,
+                    name,
                     sum(round_wins) AS round_wins,
                     sum(round_losses) AS round_losses,
                     sum(round_ties) AS round_ties,
@@ -43,6 +43,7 @@ def get_player(endpoint, values):
                     sum(round_wins == round_losses) AS ties
                 FROM log_wlt
                 JOIN player USING (steamid64)
+                JOIN name ON (name.nameid=last_nameid)
                 WHERE steamid64 = ?
                 GROUP BY steamid64
            );""", (values['steamid'],))
@@ -147,13 +148,13 @@ def overview(steamid):
                    FROM event
                    LEFT JOIN event_stats ON (event_stats.event=event.name AND steamid64=?)
                ) GROUP BY event
-               -- Dirty hack to fix ordering
                ORDER BY event DESC;""", (steamid,))
     aliases = c.cursor().execute(
             """SELECT
                    name,
                    count(*) AS count
                FROM player_stats
+               JOIN name USING (nameid)
                WHERE steamid64 = ?
                GROUP BY steamid64, name
                ORDER BY count(*) DESC
@@ -177,7 +178,7 @@ def peers(steamid):
         """SELECT
                steamid64,
                max(logid),
-               last_name AS name,
+               name,
                total(with) AS with,
                total(against) AS against,
                (sum(CASE WHEN with THEN win END) +
@@ -210,6 +211,7 @@ def peers(steamid):
                   AND p2.steamid64 != p1.steamid64
                   AND p2.team NOTNULL
            ) JOIN player USING (steamid64)
+           JOIN name ON (name.nameid=last_nameid)
            GROUP BY steamid64
            ORDER BY count(*) DESC
            LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
