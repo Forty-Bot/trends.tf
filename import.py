@@ -100,9 +100,10 @@ def import_log(c, logid, log):
                          logid, seq, time, duration, winner, firstcap, red_score, blue_score,
                          red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
                      ) VALUES (
-                         :logid, :seq, :start_time, :length, :winner, :firstcap, :red_score,
-                         :blue_score, :red_kills, :blue_kills, :red_dmg, :blue_dmg, :red_ubers,
-                         :blue_ubers
+                         :logid, :seq, :start_time, :length,
+                         (SELECT teamid FROM team WHERE team = :winner),
+                         (SELECT teamid FROM team WHERE team = :firstcap), :red_score, :blue_score,
+                         :red_kills, :blue_kills, :red_dmg, :blue_dmg, :red_ubers, :blue_ubers
                      );""", round)
 
     for steamid_str, player in log['players'].items():
@@ -147,14 +148,15 @@ def import_log(c, logid, log):
 
         c.execute("INSERT OR IGNORE INTO name (name) VALUES (:name)", player)
         c.execute("""INSERT INTO player_stats (
-                         logid, steamid64, team, nameid, kills, assists, deaths, suicides, dmg,
+                         logid, steamid64, teamid, nameid, kills, assists, deaths, suicides, dmg,
                          dmg_real, dt, dt_real, hr, lks, airshots, medkits, medkits_hp, backstabs,
                          headshots, headshots_hit, sentries, healing, cpc, ic
                      ) VALUES (
-                         :logid, :steamid, :team, (SELECT nameid FROM name WHERE name = :name),
-                         :kills, :assists, :deaths, :suicides, :dmg, :dmg_real, :dt, :dt_real, :hr,
-                         :lks, :as, :medkits, :medkits_hp, :backstabs, :headshots, :headshots_hit,
-                         :sentries, :heal, :cpc, :ic
+                         :logid, :steamid, (SELECT teamid FROM team WHERE team = :team),
+                         (SELECT nameid FROM name WHERE name = :name), :kills, :assists, :deaths,
+                         :suicides, :dmg, :dmg_real, :dt, :dt_real, :hr, :lks, :as, :medkits,
+                         :medkits_hp, :backstabs, :headshots, :headshots_hit, :sentries, :heal,
+                         :cpc, :ic
                      );""", player)
 
         for (prop, event) in (('classkills', 'kill'), ('classdeaths', 'death'),

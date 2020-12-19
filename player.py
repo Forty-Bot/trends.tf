@@ -197,8 +197,8 @@ def peers(steamid):
                SELECT
                    logid,
                    p2.steamid64,
-                   p1.team = p2.team AS with,
-                   p1.team != p2.team AS against,
+                   p1.teamid = p2.teamid AS with,
+                   p1.teamid != p2.teamid AS against,
                    p1.round_wins > p1.round_losses AS win,
                    p1.round_wins = p1.round_losses AS tie,
                    p1.dmg,
@@ -209,7 +209,7 @@ def peers(steamid):
                JOIN player_stats AS p2 USING (logid)
                WHERE p1.steamid64 = ?
                   AND p2.steamid64 != p1.steamid64
-                  AND p2.team NOTNULL
+                  AND p2.teamid NOTNULL
            ) JOIN player USING (steamid64)
            JOIN name ON (name.nameid=last_nameid)
            GROUP BY steamid64

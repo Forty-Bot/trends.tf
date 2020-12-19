@@ -3,12 +3,6 @@
 
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS team (
-	name TEXT PRIMARY KEY NOT NULL
-) WITHOUT ROWID;
-
-INSERT OR IGNORE INTO team (name) VALUES ('Red'), ('Blue');
-
 CREATE TABLE IF NOT EXISTS format (
 	formatid INTEGER PRIMARY KEY,
 	format TEXT NOT NULL UNIQUE,
@@ -46,13 +40,20 @@ CREATE TABLE IF NOT EXISTS log (
 
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
+CREATE TABLE IF NOT EXISTS team (
+	teamid INTEGER PRIMARY KEY,
+	team TEXT NOT NULL UNIQUE
+);
+
+INSERT OR IGNORE INTO team (team) VALUES ('Red'), ('Blue');
+
 CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),
 	seq INT NOT NULL, -- Round number, starting at 0
 	time INT, -- Unix time
 	duration INT NOT NULL,
-	winner TEXT REFERENCES team (name),
-	firstcap TEXT REFERENCES team (name),
+	winner INT REFERENCES team (teamid),
+	firstcap INT REFERENCES team (teamid),
 	red_score INT NOT NULL,
 	blue_score INT NOT NULL,
 	red_kills INT NOT NULL,
@@ -93,7 +94,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid) NOT NULL,
 	steamid64 INT REFERENCES player (steamid64) NOT NULL,
 	nameid INT NOT NULL REFERENCES name (nameid),
-	team TEXT REFERENCES team (name), -- May be NULL for spectators
+	teamid INT REFERENCES team (teamid), -- May be NULL for spectators
 	kills INT NOT NULL,
 	assists INT NOT NULL,
 	deaths INT NOT NULL,
@@ -120,7 +121,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 
 -- This index includes steamid64 and team so that it can be used as a covering index for the peers
 -- query. This avoids a bunch of costly random reads to player_stats.
-CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid, steamid64, team);
+CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid, steamid64, teamid);
 
 -- Covering index for name FTS queries
 CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats (nameid, steamid64);
@@ -148,8 +149,8 @@ CREATE VIEW IF NOT EXISTS log_wlt AS
 SELECT
 	log.*,
 	ps.*,
-	ifnull(sum(ps.team = round.winner), 0) AS round_wins,
-	ifnull(sum(ps.team != round.winner), 0) AS round_losses,
+	ifnull(sum(ps.teamid = round.winner), 0) AS round_wins,
+	ifnull(sum(ps.teamid != round.winner), 0) AS round_losses,
 	sum(round.winner ISNULL AND round.duration >= 60) AS round_ties
 FROM log
 JOIN round USING (logid)
