@@ -1,8 +1,6 @@
 -- SPDX-License-Identifier: AGPL-3.0-only
 -- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
-BEGIN;
-
 CREATE TABLE IF NOT EXISTS format (
 	formatid INTEGER PRIMARY KEY,
 	format TEXT NOT NULL UNIQUE,
@@ -270,5 +268,3 @@ CREATE TABLE IF NOT EXISTS chat (
 	PRIMARY KEY (logid, seq),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
-
-COMMIT;

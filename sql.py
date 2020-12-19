@@ -28,7 +28,9 @@ def db_init(c):
             c.execute("PRAGMA journal_mode = WAL;")
             c.execute("PRAGMA synchronous = NORMAL;")
             c.execute("PRAGMA auto_vacuum = FULL;")
+            c.execute("BEGIN;")
             c.executescript(schema.read())
+            c.execute("COMMIT;")
         # Don't worry if the database is locked
         except sqlite3.OperationalError:
             pass
