@@ -147,7 +147,7 @@ def overview(steamid):
                FROM (
                    SELECT *
                    FROM event
-                   LEFT JOIN event_stats ON (event_stats.event=event.name AND steamid64=?)
+                   LEFT JOIN event_stats ON (event_stats.eventid=event.eventid AND steamid64=?)
                ) GROUP BY event
                ORDER BY event DESC;""", (steamid,))
     aliases = c.cursor().execute(

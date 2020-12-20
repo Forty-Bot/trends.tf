@@ -179,11 +179,12 @@ def import_log(c, logid, log):
             # There are also 'unknown' events, but we skip them; they can be determined by the
             # difference between the sum of this event and the event in player_stats
             c.execute("""INSERT INTO event_stats (
-                             logid, steamid64, event, demoman, engineer, heavyweapons, medic, pyro,
-                             scout, sniper, soldier, spy
+                             logid, steamid64, eventid, demoman, engineer, heavyweapons, medic,
+                             pyro, scout, sniper, soldier, spy
                          ) VALUES (
-                             :logid, :steamid, :event, :demoman, :engineer, :heavyweapons, :medic,
-                             :pyro, :scout, :sniper, :soldier, :spy
+                             :logid, :steamid, (SELECT eventid FROM event WHERE event = :event),
+                             :demoman, :engineer, :heavyweapons, :medic, :pyro, :scout, :sniper,
+                             :soldier, :spy
                          );""", events)
 
         for cls in player['class_stats']:

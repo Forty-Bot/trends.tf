@@ -244,15 +244,16 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 ) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS event (
-	name TEXT PRIMARY KEY
-) WITHOUT ROWID;
+	eventid INTEGER PRIMARY KEY,
+	event TEXT NOT NULL UNIQUE
+);
 
-INSERT OR IGNORE INTO event (name) VALUES ('kill'), ('death'), ('assist');
+INSERT OR IGNORE INTO event (event) VALUES ('kill'), ('death'), ('assist');
 
 CREATE TABLE IF NOT EXISTS event_stats (
 	logid INT NOT NULL,
 	steamid64 INT NOT NULL,
-	event TEXT REFERENCES event (name),
+	eventid TEXT REFERENCES event (eventid),
 	demoman INT NOT NULL,
 	engineer INT NOT NULL,
 	heavyweapons INT NOT NULL,
@@ -262,7 +263,7 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	sniper INT NOT NULL,
 	soldier INT NOT NULL,
 	spy INT NOT NULL,
-	PRIMARY KEY (steamid64, logid, event),
+	PRIMARY KEY (steamid64, logid, eventid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
 
