@@ -74,11 +74,11 @@ CREATE TRIGGER IF NOT EXISTS name_insert AFTER INSERT ON name BEGIN
 	INSERT INTO name_fts(rowid, name) VALUES (new.nameid, new.name);
 END;
 CREATE TRIGGER IF NOT EXISTS name_update AFTER UPDATE ON name BEGIN
-	DELETE FROM name_fts WHERE rowid = old.nameid;
+	INSERT INTO name_fts (name_fts, rowid) VALUES ('delete', old.nameid);
 	INSERT INTO name_fts (rowid, name) VALUES (new.nameid, new.name);
 END;
 CREATE TRIGGER IF NOT EXISTS name_delete AFTER DELETE ON name BEGIN
-	DELETE FROM name_fts WHERE rowid = old.nameid;
+	INSERT INTO name_fts (name_fts, rowid) VALUES ('delete', old.nameid);
 END;
 
 -- Automatically updated via triggers
