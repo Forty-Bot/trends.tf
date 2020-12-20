@@ -240,9 +240,10 @@ def import_log(c, logid, log):
             cls['total_time'] = min(cls['total_time'], info['total_length'])
 
             c.execute("""INSERT INTO class_stats (
-                             logid, steamid64, class, kills, assists, deaths, dmg, duration
+                             logid, steamid64, classid, kills, assists, deaths, dmg, duration
                          ) VALUES (
-                             :logid, :steamid, :type, :kills, :assists, :deaths, :dmg, :total_time
+                             :logid, :steamid, (SELECT classid FROM class WHERE class = :type),
+                             :kills, :assists, :deaths, :dmg, :total_time
                          );""", cls);
 
             # Some very old logs have no weapons stats at all
@@ -269,11 +270,14 @@ def import_log(c, logid, log):
                     weapon['shots'] = None
                     weapon['hits'] = None
 
+                c.execute("INSERT OR IGNORE INTO weapon (weapon) VALUES (:name)", weapon)
                 c.execute("""INSERT INTO weapon_stats (
-                                 logid, steamid64, class, weapon, kills, dmg, avg_dmg, shots, hits
+                                 logid, steamid64, classid, weaponid, kills, dmg, avg_dmg, shots,
+                                 hits
                              ) VALUES (
-                                 :logid, :steamid, :class, :name, :kills, :dmg, :avg_dmg, :shots,
-                                 :hits
+                                 :logid, :steamid, (SELECT classid FROM class WHERE class = :class),
+                                 (SELECT weaponid FROM weapon WHERE weapon = :name), :kills, :dmg,
+                                 :avg_dmg, :shots, :hits
                              );""", weapon)
 
     for (seq, msg) in enumerate(log['chat']):

@@ -194,45 +194,51 @@ CREATE TABLE IF NOT EXISTS heal_stats (
 ) WITHOUT ROWID;
 
 CREATE TABLE IF NOT EXISTS class (
-	name TEXT PRIMARY KEY NOT NULL
-) WITHOUT ROWID;
+	classid INTEGER PRIMARY KEY,
+	class TEXT NOT NULL UNIQUE
+);
 
-INSERT OR IGNORE INTO class (name) VALUES
+INSERT OR IGNORE INTO class (class) VALUES
+	('scout'),
+	('soldier'),
+	('pyro'),
 	('demoman'),
 	('engineer'),
 	('heavyweapons'),
 	('medic'),
-	('pyro'),
-	('scout'),
 	('sniper'),
-	('soldier'),
 	('spy');
 
 CREATE TABLE IF NOT EXISTS class_stats (
 	logid INT NOT NULL,
 	steamid64 INT NOT NULL,
-	class TEXT NOT NULL REFERENCES class (name),
+	classid INT NOT NULL REFERENCES class (classid),
 	kills INT NOT NULL,
 	assists INT NOT NULL,
 	deaths INT NOT NULL,
 	dmg INT NOT NULL,
 	duration INT NOT NULL,
-	PRIMARY KEY (steamid64, logid, class),
+	PRIMARY KEY (steamid64, logid, classid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
+
+CREATE TABLE IF NOT EXISTS weapon (
+	weaponid INTEGER PRIMARY KEY,
+	weapon TEXT NOT NULL UNIQUE
+);
 
 CREATE TABLE IF NOT EXISTS weapon_stats (
 	logid INT NOT NULL,
 	steamid64 INT NOT NULL,
-	class TEXT NOT NULL,
-	weapon TEXT NOT NULL,
+	classid INT NOT NULL,
+	weaponid INT NOT NULL REFERENCES weapon (weaponid),
 	kills INT NOT NULL,
 	dmg INT,
 	avg_dmg REAL,
 	shots INT,
 	hits INT,
-	PRIMARY KEY (steamid64, logid, class, weapon),
-	FOREIGN KEY (logid, steamid64, class) REFERENCES class_stats (logid, steamid64, class),
+	PRIMARY KEY (steamid64, logid, classid, weaponid),
+	FOREIGN KEY (logid, steamid64, classid) REFERENCES class_stats (logid, steamid64, classid),
 	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL))
 	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
 ) WITHOUT ROWID;
@@ -256,7 +262,7 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	sniper INT NOT NULL,
 	soldier INT NOT NULL,
 	spy INT NOT NULL,
-	PRIMARY KEY (steamid64, event, logid),
+	PRIMARY KEY (steamid64, logid, event),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 ) WITHOUT ROWID;
 

@@ -30,7 +30,7 @@
 		<tbody>
 			{% for cls in classes %}
 			<tr>
-				<td class="left">{{ class_map[cls['name']] }}</td>
+				<td class="left">{{ class_map[cls['class']] }}</td>
 				<td>{{ wlt(cls['wins'], cls['losses'], cls['ties']) }}</td>
 				<td>{{ "{:.2%}".format(cls['winrate'])
 					if cls['winrate'] != None }}</td>

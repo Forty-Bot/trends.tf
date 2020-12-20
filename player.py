@@ -86,6 +86,7 @@ def get_logs(c, steamid, limit=100, offset=0):
                          ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
                      ) AS classes
                  FROM class_stats
+                 JOIN class USING (classid)
                  -- Duplicate of below, but sqlite is dumb...
                  WHERE steamid64 = ?
            ) USING (logid, steamid64)
@@ -104,7 +105,7 @@ def overview(steamid):
                (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
            FROM (
                SELECT
-                   name,
+                   class,
                    sum(CASE WHEN mostly THEN round_wins > round_losses END) AS wins,
                    sum(CASE WHEN mostly THEN round_wins < round_losses END) AS losses,
                    sum(CASE WHEN mostly THEN round_wins == round_losses END) AS ties,
@@ -114,7 +115,7 @@ def overview(steamid):
                FROM class
                LEFT JOIN (
                    SELECT
-                       class,
+                       classid,
                        cs.duration * 1.5 > log_wlt.duration AS mostly,
                        round_wins,
                        round_losses,
@@ -124,12 +125,12 @@ def overview(steamid):
                        sum(shots) AS shots
                    FROM log_wlt
                    JOIN class_stats cs USING (logid, steamid64)
-                   JOIN weapon_stats USING (logid, steamid64, class)
+                   JOIN weapon_stats USING (logid, steamid64, classid)
                    WHERE steamid64 = ?
-                   GROUP BY logid, steamid64, class
-               ) ON (class=name)
-           GROUP BY name
-           ORDER BY name
+                   GROUP BY logid, steamid64, classid
+               ) USING (classid)
+               GROUP BY classid
+               ORDER BY classid
            );""", (steamid,))
     event_stats = c.cursor().execute(
             """SELECT
@@ -270,7 +271,8 @@ def totals(steamid):
                cs.logid=ps.logid
                AND cs.steamid64=ps.steamid64
                AND cs.duration * 1.5 >= log.duration
-           ) WHERE ps.steamid64 = ?
+           ) LEFT JOIN class USING (classid)
+           WHERE ps.steamid64 = ?
                AND class IS ifnull(?, class)
                AND format = ifnull(?, format)
                AND map LIKE ifnull(?, map)
@@ -291,7 +293,9 @@ def weapons(steamid):
                sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN class_stats.duration END) AS dpm,
                total(hits) / sum(shots) AS acc
            FROM weapon_stats AS ws
-           JOIN class_stats USING (logid, steamid64, class)
+           JOIN weapon USING (weaponid)
+           JOIN class_stats USING (logid, steamid64, classid)
+           JOIN class USING (classid)
            JOIN log USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)
@@ -334,7 +338,8 @@ def trends(steamid):
                cs.logid=log.logid
                AND cs.steamid64=log.steamid64
                AND cs.duration * 1.5 >= log.duration
-           ) WHERE log.steamid64 = ?
+           ) LEFT JOIN class USING (classid)
+           WHERE log.steamid64 = ?
                AND class IS ifnull(?, class)
                AND format = ifnull(?, format)
                AND map LIKE ifnull(?, map)
