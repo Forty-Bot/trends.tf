@@ -253,7 +253,7 @@ INSERT OR IGNORE INTO event (event) VALUES ('kill'), ('death'), ('assist');
 CREATE TABLE IF NOT EXISTS event_stats (
 	logid INT NOT NULL,
 	steamid64 INT NOT NULL,
-	eventid TEXT REFERENCES event (eventid),
+	eventid INT REFERENCES event (eventid),
 	demoman INT NOT NULL,
 	engineer INT NOT NULL,
 	heavyweapons INT NOT NULL,
