@@ -31,7 +31,9 @@
 	<label>From:
 		<input type="date" name="date_from" value="{{ filters['date_from'] or "" }}">
 	</label>
-	<label>To: <input type="date" name="date_to" value="{{ filters['date_to'] or "" }}"></label>
+	<label>To:
+		<input type="date" name="date_to" value="{{ filters['date_to'] or "" }}">
+	</label>
 	<button type-"submit">Filter</button>
 </form>
 {% endmacro %}

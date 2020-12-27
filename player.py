@@ -224,11 +224,14 @@ def get_filters(args):
     ret['class'] = args.get('class', None, str) or None
     ret['format'] = args.get('format', None, str) or None
     ret['map'] = args.get('map', None, str) or None
+
     date_from = args.get('date_from', None, datetime.fromisoformat)
-    ret['date_from'] = date_from.timestamp() if date_from else None
+    ret['date_from'] = date_from.date().isoformat() if date_from else None
+    ret['date_from_ts'] = date_from.timestamp() if date_from else None
+
     date_to = args.get('date_to', None, datetime.fromisoformat)
-    ret['date_to'] = args.get('date_to', None, datetime.fromisoformat)
-    ret['date_from'] = date_to.timestamp() if date_to else None
+    ret['date_to'] = date_to.date().isoformat() if date_to else None
+    ret['date_to_ts'] = date_to.timestamp() if date_to else None
 
     return ret
 
@@ -278,8 +281,8 @@ def totals(steamid):
                AND map LIKE ifnull(?, map)
                AND time >= ifnull(?, time)
                AND time <= ifnull(?, time);""",
-        (steamid, filters['class'], filters['format'], filters['map'], filters['date_from'],
-         filters['date_to'])
+        (steamid, filters['class'], filters['format'], filters['map'], filters['date_from_ts'],
+         filters['date_to_ts'])
     ).fetchone()
     return flask.render_template("player/totals.html", totals=totals, filters=filters)
 
@@ -306,8 +309,8 @@ def weapons(steamid):
                AND time >= ifnull(?, time)
                AND time <= ifnull(?, time)
            GROUP BY weapon;""",
-        (steamid, filters['class'], filters['format'], filters['map'], filters['date_from'],
-         filters['date_to']))
+        (steamid, filters['class'], filters['format'], filters['map'], filters['date_from_ts'],
+         filters['date_to_ts']))
     return flask.render_template("player/weapons.html", weapons=weapons, filters=filters)
 
 @player.route('/trends')
@@ -351,6 +354,6 @@ def trends(steamid):
                ORDER BY log.logid
                GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
            );""", (steamid, filters['class'], filters['format'], filters['map'],
-                  filters['date_from'], filters['date_to']))
+                  filters['date_from_ts'], filters['date_to_ts']))
     trends = list(dict(row) for row in cur)
     return flask.render_template("player/trends.html", trends=trends, filters=filters)
