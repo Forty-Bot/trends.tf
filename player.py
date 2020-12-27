@@ -353,7 +353,9 @@ def trends(steamid):
                PARTITION BY log.steamid64
                ORDER BY log.logid
                GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
-           );""", (steamid, filters['class'], filters['format'], filters['map'],
-                  filters['date_from_ts'], filters['date_to_ts']))
+           ) ORDER BY log.logid DESC
+           LIMIT 1000;""", (steamid, filters['class'], filters['format'], filters['map'],
+                              filters['date_from_ts'], filters['date_to_ts']))
     trends = list(dict(row) for row in cur)
+    trends.reverse()
     return flask.render_template("player/trends.html", trends=trends, filters=filters)
