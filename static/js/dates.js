@@ -8,5 +8,12 @@ function format_dates() {
 		date.textContent = time_formatter.format(
 			new Date(date.getAttribute('timestamp') * 1000));
 }
-
 document.addEventListener('DOMContentLoaded', format_dates);
+
+function set_timezone() {
+	var timezone = document.getElementById('timezone');
+	if (timezone) {
+		timezone.value = time_formatter.resolvedOptions().timeZone;
+	}
+}
+document.addEventListener('DOMContentLoaded', set_timezone);

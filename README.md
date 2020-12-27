@@ -10,6 +10,7 @@ You will need
 sqlite >= 3.33
 python-requests
 python-flask
+python-dateutil
 ```
 
 To import logs, run

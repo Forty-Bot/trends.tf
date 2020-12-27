@@ -2,6 +2,7 @@
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
 from datetime import datetime, timedelta
+from dateutil import tz
 import flask
 
 from sql import get_db
@@ -225,11 +226,17 @@ def get_filters(args):
     ret['format'] = args.get('format', None, str) or None
     ret['map'] = args.get('map', None, str) or None
 
+    timezone = args.get('timezone', tz.UTC, tz.gettz)
+
     date_from = args.get('date_from', None, datetime.fromisoformat)
+    if date_from:
+        date_from.replace(tzinfo=timezone)
     ret['date_from'] = date_from.date().isoformat() if date_from else None
     ret['date_from_ts'] = date_from.timestamp() if date_from else None
 
     date_to = args.get('date_to', None, datetime.fromisoformat)
+    if date_to:
+        date_to.replace(tzinfo=timezone)
     ret['date_to'] = date_to.date().isoformat() if date_to else None
     ret['date_to_ts'] = date_to.timestamp() if date_to else None
 
