@@ -7,13 +7,14 @@ CREATE TABLE IF NOT EXISTS format (
 	players INT
 );
 
-INSERT OR IGNORE INTO format (format, players) VALUES
+INSERT INTO format (format, players) VALUES
 	('ultiduo', 4),
 	('fours', 8),
 	('sixes', 12),
 	('prolander', 14),
 	('highlander', 18),
-	('other', NULL);
+	('other', NULL)
+ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS map (
 	mapid INTEGER PRIMARY KEY,
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS team (
 	team TEXT NOT NULL UNIQUE
 );
 
-INSERT OR IGNORE INTO team (team) VALUES ('Red'), ('Blue');
+INSERT INTO team (team) VALUES ('Red'), ('Blue') ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),
@@ -198,7 +199,7 @@ CREATE TABLE IF NOT EXISTS class (
 	class TEXT NOT NULL UNIQUE
 );
 
-INSERT OR IGNORE INTO class (class) VALUES
+INSERT INTO class (class) VALUES
 	('scout'),
 	('soldier'),
 	('pyro'),
@@ -207,7 +208,8 @@ INSERT OR IGNORE INTO class (class) VALUES
 	('heavyweapons'),
 	('medic'),
 	('sniper'),
-	('spy');
+	('spy')
+ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS class_stats (
 	logid INT NOT NULL,
@@ -248,7 +250,7 @@ CREATE TABLE IF NOT EXISTS event (
 	event TEXT NOT NULL UNIQUE
 );
 
-INSERT OR IGNORE INTO event (event) VALUES ('kill'), ('death'), ('assist');
+INSERT INTO event (event) VALUES ('kill'), ('death'), ('assist') ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS event_stats (
 	logid INT NOT NULL,
