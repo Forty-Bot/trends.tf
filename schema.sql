@@ -2,7 +2,7 @@
 -- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
 CREATE TABLE IF NOT EXISTS format (
-	formatid INTEGER PRIMARY KEY,
+	formatid SERIAL PRIMARY KEY,
 	format TEXT NOT NULL UNIQUE,
 	players INT
 );
@@ -17,13 +17,13 @@ INSERT INTO format (format, players) VALUES
 ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS map (
-	mapid INTEGER PRIMARY KEY,
+	mapid SERIAL PRIMARY KEY,
 	map TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS log (
 	logid INTEGER PRIMARY KEY, -- SQLite won't infer a rowid alias unless the type is INTEGER
-	time INT NOT NULL, -- End time
+	time BIGINT NOT NULL, -- End time
 	duration INT NOT NULL,
 	title TEXT NOT NULL,
 	mapid INT NOT NULL REFERENCES map (mapid),
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS log (
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
 CREATE TABLE IF NOT EXISTS team (
-	teamid INTEGER PRIMARY KEY,
+	teamid SERIAL PRIMARY KEY,
 	team TEXT NOT NULL UNIQUE
 );
 
@@ -49,7 +49,7 @@ INSERT INTO team (team) VALUES ('Red'), ('Blue') ON CONFLICT DO NOTHING;
 CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),
 	seq INT NOT NULL, -- Round number, starting at 0
-	time INT, -- Unix time
+	time BIGINT, -- Unix time
 	duration INT NOT NULL,
 	winner INT REFERENCES team (teamid),
 	firstcap INT REFERENCES team (teamid),
@@ -62,10 +62,10 @@ CREATE TABLE IF NOT EXISTS round (
 	red_ubers INT NOT NULL,
 	blue_ubers INT NOT NULL,
 	PRIMARY KEY (logid, seq)
-) WITHOUT ROWID;
+);
 
 CREATE TABLE IF NOT EXISTS name (
-	nameid INTEGER PRIMARY KEY,
+	nameid SERIAL PRIMARY KEY,
 	name TEXT NOT NULL UNIQUE
 );
 
@@ -84,14 +84,14 @@ END;
 
 -- Automatically updated via triggers
 CREATE TABLE IF NOT EXISTS player (
-	steamid64 INTEGER PRIMARY KEY,
+	steamid64 BIGINT PRIMARY KEY,
 	last_logid INT REFERENCES log (logid) NOT NULL, -- Most recent log
 	last_nameid INT NOT NULL REFERENCES name (nameid) -- Most recent name
 );
 
 CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid) NOT NULL,
-	steamid64 INT REFERENCES player (steamid64) NOT NULL,
+	steamid64 BIGINT REFERENCES player (steamid64) NOT NULL,
 	nameid INT NOT NULL REFERENCES name (nameid),
 	teamid INT REFERENCES team (teamid), -- May be NULL for spectators
 	kills INT NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	ic INT, -- Intel Captures
 	PRIMARY KEY (steamid64, logid),
 	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
-) WITHOUT ROWID;
+);
 
 -- This index includes steamid64 and team so that it can be used as a covering index for the peers
 -- query. This avoids a bunch of costly random reads to player_stats.
@@ -161,7 +161,7 @@ JOIN (SELECT
 
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,
-	steamid64 INT NOT NULL,
+	steamid64 BIGINT NOT NULL,
 	ubers INT NOT NULL,
 	medigun_ubers INT,
 	kritz_ubers INT,
@@ -182,23 +182,23 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	CHECK (medigun_ubers ISNULL OR ubers = medigun_ubers + kritz_ubers + other_ubers),
 	CHECK ((advantages_lost NOTNULL AND biggest_advantage_lost NOTNULL) OR
 	       (advantages_lost ISNULL AND biggest_advantage_lost ISNULL))
-) WITHOUT ROWID;
+);
 
 CREATE INDEX IF NOT EXISTS medic_stats_logid ON medic_stats (logid);
 
 CREATE TABLE IF NOT EXISTS heal_stats (
 	logid INT NOT NULL,
-	healer INT NOT NULL,
-	healee INT NOT NULL,
+	healer BIGINT NOT NULL,
+	healee BIGINT NOT NULL,
 	healing INT NOT NULL,
 	PRIMARY KEY (logid, healer, healee),
 	-- Should reference medic_stats, but some very old logs only report one class per player
 	FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
 	FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64)
-) WITHOUT ROWID;
+);
 
 CREATE TABLE IF NOT EXISTS class (
-	classid INTEGER PRIMARY KEY,
+	classid SERIAL PRIMARY KEY,
 	class TEXT NOT NULL UNIQUE
 );
 
@@ -216,7 +216,7 @@ ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS class_stats (
 	logid INT NOT NULL,
-	steamid64 INT NOT NULL,
+	steamid64 BIGINT NOT NULL,
 	classid INT NOT NULL REFERENCES class (classid),
 	kills INT NOT NULL,
 	assists INT NOT NULL,
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	duration INT NOT NULL,
 	PRIMARY KEY (steamid64, logid, classid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
-) WITHOUT ROWID;
+);
 
 CREATE TABLE IF NOT EXISTS weapon (
 	weaponid INTEGER PRIMARY KEY,
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS weapon (
 
 CREATE TABLE IF NOT EXISTS weapon_stats (
 	logid INT NOT NULL,
-	steamid64 INT NOT NULL,
+	steamid64 BIGINT NOT NULL,
 	classid INT NOT NULL,
 	weaponid INT NOT NULL REFERENCES weapon (weaponid),
 	kills INT NOT NULL,
@@ -246,10 +246,10 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	FOREIGN KEY (logid, steamid64, classid) REFERENCES class_stats (logid, steamid64, classid),
 	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL)),
 	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
-) WITHOUT ROWID;
+);
 
 CREATE TABLE IF NOT EXISTS event (
-	eventid INTEGER PRIMARY KEY,
+	eventid SERIAL PRIMARY KEY,
 	event TEXT NOT NULL UNIQUE
 );
 
@@ -257,7 +257,7 @@ INSERT INTO event (event) VALUES ('kill'), ('death'), ('assist') ON CONFLICT DO 
 
 CREATE TABLE IF NOT EXISTS event_stats (
 	logid INT NOT NULL,
-	steamid64 INT NOT NULL,
+	steamid64 BIGINT NOT NULL,
 	eventid INT REFERENCES event (eventid),
 	demoman INT NOT NULL,
 	engineer INT NOT NULL,
@@ -270,13 +270,13 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	spy INT NOT NULL,
 	PRIMARY KEY (steamid64, logid, eventid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
-) WITHOUT ROWID;
+);
 
 CREATE TABLE IF NOT EXISTS chat (
 	logid INT NOT NULL,
-	steamid64 INT, -- May be NULL for Console messages
+	steamid64 BIGINT, -- May be NULL for Console messages
 	seq INT NOT NULL, -- Message sequence, starting at 0; earlier messages have lower sequences
 	msg TEXT NOT NULL,
 	PRIMARY KEY (logid, seq),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
-) WITHOUT ROWID;
+);
