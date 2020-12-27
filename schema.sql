@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64),
 	CHECK ((medigun_ubers ISNULL AND kritz_ubers ISNULL AND other_ubers ISNULL) OR
 	       (medigun_ubers NOTNULL AND kritz_ubers NOTNULL AND other_ubers NOTNULL)),
-	CHECK (medigun_ubers ISNULL OR ubers == medigun_ubers + kritz_ubers + other_ubers),
+	CHECK (medigun_ubers ISNULL OR ubers = medigun_ubers + kritz_ubers + other_ubers),
 	CHECK ((advantages_lost NOTNULL AND biggest_advantage_lost NOTNULL) OR
 	       (advantages_lost ISNULL AND biggest_advantage_lost ISNULL))
 ) WITHOUT ROWID;
@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	hits INT,
 	PRIMARY KEY (steamid64, logid, classid, weaponid),
 	FOREIGN KEY (logid, steamid64, classid) REFERENCES class_stats (logid, steamid64, classid),
-	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL))
+	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL)),
 	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
 ) WITHOUT ROWID;
 
