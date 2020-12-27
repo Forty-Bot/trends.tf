@@ -228,17 +228,15 @@ def get_filters(args):
 
     timezone = args.get('timezone', tz.UTC, tz.gettz)
 
-    date_from = args.get('date_from', None, datetime.fromisoformat)
-    if date_from:
-        date_from.replace(tzinfo=timezone)
-    ret['date_from'] = date_from.date().isoformat() if date_from else None
-    ret['date_from_ts'] = date_from.timestamp() if date_from else None
+    def parse_date(name):
+        date = args.get(name, None, datetime.fromisoformat)
+        if date:
+            date.replace(tzinfo=timezone)
+            return (date.date().isoformat(), date.timestamp())
+        return (None, None)
 
-    date_to = args.get('date_to', None, datetime.fromisoformat)
-    if date_to:
-        date_to.replace(tzinfo=timezone)
-    ret['date_to'] = date_to.date().isoformat() if date_to else None
-    ret['date_to_ts'] = date_to.timestamp() if date_to else None
+    (ret['date_from'], ret['date_from_ts']) = parse_date('date_from')
+    (ret['date_to'], ret['date_to_ts']) = parse_date('date_to')
 
     return ret
 
