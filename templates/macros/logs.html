@@ -19,8 +19,9 @@
 			{% if extra %}
 			<th><abbr title="Damage per Minute">D/M</abbr></th>
 			<th><abbr title="Damage Taken per Minute">DT/M</abbr></th>
+			<th><abbr title="Healing Given per Minute ">HG/M</abbr></th>
+			<th><abbr title="Healing Recieved per Minute ">HR/M</abbr></th>
 			<th><abbr title="Accuracy">Acc</abbr></th>
-			<th><abbr title="Healing per Minute">H/M</abbr></th>
 			{% endif %}
 			<th>Date</th>
 		</tr>
@@ -49,8 +50,9 @@
 			{% if extra %}
 			<td>{{ log['dpm'] | int }}</td>
 			<td>{{ log['dtm'] | int if log['dtm'] != None }}</td>
+			<td>{{ log['hpm_given'] | int }}</td>
+			<td>{{ log['hpm_recieved'] | int }}</td>
 			<td>{{ "{:.0%}".format(log['acc']) if log['acc'] != None }}</td>
-			<td>{{ log['hpm'] | int }}</td>
 			{% endif %}
 			<td class="left date" timestamp="{{ log['time'] }}"></td>
 		</tr>

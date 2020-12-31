@@ -58,7 +58,7 @@ def get_player(endpoint, values):
 def get_logs(c, steamid, limit=100, offset=0):
     return c.cursor().execute(
         """SELECT
-               logid,
+               log.logid,
                title,
                map,
                classes,
@@ -73,7 +73,8 @@ def get_logs(c, steamid, limit=100, offset=0):
                log.dmg * 60.0 / log.duration AS dpm,
                log.dt * 60.0 / log.duration AS dtm,
                total(hits) / total(shots) AS acc,
-               healing * 60.0 / log.duration AS hpm,
+               total(hsg.healing) * 60.0 / log.duration AS hpm_given,
+               hsr.healing * 60.0 / log.duration AS hpm_recieved,
                time
            FROM log_wlt AS log
            JOIN map USING (mapid)
@@ -92,9 +93,11 @@ def get_logs(c, steamid, limit=100, offset=0):
                  WHERE steamid64 = ?
            ) USING (logid, steamid64)
            LEFT JOIN weapon_stats USING (logid, steamid64)
+           LEFT JOIN heal_stats AS hsg ON (hsg.healer=log.steamid64 AND hsg.logid=log.logid)
+           LEFT JOIN heal_stats AS hsr ON (hsr.healee=log.steamid64 AND hsr.logid=log.logid)
            WHERE steamid64 = ?
-           GROUP BY logid
-           ORDER BY logid DESC
+           GROUP BY log.logid
+           ORDER BY log.logid DESC
            LIMIT ? OFFSET ?;""", (steamid, steamid, limit, offset))
 
 @player.route('/')
@@ -191,13 +194,15 @@ def peers(steamid):
                    sum(CASE WHEN with THEN duration END) AS dpm,
                sum(CASE WHEN with THEN dt END) * 60.0 /
                    sum(CASE WHEN with THEN duration END) AS dtm,
-               sum(CASE WHEN with THEN healing END) * 60.0 /
-                   sum(CASE WHEN with THEN duration END) AS hpm,
+               sum(CASE WHEN with THEN healing_to END) * 60.0 /
+                   sum(CASE WHEN with THEN duration END) AS hpm_to,
+               sum(CASE WHEN with THEN healing_from END) * 60.0 /
+                   sum(CASE WHEN with THEN duration END) AS hpm_from,
                total(CASE WHEN with THEN duration END) as time_with,
                total(CASE WHEN against THEN duration END) as time_against
            FROM (
                SELECT
-                   logid,
+                   p1.logid,
                    p2.steamid64,
                    p1.teamid = p2.teamid AS with,
                    p1.teamid != p2.teamid AS against,
@@ -205,11 +210,20 @@ def peers(steamid):
                    p1.round_wins = p1.round_losses AS tie,
                    p1.dmg,
                    p1.dt,
-                   p1.healing,
+                   hs1.healing AS healing_to,
+                   hs2.healing AS healing_from,
                    p1.duration
                FROM log_wlt AS p1
                JOIN player_stats AS p2 USING (logid)
-               WHERE p1.steamid64 = ?
+               LEFT JOIN heal_stats AS hs1 ON (
+                   hs1.healer = p1.steamid64
+                   AND hs1.healee = p2.steamid64
+                   AND hs1.logid = p1.logid
+               ) LEFT JOIN heal_stats AS hs2 ON (
+                   hs2.healer = p2.steamid64
+                   AND hs2.healee = p1.steamid64
+                   AND hs2.logid = p1.logid
+               ) WHERE p1.steamid64 = ?
                   AND p2.steamid64 != p1.steamid64
                   AND p2.teamid NOTNULL
            ) JOIN player USING (steamid64)
@@ -260,7 +274,7 @@ def totals(steamid):
                total(headshots) AS headshots,
                total(headshots_hit) AS headshots_hit,
                total(sentries) AS sentries,
-               total(healing) AS healing,
+               total(hs.healing) AS healing,
                total(cpc) AS cpc,
                total(ic) AS ic,
                total(ubers) AS ubers,
@@ -273,9 +287,12 @@ def totals(steamid):
            JOIN format USING (formatid)
            JOIN map USING (mapid)
            LEFT JOIN medic_stats AS ms ON (
-               ps.logid=ms.logid
-               AND ps.steamid64=ms.steamid64)
-           LEFT JOIN class_stats AS cs ON (
+               ms.logid=ps.logid
+               AND ms.steamid64=ps.steamid64)
+           LEFT JOIN heal_stats AS hs ON (
+               hs.logid=ps.logid
+               AND hs.healer=ps.steamid64
+           ) LEFT JOIN class_stats AS cs ON (
                cs.logid=ps.logid
                AND cs.steamid64=ps.steamid64
                AND cs.duration * 1.5 >= log.duration
@@ -337,8 +354,10 @@ def trends(steamid):
                    sum(CASE WHEN log.dmg THEN log.duration END) OVER win AS dpm,
                sum(log.dt) OVER win * 60.0 /
                    sum(CASE WHEN log.dt THEN log.duration END) OVER win AS dtm,
-               sum(log.healing) OVER win * 60.0 /
-                   sum(CASE WHEN log.healing THEN log.duration END) OVER win AS hpm
+               sum(hsg.healing) OVER win * 60.0 /
+                   sum(CASE WHEN hsg.healing THEN log.duration END) OVER win AS hpm_given,
+               sum(hsr.healing) OVER win * 60.0 /
+                   sum(CASE WHEN hsr.healing THEN log.duration END) OVER win AS hpm_recieved
            FROM log_wlt AS log
            JOIN format USING (formatid)
            JOIN map USING (mapid)
@@ -347,6 +366,14 @@ def trends(steamid):
                AND cs.steamid64=log.steamid64
                AND cs.duration * 1.5 >= log.duration
            ) LEFT JOIN class USING (classid)
+           LEFT JOIN (SELECT
+                   logid,
+                   healer,
+                   sum(healing) AS healing
+               FROM heal_stats
+               GROUP BY logid, healer
+           ) AS hsg ON (hsg.logid=log.logid AND hsg.healer=log.steamid64)
+           LEFT JOIN heal_stats AS hsr ON (hsr.logid=log.logid AND hsr.healee=log.steamid64)
            WHERE log.steamid64 = ?
                AND class IS ifnull(?, class)
                AND format = ifnull(?, format)

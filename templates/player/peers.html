@@ -23,7 +23,8 @@
 				<th>Time Played Against</td>
 				<th><abbr title="Damage per Minute With">D/M With</abbr></th>
 				<th><abbr title="Damage Taken per Minute With">DT/M With</abbr></th>
-				<th><abbr title="Healing per Minute With">H/M With</abbr></th>
+				<th><abbr title="Healing per Minute done To">H/M To</abbr></th>
+				<th><abbr title="Healing per Minute gotten From">H/M From</abbr></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -44,7 +45,8 @@
 				<td>{{ peer['time_against'] | duration }}</td>
 				<td>{{ peer['dpm'] | int if peer['dpm'] != None }}</td>
 				<td>{{ peer['dtm'] | int if peer['dtm'] != None }}</td>
-				<td>{{ peer['hpm'] | int if peer['hpm'] != None }}</td>
+				<td>{{ peer['hpm_to'] | int if peer['hpm_to'] != None }}</td>
+				<td>{{ peer['hpm_from'] | int if peer['hpm_from'] != None }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

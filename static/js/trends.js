@@ -58,12 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	pm_config.data = {
 		json: data,
 		keys: {
-			value: ['dpm', 'dtm', 'hpm'],
+			value: ['dpm', 'dtm', 'hpm_given', 'hpm_recieved'],
 		},
 		names: {
 			dpm: "D/M",
 			dtm: "DT/M",
-			hpm: "HP/M",
+			hpm_given: "HG/M",
+			hpm_recieved: "HR/M",
 		},
 		onclick: onclick,
 	};
