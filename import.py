@@ -394,8 +394,8 @@ def delete_bogus_logs(c):
     c.execute("""CREATE TEMP TABLE bogus AS SELECT
                     DISTINCT logid
                  FROM temp.new_log
-                 JOIN weapon_stats USING (logid)
-                 WHERE dmg < 0;""")
+                 JOIN class_stats USING (logid)
+                 WHERE dmg < 0 OR dt < 0;""")
     for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
                   'player_stats', 'round'):
         c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM temp.bogus);".format(table))
