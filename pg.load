@@ -1,0 +1,7 @@
+load database
+     from sqlite:///home/sean/games/tf2/logs.db
+     into postgres:///trends
+
+with truncate, data only, reset sequences
+including only table names like '%'
+excluding table names like 'name_fts%';
