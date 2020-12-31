@@ -144,7 +144,7 @@ def import_log(c, logid, log):
             player['hr'] = None
         if not info.get('hasIntel'):
             player['ic'] = None
-        player['suicides'] = info.get('suicides')
+        player['suicides'] = player.get('suicides')
 
         c.execute("INSERT OR IGNORE INTO name (name) VALUES (:name)", player)
         c.execute("""INSERT INTO player_stats (
