@@ -55,6 +55,27 @@ def get_player(endpoint, values):
     else:
         flask.abort(404)
 
+def get_filters(args):
+    ret = {}
+
+    ret['class'] = args.get('class', None, str) or None
+    ret['format'] = args.get('format', None, str) or None
+    ret['map'] = args.get('map', None, str) or None
+
+    timezone = args.get('timezone', tz.UTC, tz.gettz)
+
+    def parse_date(name):
+        date = args.get(name, None, datetime.fromisoformat)
+        if date:
+            date.replace(tzinfo=timezone)
+            return (date.date().isoformat(), date.timestamp())
+        return (None, None)
+
+    (ret['date_from'], ret['date_from_ts']) = parse_date('date_from')
+    (ret['date_to'], ret['date_to_ts']) = parse_date('date_to')
+
+    return ret
+
 def get_logs(c, steamid, limit=100, offset=0):
     return c.cursor().execute(
         """SELECT
@@ -232,27 +253,6 @@ def peers(steamid):
            ORDER BY count(*) DESC
            LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
     return flask.render_template("player/peers.html", peers=peers, limit=limit, offset=offset)
-
-def get_filters(args):
-    ret = {}
-
-    ret['class'] = args.get('class', None, str) or None
-    ret['format'] = args.get('format', None, str) or None
-    ret['map'] = args.get('map', None, str) or None
-
-    timezone = args.get('timezone', tz.UTC, tz.gettz)
-
-    def parse_date(name):
-        date = args.get(name, None, datetime.fromisoformat)
-        if date:
-            date.replace(tzinfo=timezone)
-            return (date.date().isoformat(), date.timestamp())
-        return (None, None)
-
-    (ret['date_from'], ret['date_from_ts']) = parse_date('date_from')
-    (ret['date_to'], ret['date_to_ts']) = parse_date('date_to')
-
-    return ret
 
 @player.route('/totals')
 def totals(steamid):
