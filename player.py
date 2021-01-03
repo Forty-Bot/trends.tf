@@ -122,7 +122,7 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                cs.logid=log.logid
                AND cs.steamid64=log.steamid64
                AND cs.duration * 1.5 >= log.duration
-           ) LEFT JOIN class USING (classid)
+           ) LEFT JOIN class ON (class.classid=cs.classid)
            WHERE log.steamid64 = ?
                AND class IS ifnull(?, class)
                AND format = ifnull(?, format)
