@@ -3,7 +3,7 @@
 
 import flask
 import os
-import sqlite3
+import psycopg2, psycopg2.extras
 
 from steamid import SteamID
 
@@ -15,25 +15,13 @@ def db_connect(url):
     :rtype: sqlite.Connection
     """
 
-    sqlite3.register_adapter(SteamID, str)
-    c = sqlite3.connect(url, isolation_level=None, uri=True)
-    c.row_factory = sqlite3.Row
-    c.execute("PRAGMA foreign_keys = TRUE;")
-    c.execute("PRAGMA temp_store = MEMORY;")
+    psycopg2.extensions.register_adapter(SteamID, psycopg2.extensions.AsIs)
+    c = psycopg2.connect(url, cursor_factory=psycopg2.extras.DictCursor)
     return c
 
 def db_init(c):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
-        try:
-            c.execute("PRAGMA journal_mode = WAL;")
-            c.execute("PRAGMA synchronous = NORMAL;")
-            c.execute("PRAGMA auto_vacuum = FULL;")
-            c.execute("BEGIN;")
-            c.executescript(schema.read())
-            c.execute("COMMIT;")
-        # Don't worry if the database is locked
-        except sqlite3.OperationalError:
-            pass
+        c.cursor().execute(schema.read())
 
 def get_db():
     if not getattr(flask.g, 'db_conn', None):
