@@ -171,19 +171,26 @@ END;
 
 -- No ON DELETE because idk what to do for that
 
-CREATE VIEW IF NOT EXISTS log_wlt AS
+CREATE OR REPLACE VIEW log_wlt AS
 SELECT
-	log.*,
+	time,
+	duration,
+	title,
+	mapid,
+	red_score,
+	blue_score,
+	formatid,
+	duplicate_of,
 	round.*
 FROM log
 JOIN (SELECT
 		ps.*,
-		ifnull(sum(ps.teamid = round.winner), 0) AS round_wins,
-		ifnull(sum(ps.teamid != round.winner), 0) AS round_losses,
-		sum(round.winner ISNULL AND round.duration >= 60) AS round_ties
+		ifnull(sum((ps.teamid = round.winner)::INT), 0::BIGINT) AS round_wins,
+		ifnull(sum((ps.teamid != round.winner)::INT), 0::BIGINT) AS round_losses,
+		sum((round.winner ISNULL AND round.duration >= 60)::INT) AS round_ties
 	FROM round
 	JOIN player_stats AS ps USING (logid)
-	GROUP BY logid, steamid64
+	GROUP BY ps.logid, steamid64
 ) AS round USING (logid);
 
 CREATE TABLE IF NOT EXISTS medic_stats (
