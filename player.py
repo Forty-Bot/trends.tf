@@ -340,7 +340,7 @@ def weapons(steamid):
         """SELECT
                weapon,
                avg(ws.kills) as kills,
-               sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN class_stats.duration END) AS dpm,
+               sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg != 0 THEN class_stats.duration END) AS dpm,
                total(hits) / nullif(sum(shots), 0.0) AS acc
            FROM weapon_stats AS ws
            JOIN weapon USING (weaponid)
@@ -377,13 +377,13 @@ def trends(steamid):
                avg(log.deaths) OVER win AS deaths,
                avg(log.assists) OVER win AS assists,
                sum(log.dmg) OVER win * 60.0 /
-                   sum(CASE WHEN log.dmg THEN log.duration END) OVER win AS dpm,
+                   sum(CASE WHEN log.dmg != 0 THEN log.duration END) OVER win AS dpm,
                sum(log.dt) OVER win * 60.0 /
-                   sum(CASE WHEN log.dt THEN log.duration END) OVER win AS dtm,
+                   sum(CASE WHEN log.dt != 0 THEN log.duration END) OVER win AS dtm,
                sum(hsg.healing) OVER win * 60.0 /
-                   sum(CASE WHEN hsg.healing THEN log.duration END) OVER win AS hpm_given,
+                   sum(CASE WHEN hsg.healing != 0 THEN log.duration END) OVER win AS hpm_given,
                sum(hsr.healing) OVER win * 60.0 /
-                   sum(CASE WHEN hsr.healing THEN log.duration END) OVER win AS hpm_recieved
+                   sum(CASE WHEN hsr.healing != 0 THEN log.duration END) OVER win AS hpm_recieved
            FROM log_wlt AS log
            JOIN format USING (formatid)
            JOIN map USING (mapid)
