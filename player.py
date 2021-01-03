@@ -76,7 +76,7 @@ def get_filters(args):
 
     return ret
 
-def get_logs(c, steamid, limit=100, offset=0):
+def get_logs(c, steamid, filters, limit=100, offset=0):
     return c.cursor().execute(
         """SELECT
                log.logid,
@@ -116,10 +116,22 @@ def get_logs(c, steamid, limit=100, offset=0):
            LEFT JOIN weapon_stats USING (logid, steamid64)
            LEFT JOIN heal_stats AS hsg ON (hsg.healer=log.steamid64 AND hsg.logid=log.logid)
            LEFT JOIN heal_stats AS hsr ON (hsr.healee=log.steamid64 AND hsr.logid=log.logid)
-           WHERE steamid64 = ?
+           LEFT JOIN class_stats AS cs ON (
+               cs.logid=log.logid
+               AND cs.steamid64=log.steamid64
+               AND cs.duration * 1.5 >= log.duration
+           ) LEFT JOIN class USING (classid)
+           WHERE log.steamid64 = ?
+               AND class IS ifnull(?, class)
+               AND format = ifnull(?, format)
+               AND map LIKE ifnull(?, map)
+               AND time >= ifnull(?, time)
+               AND time <= ifnull(?, time)
            GROUP BY log.logid
            ORDER BY log.logid DESC
-           LIMIT ? OFFSET ?;""", (steamid, steamid, limit, offset))
+           LIMIT ? OFFSET ?;""",
+           (steamid, steamid, filters['class'], filters['format'], filters['map'],
+            filters['date_from_ts'], filters['date_to_ts'], limit, offset))
 
 @player.route('/')
 def overview(steamid):
@@ -185,16 +197,18 @@ def overview(steamid):
                GROUP BY steamid64, name
                ORDER BY count(*) DESC
                LIMIT 10""", (steamid,))
-    return flask.render_template("player/overview.html",
-                                 logs=get_logs(c, steamid, limit=25), classes=classes,
+    logs = get_logs(c, steamid, get_filters(flask.request.args), limit=25)
+    return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  event_stats=event_stats, aliases=aliases)
 
 @player.route('/logs')
 def logs(steamid):
         limit = flask.request.args.get('limit', 100, int)
         offset = flask.request.args.get('offset', 0, int)
-        logs = get_logs(get_db(), steamid, limit=limit, offset=offset).fetchall()
-        return flask.render_template("player/logs.html", logs=logs, limit=limit, offset=offset)
+        filters = get_filters(flask.request.args)
+        logs = get_logs(get_db(), steamid, filters, limit=limit, offset=offset).fetchall()
+        return flask.render_template("player/logs.html", logs=logs, filters=filters, limit=limit,
+                                     offset=offset)
 
 @player.route('/peers')
 def peers(steamid):
