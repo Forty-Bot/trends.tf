@@ -1,6 +1,33 @@
 -- SPDX-License-Identifier: AGPL-3.0-only
 -- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+-- Compatibility functions for migration from SQLite
+
+CREATE OR REPLACE FUNCTION ifnull(anyelement, anyelement) RETURNS anyelement
+	AS 'SELECT coalesce($1, $2)'
+	LANGUAGE SQL IMMUTABLE PARALLEL SAFE;
+
+CREATE OR REPLACE FUNCTION add(FLOAT, anyelement) RETURNS FLOAT
+	AS 'SELECT $1 + $2'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
+CREATE OR REPLACE AGGREGATE total(anyelement) (
+	SFUNC = add,
+	STYPE = FLOAT,
+	INITCOND = 0.0,
+	PARALLEL = SAFE
+);
+
+CREATE OR REPLACE FUNCTION concat(TEXT, anyelement) RETURNS TEXT
+	AS 'SELECT coalesce($1 || '','' || $2, $1, $2)'
+	LANGUAGE SQL IMMUTABLE PARALLEL SAFE;
+
+CREATE OR REPLACE AGGREGATE group_concat(anyelement) (
+	SFUNC = concat,
+	STYPE = TEXT,
+	PARALLEL = SAFE
+);
+
 CREATE TABLE IF NOT EXISTS format (
 	formatid SERIAL PRIMARY KEY,
 	format TEXT NOT NULL UNIQUE,
