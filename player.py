@@ -42,7 +42,7 @@ def get_player(endpoint, values):
                     sum(round_ties) AS round_ties,
                     sum(round_wins > round_losses) AS wins,
                     sum(round_wins < round_losses) AS losses,
-                    sum(round_wins == round_losses) AS ties
+                    sum(round_wins = round_losses) AS ties
                 FROM log_wlt
                 JOIN player USING (steamid64)
                 JOIN name ON (name.nameid=last_nameid)
@@ -149,7 +149,7 @@ def overview(steamid):
                    class,
                    sum(CASE WHEN mostly THEN round_wins > round_losses END) AS wins,
                    sum(CASE WHEN mostly THEN round_wins < round_losses END) AS losses,
-                   sum(CASE WHEN mostly THEN round_wins == round_losses END) AS ties,
+                   sum(CASE WHEN mostly THEN round_wins = round_losses END) AS ties,
                    total(duration) AS time,
                    sum(dmg) * 60.0 / sum(duration) AS dpm,
                    total(hits) / nullif(sum(shots), 0.0) AS acc
