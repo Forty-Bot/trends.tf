@@ -29,6 +29,7 @@ def get_player(endpoint, values):
     cur.execute(
         """SELECT
                *,
+               name,
                (wins + 0.5 * ties) /
                    (wins + losses + ties) AS winrate,
                (round_wins + 0.5 * round_ties) /
@@ -36,7 +37,6 @@ def get_player(endpoint, values):
            FROM (
                 SELECT
                     steamid64,
-                    name,
                     sum(round_wins) AS round_wins,
                     sum(round_losses) AS round_losses,
                     sum(round_ties) AS round_ties,
@@ -44,11 +44,11 @@ def get_player(endpoint, values):
                     sum(round_wins < round_losses) AS losses,
                     sum(round_wins = round_losses) AS ties
                 FROM log_wlt
-                JOIN player USING (steamid64)
-                JOIN name ON (name.nameid=last_nameid)
                 WHERE steamid64 = ?
                 GROUP BY steamid64
-           ) AS overview;""", (values['steamid'],))
+           ) AS overview
+           JOIN player USING (steamid64)
+           JOIN name ON (name.nameid=last_nameid);""", (values['steamid'],))
 
     for row in cur:
         flask.g.player = row
@@ -95,8 +95,8 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                log.assists,
                log.dmg * 60.0 / log.duration AS dpm,
                log.dt * 60.0 / log.duration AS dtm,
-               total(hits) / nullif(sum(shots), 0.0) AS acc
-               total(hsg.healing) * 60.0 / log.duration AS hpm_given,
+               acc,
+               hsg.healing * 60.0 / log.duration AS hpm_given,
                hsr.healing * 60.0 / log.duration AS hpm_recieved,
                time
            FROM log_wlt AS log
@@ -115,10 +115,24 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                  -- Duplicate of below, but sqlite is dumb...
                  WHERE steamid64 = ?
            ) AS classes USING (logid, steamid64)
-           LEFT JOIN weapon_stats USING (logid, steamid64)
-           LEFT JOIN heal_stats AS hsg ON (hsg.healer=log.steamid64 AND hsg.logid=log.logid)
-           LEFT JOIN heal_stats AS hsr ON (hsr.healee=log.steamid64 AND hsr.logid=log.logid)
-           LEFT JOIN class_stats AS cs ON (
+           LEFT JOIN (SELECT
+                   logid,
+                   steamid64,
+                   total(hits) / nullif(sum(shots), 0.0) AS acc
+               FROM weapon_stats
+               GROUP BY logid, steamid64
+           ) AS ws USING (logid, steamid64)
+           LEFT JOIN (SELECT
+                   logid,
+                   healer AS steamid64,
+                   total(healing) AS healing
+               FROM heal_stats
+               GROUP BY logid, healer
+           ) AS hsg USING (logid, steamid64)
+           LEFT JOIN heal_stats AS hsr ON (
+               hsr.logid=log.logid
+               AND hsr.healee=log.steamid64
+           ) LEFT JOIN class_stats AS cs ON (
                cs.logid=log.logid
                AND cs.steamid64=log.steamid64
                AND cs.duration * 1.5 >= log.duration
@@ -162,13 +176,20 @@ def overview(steamid):
                        round_losses,
                        cs.duration,
                        cs.dmg,
-                       sum(hits) AS hits,
-                       sum(shots) AS shots
+                       hits,
+                       shots
                    FROM log_wlt
                    JOIN class_stats cs USING (logid, steamid64)
-                   JOIN weapon_stats USING (logid, steamid64, classid)
+                   JOIN (SELECT
+                           logid,
+                           steamid64,
+                           classid,
+                           sum(hits) AS hits,
+                           sum(shots) AS shots
+                       FROM weapon_stats
+                       GROUP BY logid, steamid64, classid
+                   ) AS ws USING (logid, steamid64, classid)
                    WHERE steamid64 = ?
-                   GROUP BY logid, steamid64, classid
                ) AS classes USING (classid)
                GROUP BY classid
                ORDER BY classid
@@ -272,7 +293,7 @@ def peers(steamid):
            ) AS peers
            JOIN player USING (steamid64)
            JOIN name ON (name.nameid=last_nameid)
-           GROUP BY steamid64
+           GROUP BY steamid64, name
            ORDER BY count(*) DESC
            LIMIT ? OFFSET ?;""", (steamid, limit, offset))
     return flask.render_template("player/peers.html", peers=peers.fetchall(), limit=limit,
