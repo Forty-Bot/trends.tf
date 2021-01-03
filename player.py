@@ -48,7 +48,7 @@ def get_player(endpoint, values):
                 JOIN name ON (name.nameid=last_nameid)
                 WHERE steamid64 = ?
                 GROUP BY steamid64
-           );""", (values['steamid'],))
+           ) AS overview;""", (values['steamid'],))
 
     for row in cur:
         flask.g.player = row
@@ -114,7 +114,7 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                  JOIN class USING (classid)
                  -- Duplicate of below, but sqlite is dumb...
                  WHERE steamid64 = ?
-           ) USING (logid, steamid64)
+           ) AS classes USING (logid, steamid64)
            LEFT JOIN weapon_stats USING (logid, steamid64)
            LEFT JOIN heal_stats AS hsg ON (hsg.healer=log.steamid64 AND hsg.logid=log.logid)
            LEFT JOIN heal_stats AS hsr ON (hsr.healee=log.steamid64 AND hsr.logid=log.logid)
@@ -150,7 +150,7 @@ def overview(steamid):
                    sum(CASE WHEN mostly THEN round_wins > round_losses END) AS wins,
                    sum(CASE WHEN mostly THEN round_wins < round_losses END) AS losses,
                    sum(CASE WHEN mostly THEN round_wins == round_losses END) AS ties,
-                   total(duration) time,
+                   total(duration) AS time,
                    sum(dmg) * 60.0 / sum(duration) AS dpm,
                    total(hits) / sum(shots) AS acc
                FROM class
@@ -169,10 +169,10 @@ def overview(steamid):
                    JOIN weapon_stats USING (logid, steamid64, classid)
                    WHERE steamid64 = ?
                    GROUP BY logid, steamid64, classid
-               ) USING (classid)
+               ) AS classes USING (classid)
                GROUP BY classid
                ORDER BY classid
-           );""", (steamid,))
+           ) AS classes;""", (steamid,))
     event_stats = c.cursor()
     event_stats.execute(
             """SELECT
@@ -190,7 +190,8 @@ def overview(steamid):
                    SELECT *
                    FROM event
                    LEFT JOIN event_stats ON (event_stats.eventid=event.eventid AND steamid64=?)
-               ) GROUP BY event
+               ) AS events
+               GROUP BY event
                ORDER BY event DESC;""", (steamid,))
     aliases = c.cursor()
     aliases.execute(
@@ -268,7 +269,8 @@ def peers(steamid):
                ) WHERE p1.steamid64 = ?
                   AND p2.steamid64 != p1.steamid64
                   AND p2.teamid NOTNULL
-           ) JOIN player USING (steamid64)
+           ) AS peers
+           JOIN player USING (steamid64)
            JOIN name ON (name.nameid=last_nameid)
            GROUP BY steamid64
            ORDER BY count(*) DESC
