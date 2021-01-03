@@ -12,14 +12,17 @@ root = flask.Blueprint('root', __name__)
 @root.route('/')
 def index():
     c = get_db()
-    logstat = c.cursor().execute(
+    logstat = c.cursor()
+    logstat.execute(
         """SELECT
                count(*) AS count,
                max(time) AS newest,
                min(time) AS oldest
-           FROM log;""").fetchone()
-    players = c.cursor().execute("SELECT count(*) AS players FROM player;").fetchone()
-    return flask.render_template("index.html", logstat=logstat, players=players[0])
+           FROM log;""")
+    players = c.cursor()
+    players.execute("SELECT count(*) AS players FROM player;")
+    return flask.render_template("index.html", logstat=logstat.fetchone(),
+                                 players=players.fetchone()[0])
 
 @root.route('/search')
 def search():
@@ -30,7 +33,8 @@ def search():
 
     try:
         steamid = SteamID(q)
-        steamid = get_db().cursor().execute(
+        steamid = get_db().cursor()
+        steamid.execute(
             """SELECT steamid64
                FROM player_stats
                WHERE steamid64 = ?
@@ -43,7 +47,8 @@ def search():
     error = None
     results = []
     if len(q) >= 3:
-        results = get_db().cursor().execute(
+        results = get_db().cursor()
+        results.execute(
             """SELECT
                    steamid64,
                    name,
@@ -61,8 +66,8 @@ def search():
                ) JOIN player USING (steamid64)
                JOIN name ON (name.nameid=last_nameid)
                ORDER BY rank, last_logid
-               LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset)).fetchall()
+               LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset))
     else:
         error = "Searches must contain at least 3 characters"
-    return flask.render_template("search.html", q=q, results=results, error=error, offset=offset,
-                                 limit=limit)
+    return flask.render_template("search.html", q=q, results=results.fetchall(), error=error,
+                                 offset=offset, limit=limit)

@@ -25,7 +25,8 @@ def duration_filter(timestamp):
 @player.url_value_preprocessor
 def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
-    cur = get_db().cursor().execute(
+    cur = get_db().cursor()
+    cur.execute(
         """SELECT
                *,
                (wins + 0.5 * ties) /
@@ -77,7 +78,8 @@ def get_filters(args):
     return ret
 
 def get_logs(c, steamid, filters, limit=100, offset=0):
-    return c.cursor().execute(
+    logs = c.cursor()
+    logs.execute(
         """SELECT
                log.logid,
                title,
@@ -132,11 +134,13 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
            LIMIT ? OFFSET ?;""",
            (steamid, steamid, filters['class'], filters['format'], filters['map'],
             filters['date_from_ts'], filters['date_to_ts'], limit, offset))
+    return logs
 
 @player.route('/')
 def overview(steamid):
     c = get_db()
-    classes = c.cursor().execute(
+    classes = c.cursor()
+    classes.execute(
         """SELECT
                *,
                (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
@@ -169,7 +173,8 @@ def overview(steamid):
                GROUP BY classid
                ORDER BY classid
            );""", (steamid,))
-    event_stats = c.cursor().execute(
+    event_stats = c.cursor()
+    event_stats.execute(
             """SELECT
                    event,
                    avg(demoman) AS demoman,
@@ -187,7 +192,8 @@ def overview(steamid):
                    LEFT JOIN event_stats ON (event_stats.eventid=event.eventid AND steamid64=?)
                ) GROUP BY event
                ORDER BY event DESC;""", (steamid,))
-    aliases = c.cursor().execute(
+    aliases = c.cursor()
+    aliases.execute(
             """SELECT
                    name,
                    count(*) AS count
@@ -214,7 +220,8 @@ def logs(steamid):
 def peers(steamid):
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
-    peers = get_db().execute(
+    peers = get_db().cursor()
+    peers.execute(
         """SELECT
                steamid64,
                max(logid),
@@ -265,13 +272,15 @@ def peers(steamid):
            JOIN name ON (name.nameid=last_nameid)
            GROUP BY steamid64
            ORDER BY count(*) DESC
-           LIMIT ? OFFSET ?;""", (steamid, limit, offset)).fetchall()
-    return flask.render_template("player/peers.html", peers=peers, limit=limit, offset=offset)
+           LIMIT ? OFFSET ?;""", (steamid, limit, offset))
+    return flask.render_template("player/peers.html", peers=peers.fetchall(), limit=limit,
+                                 offset=offset)
 
 @player.route('/totals')
 def totals(steamid):
     filters = get_filters(flask.request.args)
-    totals = get_db().cursor().execute(
+    totals = get_db().cursor()
+    totals.execute(
         """SELECT
                count(*) AS logs,
                total(ps.kills) AS kills,
@@ -318,14 +327,14 @@ def totals(steamid):
                AND time >= ifnull(?, time)
                AND time <= ifnull(?, time);""",
         (steamid, filters['class'], filters['format'], filters['map'], filters['date_from_ts'],
-         filters['date_to_ts'])
-    ).fetchone()
-    return flask.render_template("player/totals.html", totals=totals, filters=filters)
+         filters['date_to_ts']))
+    return flask.render_template("player/totals.html", totals=totals.fetchone(), filters=filters)
 
 @player.route('/weapons')
 def weapons(steamid):
     filters = get_filters(flask.request.args)
-    weapons = get_db().cursor().execute(
+    weapons = get_db().cursor()
+    weapons.execute(
         """SELECT
                weapon,
                avg(ws.kills) as kills,
@@ -352,7 +361,8 @@ def weapons(steamid):
 @player.route('/trends')
 def trends(steamid):
     filters = get_filters(flask.request.args)
-    cur = get_db().cursor().execute(
+    cur = get_db().cursor()
+    cur.execute(
         """SELECT
                log.logid,
                time,
