@@ -248,21 +248,23 @@ def peers(steamid):
                steamid64,
                max(logid),
                name,
-               total(with) AS with,
+               total("with") AS with,
                total(against) AS against,
-               (sum(CASE WHEN with THEN win END) +
-                   0.5 * sum(CASE WHEN with THEN tie END)) / sum(with) AS winrate_with,
+               (sum(CASE WHEN "with" THEN win END) +
+                   0.5 * sum(CASE WHEN "with" THEN tie END)) /
+                   sum("with") AS winrate_with,
                (sum(CASE WHEN against THEN win END) +
-                   0.5 * sum(CASE WHEN against THEN tie END)) / sum(against) AS winrate_against,
-               sum(CASE WHEN with THEN dmg END) * 60.0 /
-                   sum(CASE WHEN with THEN duration END) AS dpm,
-               sum(CASE WHEN with THEN dt END) * 60.0 /
-                   sum(CASE WHEN with THEN duration END) AS dtm,
-               sum(CASE WHEN with THEN healing_to END) * 60.0 /
-                   sum(CASE WHEN with THEN duration END) AS hpm_to,
-               sum(CASE WHEN with THEN healing_from END) * 60.0 /
-                   sum(CASE WHEN with THEN duration END) AS hpm_from,
-               total(CASE WHEN with THEN duration END) as time_with,
+                   0.5 * sum(CASE WHEN against THEN tie END)) /
+                   sum(against) AS winrate_against,
+               sum(CASE WHEN "with" THEN dmg END) * 60.0 /
+                   sum(CASE WHEN "with" THEN duration END) AS dpm,
+               sum(CASE WHEN "with" THEN dt END) * 60.0 /
+                   sum(CASE WHEN "with" THEN duration END) AS dtm,
+               sum(CASE WHEN "with" THEN healing_to END) * 60.0 /
+                   sum(CASE WHEN "with" THEN duration END) AS hpm_to,
+               sum(CASE WHEN "with" THEN healing_from END) * 60.0 /
+                   sum(CASE WHEN "with" THEN duration END) AS hpm_from,
+               total(CASE WHEN "with" THEN duration END) as time_with,
                total(CASE WHEN against THEN duration END) as time_against
            FROM (
                SELECT
