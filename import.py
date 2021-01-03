@@ -53,7 +53,7 @@ def import_log(c, logid, log):
         info['red_score'] = info['Red']['score']
         info['blue_score'] = info['Blue']['score']
 
-    c.execute("INSERT OR IGNORE INTO map (map) VALUES (:map)", info)
+    c.execute("INSERT INTO map (map) VALUES (:map) ON CONFLICT DO NOTHING;", info)
     c.execute("""INSERT INTO log (
                      logid, time, duration, title, mapid, red_score, blue_score
                  ) VALUES (
@@ -146,7 +146,7 @@ def import_log(c, logid, log):
             player['ic'] = None
         player['suicides'] = player.get('suicides')
 
-        c.execute("INSERT OR IGNORE INTO name (name) VALUES (:name)", player)
+        c.execute("INSERT INTO name (name) VALUES (:name) ON CONFLICT DO NOTHING;", player)
         c.execute("""INSERT INTO player_stats (
                          logid, steamid64, teamid, nameid, kills, assists, deaths, suicides, dmg,
                          dmg_real, dt, dt_real, hr, lks, airshots, medkits, medkits_hp, backstabs,
@@ -271,7 +271,8 @@ def import_log(c, logid, log):
                     weapon['shots'] = None
                     weapon['hits'] = None
 
-                c.execute("INSERT OR IGNORE INTO weapon (weapon) VALUES (:name)", weapon)
+                c.execute("INSERT INTO weapon (weapon) VALUES (:name) ON CONFLICT DO NOTHING;",
+                          weapon)
                 c.execute("""INSERT INTO weapon_stats (
                                  logid, steamid64, classid, weaponid, kills, dmg, avg_dmg, shots,
                                  hits
@@ -296,7 +297,7 @@ def import_log(c, logid, log):
                 first = False
 
 
-                c.execute("INSERT OR IGNORE INTO name (name) VALUES (:name)", msg)
+                c.execute("INSERT INTO name (name) VALUES (:name) ON CONFLICT DO NOTHING;", msg)
                 c.execute("""INSERT INTO player_stats (
                                logid, steamid64, nameid, kills, assists, deaths, dmg, lks, healing
                            ) VALUES (
@@ -324,8 +325,9 @@ def import_log(c, logid, log):
                 # Sometimes we get the same row more than once (e.g. with different text
                 # representations of the same steamid). It appears that later rows are a result of
                 # healing being logged more than once, and aren't distinct instances of healing.
-                c.execute("""INSERT OR IGNORE INTO heal_stats (logid, healer, healee, healing)
-                             VALUES (?, ?, ?, ?);""",
+                c.execute("""INSERT INTO heal_stats (logid, healer, healee, healing)
+                             VALUES (?, ?, ?, ?)
+                             ON CONFLICT DO NOTHING;""",
                           (logid, healer, healee, healing))
             # Sometimes a player only shows up in rounds and healspread...
             except sqlite3.IntegrityError:
