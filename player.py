@@ -47,8 +47,8 @@ def get_player(endpoint, values):
                 WHERE steamid64 = %s
                 GROUP BY steamid64
            ) AS overview
-           JOIN player USING (steamid64)
-           JOIN name ON (name.nameid=last_nameid);""", (values['steamid'],))
+           JOIN player_last USING (steamid64)
+           JOIN name USING (nameid);""", (values['steamid'],))
 
     for row in cur:
         flask.g.player = row
@@ -245,7 +245,6 @@ def peers(steamid):
     peers.execute(
         """SELECT
                steamid64,
-               max(logid),
                name,
                total("with"::INT) AS with,
                total(against::INT) AS against,
@@ -292,8 +291,8 @@ def peers(steamid):
                   AND p2.steamid64 != p1.steamid64
                   AND p2.teamid NOTNULL
            ) AS peers
-           JOIN player USING (steamid64)
-           JOIN name ON (name.nameid=last_nameid)
+           JOIN player_last USING (steamid64)
+           JOIN name USING (nameid)
            GROUP BY steamid64, name
            ORDER BY count(*) DESC
            LIMIT %s OFFSET %s;""", (steamid, limit, offset))

@@ -98,11 +98,8 @@ CREATE TABLE IF NOT EXISTS name (
 
 CREATE INDEX IF NOT EXISTS name_fts ON name USING GIN (to_tsvector('english', name));
 
--- Automatically updated via triggers
 CREATE TABLE IF NOT EXISTS player (
-	steamid64 BIGINT PRIMARY KEY,
-	last_logid INT REFERENCES log (logid) NOT NULL, -- Most recent log
-	last_nameid INT NOT NULL REFERENCES name (nameid) -- Most recent name
+	steamid64 BIGINT PRIMARY KEY
 );
 
 CREATE TABLE IF NOT EXISTS player_stats (
@@ -141,24 +138,20 @@ CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid, steamid64,
 -- Covering index for name FTS queries
 CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats (nameid, steamid64);
 
-CREATE TRIGGER IF NOT EXISTS player_insert BEFORE INSERT ON player_stats BEGIN
-	INSERT INTO player (steamid64, last_nameid, last_logid)
-	VALUES (new.steamid64, new.nameid, new.logid)
-	ON CONFLICT (steamid64) DO
-		UPDATE SET
-			last_nameid=new.nameid,
-			last_logid=new.logid
-		WHERE new.logid > last_logid;
-END;
-
-CREATE TRIGGER IF NOT EXISTS player_update AFTER UPDATE ON player_stats BEGIN
-	UPDATE player SET
-		last_nameid=new.nameid,
-		last_logid=new.logid
-	WHERE old.logid = last_logid;
-END;
-
--- No ON DELETE because idk what to do for that
+CREATE OR REPLACE VIEW player_last AS
+SELECT
+	logid,
+	p.steamid64,
+	nameid
+FROM player AS p
+CROSS JOIN LATERAL (SELECT
+		logid,
+		nameid
+	FROM player_stats AS ps
+	WHERE ps.steamid64 = p.steamid64
+	ORDER BY logid DESC
+	LIMIT 1
+) AS last;
 
 CREATE OR REPLACE VIEW log_wlt AS
 SELECT
