@@ -95,7 +95,7 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                log.assists,
                log.dmg * 60.0 / log.duration AS dpm,
                log.dt * 60.0 / log.duration AS dtm,
-               total(hits) / total(shots) AS acc,
+               total(hits) / nullif(sum(shots), 0.0) AS acc
                total(hsg.healing) * 60.0 / log.duration AS hpm_given,
                hsr.healing * 60.0 / log.duration AS hpm_recieved,
                time
@@ -152,7 +152,7 @@ def overview(steamid):
                    sum(CASE WHEN mostly THEN round_wins == round_losses END) AS ties,
                    total(duration) AS time,
                    sum(dmg) * 60.0 / sum(duration) AS dpm,
-                   total(hits) / sum(shots) AS acc
+                   total(hits) / nullif(sum(shots), 0.0) AS acc
                FROM class
                LEFT JOIN (
                    SELECT
@@ -341,7 +341,7 @@ def weapons(steamid):
                weapon,
                avg(ws.kills) as kills,
                sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg THEN class_stats.duration END) AS dpm,
-               total(hits) / sum(shots) AS acc
+               total(hits) / nullif(sum(shots), 0.0) AS acc
            FROM weapon_stats AS ws
            JOIN weapon USING (weaponid)
            JOIN class_stats USING (logid, steamid64, classid)
