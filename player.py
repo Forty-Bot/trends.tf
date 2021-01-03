@@ -40,11 +40,11 @@ def get_player(endpoint, values):
                     sum(round_wins) AS round_wins,
                     sum(round_losses) AS round_losses,
                     sum(round_ties) AS round_ties,
-                    sum(round_wins > round_losses) AS wins,
-                    sum(round_wins < round_losses) AS losses,
-                    sum(round_wins = round_losses) AS ties
+                    sum((round_wins > round_losses)::INT) AS wins,
+                    sum((round_wins < round_losses)::INT) AS losses,
+                    sum((round_wins = round_losses)::INT) AS ties
                 FROM log_wlt
-                WHERE steamid64 = ?
+                WHERE steamid64 = %s
                 GROUP BY steamid64
            ) AS overview
            JOIN player USING (steamid64)
@@ -113,7 +113,7 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                  FROM class_stats
                  JOIN class USING (classid)
                  -- Duplicate of below, but sqlite is dumb...
-                 WHERE steamid64 = ?
+                 WHERE steamid64 = %s
            ) AS classes USING (logid, steamid64)
            LEFT JOIN (SELECT
                    logid,
@@ -137,15 +137,14 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                AND cs.steamid64=log.steamid64
                AND cs.duration * 1.5 >= log.duration
            ) LEFT JOIN class ON (class.classid=cs.classid)
-           WHERE log.steamid64 = ?
-               AND class IS ifnull(?, class)
-               AND format = ifnull(?, format)
-               AND map LIKE ifnull(?, map)
-               AND time >= ifnull(?, time)
-               AND time <= ifnull(?, time)
-           GROUP BY log.logid
+           WHERE log.steamid64 = %s
+               AND class IS NOT DISTINCT FROM ifnull(%s, class)
+               AND format = ifnull(%s, format)
+               AND map LIKE ifnull(%s, map)
+               AND time >= ifnull(%s, time)
+               AND time <= ifnull(%s, time)
            ORDER BY log.logid DESC
-           LIMIT ? OFFSET ?;""",
+           LIMIT %s OFFSET %s;""",
            (steamid, steamid, filters['class'], filters['format'], filters['map'],
             filters['date_from_ts'], filters['date_to_ts'], limit, offset))
     return logs
@@ -161,9 +160,9 @@ def overview(steamid):
            FROM (
                SELECT
                    class,
-                   sum(CASE WHEN mostly THEN round_wins > round_losses END) AS wins,
-                   sum(CASE WHEN mostly THEN round_wins < round_losses END) AS losses,
-                   sum(CASE WHEN mostly THEN round_wins = round_losses END) AS ties,
+                   sum(CASE WHEN mostly THEN (round_wins > round_losses)::INT END) AS wins,
+                   sum(CASE WHEN mostly THEN (round_wins < round_losses)::INT END) AS losses,
+                   sum(CASE WHEN mostly THEN (round_wins = round_losses)::INT END) AS ties,
                    total(duration) AS time,
                    sum(dmg) * 60.0 / sum(duration) AS dpm,
                    total(hits) / nullif(sum(shots), 0.0) AS acc
@@ -189,7 +188,7 @@ def overview(steamid):
                        FROM weapon_stats
                        GROUP BY logid, steamid64, classid
                    ) AS ws USING (logid, steamid64, classid)
-                   WHERE steamid64 = ?
+                   WHERE steamid64 = %s
                ) AS classes USING (classid)
                GROUP BY classid
                ORDER BY classid
@@ -210,7 +209,7 @@ def overview(steamid):
                FROM (
                    SELECT *
                    FROM event
-                   LEFT JOIN event_stats ON (event_stats.eventid=event.eventid AND steamid64=?)
+                   LEFT JOIN event_stats ON (event_stats.eventid=event.eventid AND steamid64=%s)
                ) AS events
                GROUP BY event
                ORDER BY event DESC;""", (steamid,))
@@ -221,7 +220,7 @@ def overview(steamid):
                    count(*) AS count
                FROM player_stats
                JOIN name USING (nameid)
-               WHERE steamid64 = ?
+               WHERE steamid64 = %s
                GROUP BY steamid64, name
                ORDER BY count(*) DESC
                LIMIT 10""", (steamid,))
@@ -248,14 +247,14 @@ def peers(steamid):
                steamid64,
                max(logid),
                name,
-               total("with") AS with,
-               total(against) AS against,
+               total("with"::INT) AS with,
+               total(against::INT) AS against,
                (sum(CASE WHEN "with" THEN win END) +
                    0.5 * sum(CASE WHEN "with" THEN tie END)) /
-                   sum("with") AS winrate_with,
+                   sum("with"::INT) AS winrate_with,
                (sum(CASE WHEN against THEN win END) +
                    0.5 * sum(CASE WHEN against THEN tie END)) /
-                   sum(against) AS winrate_against,
+                   sum(against::INT) AS winrate_against,
                sum(CASE WHEN "with" THEN dmg END) * 60.0 /
                    sum(CASE WHEN "with" THEN duration END) AS dpm,
                sum(CASE WHEN "with" THEN dt END) * 60.0 /
@@ -272,8 +271,8 @@ def peers(steamid):
                    p2.steamid64,
                    p1.teamid = p2.teamid AS with,
                    p1.teamid != p2.teamid AS against,
-                   p1.round_wins > p1.round_losses AS win,
-                   p1.round_wins = p1.round_losses AS tie,
+                   (p1.round_wins > p1.round_losses)::INT AS win,
+                   (p1.round_wins = p1.round_losses)::INT AS tie,
                    p1.dmg,
                    p1.dt,
                    hs1.healing AS healing_to,
@@ -289,7 +288,7 @@ def peers(steamid):
                    hs2.healer = p2.steamid64
                    AND hs2.healee = p1.steamid64
                    AND hs2.logid = p1.logid
-               ) WHERE p1.steamid64 = ?
+               ) WHERE p1.steamid64 = %s
                   AND p2.steamid64 != p1.steamid64
                   AND p2.teamid NOTNULL
            ) AS peers
@@ -297,7 +296,7 @@ def peers(steamid):
            JOIN name ON (name.nameid=last_nameid)
            GROUP BY steamid64, name
            ORDER BY count(*) DESC
-           LIMIT ? OFFSET ?;""", (steamid, limit, offset))
+           LIMIT %s OFFSET %s;""", (steamid, limit, offset))
     return flask.render_template("player/peers.html", peers=peers.fetchall(), limit=limit,
                                  offset=offset)
 
@@ -345,12 +344,12 @@ def totals(steamid):
                AND cs.steamid64=ps.steamid64
                AND cs.duration * 1.5 >= log.duration
            ) LEFT JOIN class USING (classid)
-           WHERE ps.steamid64 = ?
-               AND class IS ifnull(?, class)
-               AND format = ifnull(?, format)
-               AND map LIKE ifnull(?, map)
-               AND time >= ifnull(?, time)
-               AND time <= ifnull(?, time);""",
+           WHERE ps.steamid64 = %s
+               AND class IS NOT DISTINCT FROM ifnull(%s, class)
+               AND format = ifnull(%s, format)
+               AND map LIKE ifnull(%s, map)
+               AND time >= ifnull(%s, time)
+               AND time <= ifnull(%s, time);""",
         (steamid, filters['class'], filters['format'], filters['map'], filters['date_from_ts'],
          filters['date_to_ts']))
     return flask.render_template("player/totals.html", totals=totals.fetchone(), filters=filters)
@@ -372,12 +371,12 @@ def weapons(steamid):
            JOIN log USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)
-           WHERE steamid64 = ?
-               AND class = ifnull(?, class)
-               AND format = ifnull(?, format)
-               AND map LIKE ifnull(?, map)
-               AND time >= ifnull(?, time)
-               AND time <= ifnull(?, time)
+           WHERE steamid64 = %s
+               AND class IS NOT DISTINCT FROM ifnull(%s, class)
+               AND format = ifnull(%s, format)
+               AND map LIKE ifnull(%s, map)
+               AND time >= ifnull(%s, time)
+               AND time <= ifnull(%s, time)
            GROUP BY weapon;""",
         (steamid, filters['class'], filters['format'], filters['map'], filters['date_from_ts'],
          filters['date_to_ts']))
@@ -391,8 +390,8 @@ def trends(steamid):
         """SELECT
                log.logid,
                time,
-               (sum(round_wins > round_losses) OVER win +
-                   0.5 * sum(round_wins = round_losses) OVER win) /
+               (sum((round_wins > round_losses)::INT) OVER win +
+                   0.5 * sum((round_wins = round_losses)::INT) OVER win) /
                    count(*) OVER win AS winrate,
                (sum(round_wins + 0.5 * round_ties) OVER win)
                    / sum(round_wins + round_losses + round_ties) OVER win AS round_winrate,
@@ -423,13 +422,12 @@ def trends(steamid):
                GROUP BY logid, healer
            ) AS hsg ON (hsg.logid=log.logid AND hsg.healer=log.steamid64)
            LEFT JOIN heal_stats AS hsr ON (hsr.logid=log.logid AND hsr.healee=log.steamid64)
-           WHERE log.steamid64 = ?
-               AND class IS ifnull(?, class)
-               AND format = ifnull(?, format)
-               AND map LIKE ifnull(?, map)
-               AND time >= ifnull(?, time)
-               AND time <= ifnull(?, time)
-           GROUP BY log.logid, log.steamid64
+           WHERE log.steamid64 = %s
+               AND class IS NOT DISTINCT FROM ifnull(%s, class)
+               AND format = ifnull(%s, format)
+               AND map LIKE ifnull(%s, map)
+               AND time >= ifnull(%s, time)
+               AND time <= ifnull(%s, time)
            WINDOW win AS (
                PARTITION BY log.steamid64
                ORDER BY log.logid
