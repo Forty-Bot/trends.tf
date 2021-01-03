@@ -147,14 +147,17 @@ END;
 CREATE VIEW IF NOT EXISTS log_wlt AS
 SELECT
 	log.*,
-	ps.*,
-	ifnull(sum(ps.teamid = round.winner), 0) AS round_wins,
-	ifnull(sum(ps.teamid != round.winner), 0) AS round_losses,
-	sum(round.winner ISNULL AND round.duration >= 60) AS round_ties
+	round.*
 FROM log
-JOIN round USING (logid)
-JOIN player_stats AS ps USING (logid)
-GROUP BY logid, steamid64;
+JOIN (SELECT
+		ps.*,
+		ifnull(sum(ps.teamid = round.winner), 0) AS round_wins,
+		ifnull(sum(ps.teamid != round.winner), 0) AS round_losses,
+		sum(round.winner ISNULL AND round.duration >= 60) AS round_ties
+	FROM round
+	JOIN player_stats AS ps USING (logid)
+	GROUP BY logid, steamid64
+) AS round USING (logid);
 
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,
