@@ -9,7 +9,7 @@ from root import root
 from sql import db_connect, db_init, get_db, put_db
 
 class DefaultConfig:
-    DATABASE = "file:logs.db?cache=shared"
+    DATABASE = "postgresql://localhost/trends"
 
 def create_app():
     app = flask.Flask(__name__)
