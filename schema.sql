@@ -96,18 +96,7 @@ CREATE TABLE IF NOT EXISTS name (
 	name TEXT NOT NULL UNIQUE
 );
 
--- FTS "index"
-CREATE VIRTUAL TABLE IF NOT EXISTS name_fts USING fts5 (name, content=name, content_rowid=nameid);
-CREATE TRIGGER IF NOT EXISTS name_insert AFTER INSERT ON name BEGIN
-	INSERT INTO name_fts(rowid, name) VALUES (new.nameid, new.name);
-END;
-CREATE TRIGGER IF NOT EXISTS name_update AFTER UPDATE ON name BEGIN
-	INSERT INTO name_fts (name_fts, rowid) VALUES ('delete', old.nameid);
-	INSERT INTO name_fts (rowid, name) VALUES (new.nameid, new.name);
-END;
-CREATE TRIGGER IF NOT EXISTS name_delete AFTER DELETE ON name BEGIN
-	INSERT INTO name_fts (name_fts, rowid) VALUES ('delete', old.nameid);
-END;
+CREATE INDEX IF NOT EXISTS name_fts ON name USING GIN (to_tsvector('english', name));
 
 -- Automatically updated via triggers
 CREATE TABLE IF NOT EXISTS player (

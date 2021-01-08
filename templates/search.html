@@ -14,7 +14,7 @@
 		{% for player in results %}
 			<li><a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
 				{{ player['name'] }}
-			</a>({{ player['aliases'] }})</li>
+			</a>({{ ", ".join(player['aliases']) }})</li>
 		{% endfor %}
 	</ul>
 	{{ navigation(results, "{}?q={}&".format(request.path, q), limit, offset) }}
