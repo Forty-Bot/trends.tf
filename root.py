@@ -33,13 +33,13 @@ def search():
 
     try:
         steamid = SteamID(q)
-        steamid = get_db().cursor()
-        steamid.execute(
+        cur = get_db().cursor()
+        cur.execute(
             """SELECT steamid64
                FROM player_stats
-               WHERE steamid64 = ?
+               WHERE steamid64 = %s
                LIMIT 1""", (steamid,))
-        for (steamid,) in steamid:
+        for (steamid,) in cur:
             return flask.redirect(flask.url_for('player.overview', steamid=steamid), 302)
     except ValueError:
         pass
@@ -51,23 +51,37 @@ def search():
         results.execute(
             """SELECT
                    steamid64,
-                   name,
+                   name AS name,
                    aliases
-               FROM (
-                   SELECT
+               FROM (SELECT
                        steamid64,
-                       min(rank) AS rank,
-                       group_concat(DISTINCT name) AS aliases
-                   FROM name_fts AS n
-                   JOIN player_stats AS ps ON (ps.nameid=n.rowid)
-                   WHERE name_fts MATCH ?
+                       array_agg(DISTINCT name) AS aliases,
+                       max(rank) AS rank
+                   FROM (SELECT
+                           steamid64,
+                           name,
+                           ts_rank(name_vector, query) AS rank
+                       FROM (SELECT
+                               nameid,
+                               name,
+                               to_tsvector('english', name) AS name_vector
+                           FROM name
+                       ) AS name
+                       JOIN (SELECT
+                               phraseto_tsquery('english', %s) AS query
+                       ) AS query ON (TRUE)
+                       JOIN player_stats USING (nameid)
+                       WHERE query @@ name_vector
+                       ORDER BY rank DESC
+                   ) AS matches
                    GROUP BY steamid64
-                   ORDER BY rank
-               ) JOIN player USING (steamid64)
+               ) AS matches
+               JOIN player USING (steamid64)
                JOIN name ON (name.nameid=last_nameid)
-               ORDER BY rank, last_logid
-               LIMIT ? OFFSET ?;""", ('"{}"'.format(q), limit, offset))
+               ORDER BY rank DESC, last_logid
+               LIMIT %s OFFSET %s;""", (q, limit, offset))
+        results = results.fetchall()
     else:
         error = "Searches must contain at least 3 characters"
-    return flask.render_template("search.html", q=q, results=results.fetchall(), error=error,
+    return flask.render_template("search.html", q=q, results=results, error=error,
                                  offset=offset, limit=limit)
