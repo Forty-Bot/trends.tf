@@ -78,7 +78,7 @@ def import_log(c, logid, log):
         round['seq'] = seq
         round['time'] = round.get('start_time')
         # Some rounds have completely bogus times
-        if round['time'] is not None and abs(round['time'] - info['date']) > 24 * 60 * 60:
+        if round['time'] is None or abs(round['time'] - info['date']) > 24 * 60 * 60:
             round['time'] = info['date']
 
         round['firstcap'] = round.get('firstcap')
