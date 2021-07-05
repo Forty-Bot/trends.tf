@@ -1,6 +1,6 @@
 #!/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
+# Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import argparse
 from datetime import datetime
@@ -23,7 +23,9 @@ def filter_logids(c, logids):
     """
 
     for logid in logids:
-        for _ in c.execute("SELECT 1 FROM log WHERE logid=?", (logid,)):
+        cur = c.cursor()
+        cur.execute("SELECT 1 FROM log WHERE logid=%s", (logid,))
+        for _ in cur:
             break
         else:
             yield logid
@@ -53,12 +55,12 @@ def import_log(c, logid, log):
         info['red_score'] = info['Red']['score']
         info['blue_score'] = info['Blue']['score']
 
-    c.execute("INSERT INTO map (map) VALUES (:map) ON CONFLICT DO NOTHING;", info)
+    c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", info)
     c.execute("""INSERT INTO log (
                      logid, time, duration, title, mapid, red_score, blue_score
                  ) VALUES (
-                     :logid, :date, :total_length, :title,
-                     (SELECT mapid FROM map WHERE map = :map), :red_score, :blue_score
+                     %(logid)s, %(date)s, %(total_length)s, %(title)s,
+                     (SELECT mapid FROM map WHERE map = %(map)s), %(red_score)s, %(blue_score)s
                  );""",
               info)
 
@@ -100,10 +102,11 @@ def import_log(c, logid, log):
                          logid, seq, time, duration, winner, firstcap, red_score, blue_score,
                          red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
                      ) VALUES (
-                         :logid, :seq, :start_time, :length,
-                         (SELECT teamid FROM team WHERE team = :winner),
-                         (SELECT teamid FROM team WHERE team = :firstcap), :red_score, :blue_score,
-                         :red_kills, :blue_kills, :red_dmg, :blue_dmg, :red_ubers, :blue_ubers
+                         %(logid)s, %(seq)s, %(start_time)s, %(length)s,
+                         (SELECT teamid FROM team WHERE team = %(winner)s),
+                         (SELECT teamid FROM team WHERE team = %(firstcap)s), %(red_score)s,
+                         %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s, %(blue_dmg)s,
+                         %(red_ubers)s, %(blue_ubers)s
                      );""", round)
 
     for steamid_str, player in log['players'].items():
@@ -146,17 +149,17 @@ def import_log(c, logid, log):
             player['ic'] = None
         player['suicides'] = player.get('suicides')
 
-        c.execute("INSERT INTO name (name) VALUES (:name) ON CONFLICT DO NOTHING;", player)
+        c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", player)
         c.execute("""INSERT INTO player_stats (
                          logid, steamid64, teamid, nameid, kills, assists, deaths, suicides, dmg,
                          dmg_real, dt, dt_real, hr, lks, airshots, medkits, medkits_hp, backstabs,
                          headshots, headshots_hit, sentries, healing, cpc, ic
                      ) VALUES (
-                         :logid, :steamid, (SELECT teamid FROM team WHERE team = :team),
-                         (SELECT nameid FROM name WHERE name = :name), :kills, :assists, :deaths,
-                         :suicides, :dmg, :dmg_real, :dt, :dt_real, :hr, :lks, :as, :medkits,
-                         :medkits_hp, :backstabs, :headshots, :headshots_hit, :sentries, :heal,
-                         :cpc, :ic
+                         %(logid)s, %(steamid)s, (SELECT teamid FROM team WHERE team = %(team)s),
+                         (SELECT nameid FROM name WHERE name = %(name)s), %(kills)s, %(assists)s,
+                         %(deaths)s, %(suicides)s, %(dmg)s, %(dmg_real)s, %(dt)s, %(dt_real)s,
+                         %(hr)s, %(lks)s, %(as)s, %(medkits)s, %(medkits_hp)s, %(backstabs)s,
+                         %(headshots)s, %(headshots_hit)s, %(sentries)s, %(heal)s, %(cpc)s, %(ic)s
                      );""", player)
 
         for (prop, event) in (('classkills', 'kill'), ('classdeaths', 'death'),
@@ -182,9 +185,10 @@ def import_log(c, logid, log):
                              logid, steamid64, eventid, demoman, engineer, heavyweapons, medic,
                              pyro, scout, sniper, soldier, spy
                          ) VALUES (
-                             :logid, :steamid, (SELECT eventid FROM event WHERE event = :event),
-                             :demoman, :engineer, :heavyweapons, :medic, :pyro, :scout, :sniper,
-                             :soldier, :spy
+                             %(logid)s, %(steamid)s,
+                             (SELECT eventid FROM event WHERE event = %(event)s), %(demoman)s,
+                             %(engineer)s, %(heavyweapons)s, %(medic)s, %(pyro)s, %(scout)s,
+                             %(sniper)s, %(soldier)s, %(spy)s
                          );""", events)
 
         for cls in player['class_stats']:
@@ -225,11 +229,12 @@ def import_log(c, logid, log):
                                  avg_time_to_build, avg_uber_duration, deaths_after_uber,
                                  deaths_before_uber
                              ) VALUES (
-                                 :logid, :steamid, :ubers, :medigun_ubers, :kritz_ubers,
-                                 :other_ubers, :drops, :advantages_lost,
-                                 :biggest_advantage_lost, :avg_time_before_healing,
-                                 :avg_time_before_using, :avg_time_to_build, :avg_uber_length,
-                                 :deaths_within_20s_after_uber, :deaths_with_95_99_uber
+                                 %(logid)s, %(steamid)s, %(ubers)s, %(medigun_ubers)s,
+                                 %(kritz_ubers)s, %(other_ubers)s, %(drops)s, %(advantages_lost)s,
+                                 %(biggest_advantage_lost)s, %(avg_time_before_healing)s,
+                                 %(avg_time_before_using)s, %(avg_time_to_build)s,
+                                 %(avg_uber_length)s, %(deaths_within_20s_after_uber)s,
+                                 %(deaths_with_95_99_uber)s
                             );""", medic)
 
             cls['logid'] = logid
@@ -243,8 +248,9 @@ def import_log(c, logid, log):
             c.execute("""INSERT INTO class_stats (
                              logid, steamid64, classid, kills, assists, deaths, dmg, duration
                          ) VALUES (
-                             :logid, :steamid, (SELECT classid FROM class WHERE class = :type),
-                             :kills, :assists, :deaths, :dmg, :total_time
+                             %(logid)s, %(steamid)s,
+                             (SELECT classid FROM class WHERE class = %(type)s), %(kills)s,
+                             %(assists)s, %(deaths)s, %(dmg)s, %(total_time)s
                          );""", cls);
 
             # Some very old logs have no weapons stats at all
@@ -271,15 +277,16 @@ def import_log(c, logid, log):
                     weapon['shots'] = None
                     weapon['hits'] = None
 
-                c.execute("INSERT INTO weapon (weapon) VALUES (:name) ON CONFLICT DO NOTHING;",
+                c.execute("INSERT INTO weapon (weapon) VALUES (%(name)s) ON CONFLICT DO NOTHING;",
                           weapon)
                 c.execute("""INSERT INTO weapon_stats (
                                  logid, steamid64, classid, weaponid, kills, dmg, avg_dmg, shots,
                                  hits
                              ) VALUES (
-                                 :logid, :steamid, (SELECT classid FROM class WHERE class = :class),
-                                 (SELECT weaponid FROM weapon WHERE weapon = :name), :kills, :dmg,
-                                 :avg_dmg, :shots, :hits
+                                 %(logid)s, %(steamid)s,
+                                 (SELECT classid FROM class WHERE class = %(class)s),
+                                 (SELECT weaponid FROM weapon WHERE weapon = %(name)s), %(kills)s,
+                                 %(dmg)s, %(avg_dmg)s, %(shots)s, %(hits)s
                              );""", weapon)
 
     for (seq, msg) in enumerate(log['chat']):
@@ -287,7 +294,7 @@ def import_log(c, logid, log):
         first = True
         while True:
             try:
-                c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (?, ?, ?, ?);",
+                c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
                           (logid, SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None,
                            seq, msg['msg']))
             # Spectator?
@@ -296,12 +303,11 @@ def import_log(c, logid, log):
                     raise
                 first = False
 
-
-                c.execute("INSERT INTO name (name) VALUES (:name) ON CONFLICT DO NOTHING;", msg)
+                c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
                 c.execute("""INSERT INTO player_stats (
                                logid, steamid64, nameid, kills, assists, deaths, dmg, lks, healing
                            ) VALUES (
-                               ?, ?, (SELECT nameid FROM name WHERE name = ?), 0, 0, 0, 0, 0, 0
+                               %s, %s, (SELECT nameid FROM name WHERE name = %s), 0, 0, 0, 0, 0, 0
                            );""",
                           (logid, SteamID(msg['steamid']), msg['name']))
                 continue
@@ -326,7 +332,7 @@ def import_log(c, logid, log):
                 # representations of the same steamid). It appears that later rows are a result of
                 # healing being logged more than once, and aren't distinct instances of healing.
                 c.execute("""INSERT INTO heal_stats (logid, healer, healee, healing)
-                             VALUES (?, ?, ?, ?)
+                             VALUES (%s, %s, %s, %s)
                              ON CONFLICT DO NOTHING;""",
                           (logid, healer, healee, healing))
             # Sometimes a player only shows up in rounds and healspread...
@@ -348,11 +354,12 @@ def delete_dup_logs(c):
     :raises sqlite3.DatabaseError: if there was a problem accessing the database
     """
 
-    c.execute("""CREATE TEMP TABLE dupes AS SELECT
+    cur = c.cursor()
+    cur.execute("""CREATE TEMP TABLE dupes AS SELECT
                      r1.logid AS logid,
                      max(r2.logid) AS of
-                 FROM temp.new_log
-                 JOIN log AS l1 ON (l1.logid=temp.new_log.logid)
+                 FROM new_log
+                 JOIN log AS l1 ON (l1.logid=new_log.logid)
                  JOIN round AS r1 ON (r1.logid=l1.logid)
                  JOIN log AS l2 ON (
                      l2.logid > l1.logid
@@ -377,14 +384,15 @@ def delete_dup_logs(c):
     # Done in reverse order as import_log
     for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
                   'player_stats', 'round'):
-        c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM temp.dupes);".format(table))
+        cur.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM dupes);".format(table))
 
-    c.execute("""UPDATE log
-                 SET duplicate_of=temp.dupes.of
-                 FROM temp.dupes
-                 WHERE log.logid=temp.dupes.logid;""")
-    (ret,) = c.execute("SELECT count(*) FROM temp.dupes;").fetchone()
-    c.execute("DROP TABLE temp.dupes;")
+    cur.execute("""UPDATE log
+                 SET duplicate_of=dupes.of
+                 FROM dupes
+                 WHERE log.logid=dupes.logid;""")
+    cur.execute("SELECT count(*) FROM dupes;")
+    (ret,) = cur.fetchone();
+    cur.execute("DROP TABLE dupes;")
     return ret
 
 def delete_bogus_logs(c):
@@ -395,13 +403,13 @@ def delete_bogus_logs(c):
 
     c.execute("""CREATE TEMP TABLE bogus AS SELECT
                     DISTINCT logid
-                 FROM temp.new_log
+                 FROM new_log
                  JOIN weapon_stats USING (logid)
                  WHERE dmg < 0;""")
     for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
                   'player_stats', 'round'):
-        c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM temp.bogus);".format(table))
-    c.execute("DROP TABLE temp.bogus");
+        c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM bogus);".format(table))
+    c.execute("DROP TABLE bogus");
 
 def delete_dup_rounds(c):
     """Delete duplicate rounds
@@ -414,7 +422,7 @@ def delete_dup_rounds(c):
     c.execute("""DELETE FROM round
                  WHERE (logid, seq) IN (
                      SELECT r1.logid, r1.seq
-                     FROM temp.new_log
+                     FROM new_log
                      JOIN round AS r1 USING (logid)
                      JOIN round AS r2 USING (
                          logid, time, duration, winner, firstcap, red_score, blue_score, red_dmg,
@@ -434,10 +442,10 @@ def update_stalemates(c):
                  SET winner = NULL
                  WHERE (logid, seq) IN (
                      SELECT logid, max(seq)
-                     FROM temp.new_log
+                     FROM new_log
                      JOIN log USING (logid)
                      JOIN round USING (logid)
-                     GROUP BY logid
+                     GROUP BY logid, log.red_score, log.blue_score
                      HAVING count(winner) > (log.red_score + log.blue_score)
                  );""")
 
@@ -468,16 +476,26 @@ def update_formats(c):
                      FROM (
                          SELECT
                              logid,
-                             total(class_stats.duration) / log.duration AS avg_players,
-                             count(DISTINCT player_stats.steamid64) AS total_players
-                         FROM temp.new_log
+                             total_duration / log.duration AS avg_players,
+                             total_players
+                         FROM new_log
                          JOIN log USING (logid)
-                         JOIN player_stats USING (logid)
-                         JOIN class_stats USING (logid, steamid64)
+                         JOIN (SELECT
+                                 logid,
+                                 count(DISTINCT steamid64) AS total_players
+                             FROM player_stats
+                             GROUP BY logid
+                         ) AS ps USING (logid)
+                         JOIN (SELECT
+                                 logid,
+                                 total(duration) as total_duration
+                             FROM class_stats
+                             GROUP BY logid
+                         ) AS cs USING (logid)
                          -- Only set the format if it isn't already set
                          WHERE log.formatid ISNULL
-                         GROUP BY logid
-                     ) LEFT JOIN format AS fa ON (
+                     ) AS intermediate
+                     LEFT JOIN format AS fa ON (
                          -- By inspection, almost all games in a format have players in this range
                          -- This has some slight overlap between sixes and prolander (oh well)
                          avg_players BETWEEN fa.players - 1 AND fa.players + 1
@@ -556,19 +574,19 @@ def main():
 
     c = db_connect(args.database)
     db_init(c)
+    cur = c.cursor()
     # Only commit every 60s for performance
-    c.execute("CREATE TEMP TABLE new_log (logid INTEGER PRIMARY KEY);")
-    c.execute("BEGIN;");
+    cur.execute("CREATE TEMP TABLE new_log (logid INTEGER PRIMARY KEY);")
+    cur.execute("BEGIN;");
 
     def commit():
         logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
-        delete_bogus_logs(c)
-        delete_dup_rounds(c)
-        update_stalemates(c)
-        update_formats(c)
-        c.execute("DELETE FROM new_log;")
-        c.execute("COMMIT;")
-        c.execute("PRAGMA optimize;")
+        delete_bogus_logs(cur)
+        delete_dup_rounds(cur)
+        update_stalemates(cur)
+        update_formats(cur)
+        cur.execute("DELETE FROM new_log;")
+        cur.execute("COMMIT;")
 
     count = 0
     start = datetime.now()
@@ -585,14 +603,14 @@ def main():
             logging.error("Could not import log %s", logid)
             raise
 
-        c.execute("INSERT INTO new_log (logid) VALUES (?);", (logid,))
+        cur.execute("INSERT INTO new_log (logid) VALUES (%s);", (logid,))
 
         count += 1
         now = datetime.now()
         if (now - start).total_seconds() > 60:
             commit()
-            logging.info("Commited %s imported log(s)...", count)
-            c.execute("BEGIN;")
+            logging.info("Committed %s imported log(s)...", count)
+            cur.execute("BEGIN;")
             count = 0
             # Committing may take a while, so start the timer when we can actually import stuff
             start = datetime.now()
