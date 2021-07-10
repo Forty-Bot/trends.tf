@@ -110,23 +110,8 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	kills INT NOT NULL,
 	assists INT NOT NULL,
 	deaths INT NOT NULL,
-	suicides INT,
 	dmg INT NOT NULL,
-	dmg_real INT, -- Damage dealt just before/after a kill, cap, or uber
 	dt INT,
-	dt_real INT,
-	hr INT, -- Heals Received
-	lks INT NOT NULL, -- Longest KillStreak
-	airshots INT, -- "as" in the json
-	medkits INT, -- Medkits taken (small: 1, medium: 2, large: 4)
-	medkits_hp INT, -- HP from medkits
-	backstabs INT,
-	headshots INT, -- headshot kills
-	headshots_hit INT, -- headshot non-kills
-	sentries INT, -- sentries built
-	healing INT NOT NULL,
-	cpc INT, -- Capture Point Captures
-	ic INT, -- Intel Captures
 	PRIMARY KEY (steamid64, logid),
 	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
 );
@@ -174,6 +159,29 @@ JOIN (SELECT
 	JOIN player_stats AS ps USING (logid)
 	GROUP BY ps.logid, steamid64
 ) AS round USING (logid);
+
+CREATE TABLE IF NOT EXISTS player_stats_extra (
+	logid INT NOT NULL,
+	steamid64 BIGINT NOT NULL,
+	suicides INT,
+	dmg_real INT, -- Damage dealt just before/after a kill, cap, or uber
+	dt_real INT,
+	hr INT, -- Heals Received
+	lks INT NOT NULL, -- Longest KillStreak
+	airshots INT, -- "as" in the json
+	medkits INT, -- Medkits taken (small: 1, medium: 2, large: 4)
+	medkits_hp INT, -- HP from medkits
+	backstabs INT,
+	headshots INT, -- headshot kills
+	headshots_hit INT, -- headshot non-kills
+	sentries INT, -- sentries built
+	healing INT NOT NULL,
+	cpc INT, -- Capture Point Captures
+	ic INT, -- Intel Captures
+	PRIMARY KEY (steamid64, logid),
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64),
+	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
+);
 
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,

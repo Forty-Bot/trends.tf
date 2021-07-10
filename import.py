@@ -151,15 +151,19 @@ def import_log(c, logid, log):
 
         c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", player)
         c.execute("""INSERT INTO player_stats (
-                         logid, steamid64, teamid, nameid, kills, assists, deaths, suicides, dmg,
-                         dmg_real, dt, dt_real, hr, lks, airshots, medkits, medkits_hp, backstabs,
-                         headshots, headshots_hit, sentries, healing, cpc, ic
+                         logid, steamid64, teamid, nameid, kills, assists, deaths, dmg, dt
                      ) VALUES (
                          %(logid)s, %(steamid)s, (SELECT teamid FROM team WHERE team = %(team)s),
                          (SELECT nameid FROM name WHERE name = %(name)s), %(kills)s, %(assists)s,
-                         %(deaths)s, %(suicides)s, %(dmg)s, %(dmg_real)s, %(dt)s, %(dt_real)s,
-                         %(hr)s, %(lks)s, %(as)s, %(medkits)s, %(medkits_hp)s, %(backstabs)s,
-                         %(headshots)s, %(headshots_hit)s, %(sentries)s, %(heal)s, %(cpc)s, %(ic)s
+                         %(deaths)s, %(dmg)s, %(dt)s
+                     );""", player)
+        c.execute("""INSERT INTO player_stats_extra (
+                         logid, steamid64, suicides, dmg_real, dt_real, hr, lks, airshots, medkits,
+                         medkits_hp, backstabs, headshots, headshots_hit, sentries, healing, cpc, ic
+                     ) VALUES (
+                         %(logid)s, %(steamid)s, %(suicides)s, %(dmg_real)s, %(dt_real)s, %(hr)s,
+                         %(lks)s, %(as)s, %(medkits)s, %(medkits_hp)s, %(backstabs)s, %(headshots)s,
+                         %(headshots_hit)s, %(sentries)s, %(heal)s, %(cpc)s, %(ic)s
                      );""", player)
 
         for (prop, event) in (('classkills', 'kill'), ('classdeaths', 'death'),
@@ -305,9 +309,9 @@ def import_log(c, logid, log):
 
                 c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
                 c.execute("""INSERT INTO player_stats (
-                               logid, steamid64, nameid, kills, assists, deaths, dmg, lks, healing
+                               logid, steamid64, nameid, kills, assists, deaths, dmg
                            ) VALUES (
-                               %s, %s, (SELECT nameid FROM name WHERE name = %s), 0, 0, 0, 0, 0, 0
+                               %s, %s, (SELECT nameid FROM name WHERE name = %s), 0, 0, 0, 0
                            );""",
                           (logid, SteamID(msg['steamid']), msg['name']))
                 continue
@@ -383,7 +387,7 @@ def delete_dup_logs(c):
 
     # Done in reverse order as import_log
     for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
-                  'player_stats', 'round'):
+                  'player_stats_extra', 'player_stats', 'round'):
         cur.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM dupes);".format(table))
 
     cur.execute("""UPDATE log
