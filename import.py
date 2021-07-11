@@ -584,6 +584,7 @@ def main():
     cur.execute("BEGIN;");
 
     def commit():
+        cur.execute("SET CONSTRAINTS ALL DEFERRED;");
         logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
         delete_bogus_logs(cur)
         delete_dup_rounds(cur)
