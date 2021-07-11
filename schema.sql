@@ -66,6 +66,9 @@ CREATE TABLE IF NOT EXISTS log (
 
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
+-- Helper index for doing reverse lookups on duplicate_of (e.g. for deletes)
+CREATE INDEX IF NOT EXISTS log_duplicates ON log (duplicate_of);
+
 CREATE TABLE IF NOT EXISTS team (
 	teamid SERIAL PRIMARY KEY,
 	team TEXT NOT NULL UNIQUE
@@ -219,6 +222,9 @@ CREATE TABLE IF NOT EXISTS heal_stats (
 	FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64)
 );
 
+-- Reverse lookup index for deletes in player_stats
+CREATE INDEX IF NOT EXISTS heal_stats_healee ON heal_stats (logid, healee);
+
 CREATE TABLE IF NOT EXISTS class (
 	classid SERIAL PRIMARY KEY,
 	class TEXT NOT NULL UNIQUE
@@ -302,3 +308,6 @@ CREATE TABLE IF NOT EXISTS chat (
 	PRIMARY KEY (logid, seq),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 );
+
+-- Reverse index for lookups by steamid64
+CREATE INDEX IF NOT EXISTS chat_steamid64 ON chat (steamid64, logid);
