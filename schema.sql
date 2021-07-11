@@ -115,8 +115,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	deaths INT NOT NULL,
 	dmg INT NOT NULL,
 	dt INT,
-	PRIMARY KEY (steamid64, logid),
-	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
+	PRIMARY KEY (steamid64, logid)
 );
 
 -- This index includes steamid64 and team so that it can be used as a covering index for the peers
