@@ -5,7 +5,7 @@
 import argparse
 from datetime import datetime
 import logging
-import sqlite3
+import psycopg2
 
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher
 from steamid import SteamID
@@ -301,15 +301,17 @@ def import_log(c, logid, log):
         while True:
             steamid = SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None
             try:
+                c.execute("SAVEPOINT before_chat;")
                 c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
                           (logid, steamid, seq, msg['msg']))
 
             # Spectator?
-            except sqlite3.IntegrityError:
+            except psycopg2.errors.ForeignKeyViolation:
                 if not first:
                     raise
                 first = False
 
+                c.execute("ROLLBACK TO SAVEPOINT before_chat;")
                 c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
                 c.execute("INSERT INTO player (steamid64) VALUES (%s) ON CONFLICT DO NOTHING;",
                           (steamid,));
@@ -340,14 +342,16 @@ def import_log(c, logid, log):
                 # Sometimes we get the same row more than once (e.g. with different text
                 # representations of the same steamid). It appears that later rows are a result of
                 # healing being logged more than once, and aren't distinct instances of healing.
+                c.execute("SAVEPOINT before_heal_stats;")
                 c.execute("""INSERT INTO heal_stats (logid, healer, healee, healing)
                              VALUES (%s, %s, %s, %s)
                              ON CONFLICT DO NOTHING;""",
                           (logid, healer, healee, healing))
             # Sometimes a player only shows up in rounds and healspread...
-            except sqlite3.IntegrityError:
+            except psycopg2.errors.ForeignKeyViolation:
                 logging.warning("Either %s or %s is only present in healspread for log %s",
                                 healer, healee, logid)
+                c.execute("ROLLBACK TO SAVEPOINT before_heal_stats;")
 
 def delete_dup_logs(c):
     """Delete duplicate logs
@@ -609,7 +613,7 @@ def main():
             import_log(c.cursor(), logid, log)
         except (IndexError, KeyError):
             logging.exception("Could not parse log %s", logid)
-        except sqlite3.Error:
+        except psycopg2.Error:
             logging.error("Could not import log %s", logid)
             raise
 
