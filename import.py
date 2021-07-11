@@ -150,6 +150,8 @@ def import_log(c, logid, log):
         player['suicides'] = player.get('suicides')
 
         c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", player)
+        c.execute("INSERT INTO player (steamid64) VALUES (%(steamid)s) ON CONFLICT DO NOTHING;",
+                  player)
         c.execute("""INSERT INTO player_stats (
                          logid, steamid64, teamid, nameid, kills, assists, deaths, dmg, dt
                      ) VALUES (
@@ -297,10 +299,11 @@ def import_log(c, logid, log):
         # poor man's goto...
         first = True
         while True:
+            steamid = SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None
             try:
                 c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
-                          (logid, SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None,
-                           seq, msg['msg']))
+                          (logid, steamid, seq, msg['msg']))
+
             # Spectator?
             except sqlite3.IntegrityError:
                 if not first:
@@ -308,12 +311,14 @@ def import_log(c, logid, log):
                 first = False
 
                 c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
+                c.execute("INSERT INTO player (steamid64) VALUES (%s) ON CONFLICT DO NOTHING;",
+                          (steamid,));
                 c.execute("""INSERT INTO player_stats (
                                logid, steamid64, nameid, kills, assists, deaths, dmg
                            ) VALUES (
                                %s, %s, (SELECT nameid FROM name WHERE name = %s), 0, 0, 0, 0
                            );""",
-                          (logid, SteamID(msg['steamid']), msg['name']))
+                          (logid, steamid, msg['name']))
                 continue
             except ValueError:
                 break
