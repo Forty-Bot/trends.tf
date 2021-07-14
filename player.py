@@ -141,8 +141,8 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                AND class IS NOT DISTINCT FROM ifnull(%s, class)
                AND format = ifnull(%s, format)
                AND map LIKE ifnull(%s, map)
-               AND time >= ifnull(%s, time)
-               AND time <= ifnull(%s, time)
+               AND time >= ifnull(%s::BIGINT, time)
+               AND time <= ifnull(%s::BIGINT, time)
            ORDER BY log.logid DESC
            LIMIT %s OFFSET %s;""",
            (steamid, steamid, filters['class'], filters['format'], filters['map'],
@@ -350,8 +350,8 @@ def totals(steamid):
                AND class IS NOT DISTINCT FROM ifnull(%s, class)
                AND format = ifnull(%s, format)
                AND map LIKE ifnull(%s, map)
-               AND time >= ifnull(%s, time)
-               AND time <= ifnull(%s, time);""",
+               AND time >= ifnull(%s::BIGINT, time)
+               AND time <= ifnull(%s::BIGINT, time);""",
         (steamid, filters['class'], filters['format'], filters['map'], filters['date_from_ts'],
          filters['date_to_ts']))
     return flask.render_template("player/totals.html", totals=totals.fetchone(), filters=filters)
@@ -377,8 +377,8 @@ def weapons(steamid):
                AND class IS NOT DISTINCT FROM ifnull(%s, class)
                AND format = ifnull(%s, format)
                AND map LIKE ifnull(%s, map)
-               AND time >= ifnull(%s, time)
-               AND time <= ifnull(%s, time)
+               AND time >= ifnull(%s::BIGINT, time)
+               AND time <= ifnull(%s::BIGINT, time)
            GROUP BY weapon;""",
         (steamid, filters['class'], filters['format'], filters['map'], filters['date_from_ts'],
          filters['date_to_ts']))
@@ -428,8 +428,8 @@ def trends(steamid):
                AND class IS NOT DISTINCT FROM ifnull(%s, class)
                AND format = ifnull(%s, format)
                AND map LIKE ifnull(%s, map)
-               AND time >= ifnull(%s, time)
-               AND time <= ifnull(%s, time)
+               AND time >= ifnull(%s::BIGINT, time)
+               AND time <= ifnull(%s::BIGINT, time)
            WINDOW win AS (
                PARTITION BY log.steamid64
                ORDER BY log.logid
