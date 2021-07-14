@@ -217,13 +217,17 @@ def overview(steamid):
     aliases.execute(
             """SELECT
                    name,
-                   count(*) AS count
-               FROM player_stats
-               JOIN name USING (nameid)
-               WHERE steamid64 = %s
-               GROUP BY steamid64, name
-               ORDER BY count(*) DESC
-               LIMIT 10""", (steamid,))
+                   count
+               FROM (SELECT
+                       nameid,
+                       count(*) AS count
+                   FROM player_stats
+                   WHERE steamid64 = %s
+                   GROUP BY nameid
+                   ORDER BY count(*) DESC
+                   LIMIT 10
+               ) AS names
+               JOIN name USING (nameid)""", (steamid,))
     logs = get_logs(c, steamid, get_filters(flask.request.args), limit=25)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  event_stats=event_stats, aliases=aliases)
