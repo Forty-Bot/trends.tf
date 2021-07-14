@@ -154,7 +154,29 @@ def overview(steamid):
     c = get_db()
     classes = c.cursor()
     classes.execute(
-        """SELECT
+        """WITH classes AS MATERIALIZED (
+               SELECT
+                   classid,
+                   cs.duration * 1.5 > log_wlt.duration AS mostly,
+                   round_wins,
+                   round_losses,
+                   cs.duration,
+                   cs.dmg,
+                   hits,
+                   shots
+               FROM log_wlt
+               JOIN class_stats cs USING (logid, steamid64)
+               JOIN (SELECT
+                       logid,
+                       steamid64,
+                       classid,
+                       sum(hits) AS hits,
+                       sum(shots) AS shots
+                   FROM weapon_stats
+                   GROUP BY logid, steamid64, classid
+               ) AS ws USING (logid, steamid64, classid)
+               WHERE steamid64 = %s
+           ) SELECT
                *,
                (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
            FROM (
@@ -167,29 +189,7 @@ def overview(steamid):
                    sum(dmg) * 60.0 / sum(duration) AS dpm,
                    total(hits) / nullif(sum(shots), 0.0) AS acc
                FROM class
-               LEFT JOIN (
-                   SELECT
-                       classid,
-                       cs.duration * 1.5 > log_wlt.duration AS mostly,
-                       round_wins,
-                       round_losses,
-                       cs.duration,
-                       cs.dmg,
-                       hits,
-                       shots
-                   FROM log_wlt
-                   JOIN class_stats cs USING (logid, steamid64)
-                   JOIN (SELECT
-                           logid,
-                           steamid64,
-                           classid,
-                           sum(hits) AS hits,
-                           sum(shots) AS shots
-                       FROM weapon_stats
-                       GROUP BY logid, steamid64, classid
-                   ) AS ws USING (logid, steamid64, classid)
-                   WHERE steamid64 = %s
-               ) AS classes USING (classid)
+               LEFT JOIN classes USING (classid)
                GROUP BY classid
                ORDER BY classid
            ) AS classes;""", (steamid,))
