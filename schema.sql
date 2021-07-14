@@ -224,6 +224,9 @@ CREATE TABLE IF NOT EXISTS heal_stats (
 -- Reverse lookup index for deletes in player_stats
 CREATE INDEX IF NOT EXISTS heal_stats_healee ON heal_stats (logid, healee);
 
+-- Index for looking up people healed in logs
+CREATE INDEX IF NOT EXISTS heal_stats_healer ON heal_stats (healer);
+
 CREATE TABLE IF NOT EXISTS class (
 	classid SERIAL PRIMARY KEY,
 	class TEXT NOT NULL UNIQUE
