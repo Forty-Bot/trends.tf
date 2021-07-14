@@ -105,15 +105,12 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
            JOIN (SELECT
                      logid,
                      steamid64,
-                     group_concat(class) OVER (
-                         PARTITION BY logid, steamid64
-                         ORDER BY duration DESC
-                         ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-                     ) AS classes
+                     group_concat(class ORDER BY duration DESC) AS classes
                  FROM class_stats
                  JOIN class USING (classid)
                  -- Duplicate of below, but sqlite is dumb...
                  WHERE steamid64 = %s
+                 GROUP BY logid, steamid64
            ) AS classes USING (logid, steamid64)
            LEFT JOIN (SELECT
                    logid,
