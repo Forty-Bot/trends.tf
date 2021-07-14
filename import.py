@@ -27,7 +27,7 @@ def filter_logids(c, logids):
 
     for logid in logids:
         cur = c.cursor()
-        cur.execute("SELECT 1 FROM log WHERE logid=%s", (logid,))
+        cur.execute("SELECT 1 FROM public.log WHERE logid=%s", (logid,))
         for _ in cur:
             break
         else:
@@ -69,6 +69,8 @@ def import_log(cctx, c, logid, log):
     c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)",
               (logid, cctx.compress(json.dumps(log).encode())))
 
+    # From here on in we want to keep our log and log_json rows
+    c.execute("SAVEPOINT import;")
     rounds = None
     try:
         rounds = log['rounds']
@@ -382,13 +384,12 @@ def delete_dup_logs(c):
     cur.execute("""CREATE TEMP TABLE dupes AS SELECT
                      r1.logid AS logid,
                      max(r2.logid) AS of
-                 FROM new_log
-                 JOIN log AS l1 ON (l1.logid=new_log.logid)
+                 FROM log AS l1
                  JOIN round AS r1 ON (r1.logid=l1.logid)
-                 JOIN log AS l2 ON (
+                 JOIN public.log AS l2 ON (
                      l2.logid > l1.logid
                      AND l2.time BETWEEN l1.time - 24 * 60 * 60 AND l1.time + 24 * 60 * 60)
-                 JOIN round AS r2 ON (
+                 JOIN public.round AS r2 ON (
                      r2.logid=l2.logid
                      AND r2.seq=r1.seq
                      AND r2.time=r1.time
@@ -420,7 +421,7 @@ def delete_bogus_logs(c):
 
     c.execute("""INSERT INTO to_delete SELECT
                     DISTINCT logid
-                 FROM new_log
+                 FROM log
                  JOIN weapon_stats USING (logid)
                  WHERE dmg < 0
                  ON CONFLICT DO NOTHING;""")
@@ -436,7 +437,10 @@ def delete_dup_rounds(c):
     c.execute("""DELETE FROM round
                  WHERE (logid, seq) IN (
                      SELECT r1.logid, r1.seq
-                     FROM new_log
+                     FROM (SELECT
+                             logid
+                         FROM log
+                     ) AS log
                      JOIN round AS r1 USING (logid)
                      JOIN round AS r2 USING (
                          logid, time, duration, winner, firstcap, red_score, blue_score, red_dmg,
@@ -454,10 +458,10 @@ def update_stalemates(c):
 
     c.execute("""UPDATE round
                  SET winner = NULL
-                 WHERE (logid, seq) IN (
-                     SELECT logid, max(seq)
-                     FROM new_log
-                     JOIN log USING (logid)
+                 WHERE (logid, seq) IN (SELECT
+                         logid,
+                         max(seq)
+                     FROM log
                      JOIN round USING (logid)
                      GROUP BY logid, log.red_score, log.blue_score
                      HAVING count(winner) > (log.red_score + log.blue_score)
@@ -492,14 +496,13 @@ def update_formats(c):
                              logid,
                              total_duration / log.duration AS avg_players,
                              total_players
-                         FROM new_log
-                         JOIN log USING (logid)
+                         FROM log
                          CROSS JOIN LATERAL (SELECT
                                  count(DISTINCT steamid64) AS total_players,
                                  total(duration) as total_duration
                              FROM player_stats AS ps
                              JOIN class_stats USING (logid, steamid64)
-                             WHERE ps.logid=new_log.logid
+                             WHERE ps.logid=log.logid
                          ) AS counts
                          -- Only set the format if it isn't already set
                          WHERE log.formatid ISNULL
@@ -589,7 +592,14 @@ def main():
 
     # Initialize temporary tables
     cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
-    cur.execute("CREATE TEMP TABLE new_log (logid INTEGER PRIMARY KEY);")
+    for table in temp_tables:
+        cur.execute("CREATE TEMP TABLE {} (LIKE {} INCLUDING ALL);".format(table, table))
+    # This doesn't include foreign keys, so include some which we want to handle in import_log
+    cur.execute("""ALTER TABLE heal_stats
+                   ADD FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
+	               ADD FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64);""")
+    cur.execute("""ALTER TABLE chat
+                   ADD FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)""")
 
     # Only commit every 60s for performance
     cur.execute("BEGIN;");
@@ -614,7 +624,10 @@ def main():
         delete_dup_rounds(cur)
         update_stalemates(cur)
         update_formats(cur)
-        cur.execute("DELETE FROM new_log;")
+        for table in temp_tables:
+            cur.execute("INSERT INTO public.{} SELECT * FROM {};".format(table, table))
+        for table in reversed(temp_tables):
+            cur.execute("DELETE FROM {};".format(table))
         cur.execute("COMMIT;")
 
     count = 0
@@ -636,7 +649,6 @@ def main():
             raise
         else:
             count += 1
-            cur.execute("INSERT INTO new_log (logid) VALUES (%s);", (logid,))
 
         now = datetime.now()
         if (now - start).total_seconds() > 60:
