@@ -4,8 +4,11 @@
 
 import argparse
 from datetime import datetime
+import json
 import logging
+
 import psycopg2
+import zstandard
 
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher
 from steamid import SteamID
@@ -30,7 +33,7 @@ def filter_logids(c, logids):
         else:
             yield logid
 
-def import_log(c, logid, log):
+def import_log(cctx, c, logid, log):
     """Import a log into the database.
 
     :param sqlite3.Connection c: The database connection
@@ -63,6 +66,8 @@ def import_log(c, logid, log):
                      (SELECT mapid FROM map WHERE map = %(map)s), %(red_score)s, %(blue_score)s
                  );""",
               info)
+    c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)",
+              (logid, cctx.compress(json.dumps(log).encode())))
 
     rounds = None
     try:
@@ -585,6 +590,8 @@ def main():
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level)
 
+    cctx = zstandard.ZstdCompressor()
+
     c = db_connect(args.database)
     db_init(c)
     cur = c.cursor()
@@ -610,7 +617,7 @@ def main():
             continue
 
         try:
-            import_log(c.cursor(), logid, log)
+            import_log(cctx, c.cursor(), logid, log)
         except (IndexError, KeyError):
             logging.exception("Could not parse log %s", logid)
         except psycopg2.Error:

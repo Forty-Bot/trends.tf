@@ -64,6 +64,12 @@ CREATE TABLE IF NOT EXISTS log (
 	CHECK (logid < duplicate_of)
 );
 
+-- The original json, zstd compressed
+CREATE TABLE IF NOT EXISTS log_json (
+	logid INTEGER PRIMARY KEY REFERENCES log (logid),
+	data BYTEA NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
 -- Helper index for doing reverse lookups on duplicate_of (e.g. for deletes)
