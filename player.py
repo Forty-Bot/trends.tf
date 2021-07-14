@@ -245,58 +245,61 @@ def peers(steamid):
     peers = get_db().cursor()
     peers.execute(
         """SELECT
-               steamid64,
-               name,
-               total("with"::INT) AS with,
-               total(against::INT) AS against,
-               (sum(CASE WHEN "with" THEN win END) +
-                   0.5 * sum(CASE WHEN "with" THEN tie END)) /
-                   sum("with"::INT) AS winrate_with,
-               (sum(CASE WHEN against THEN win END) +
-                   0.5 * sum(CASE WHEN against THEN tie END)) /
-                   sum(against::INT) AS winrate_against,
-               sum(CASE WHEN "with" THEN dmg END) * 60.0 /
-                   sum(CASE WHEN "with" THEN duration END) AS dpm,
-               sum(CASE WHEN "with" THEN dt END) * 60.0 /
-                   sum(CASE WHEN "with" THEN duration END) AS dtm,
-               sum(CASE WHEN "with" THEN healing_to END) * 60.0 /
-                   sum(CASE WHEN "with" THEN duration END) AS hpm_to,
-               sum(CASE WHEN "with" THEN healing_from END) * 60.0 /
-                   sum(CASE WHEN "with" THEN duration END) AS hpm_from,
-               total(CASE WHEN "with" THEN duration END) as time_with,
-               total(CASE WHEN against THEN duration END) as time_against
-           FROM (
-               SELECT
-                   p1.logid,
-                   p2.steamid64,
-                   p1.teamid = p2.teamid AS with,
-                   p1.teamid != p2.teamid AS against,
-                   (p1.round_wins > p1.round_losses)::INT AS win,
-                   (p1.round_wins = p1.round_losses)::INT AS tie,
-                   p1.dmg,
-                   p1.dt,
-                   hs1.healing AS healing_to,
-                   hs2.healing AS healing_from,
-                   p1.duration
-               FROM log_wlt AS p1
-               JOIN player_stats AS p2 USING (logid)
-               LEFT JOIN heal_stats AS hs1 ON (
-                   hs1.healer = p1.steamid64
-                   AND hs1.healee = p2.steamid64
-                   AND hs1.logid = p1.logid
-               ) LEFT JOIN heal_stats AS hs2 ON (
-                   hs2.healer = p2.steamid64
-                   AND hs2.healee = p1.steamid64
-                   AND hs2.logid = p1.logid
-               ) WHERE p1.steamid64 = %s
-                  AND p2.steamid64 != p1.steamid64
-                  AND p2.teamid NOTNULL
+               *,
+               name
+           FROM (SELECT
+                   steamid64,
+                   total("with"::INT) AS with,
+                   total(against::INT) AS against,
+                   (sum(CASE WHEN "with" THEN win END) +
+                       0.5 * sum(CASE WHEN "with" THEN tie END)) /
+                       sum("with"::INT) AS winrate_with,
+                   (sum(CASE WHEN against THEN win END) +
+                       0.5 * sum(CASE WHEN against THEN tie END)) /
+                       sum(against::INT) AS winrate_against,
+                   sum(CASE WHEN "with" THEN dmg END) * 60.0 /
+                       sum(CASE WHEN "with" THEN duration END) AS dpm,
+                   sum(CASE WHEN "with" THEN dt END) * 60.0 /
+                       sum(CASE WHEN "with" THEN duration END) AS dtm,
+                   sum(CASE WHEN "with" THEN healing_to END) * 60.0 /
+                       sum(CASE WHEN "with" THEN duration END) AS hpm_to,
+                   sum(CASE WHEN "with" THEN healing_from END) * 60.0 /
+                       sum(CASE WHEN "with" THEN duration END) AS hpm_from,
+                   total(CASE WHEN "with" THEN duration END) as time_with,
+                   total(CASE WHEN against THEN duration END) as time_against
+               FROM (
+                   SELECT
+                       p1.logid,
+                       p2.steamid64,
+                       p1.teamid = p2.teamid AS with,
+                       p1.teamid != p2.teamid AS against,
+                       (p1.round_wins > p1.round_losses)::INT AS win,
+                       (p1.round_wins = p1.round_losses)::INT AS tie,
+                       p1.dmg,
+                       p1.dt,
+                       hs1.healing AS healing_to,
+                       hs2.healing AS healing_from,
+                       p1.duration
+                   FROM log_wlt AS p1
+                   JOIN player_stats AS p2 USING (logid)
+                   LEFT JOIN heal_stats AS hs1 ON (
+                       hs1.healer = p1.steamid64
+                       AND hs1.healee = p2.steamid64
+                       AND hs1.logid = p1.logid
+                   ) LEFT JOIN heal_stats AS hs2 ON (
+                       hs2.healer = p2.steamid64
+                       AND hs2.healee = p1.steamid64
+                       AND hs2.logid = p1.logid
+                   ) WHERE p1.steamid64 = %s
+                      AND p2.steamid64 != p1.steamid64
+                      AND p2.teamid NOTNULL
+               ) AS peers
+               GROUP BY steamid64
+               ORDER BY count(*) DESC
+               LIMIT %s OFFSET %s
            ) AS peers
            JOIN player_last USING (steamid64)
-           JOIN name USING (nameid)
-           GROUP BY steamid64, name
-           ORDER BY count(*) DESC
-           LIMIT %s OFFSET %s;""", (steamid, limit, offset))
+           JOIN name USING (nameid);""", (steamid, limit, offset))
     return flask.render_template("player/peers.html", peers=peers.fetchall(), limit=limit,
                                  offset=offset)
 
