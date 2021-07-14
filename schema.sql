@@ -227,6 +227,10 @@ CREATE INDEX IF NOT EXISTS heal_stats_healee ON heal_stats (logid, healee);
 -- Index for looking up people healed in logs
 CREATE INDEX IF NOT EXISTS heal_stats_healer ON heal_stats (healer);
 
+CREATE STATISTICS IF NOT EXISTS heal_stats (ndistinct)
+ON logid, healer
+FROM heal_stats;
+
 CREATE TABLE IF NOT EXISTS class (
 	classid SERIAL PRIMARY KEY,
 	class TEXT NOT NULL UNIQUE
@@ -257,6 +261,10 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 );
 
+CREATE STATISTICS IF NOT EXISTS class_stats (ndistinct)
+ON logid, steamid64
+FROM class_stats;
+
 CREATE TABLE IF NOT EXISTS weapon (
 	weaponid SERIAL PRIMARY KEY,
 	weapon TEXT NOT NULL UNIQUE
@@ -277,6 +285,10 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL)),
 	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
 );
+
+CREATE STATISTICS IF NOT EXISTS weapon_stats (ndistinct)
+ON logid, steamid64, classid
+FROM weapon_stats;
 
 CREATE TABLE IF NOT EXISTS event (
 	eventid SERIAL PRIMARY KEY,
