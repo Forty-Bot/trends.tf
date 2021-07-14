@@ -358,6 +358,12 @@ def import_log(cctx, c, logid, log):
                                 healer, healee, logid)
                 c.execute("ROLLBACK TO SAVEPOINT before_heal_stats;")
 
+# Create some temporary tables so deletes don't cost so much later
+# These need to stay in topological order to avoid foreign key trouble
+# They may also be used to know what to delete on failure
+temp_tables = ('log', 'log_json', 'round', 'player_stats', 'player_stats_extra', 'medic_stats',
+               'heal_stats', 'class_stats', 'weapon_stats', 'event_stats', 'chat')
+
 def delete_dup_logs(c):
     """Delete duplicate logs
 
@@ -399,19 +405,12 @@ def delete_dup_logs(c):
                      AND r2.blue_ubers=r1.blue_ubers
                  ) GROUP BY r1.logid;""")
 
-    # Done in reverse order as import_log
-    for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
-                  'player_stats_extra', 'player_stats', 'round'):
-        cur.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM dupes);".format(table))
-
+    cur.execute("INSERT INTO to_delete SELECT logid FROM dupes;")
     cur.execute("""UPDATE log
                  SET duplicate_of=dupes.of
                  FROM dupes
                  WHERE log.logid=dupes.logid;""")
-    cur.execute("SELECT count(*) FROM dupes;")
-    (ret,) = cur.fetchone();
     cur.execute("DROP TABLE dupes;")
-    return ret
 
 def delete_bogus_logs(c):
     """Delete bogus logs
@@ -419,15 +418,12 @@ def delete_bogus_logs(c):
     In some logs, players have negative damage. There are not very many, so just delete them.
     """
 
-    c.execute("""CREATE TEMP TABLE bogus AS SELECT
+    c.execute("""INSERT INTO to_delete SELECT
                     DISTINCT logid
                  FROM new_log
                  JOIN weapon_stats USING (logid)
-                 WHERE dmg < 0;""")
-    for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
-                  'player_stats_extra', 'player_stats', 'round'):
-        c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM bogus);".format(table))
-    c.execute("DROP TABLE bogus");
+                 WHERE dmg < 0
+                 ON CONFLICT DO NOTHING;""")
 
 def delete_dup_rounds(c):
     """Delete duplicate rounds
@@ -590,14 +586,31 @@ def main():
     c = db_connect(args.database)
     db_init(c)
     cur = c.cursor()
-    # Only commit every 60s for performance
+
+    # Initialize temporary tables
+    cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
     cur.execute("CREATE TEMP TABLE new_log (logid INTEGER PRIMARY KEY);")
+
+    # Only commit every 60s for performance
     cur.execute("BEGIN;");
 
     def commit():
         cur.execute("SET CONSTRAINTS ALL DEFERRED;");
-        logging.info("Removed %s duplicate log(s)", delete_dup_logs(c))
+        delete_dup_logs(c)
         delete_bogus_logs(cur)
+        # Done in reverse order as import_log
+        # Don't delete log or log_json so we know not to parse this log again
+        for table in temp_tables[:1:-1]:
+            cur.execute("""DELETE
+                           FROM {}
+                           WHERE logid IN (SELECT
+                                   logid
+                               FROM to_delete
+                           );""".format(table))
+        cur.execute("SELECT count(*) FROM to_delete;")
+        logging.info("Removed %s bad log(s)", cur.fetchone()[0])
+        cur.execute("DELETE FROM to_delete;")
+
         delete_dup_rounds(cur)
         update_stalemates(cur)
         update_formats(cur)
@@ -611,17 +624,20 @@ def main():
         if log is None:
             continue
 
+        cur.execute("SAVEPOINT import")
         try:
             import_log(cctx, c.cursor(), logid, log)
-        except (IndexError, KeyError):
+        except (IndexError, KeyError, psycopg2.errors.NumericValueOutOfRange):
             logging.exception("Could not parse log %s", logid)
+            cur.execute("ROLLBACK TO SAVEPOINT import;")
+            cur.execute("INSERT INTO to_delete VALUES (%s);", (logid,))
         except psycopg2.Error:
             logging.error("Could not import log %s", logid)
             raise
+        else:
+            count += 1
+            cur.execute("INSERT INTO new_log (logid) VALUES (%s);", (logid,))
 
-        cur.execute("INSERT INTO new_log (logid) VALUES (%s);", (logid,))
-
-        count += 1
         now = datetime.now()
         if (now - start).total_seconds() > 60:
             commit()
