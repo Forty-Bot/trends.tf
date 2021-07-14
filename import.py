@@ -425,7 +425,7 @@ def delete_bogus_logs(c):
                  JOIN weapon_stats USING (logid)
                  WHERE dmg < 0;""")
     for table in ('chat', 'event_stats', 'weapon_stats', 'class_stats', 'heal_stats', 'medic_stats',
-                  'player_stats', 'round'):
+                  'player_stats_extra', 'player_stats', 'round'):
         c.execute("DELETE FROM {} WHERE logid IN (SELECT logid FROM bogus);".format(table))
     c.execute("DROP TABLE bogus");
 
