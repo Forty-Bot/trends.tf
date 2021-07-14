@@ -498,18 +498,13 @@ def update_formats(c):
                              total_players
                          FROM new_log
                          JOIN log USING (logid)
-                         JOIN (SELECT
-                                 logid,
-                                 count(DISTINCT steamid64) AS total_players
-                             FROM player_stats
-                             GROUP BY logid
-                         ) AS ps USING (logid)
-                         JOIN (SELECT
-                                 logid,
+                         CROSS JOIN LATERAL (SELECT
+                                 count(DISTINCT steamid64) AS total_players,
                                  total(duration) as total_duration
-                             FROM class_stats
-                             GROUP BY logid
-                         ) AS cs USING (logid)
+                             FROM player_stats AS ps
+                             JOIN class_stats USING (logid, steamid64)
+                             WHERE ps.logid=new_log.logid
+                         ) AS counts
                          -- Only set the format if it isn't already set
                          WHERE log.formatid ISNULL
                      ) AS intermediate
