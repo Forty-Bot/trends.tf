@@ -497,13 +497,13 @@ def update_formats(c):
                              total_duration / log.duration AS avg_players,
                              total_players
                          FROM log
-                         CROSS JOIN LATERAL (SELECT
+                         JOIN (SELECT
+                                 logid,
                                  count(DISTINCT steamid64) AS total_players,
                                  total(duration) as total_duration
-                             FROM player_stats AS ps
-                             JOIN class_stats USING (logid, steamid64)
-                             WHERE ps.logid=log.logid
-                         ) AS counts
+                             FROM class_stats
+                             GROUP BY logid
+                         ) AS counts USING (logid)
                          -- Only set the format if it isn't already set
                          WHERE log.formatid ISNULL
                      ) AS intermediate
@@ -600,6 +600,8 @@ def main():
 	               ADD FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64);""")
     cur.execute("""ALTER TABLE chat
                    ADD FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)""")
+    # And we will need this index to calculate formats efficiently
+    cur.execute("CREATE INDEX IF NOT EXISTS class_stats_logid ON class_stats (logid);")
 
     # Only commit every 60s for performance
     cur.execute("BEGIN;");
