@@ -85,9 +85,15 @@ INSERT INTO team (team) VALUES ('Red'), ('Blue') ON CONFLICT DO NOTHING;
 CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),
 	seq INT NOT NULL, -- Round number, starting at 0
-	time BIGINT, -- Unix time
 	duration INT NOT NULL,
 	winner INT REFERENCES team (teamid),
+	PRIMARY KEY (logid, seq)
+);
+
+CREATE TABLE IF NOT EXISTS round_extra (
+	logid INT NOT NULL,
+	seq INT NOT NULL,
+	time BIGINT,
 	firstcap INT REFERENCES team (teamid),
 	red_score INT NOT NULL,
 	blue_score INT NOT NULL,
@@ -97,7 +103,8 @@ CREATE TABLE IF NOT EXISTS round (
 	blue_dmg INT NOT NULL,
 	red_ubers INT NOT NULL,
 	blue_ubers INT NOT NULL,
-	PRIMARY KEY (logid, seq)
+	PRIMARY KEY (logid, seq),
+	FOREIGN KEY (logid, seq) REFERENCES round (logid, seq)
 );
 
 CREATE TABLE IF NOT EXISTS name (

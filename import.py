@@ -106,11 +106,16 @@ def import_log(cctx, c, logid, log):
         round['blue_ubers'] = blue['ubers']
 
         c.execute("""INSERT INTO round (
-                         logid, seq, time, duration, winner, firstcap, red_score, blue_score,
-                         red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
+                         logid, seq, duration, winner
                      ) VALUES (
-                         %(logid)s, %(seq)s, %(start_time)s, %(length)s,
-                         (SELECT teamid FROM team WHERE team = %(winner)s),
+                         %(logid)s, %(seq)s, %(length)s,
+                         (SELECT teamid FROM team WHERE team = %(winner)s)
+                     );""", round)
+        c.execute("""INSERT INTO round_extra (
+                         logid, seq, time, firstcap, red_score, blue_score, red_kills, blue_kills,
+                         red_dmg, blue_dmg, red_ubers, blue_ubers
+                     ) VALUES (
+                         %(logid)s, %(seq)s, %(start_time)s,
                          (SELECT teamid FROM team WHERE team = %(firstcap)s), %(red_score)s,
                          %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s, %(blue_dmg)s,
                          %(red_ubers)s, %(blue_ubers)s
@@ -363,8 +368,8 @@ def import_log(cctx, c, logid, log):
 # Create some temporary tables so deletes don't cost so much later
 # These need to stay in topological order to avoid foreign key trouble
 # They may also be used to know what to delete on failure
-temp_tables = ('log', 'log_json', 'round', 'player_stats', 'player_stats_extra', 'medic_stats',
-               'heal_stats', 'class_stats', 'weapon_stats', 'event_stats', 'chat')
+temp_tables = ('log', 'log_json', 'round', 'round_extra', 'player_stats', 'player_stats_extra',
+               'medic_stats', 'heal_stats', 'class_stats', 'weapon_stats', 'event_stats', 'chat')
 
 def delete_dup_logs(c):
     """Delete duplicate logs
@@ -385,11 +390,11 @@ def delete_dup_logs(c):
                      r1.logid AS logid,
                      max(r2.logid) AS of
                  FROM log AS l1
-                 JOIN round AS r1 ON (r1.logid=l1.logid)
-                 JOIN public.log AS l2 ON (
+                 JOIN round_full AS r1 ON (r1.logid=l1.logid)
+                 JOIN combined_logs AS l2 ON (
                      l2.logid > l1.logid
                      AND l2.time BETWEEN l1.time - 24 * 60 * 60 AND l1.time + 24 * 60 * 60)
-                 JOIN public.round AS r2 ON (
+                 JOIN combined_rounds AS r2 ON (
                      r2.logid=l2.logid
                      AND r2.seq=r1.seq
                      AND r2.time=r1.time
@@ -421,8 +426,7 @@ def delete_bogus_logs(c):
 
     c.execute("""INSERT INTO to_delete SELECT
                     DISTINCT logid
-                 FROM log
-                 JOIN weapon_stats USING (logid)
+                 FROM weapon_stats
                  WHERE dmg < 0
                  ON CONFLICT DO NOTHING;""")
 
@@ -434,19 +438,18 @@ def delete_dup_rounds(c):
     :param sqlite.Connection c: The database connection:
     """
 
-    c.execute("""DELETE FROM round
-                 WHERE (logid, seq) IN (
-                     SELECT r1.logid, r1.seq
-                     FROM (SELECT
-                             logid
-                         FROM log
-                     ) AS log
-                     JOIN round AS r1 USING (logid)
-                     JOIN round AS r2 USING (
-                         logid, time, duration, winner, firstcap, red_score, blue_score, red_dmg,
-                         blue_dmg, red_kills, blue_kills, red_ubers, blue_ubers
-                     ) WHERE r1.seq > r2.seq
-                 );""")
+    c.execute("""CREATE TABLE dupes AS SELECT
+                     r1.logid,
+                     r1.seq
+                 FROM round_full AS r1
+                 JOIN round_full AS r2 USING (
+                     logid, time, duration, winner, firstcap, red_score, blue_score, red_dmg,
+                     blue_dmg, red_kills, blue_kills, red_ubers, blue_ubers
+                 ) WHERE r1.seq > r2.seq;""")
+
+    for table in ('round_extra', 'round'):
+        c.execute("DELETE FROM {} WHERE (logid, seq) IN (SELECT * FROM dupes);".format(table))
+    c.execute("DROP TABLE dupes;")
 
 def update_stalemates(c):
     """Find stalemates and mark the winner as NULL
@@ -602,6 +605,19 @@ def main():
                    ADD FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)""")
     # And we will need this index to calculate formats efficiently
     cur.execute("CREATE INDEX IF NOT EXISTS class_stats_logid ON class_stats (logid);")
+    # Finally, add some convenience views
+    cur.execute("""CREATE TEMP VIEW combined_logs AS
+                   SELECT * FROM log
+                   UNION ALL
+                   SELECT * FROM public.log;""");
+    cur.execute("""CREATE TEMP VIEW round_full AS
+                   SELECT * FROM round
+                   JOIN round_extra USING (logid, seq);""")
+    cur.execute("""CREATE TEMP VIEW combined_rounds AS
+                   SELECT * FROM round_full
+                   UNION ALL
+                   SELECT * FROM public.round
+                   JOIN public.round_extra USING (logid, seq);""")
 
     # Only commit every 60s for performance
     cur.execute("BEGIN;");
