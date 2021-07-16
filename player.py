@@ -333,7 +333,7 @@ def totals(steamid):
                total(deaths_after_uber) AS deaths_after_uber,
                total(deaths_before_uber) AS deaths_before_uber
            FROM player_stats AS ps
-           JOIN player_stats_extra AS pse ON (
+           LEFT JOIN player_stats_extra AS pse ON (
                pse.logid=ps.logid
                AND pse.steamid64=ps.steamid64
            ) JOIN log ON (ps.logid=log.logid)
