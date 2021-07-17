@@ -325,7 +325,7 @@ CREATE TABLE IF NOT EXISTS event_stats (
 );
 
 CREATE TABLE IF NOT EXISTS chat (
-	logid INT NOT NULL,
+	logid INT NOT NULL REFERENCES log (logid),
 	steamid64 BIGINT, -- May be NULL for Console messages
 	seq INT NOT NULL, -- Message sequence, starting at 0; earlier messages have lower sequences
 	msg TEXT NOT NULL,
