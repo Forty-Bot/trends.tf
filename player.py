@@ -194,15 +194,15 @@ def overview(steamid):
     event_stats.execute(
             """SELECT
                    event,
-                   avg(demoman) AS demoman,
-                   avg(engineer) AS engineer,
-                   avg(heavyweapons) AS heavyweapons,
-                   avg(medic) AS medic,
-                   avg(pyro) AS pyro,
-                   avg(scout) AS scout,
-                   avg(sniper) AS sniper,
-                   avg(soldier) AS soldier,
-                   avg(spy) AS spy
+                   ifnull(avg(demoman), 0.0) AS demoman,
+                   ifnull(avg(engineer), 0.0) AS engineer,
+                   ifnull(avg(heavyweapons), 0.0) AS heavyweapons,
+                   ifnull(avg(medic), 0.0) AS medic,
+                   ifnull(avg(pyro), 0.0) AS pyro,
+                   ifnull(avg(scout), 0.0) AS scout,
+                   ifnull(avg(sniper), 0.0) AS sniper,
+                   ifnull(avg(soldier), 0.0) AS soldier,
+                   ifnull(avg(spy), 0.0) AS spy
                FROM (
                    SELECT *
                    FROM event
