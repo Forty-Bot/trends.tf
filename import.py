@@ -370,12 +370,6 @@ def import_log(cctx, c, logid, log):
                                 healer, healee, logid)
                 c.execute("ROLLBACK TO SAVEPOINT before_heal_stats;")
 
-# Create some temporary tables so deletes don't cost so much later
-# These need to stay in topological order to avoid foreign key trouble
-# They may also be used to know what to delete on failure
-temp_tables = ('log', 'log_json', 'round', 'round_extra', 'player_stats', 'player_stats_extra',
-               'medic_stats', 'heal_stats', 'class_stats', 'weapon_stats', 'event_stats', 'chat')
-
 def delete_dup_logs(c):
     """Delete duplicate logs
 
@@ -598,10 +592,21 @@ def main():
     db_init(c)
     cur = c.cursor()
 
+    # Create some temporary tables so deletes don't cost so much later
+    # These need to stay in topological order to avoid foreign key trouble
+    # They may also be used to know what to delete on failure
+    # The second element of the tuple is what to order by when inserting (e.g. the primary key)
+    temp_tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
+                   ('round_extra', 'logid, seq'), ('player_stats', 'steamid64, logid'),
+                   ('player_stats_extra', 'steamid64, logid'), ('medic_stats', 'steamid64, logid'),
+                   ('heal_stats', 'logid, healer, healee'),
+                   ('class_stats', 'steamid64, logid, classid'),
+                   ('weapon_stats', 'steamid64, logid, classid, weaponid'),
+                   ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
     # Initialize temporary tables
     cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
     for table in temp_tables:
-        cur.execute("CREATE TEMP TABLE {} (LIKE {} INCLUDING ALL);".format(table, table))
+        cur.execute("CREATE TEMP TABLE {} (LIKE {} INCLUDING ALL);".format(table[0], table[0]))
     # This doesn't include foreign keys, so include some which we want to handle in import_log
     cur.execute("""ALTER TABLE heal_stats
                    ADD FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
@@ -639,7 +644,7 @@ def main():
                            WHERE logid IN (SELECT
                                    logid
                                FROM to_delete
-                           );""".format(table))
+                           );""".format(table[0]))
         cur.execute("SELECT count(*) FROM to_delete;")
         logging.info("Removed %s bad log(s)", cur.fetchone()[0])
         cur.execute("DELETE FROM to_delete;")
@@ -648,9 +653,13 @@ def main():
         update_stalemates(cur)
         update_formats(cur)
         for table in temp_tables:
-            cur.execute("INSERT INTO public.{} SELECT * FROM {};".format(table, table))
+            cur.execute("""INSERT INTO public.{}
+                           SELECT
+                               *
+                           FROM {}
+                           ORDER BY {};""".format(table[0], table[0], table[1]))
         for table in reversed(temp_tables):
-            cur.execute("DELETE FROM {};".format(table))
+            cur.execute("DELETE FROM {};".format(table[0]))
         cur.execute("COMMIT;")
 
     count = 0
