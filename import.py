@@ -311,8 +311,8 @@ def import_log(cctx, c, logid, log):
         # poor man's goto...
         first = True
         while True:
-            steamid = SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None
             try:
+                steamid = SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None
                 c.execute("SAVEPOINT before_chat;")
                 c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
                           (logid, steamid, seq, msg['msg']))
