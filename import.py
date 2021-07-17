@@ -171,14 +171,19 @@ def import_log(cctx, c, logid, log):
                          (SELECT nameid FROM name WHERE name = %(name)s), %(kills)s, %(assists)s,
                          %(deaths)s, %(dmg)s, %(dt)s
                      );""", player)
-        c.execute("""INSERT INTO player_stats_extra (
-                         logid, steamid64, suicides, dmg_real, dt_real, hr, lks, airshots, medkits,
-                         medkits_hp, backstabs, headshots, headshots_hit, sentries, healing, cpc, ic
-                     ) VALUES (
-                         %(logid)s, %(steamid)s, %(suicides)s, %(dmg_real)s, %(dt_real)s, %(hr)s,
-                         %(lks)s, %(as)s, %(medkits)s, %(medkits_hp)s, %(backstabs)s, %(headshots)s,
-                         %(headshots_hit)s, %(sentries)s, %(heal)s, %(cpc)s, %(ic)s
-                     );""", player)
+        if any((player[key] for key in ('suicides', 'dmg_real', 'dt_real', 'hr', 'lks', 'as',
+                                        'medkits', 'medkits_hp', 'backstabs', 'headshots',
+                                        'headshots_hit', 'sentries', 'heal', 'cpc', 'ic'))):
+            c.execute("""INSERT INTO player_stats_extra (
+                             logid, steamid64, suicides, dmg_real, dt_real, hr, lks, airshots,
+                             medkits, medkits_hp, backstabs, headshots, headshots_hit, sentries,
+                             healing, cpc, ic
+                         ) VALUES (
+                             %(logid)s, %(steamid)s, %(suicides)s, %(dmg_real)s, %(dt_real)s,
+                             %(hr)s, %(lks)s, %(as)s, %(medkits)s, %(medkits_hp)s, %(backstabs)s,
+                             %(headshots)s, %(headshots_hit)s, %(sentries)s, %(heal)s, %(cpc)s,
+                             %(ic)s
+                         );""", player)
 
         for (prop, event) in (('classkills', 'kill'), ('classdeaths', 'death'),
                               ('classkillassists', 'assist')):
