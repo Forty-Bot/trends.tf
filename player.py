@@ -77,6 +77,14 @@ def get_filters(args):
 
     return ret
 
+# These are common filter clauses which can be added to any query
+filter_clauses = \
+    """AND (class = %(class)s OR %(class)s ISNULL)
+       AND (format = %(format)s OR %(format)s ISNULL)
+       AND (map LIKE %(map)s OR %(map)s ISNULL)
+       AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
+       AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)"""
+
 def get_logs(c, steamid, filters, limit=100, offset=0):
     logs = c.cursor()
     logs.execute(
@@ -135,13 +143,9 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                AND cs.duration * 1.5 >= log.duration
            ) LEFT JOIN class ON (class.classid=cs.classid)
            WHERE log.steamid64 = %(steamid)s
-               AND (class = %(class)s OR %(class)s ISNULL)
-               AND (format = %(format)s OR %(format)s ISNULL)
-               AND (map LIKE %(map)s OR %(map)s ISNULL)
-               AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
-               AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)
+               {}
            ORDER BY log.logid DESC
-           LIMIT %(limit)s OFFSET %(offset)s;""",
+           LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses),
            { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
     return logs
 
@@ -350,11 +354,7 @@ def totals(steamid):
                AND cs.duration * 1.5 >= log.duration
            ) LEFT JOIN class USING (classid)
            WHERE ps.steamid64 = %(steamid)s
-               AND (class = %(class)s OR %(class)s ISNULL)
-               AND (format = %(format)s OR %(format)s ISNULL)
-               AND (map LIKE %(map)s OR %(map)s ISNULL)
-               AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
-               AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL);""",
+               {};""".format(filter_clauses),
         {'steamid': steamid, **filters})
     return flask.render_template("player/totals.html", totals=totals.fetchone(), filters=filters)
 
@@ -376,12 +376,8 @@ def weapons(steamid):
            JOIN format USING (formatid)
            JOIN map USING (mapid)
            WHERE steamid64 = %(steamid)s
-               AND (class = %(class)s OR %(class)s ISNULL)
-               AND (format = %(format)s OR %(format)s ISNULL)
-               AND (map LIKE %(map)s OR %(map)s ISNULL)
-               AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
-               AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)
-           GROUP BY weapon;""",
+               {}
+           GROUP BY weapon;""".format(filter_clauses),
         {'steamid': steamid, **filters})
     return flask.render_template("player/weapons.html", weapons=weapons, filters=filters)
 
@@ -426,17 +422,13 @@ def trends(steamid):
            ) AS hsg ON (hsg.logid=log.logid AND hsg.healer=log.steamid64)
            LEFT JOIN heal_stats AS hsr ON (hsr.logid=log.logid AND hsr.healee=log.steamid64)
            WHERE log.steamid64 = %(steamid)s
-               AND (class = %(class)s OR %(class)s ISNULL)
-               AND (format = %(format)s OR %(format)s ISNULL)
-               AND (map LIKE %(map)s OR %(map)s ISNULL)
-               AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
-               AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)
+               {}
            WINDOW win AS (
                PARTITION BY log.steamid64
                ORDER BY log.logid
                GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
            ) ORDER BY log.logid DESC
-           LIMIT 1000;""",
+           LIMIT 1000;""".format(filter_clauses),
            {'steamid': steamid, **filters})
     trends = list(dict(row) for row in cur)
     trends.reverse()
