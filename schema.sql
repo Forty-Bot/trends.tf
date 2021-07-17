@@ -3,10 +3,6 @@
 
 -- Compatibility functions for migration from SQLite
 
-CREATE OR REPLACE FUNCTION ifnull(anyelement, anyelement) RETURNS anyelement
-	AS 'SELECT coalesce($1, $2)'
-	LANGUAGE SQL IMMUTABLE PARALLEL SAFE;
-
 CREATE OR REPLACE FUNCTION add(FLOAT, anyelement) RETURNS FLOAT
 	AS 'SELECT $1 + $2'
 	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
@@ -164,8 +160,8 @@ SELECT
 FROM log
 JOIN (SELECT
 		ps.*,
-		ifnull(sum((ps.teamid = round.winner)::INT), 0::BIGINT) AS round_wins,
-		ifnull(sum((ps.teamid != round.winner)::INT), 0::BIGINT) AS round_losses,
+		coalesce(sum((ps.teamid = round.winner)::INT), 0::BIGINT) AS round_wins,
+		coalesce(sum((ps.teamid != round.winner)::INT), 0::BIGINT) AS round_losses,
 		sum((round.winner ISNULL AND round.duration >= 60)::INT) AS round_ties
 	FROM round
 	JOIN player_stats AS ps USING (logid)
