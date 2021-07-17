@@ -72,9 +72,6 @@ CREATE TABLE IF NOT EXISTS log_json (
 
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
--- Helper index for doing reverse lookups on duplicate_of (e.g. for deletes)
-CREATE INDEX IF NOT EXISTS log_duplicates ON log (duplicate_of);
-
 CREATE TABLE IF NOT EXISTS team (
 	teamid SERIAL PRIMARY KEY,
 	team TEXT NOT NULL UNIQUE
