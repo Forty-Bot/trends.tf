@@ -14,16 +14,6 @@ CREATE OR REPLACE AGGREGATE total(anyelement) (
 	PARALLEL = SAFE
 );
 
-CREATE OR REPLACE FUNCTION concat(TEXT, anyelement) RETURNS TEXT
-	AS 'SELECT coalesce($1 || '','' || $2, $1, $2)'
-	LANGUAGE SQL IMMUTABLE PARALLEL SAFE;
-
-CREATE OR REPLACE AGGREGATE group_concat(anyelement) (
-	SFUNC = concat,
-	STYPE = TEXT,
-	PARALLEL = SAFE
-);
-
 CREATE TABLE IF NOT EXISTS format (
 	formatid SERIAL PRIMARY KEY,
 	format TEXT NOT NULL UNIQUE,

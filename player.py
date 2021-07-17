@@ -93,6 +93,10 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                title,
                map,
                classes,
+               (SELECT
+                       array_agg(duration * 1.0 / log.duration)
+                   FROM unnest(class_durations) AS duration
+               ) AS class_pct,
                round_wins AS wins,
                round_losses AS losses,
                round_ties AS ties,
@@ -113,7 +117,8 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
            JOIN (SELECT
                      logid,
                      steamid64,
-                     group_concat(class ORDER BY duration DESC) AS classes
+                     array_agg(class ORDER BY duration DESC) AS classes,
+                     array_agg(duration ORDER BY duration DESC) AS class_durations
                  FROM class_stats
                  JOIN class USING (classid)
                  -- Duplicate of below, but sqlite is dumb...

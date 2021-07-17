@@ -35,10 +35,11 @@
 			</a></td>
 			<td class="left">{{ log['map'] }}</td>
 			<td class="left">
-			{% for cls in log['classes'].split(',') %}
+			{% for (cls, pct) in zip(log['classes'], log['class_pct']) %}
 				<img class="classicon"
 				 src="{{ url_for('static', filename="img/{}.png".format(cls)) }}"
-			         alt="{{ cls }}">
+				 alt="{{ cls }}"
+				 title="{{ "{:.0%}".format(pct) }}">
 			{% endfor %}
 			</td>
 			<td>{{ wlt(log['wins'], log['losses'], log['ties']) }}</td>

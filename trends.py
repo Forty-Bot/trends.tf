@@ -32,6 +32,7 @@ def create_app():
     app.register_blueprint(player, url_prefix='/player/<int:steamid>')
 
     app.jinja_env.policies["json.dumps_kwargs"] = { 'default': json_default }
+    app.jinja_env.globals.update(zip=zip)
 
     return app
 
