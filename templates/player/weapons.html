@@ -8,17 +8,18 @@
 	<h2>Filter</h2>
 	{{ filter(filters) }}
 	<h2>Weapons</h2>
+{% macro header() %}
+<tr>
+	<th>Weapon</th>
+	<th><abbr title="Average Kills (when used)">
+		Average Kills
+	</abbr></th>
+	<th><abbr title="Damage/Minute">D/M</abbr></th>
+	<th><abbr title="Accuracy">Acc</th>
+</tr>
+{% endmacro %}
 	<table>
-		<thead>
-			<tr>
-				<th>Weapon</th>
-				<th><abbr title="Average Kills (when used)">
-					Average Kills
-				</abbr></th>
-				<th><abbr title="Damage/Minute">D/M</abbr></th>
-				<th><abbr title="Accuracy">Acc</th>
-			</tr>
-		</thead>
+		<thead>{{ header() }}</thead>
 		<tbody>
 			{% for weapon in weapons %}
 			<tr>
@@ -30,5 +31,6 @@
 			</tr>
 			{% endfor %}
 		</tbody>
+		<tfoot>{{ header() }}</tfoot>
 	</table>
 {% endblock %}

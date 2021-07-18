@@ -1,31 +1,32 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/wlt.html" import wlt %}
+{% macro log_header(extra) %}
+<tr>
+	<th>Title</th>
+	<th>Map</th>
+	<th><abbr title="Classes, ordered by playtime">Classes</abbr></th>
+	<th><abbr title="Rounds Won-Lost-Tied, without ties under 60s">
+		W-L-T
+	</abbr></th>
+	<th>Format</th>
+	<th>Duration</th>
+	<th><abbr title="Kills">K</abbr></th>
+	<th><abbr title="Deaths">D</abbr></th>
+	<th><abbr title="Assists">A</abbr></th>
+	{% if extra %}
+	<th><abbr title="Damage per Minute">D/M</abbr></th>
+	<th><abbr title="Damage Taken per Minute">DT/M</abbr></th>
+	<th><abbr title="Healing Given per Minute ">HG/M</abbr></th>
+	<th><abbr title="Healing Recieved per Minute ">HR/M</abbr></th>
+	<th><abbr title="Accuracy">Acc</abbr></th>
+	{% endif %}
+	<th>Date</th>
+</tr>
+{% endmacro %}
 {% macro log_table(logs, extra=False) %}
 <table>
-	<thead>
-		<tr>
-			<th>Title</th>
-			<th>Map</th>
-			<th><abbr title="Classes, ordered by playtime">Classes</abbr></th>
-			<th><abbr title="Rounds Won-Lost-Tied, without ties under 60s">
-				W-L-T
-			</abbr></th>
-			<th>Format</th>
-			<th>Duration</th>
-			<th><abbr title="Kills">K</abbr></th>
-			<th><abbr title="Deaths">D</abbr></th>
-			<th><abbr title="Assists">A</abbr></th>
-			{% if extra %}
-			<th><abbr title="Damage per Minute">D/M</abbr></th>
-			<th><abbr title="Damage Taken per Minute">DT/M</abbr></th>
-			<th><abbr title="Healing Given per Minute ">HG/M</abbr></th>
-			<th><abbr title="Healing Recieved per Minute ">HR/M</abbr></th>
-			<th><abbr title="Accuracy">Acc</abbr></th>
-			{% endif %}
-			<th>Date</th>
-		</tr>
-	</thead>
+	<thead>{{ log_header(extra) }}</thead>
 	<tbody>
 		{% for log in logs %}
 		<tr>
@@ -59,5 +60,8 @@
 		</tr>
 		{% endfor %}
 	</tbody>
+	{% if extra %}
+		<tfoot>{{ log_header(extra) }}</tfoot>
+	{% endif %}
 </table>
 {% endmacro %}

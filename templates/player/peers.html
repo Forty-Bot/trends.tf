@@ -7,26 +7,27 @@
 	{{ super() }}
 	<h2>Peers</h2>
 	{{ navigation(peers, "{}?".format(request.path), limit, offset) }}
+{% macro header() %}
+<tr>
+	<th>Player</th>
+	<th>Logs With</th>
+	<th><abbr title="Winrate With, ties count as 0.5 wins">
+		Winrate With
+	</abbr></th>
+	<th>Time Played With</td>
+	<th>Logs Against</th>
+	<th><abbr title="Winrate Against, ties count as 0.5 wins">
+		Winrate Against
+	</abbr></th>
+	<th>Time Played Against</td>
+	<th><abbr title="Damage per Minute With">D/M With</abbr></th>
+	<th><abbr title="Damage Taken per Minute With">DT/M With</abbr></th>
+	<th><abbr title="Healing per Minute done To">H/M To</abbr></th>
+	<th><abbr title="Healing per Minute gotten From">H/M From</abbr></th>
+</tr>
+{% endmacro %}
 	<table>
-		<thead>
-			<tr>
-				<th>Player</th>
-				<th>Logs With</th>
-				<th><abbr title="Winrate With, ties count as 0.5 wins">
-					Winrate With
-				</abbr></th>
-				<th>Time Played With</td>
-				<th>Logs Against</th>
-				<th><abbr title="Winrate Against, ties count as 0.5 wins">
-					Winrate Against
-				</abbr></th>
-				<th>Time Played Against</td>
-				<th><abbr title="Damage per Minute With">D/M With</abbr></th>
-				<th><abbr title="Damage Taken per Minute With">DT/M With</abbr></th>
-				<th><abbr title="Healing per Minute done To">H/M To</abbr></th>
-				<th><abbr title="Healing per Minute gotten From">H/M From</abbr></th>
-			</tr>
-		</thead>
+		<thead>{{ header() }}</thead>
 		<tbody>
 			{% for peer in peers %}
 			<tr>
@@ -50,6 +51,7 @@
 			</tr>
 			{% endfor %}
 		</tbody>
+		<tfoot>{{ header() }}</tfoot>
 	</table>
 	{{ navigation(peers, "{}?".format(request.path), limit, offset) }}
 {% endblock %}
