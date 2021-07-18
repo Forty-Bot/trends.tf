@@ -9,6 +9,7 @@
 	{{ navigation(peers, "{}?".format(request.path), limit, offset) }}
 {% macro header() %}
 <tr>
+    <th>Avatar</th>
 	<th>Player</th>
 	<th>Logs With</th>
 	<th><abbr title="Winrate With, ties count as 0.5 wins">
@@ -31,6 +32,9 @@
 		<tbody>
 			{% for peer in peers %}
 			<tr>
+                <td>
+                    <img src="{{ peer['avatar'] }}">
+                </td>
 				<td class="left">
 					<a href="{{ url_for('.overview', steamid=peer['steamid64']) }}">
 						{{ peer['name'] }}

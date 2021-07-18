@@ -8,7 +8,8 @@
 	<h1><a href="http://steamcommunity.com/profiles/{{ g.player['steamid64'] }}">
 			{{ g.player['name'] }}
 	</a></h1>
-	<dl>
+    <img src="{{ g.player['avatarfull'] }}">
+	<dl class="totals">
 		<dt><abbr title="Wins-Losses-Ties">W-L-T</abbr></dt>
 		<dd>{{ wlt(g.player['wins'], g.player['losses'], g.player['ties']) }}</dd>
 		<dt><abbr title="Ties count as 0.5 wins">Winrate</abbr></dt>

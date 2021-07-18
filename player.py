@@ -36,7 +36,8 @@ def get_player(endpoint, values):
                    (round_wins + round_losses + round_ties) AS round_winrate
            FROM (
                 SELECT
-                    steamid64,
+                    log_wlt.steamid64,
+                    p.avatarfull,
                     sum(round_wins) AS round_wins,
                     sum(round_losses) AS round_losses,
                     sum(round_ties) AS round_ties,
@@ -44,8 +45,9 @@ def get_player(endpoint, values):
                     sum((round_wins < round_losses)::INT) AS losses,
                     sum((round_wins = round_losses)::INT) AS ties
                 FROM log_wlt
-                WHERE steamid64 = %s
-                GROUP BY steamid64
+                right join player p on log_wlt.steamid64 = p.steamid64
+                WHERE log_wlt.steamid64 = %s
+                GROUP BY log_wlt.steamid64, p.avatarfull
            ) AS overview
            JOIN player_last USING (steamid64)
            JOIN name USING (nameid);""", (values['steamid'],))
@@ -257,6 +259,7 @@ def peers(steamid):
                name
            FROM (SELECT
                    steamid64,
+                   avatar,
                    total("with"::INT) AS with,
                    total(against::INT) AS against,
                    (sum(CASE WHEN "with" THEN win END) +
@@ -279,6 +282,7 @@ def peers(steamid):
                    SELECT
                        p1.logid,
                        p2.steamid64,
+                       player.avatar,
                        p1.teamid = p2.teamid AS with,
                        p1.teamid != p2.teamid AS against,
                        (p1.round_wins > p1.round_losses)::INT AS win,
@@ -298,11 +302,13 @@ def peers(steamid):
                        hs2.healer = p2.steamid64
                        AND hs2.healee = p1.steamid64
                        AND hs2.logid = p1.logid
+                   ) left join player on (
+                       p2.steamid64 = player.steamid64
                    ) WHERE p1.steamid64 = %s
                       AND p2.steamid64 != p1.steamid64
                       AND p2.teamid NOTNULL
                ) AS peers
-               GROUP BY steamid64
+               GROUP BY steamid64, avatar
                ORDER BY count(*) DESC
                LIMIT %s OFFSET %s
            ) AS peers

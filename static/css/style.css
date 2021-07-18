@@ -114,3 +114,8 @@ td.left {
 	float: left;
 	padding: 5px;
 }
+
+dl.totals {
+	margin-left: 194px;
+	margin-top: -160px;
+}
