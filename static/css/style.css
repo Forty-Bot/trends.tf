@@ -6,6 +6,7 @@
 	--highlight: #f9d483;
 	--border: #aaa;
 	--bg: #fffcf7;
+	--darkbg: #eee;
 	--link: #3F56AD;
 	--visited: #3e3c2a;
 }
@@ -71,10 +72,15 @@ ul.nav li.nav a:hover:not(.active){
 table {
 	padding: 0.4em;
 	white-space: nowrap;
+	border-collapse: collapse;
+}
+
+tbody tr:nth-child(odd) {
+	background-color: var(--darkbg);
 }
 
 th, td {
-	padding: 0.1em, 0.8em;
+	padding: 2px 4px;
 }
 
 th {
@@ -101,4 +107,5 @@ td.left {
 
 .float {
 	float: left;
+	padding: 5px;
 }
