@@ -17,7 +17,7 @@
 		<a href="{{ url_for('root.index') }}">Trends.tf</a>
 		<form action="{{ url_for('root.search') }}" role="search">
 			<input type="search" name="q" placeholder="Player name or SteamID"
-			 value="{{ q }}">
+			 minlength="3" value="{{ q }}">
 		</form>
 	</div>
 	<hr>
