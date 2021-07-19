@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from dateutil import tz
 import flask
 
 from sql import get_db
 
 player = flask.Blueprint('player', __name__)
+
 
 @player.app_template_filter('duration')
 def duration_filter(timestamp):
@@ -21,6 +22,7 @@ def duration_filter(timestamp):
         return "{:.0f}:{:02.0f}:{:02.0f}".format(hh, mm, ss)
     else:
         return "{:.0f}:{:02.0f}".format(mm, ss)
+
 
 @player.url_value_preprocessor
 def get_player(endpoint, values):
@@ -45,7 +47,7 @@ def get_player(endpoint, values):
                     sum((round_wins < round_losses)::INT) AS losses,
                     sum((round_wins = round_losses)::INT) AS ties
                 FROM log_wlt
-                right join player p on log_wlt.steamid64 = p.steamid64
+                RIGHT JOIN player AS p ON log_wlt.steamid64 = p.steamid64
                 WHERE log_wlt.steamid64 = %s
                 GROUP BY log_wlt.steamid64, p.avatarfull
            ) AS overview
@@ -58,12 +60,11 @@ def get_player(endpoint, values):
     else:
         flask.abort(404)
 
+
 def get_filters(args):
-    ret = {}
+    ret = {'class': args.get('class', None, str) or None, 'format': args.get('format', None, str) or None}
 
     # We need the or None to turn false-y values into NULLs
-    ret['class'] = args.get('class', None, str) or None
-    ret['format'] = args.get('format', None, str) or None
     map = args.get('map', None, str)
     ret['map'] = "%{}%".format(map) if map else None
 
@@ -73,21 +74,25 @@ def get_filters(args):
         date = args.get(name, None, datetime.fromisoformat)
         if date:
             date.replace(tzinfo=timezone)
-            return (date.date().isoformat(), date.timestamp())
-        return (None, None)
+            return date.date().isoformat(), date.timestamp()
+        return None, None
 
     (ret['date_from'], ret['date_from_ts']) = parse_date('date_from')
     (ret['date_to'], ret['date_to_ts']) = parse_date('date_to')
 
     return ret
 
+
 # These are common filter clauses which can be added to any query
 filter_clauses = \
-    """AND (class = %(class)s OR %(class)s ISNULL)
-       AND (format = %(format)s OR %(format)s ISNULL)
-       AND (map ILIKE %(map)s OR %(map)s ISNULL)
-       AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
-       AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)"""
+    """
+    AND (class = %(class)s OR %(class)s ISNULL)
+    AND (format = %(format)s OR %(format)s ISNULL)
+    AND (map ILIKE %(map)s OR %(map)s ISNULL)
+    AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
+    AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)
+    """
+
 
 def get_logs(c, steamid, filters, limit=100, offset=0):
     logs = c.cursor()
@@ -155,8 +160,9 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                {}
            ORDER BY log.logid DESC
            LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses),
-           { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
+        {'steamid': steamid, **filters, 'limit': limit, 'offset': offset})
     return logs
+
 
 @player.route('/')
 def overview(steamid):
@@ -241,14 +247,15 @@ def overview(steamid):
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  event_stats=event_stats, aliases=aliases)
 
+
 @player.route('/logs')
 def logs(steamid):
-        limit = flask.request.args.get('limit', 100, int)
-        offset = flask.request.args.get('offset', 0, int)
-        filters = get_filters(flask.request.args)
-        logs = get_logs(get_db(), steamid, filters, limit=limit, offset=offset).fetchall()
-        return flask.render_template("player/logs.html", logs=logs, filters=filters, limit=limit,
-                                     offset=offset)
+    limit = flask.request.args.get('limit', 100, int)
+    offset = flask.request.args.get('offset', 0, int)
+    filters = get_filters(flask.request.args)
+    logs = get_logs(get_db(), steamid, filters, limit=limit, offset=offset).fetchall()
+    return flask.render_template("player/logs.html", logs=logs, filters=filters, limit=limit, offset=offset)
+
 
 @player.route('/peers')
 def peers(steamid):
@@ -262,7 +269,7 @@ def peers(steamid):
            FROM (SELECT
                    steamid64,
                    avatar,
-                   total("with"::INT) AS with,
+                   total("with"::INT) AS "with",
                    total(against::INT) AS against,
                    (sum(CASE WHEN "with" THEN win END) +
                        0.5 * sum(CASE WHEN "with" THEN tie END)) /
@@ -285,7 +292,7 @@ def peers(steamid):
                        p1.logid,
                        p2.steamid64,
                        player.avatar,
-                       p1.teamid = p2.teamid AS with,
+                       p1.teamid = p2.teamid AS "with",
                        p1.teamid != p2.teamid AS against,
                        (p1.round_wins > p1.round_losses)::INT AS win,
                        (p1.round_wins = p1.round_losses)::INT AS tie,
@@ -318,6 +325,7 @@ def peers(steamid):
            JOIN name USING (nameid);""", (steamid, limit, offset))
     return flask.render_template("player/peers.html", peers=peers.fetchall(), limit=limit,
                                  offset=offset)
+
 
 @player.route('/totals')
 def totals(steamid):
@@ -371,6 +379,7 @@ def totals(steamid):
         {'steamid': steamid, **filters})
     return flask.render_template("player/totals.html", totals=totals.fetchone(), filters=filters)
 
+
 @player.route('/weapons')
 def weapons(steamid):
     filters = get_filters(flask.request.args)
@@ -393,6 +402,7 @@ def weapons(steamid):
            GROUP BY weapon;""".format(filter_clauses),
         {'steamid': steamid, **filters})
     return flask.render_template("player/weapons.html", weapons=weapons, filters=filters)
+
 
 @player.route('/trends')
 def trends(steamid):
@@ -441,8 +451,7 @@ def trends(steamid):
                ORDER BY log.logid
                GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
            ) ORDER BY log.logid DESC
-           LIMIT 1000;""".format(filter_clauses),
-           {'steamid': steamid, **filters})
+           LIMIT 1000;""".format(filter_clauses), {'steamid': steamid, **filters})
     trends = list(dict(row) for row in cur)
     trends.reverse()
     return flask.render_template("player/trends.html", trends=trends, filters=filters)

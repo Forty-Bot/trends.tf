@@ -4,6 +4,7 @@
 import flask
 import os
 import psycopg2, psycopg2.extras
+import psycopg2.extensions
 
 from steamid import SteamID
 

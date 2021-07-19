@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS map (
 	map TEXT NOT NULL UNIQUE
 );
 
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE INDEX IF NOT EXISTS map_names ON map USING gin (map gin_trgm_ops);
 
 CREATE TABLE IF NOT EXISTS log (
@@ -100,7 +101,10 @@ CREATE TABLE IF NOT EXISTS name (
 CREATE INDEX IF NOT EXISTS name_fts ON name USING GIN (to_tsvector('english', name));
 
 CREATE TABLE IF NOT EXISTS player (
-	steamid64 BIGINT PRIMARY KEY
+	steamid64 BIGINT PRIMARY KEY,
+    avatar TEXT,
+    avatarmedium TEXT,
+    avatarfull TEXT
 );
 
 CREATE TABLE IF NOT EXISTS player_stats (
@@ -324,3 +328,6 @@ CREATE TABLE IF NOT EXISTS chat (
 -- Reverse index for lookups by steamid64
 -- Don't index NULLs since we don't generally want to look them up.
 CREATE INDEX IF NOT EXISTS chat_steamid64 ON chat (steamid64, logid) WHERE steamid64 NOTNULL;
+
+--
+-- CREATE EXTENSION btree_gin;
