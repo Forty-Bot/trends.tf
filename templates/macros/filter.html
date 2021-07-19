@@ -27,7 +27,11 @@
 				'other': "Other"}) }}
 		</select>
 	</label>
-	<label>Map: <input type="text" name="map" value="{{ filters['map'] or "" }}"></label>
+	<label>Map:
+		<input id="map_input" type="text" name="map" list="maps"
+		       value="{{ (filters['map'] or "") | trim("%") }}">
+		<datalist id="maps"></datalist>
+	</label>
 	<input id="timezone" type="hidden" name="timezone">
 	<label>From:
 		<input type="date" name="date_from" value="{{ filters['date_from'] or "" }}">
@@ -35,6 +39,6 @@
 	<label>To:
 		<input type="date" name="date_to" value="{{ filters['date_to'] or "" }}">
 	</label>
-	<button type-"submit">Filter</button>
+	<button type="submit">Filter</button>
 </form>
 {% endmacro %}

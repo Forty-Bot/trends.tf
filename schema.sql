@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS map (
 	map TEXT NOT NULL UNIQUE
 );
 
+CREATE INDEX IF NOT EXISTS map_names ON map USING gin (map gin_trgm_ops);
+
 CREATE TABLE IF NOT EXISTS log (
 	logid INTEGER PRIMARY KEY, -- SQLite won't infer a rowid alias unless the type is INTEGER
 	time BIGINT NOT NULL, -- End time

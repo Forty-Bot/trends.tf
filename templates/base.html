@@ -10,6 +10,8 @@
 	<title>{% block title %}trends.tf{% endblock %}</title>
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/dates.js") }}" defer></script>
+	<script type="text/javascript"
+		src="{{ url_for('static', filename="js/filter.js") }}" defer></script>
 {% endblock %}
 </head>
 <body>
@@ -17,12 +19,12 @@
 		<a href="{{ url_for('root.index') }}">Trends.tf</a>
 		<form action="{{ url_for('root.search') }}" role="search">
 			<input type="search" name="q" placeholder="Player name or SteamID"
-			 value="{{ q }}">
+			 minlength="3" value="{{ q }}">
 		</form>
 	</div>
 	<hr>
 	<div class='content'>
-		{% block content %}{% endblock %}
+		{% block content required %}{% endblock %}
 	</div>
 	<hr>
 	<div class='footer'>
