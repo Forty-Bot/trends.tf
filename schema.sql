@@ -328,6 +328,3 @@ CREATE TABLE IF NOT EXISTS chat (
 -- Reverse index for lookups by steamid64
 -- Don't index NULLs since we don't generally want to look them up.
 CREATE INDEX IF NOT EXISTS chat_steamid64 ON chat (steamid64, logid) WHERE steamid64 NOTNULL;
-
---
--- CREATE EXTENSION btree_gin;
