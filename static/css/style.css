@@ -104,10 +104,8 @@ td.left {
 	height: 1.1em;
 }
 
-.clearfix:after {
-	content: "";
-	display: table;
-	clear: both;
+.box {
+	display: flex;
 }
 
 .float {
