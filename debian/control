@@ -1,0 +1,15 @@
+Source: trends.tf
+Section: web
+Priority: optional
+Maintainer: Sean Anderson <seanga2@gmail.com>
+Build-depends: debhelper, dh-virtualenv, python3-dev, postgresql-common, libpq-dev
+Standards-Version: 4.5.1
+Homepage: https://trends.tf/
+Rules-Requires-Root: no
+
+Package: trends.tf
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}, python3
+Recommends: postgresql, nginx, uwsgi, uwsgi-plugin-python3
+Description: Team Fortress 2 stats and trends

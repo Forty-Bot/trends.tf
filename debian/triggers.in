@@ -1,0 +1,2 @@
+interest-noawait @DIST_PYTHON@
+interest-await dh-virtualenv-interpreter-update

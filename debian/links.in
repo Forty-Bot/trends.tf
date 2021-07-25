@@ -1,0 +1,3 @@
+usr/lib/trends.tf/bin/import_logs usr/bin/import_logs
+@SITE_PACKAGES@/static usr/share/trends.tf/static
+@SITE_PACKAGES@/cluster.sql usr/share/trends.tf/cluster.sql

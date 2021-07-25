@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+
+export DH_VIRTUALENV_INSTALL_ROOT := /usr/lib
+DESTDIR := debian/trends.tf
+VIRTUALENV := $(DESTDIR)$(DH_VIRTUALENV_INSTALL_ROOT)/trends.tf
+DIST_PYTHON := $(realpath /usr/bin/python3)
+SITE_PYTHON := $(VIRTUALENV)/bin/python
+SITE_PACKAGES_CMD := $(SITE_PYTHON) -c "import sysconfig; print(sysconfig.get_path('purelib'))"
+# Recursively expanded so we don't run this unless referenced
+SITE_PACKAGES = $(shell realpath --relative-to=$(DESTDIR) $$($(SITE_PACKAGES_CMD)))
+
+%:
+# Use makefile buildsystem to avoid getting warned about the python_distutils buildsystem that we're
+# not using anyway
+	dh $@ --buildsystem makefile --with python-virtualenv
+
+debian/%: debian/%.in
+	sed $(foreach VAR,$(VARS),-e 's,@$(VAR)@,$($(VAR)),g') $< > $@
+
+.PHONY: override_dh_virtualenv
+override_dh_virtualenv:
+	dh_virtualenv \
+		--upgrade-pip \
+		--extra-pip-arg --use-feature=in-tree-build
+
+debian/triggers: VARS := DIST_PYTHON
+
+.PHONY: override_dh_installdeb
+override_dh_installdeb: debian/triggers
+	dh_installdeb
+
+debian/links: VARS := SITE_PACKAGES
+
+.PHONY: override_dh_link
+override_dh_link: debian/links
+	dh_link

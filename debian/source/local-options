@@ -1,0 +1,9 @@
+# Should match .gitignore
+tar-ignore
+tar-ignore = __pycache__
+tar-ignore = build
+tar-ignore = dist
+tar-ignore = venv
+tar-ignore = *.egg-info
+tar-ignore = logs
+tar-ignore = *.db*
