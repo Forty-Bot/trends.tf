@@ -1,0 +1,3 @@
+include *.sql
+graft static
+graft templates

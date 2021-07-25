@@ -1,5 +1,0 @@
-psycopg2
-requests
-flask >= 2.0
-python-dateutil
-zstandard

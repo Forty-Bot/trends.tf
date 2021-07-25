@@ -1,10 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
-__pycache__/*
+# Python bits
+build/
+dist/
+__pycache__/
+*.egg-info/
+*.pyc
+
 logs/*
 
-*.pyc
 *.db
 *.db-shm
 *.db-wal
