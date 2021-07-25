@@ -18,3 +18,7 @@ logs/*
 # SQLite databases
 *.db*
 *.sqlite3
+
+# Build artifacts
+*.pkg.tar*
+*.deb
