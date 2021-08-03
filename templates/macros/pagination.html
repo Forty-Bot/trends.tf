@@ -1,14 +1,13 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
-{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
-{% macro navigation(rows, base_url, limit, offset) %}
+{# Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com> #}
+{% macro navigation(rows, route, limit, offset) %}
+	{% do kwargs.__setitem__('limit', limit) %}
 	{% if offset != 0 %}
-	<a href="{{ "{}limit={}&offset={}".format(base_url, limit, (offset - limit, 0) | max) }}">
-		Previous
-	</a>
+		{% do kwargs.__setitem__('offset', ((offset - limit, 0) | max)) %}
+		<a href="{{ url_for(route, **kwargs) }}">Previous</a>
 	{% endif %}
 	{% if rows | length == limit %}
-	<a href="{{ "{}limit={}&offset={}".format(base_url, limit, offset + limit) }}">
-		Next
-	</a>
+		{% do kwargs.__setitem__('offset', offset + limit) %}
+		<a href="{{ url_for(route, **kwargs) }}">Next</a>
 	{% endif %}
 {% endmacro %}

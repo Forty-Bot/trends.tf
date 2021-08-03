@@ -6,7 +6,8 @@
 {% block content %}
 	{{ super() }}
 	<h2>Peers</h2>
-	{{ navigation(peers, "{}?".format(request.path), limit, offset) }}
+	{{ navigation(peers, '.peers', limit, offset, steamid=g.player['steamid64'],
+		**request.args) }}
 {% macro header() %}
 <tr>
 	<th>Player</th>
@@ -53,5 +54,6 @@
 		</tbody>
 		<tfoot>{{ header() }}</tfoot>
 	</table>
-	{{ navigation(peers, "{}?".format(request.path), limit, offset) }}
+	{{ navigation(peers, '.peers', limit, offset, steamid=g.player['steamid64'],
+		**request.args) }}
 {% endblock %}

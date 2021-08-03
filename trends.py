@@ -35,6 +35,7 @@ def create_app():
 
     app.jinja_env.policies["json.dumps_kwargs"] = { 'default': json_default }
     app.jinja_env.globals.update(zip=zip)
+    app.jinja_env.add_extension('jinja2.ext.do')
 
     return app
 
