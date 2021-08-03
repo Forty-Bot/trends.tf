@@ -4,6 +4,7 @@
 import flask
 import sqlite3
 
+from common import get_filters, filter_clauses
 from sql import get_db
 from steamid import SteamID
 
