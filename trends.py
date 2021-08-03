@@ -11,7 +11,8 @@ from root import root
 from sql import db_connect, db_init, get_db, put_db
 
 class DefaultConfig:
-    DATABASE = "postgresql://localhost/trends"
+    DATABASE = "postgresql:///trends"
+    TIMEOUT = 60000
 
 def json_default(obj):
     if isinstance(obj, Decimal):

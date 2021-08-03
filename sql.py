@@ -26,6 +26,8 @@ def db_init(c):
 def get_db():
     if not getattr(flask.g, 'db_conn', None):
         flask.g.db_conn = db_connect(flask.current_app.config['DATABASE'])
+        flask.g.db_conn.cursor().execute("SET statement_timeout = %s;",
+                                         (flask.current_app.config['TIMEOUT'],))
     return flask.g.db_conn
 
 def put_db(exception):
