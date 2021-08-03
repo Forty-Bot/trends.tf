@@ -23,6 +23,9 @@ override_dh_virtualenv:
 		--upgrade-pip \
 		--extra-pip-arg --use-feature=in-tree-build
 
+override_dh_install:
+	dh_install --autodest
+
 debian/triggers: VARS := DIST_PYTHON
 
 .PHONY: override_dh_installdeb

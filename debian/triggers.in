@@ -1,2 +1,3 @@
 interest-noawait @DIST_PYTHON@
-interest-await dh-virtualenv-interpreter-update
+interest dh-virtualenv-interpreter-update
+#activate nginx-reload
