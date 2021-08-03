@@ -15,19 +15,19 @@
 {% endblock %}
 </head>
 <body>
-	<div class='header'>
-		<a href="{{ url_for('root.index') }}">Trends.tf</a>
+	<div id='header' class='row'>
+		<h3><a href="{{ url_for('root.index') }}">Trends.tf</a></h3>
 		<form action="{{ url_for('root.search') }}" role="search">
 			<input type="search" name="q" placeholder="Player name or SteamID"
 			 minlength="3" value="{{ q }}">
 		</form>
 	</div>
 	<hr>
-	<div class='content'>
+	<div id='content'>
 		{% block content required %}{% endblock %}
 	</div>
 	<hr>
-	<div class='footer'>
+	<div id='footer' class='row'>
 		<a href="https://github.com/Forty-Bot/trends.tf">Source</a>
 		<a href="https://www.gnu.org/licenses/agpl-3.0.html">
 			<img src="{{ url_for('static', filename="img/agplv3.png") }}"

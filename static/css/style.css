@@ -19,11 +19,6 @@ body {
 	text-align: left;
 }
 
-div.header, div.footer {
-	display: inline;
-	overflow: hidden;
-}
-
 div.content {
 	margin: 0 5%;
 }
@@ -111,4 +106,14 @@ td.left {
 .float {
 	float: left;
 	padding: 5px;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+}
+
+.row > * {
+	padding: 3px;
+	margin: 0;
 }
