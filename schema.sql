@@ -160,6 +160,27 @@ JOIN (SELECT
 	GROUP BY ps.logid, steamid64
 ) AS round USING (logid);
 
+CREATE MATERIALIZED VIEW IF NOT EXISTS round_wlt AS SELECT
+	logid,
+	steamid64,
+	duration,
+	wins,
+	losses,
+	ties
+FROM (SELECT
+		logid,
+		teamid,
+		sum(duration) AS duration,
+		coalesce(sum((teamid = round.winner)::INT), 0::BIGINT) AS wins,
+		coalesce(sum((teamid != round.winner)::INT), 0::BIGINT) AS losses,
+		sum((round.winner ISNULL AND round.duration >= 60)::INT) AS ties
+	FROM round
+	CROSS JOIN team
+	GROUP BY logid, teamid
+) AS rounds
+JOIN player_stats USING (logid, teamid)
+ORDER BY steamid64, logid;
+
 CREATE TABLE IF NOT EXISTS player_stats_extra (
 	logid INT NOT NULL,
 	steamid64 BIGINT NOT NULL,

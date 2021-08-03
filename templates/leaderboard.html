@@ -1,0 +1,41 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/pagination.html" import navigation %}
+{% extends "base.html" %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h1>Leaderboard</h1>
+	{{ filter(filters) }}
+	{{ navigation(leaderboard, '.leaderboard', limit, offset, **request.args) }}
+{% macro header() %}
+<tr>
+	<th>Rank</th>
+	<th>Player</th>
+	<th><abbr title="Total logs">Logs</th>
+	<th><abbr title="Winrate, ties count as 0.5 wins">Winrate</abbr></th>
+	<th>Time Played</td>
+</tr>
+{% endmacro %}
+	<table>
+		<thead>{{ header() }}</thead>
+		<tbody>
+			{% for player in leaderboard %}
+			<tr>
+				<td>{{ loop.index + offset }}</td>
+				<td class="left">
+					<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
+						{{ player['name'] }}
+					</a>
+				</td>
+				<td>{{ player['logs'] }}</td>
+				<td>{{ "{:.2%}".format(player['winrate']) }}</td>
+				<td>{{ player['duration'] | duration }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>{{ header() }}</tfoot>
+	</table>
+	{{ navigation(leaderboard, '.leaderboard', limit, offset, **request.args) }}
+{% endblock %}
