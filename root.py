@@ -4,7 +4,7 @@
 import flask
 import sqlite3
 
-from common import get_filters, filter_clauses
+from common import get_filters
 from sql import get_db
 from steamid import SteamID
 
@@ -92,16 +92,24 @@ def leaderboard():
     sort = flask.request.args.get('sort', 'rating', str)
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
-
-    # This factor controls how much we weight the expected winrate for each player
-    # Increasing this factor will cause players with low numbers of logs to be rated closer to m
-    # This should be approximately the average number of logs per player
-    C = 100
-    # The expected winrate
-    m = 0.5
-
     filters = get_filters(flask.request.args)
-    leaderboard = get_db().cursor()
+
+    db = get_db()
+    ids = db.cursor()
+    ids.execute("""SELECT
+                       (SELECT
+                               classid
+                           FROM class
+                           WHERE class = %(class)s
+                       ) AS classid,
+                       (SELECT
+                               formatid
+                           FROM format
+                           WHERE format = %(format)s
+                       ) AS formatid;""", filters)
+    ids = ids.fetchone()
+    print(ids)
+    leaderboard = db.cursor()
     leaderboard.execute("""SELECT
                                name,
                                steamid64,
@@ -113,34 +121,22 @@ def leaderboard():
                                    *
                                FROM (SELECT
                                        steamid64,
-                                       duration,
-                                       logs,
-                                       (0.5 * ties + wins) / (logs) AS winrate,
-                                       (%(C)s * %(m)s + 0.5 * ties + wins) /
-                                           (%(C)s + logs) AS rating
-                                   FROM (SELECT
-                                           steamid64,
-                                           sum(round_wlt.duration) AS duration,
-                                           sum((wins > losses)::INT) AS wins,
-                                           sum((wins = losses)::INT) AS ties,
-                                           count(*) AS logs
-                                       FROM round_wlt
-                                       LEFT JOIN log USING (logid)
-                                       LEFT JOIN format USING (formatid)
-                                       LEFT JOIN map USING (mapid)
-                                       -- Hack to avoid joining this table if we don't filter
-                                       LEFT JOIN (SELECT
-                                               logid,
-                                               steamid64,
-                                               classid
-                                           FROM class_stats
-                                           WHERE %(class)s NOTNULL
-                                       ) AS class_stats USING (logid, steamid64)
-                                       LEFT JOIN class USING (classid)
-                                       WHERE TRUE
-                                           {}
-                                       GROUP BY steamid64
-                                   ) AS player_wlt
+                                       sum(duration) AS duration,
+                                       sum(wins + losses + ties) AS logs,
+                                       sum(0.5 * ties + wins) /
+                                           sum(wins + losses + ties) AS winrate,
+                                       (50 + sum(0.5 * ties + wins)) /
+                                           (100 + sum(wins + losses + ties)) AS rating
+                                   FROM leaderboard_cube
+                                   LEFT JOIN map USING (mapid)
+                                   WHERE steamid64 NOTNULL
+                                       AND (classid = %(classid)s
+                                           OR (%(classid)s ISNULL AND classid ISNULL))
+                                       AND (formatid = %(formatid)s
+                                           OR (%(formatid)s ISNULL AND formatid ISNULL))
+                                       AND (map ILIKE %(map)s
+                                           OR (%(map)s ISNULL AND map ISNULL))
+                                   GROUP BY steamid64
                                ) AS player_filtered
                                ORDER BY CASE %(sort)s
                                    WHEN 'logs' THEN logs
@@ -150,8 +146,7 @@ def leaderboard():
                                LIMIT %(limit)s OFFSET %(offset)s
                            ) AS players_sorted
                            LEFT JOIN player_last USING (steamid64)
-                           LEFT JOIN name USING (nameid);""".format(filter_clauses),
-                           { 'C': C, 'm': m, **filters, 'sort': sort, 'limit': limit,
-                             'offset': offset })
+                           LEFT JOIN name USING (nameid);""",
+                           { **filters, **ids, 'sort': sort, 'limit': limit, 'offset': offset })
     return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall(),
                                  filters=filters, offset=offset, limit=limit)

@@ -6,7 +6,7 @@
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
 {% endfor %}
 {% endmacro %}
-{% macro filter(filters) %}
+{% macro filter(filters, date=True) %}
 <form>
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
@@ -32,6 +32,7 @@
 		       value="{{ (filters['map'] or "") | trim("%") }}">
 		<datalist id="maps"></datalist>
 	</label>
+	{% if date %}
 	<input id="timezone" type="hidden" name="timezone">
 	<label>From:
 		<input type="date" name="date_from" value="{{ filters['date_from'] or "" }}">
@@ -39,6 +40,7 @@
 	<label>To:
 		<input type="date" name="date_to" value="{{ filters['date_to'] or "" }}">
 	</label>
+	{% endif %}
 	<button type="submit">Filter</button>
 </form>
 {% endmacro %}

@@ -7,7 +7,7 @@
 {% block content %}
 	{{ super() }}
 	<h1>Leaderboard</h1>
-	{{ filter(filters) }}
+	{{ filter(filters, date=False) }}
 	{{ navigation(leaderboard, '.leaderboard', limit, offset, **request.args) }}
 {% macro header() %}
 <tr>
@@ -15,6 +15,7 @@
 	<th>Player</th>
 	<th><abbr title="Total logs">Logs</th>
 	<th><abbr title="Winrate, ties count as 0.5 wins">Winrate</abbr></th>
+	<th><abbr title="Winrate with 50 wins and 50 losses added">Rating</abbr></th>
 	<th>Time Played</td>
 </tr>
 {% endmacro %}
@@ -31,6 +32,7 @@
 				</td>
 				<td>{{ player['logs'] }}</td>
 				<td>{{ "{:.2%}".format(player['winrate']) }}</td>
+				<td>{{ "{:.3}".format(player['rating']) }}</td>
 				<td>{{ player['duration'] | duration }}</td>
 			</tr>
 			{% endfor %}

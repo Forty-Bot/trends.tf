@@ -160,27 +160,6 @@ JOIN (SELECT
 	GROUP BY ps.logid, steamid64
 ) AS round USING (logid);
 
-CREATE MATERIALIZED VIEW IF NOT EXISTS round_wlt AS SELECT
-	logid,
-	steamid64,
-	duration,
-	wins,
-	losses,
-	ties
-FROM (SELECT
-		logid,
-		teamid,
-		sum(duration) AS duration,
-		coalesce(sum((teamid = round.winner)::INT), 0::BIGINT) AS wins,
-		coalesce(sum((teamid != round.winner)::INT), 0::BIGINT) AS losses,
-		sum((round.winner ISNULL AND round.duration >= 60)::INT) AS ties
-	FROM round
-	CROSS JOIN team
-	GROUP BY logid, teamid
-) AS rounds
-JOIN player_stats USING (logid, teamid)
-ORDER BY steamid64, logid;
-
 CREATE TABLE IF NOT EXISTS player_stats_extra (
 	logid INT NOT NULL,
 	steamid64 BIGINT NOT NULL,
@@ -283,6 +262,36 @@ CREATE TABLE IF NOT EXISTS class_stats (
 CREATE STATISTICS IF NOT EXISTS class_stats (ndistinct)
 ON logid, steamid64
 FROM class_stats;
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
+	steamid64,
+	formatid,
+	classid,
+	mapid,
+	sum(round_wlt.duration) AS duration,
+	sum((wins > losses)::INT) AS wins,
+	sum((wins = losses)::INT) AS ties,
+	sum((wins < losses)::INT) AS losses
+FROM (SELECT
+		logid,
+		teamid,
+		sum(duration) AS duration,
+		coalesce(sum((teamid = round.winner)::INT), 0::BIGINT) AS wins,
+		coalesce(sum((teamid != round.winner)::INT), 0::BIGINT) AS losses
+	FROM round
+	CROSS JOIN team
+	GROUP BY logid, teamid
+) AS round_wlt
+JOIN log USING (logid)
+JOIN player_stats USING (logid, teamid)
+JOIN class_stats USING (logid, steamid64)
+GROUP BY CUBE (steamid64, formatid, classid, mapid)
+ORDER BY mapid, classid, formatid, steamid64;
+
+CREATE UNIQUE INDEX IF NOT EXISTS leaderboard_pkey
+	ON leaderboard_cube (mapid, classid, formatid, steamid64);
+
+CREATE INDEX IF NOT EXISTS leaderboard_classid ON leaderboard_cube (classid, formatid);
 
 CREATE TABLE IF NOT EXISTS weapon (
 	weaponid SERIAL PRIMARY KEY,
