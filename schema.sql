@@ -113,6 +113,9 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	deaths INT NOT NULL,
 	dmg INT NOT NULL,
 	dt INT,
+	wins INT NOT NULL DEFAULT 0, -- rounds won
+	losses INT NOT NULL DEFAULT 0, -- rounds lost
+	ties INT NOT NULL DEFAULT 0, -- rounds tied
 	PRIMARY KEY (steamid64, logid)
 );
 
@@ -137,28 +140,6 @@ CROSS JOIN LATERAL (SELECT
 	ORDER BY logid DESC
 	LIMIT 1
 ) AS last;
-
-CREATE OR REPLACE VIEW log_wlt AS
-SELECT
-	time,
-	duration,
-	title,
-	mapid,
-	red_score,
-	blue_score,
-	formatid,
-	duplicate_of,
-	round.*
-FROM log
-JOIN (SELECT
-		ps.*,
-		coalesce(sum((ps.teamid = round.winner)::INT), 0::BIGINT) AS round_wins,
-		coalesce(sum((ps.teamid != round.winner)::INT), 0::BIGINT) AS round_losses,
-		sum((round.winner ISNULL AND round.duration >= 60)::INT) AS round_ties
-	FROM round
-	JOIN player_stats AS ps USING (logid)
-	GROUP BY ps.logid, steamid64
-) AS round USING (logid);
 
 CREATE TABLE IF NOT EXISTS player_stats_extra (
 	logid INT NOT NULL,
@@ -268,22 +249,12 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	formatid,
 	classid,
 	mapid,
-	sum(round_wlt.duration) AS duration,
+	sum(log.duration) AS duration,
 	sum((wins > losses)::INT) AS wins,
 	sum((wins = losses)::INT) AS ties,
 	sum((wins < losses)::INT) AS losses
-FROM (SELECT
-		logid,
-		teamid,
-		sum(duration) AS duration,
-		coalesce(sum((teamid = round.winner)::INT), 0::BIGINT) AS wins,
-		coalesce(sum((teamid != round.winner)::INT), 0::BIGINT) AS losses
-	FROM round
-	CROSS JOIN team
-	GROUP BY logid, teamid
-) AS round_wlt
-JOIN log USING (logid)
-JOIN player_stats USING (logid, teamid)
+FROM log
+JOIN player_stats USING (logid)
 LEFT JOIN class_stats USING (logid, steamid64)
 WHERE class_stats.duration * 1.5 >= log.duration
 GROUP BY CUBE (steamid64, formatid, classid, mapid)

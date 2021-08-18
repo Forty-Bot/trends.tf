@@ -521,6 +521,24 @@ def update_formats(c):
                  ) AS new
                  WHERE log.logid = new.logid;""")
 
+def update_wlt(c):
+    c.execute("""UPDATE player_stats AS ps
+                 SET wins = new.wins,
+                     losses = new.losses,
+                     ties = new.ties
+                 FROM (SELECT
+                         logid,
+                         steamid64,
+                         coalesce(sum((teamid = round.winner)::INT), 0::BIGINT) AS wins,
+                         coalesce(sum((teamid != round.winner)::INT), 0::BIGINT) AS losses,
+                         sum((round.winner ISNULL AND round.duration >= 60)::INT) AS ties
+                     FROM player_stats
+                     JOIN round USING (logid)
+                     GROUP BY logid, steamid64
+                 ) AS new
+                 WHERE ps.logid = new.logid
+                     AND ps.steamid64 = new.steamid64""")
+
 def parse_args(*args, **kwargs):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -652,6 +670,7 @@ def main():
         delete_dup_rounds(cur)
         update_stalemates(cur)
         update_formats(cur)
+        update_wlt(cur)
         for table in temp_tables:
             cur.execute("""INSERT INTO public.{}
                            SELECT

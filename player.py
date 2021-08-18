@@ -36,13 +36,13 @@ def get_player(endpoint, values):
            FROM (
                 SELECT
                     steamid64,
-                    sum(round_wins) AS round_wins,
-                    sum(round_losses) AS round_losses,
-                    sum(round_ties) AS round_ties,
-                    sum((round_wins > round_losses)::INT) AS wins,
-                    sum((round_wins < round_losses)::INT) AS losses,
-                    sum((round_wins = round_losses)::INT) AS ties
-                FROM log_wlt
+                    sum(wins) AS round_wins,
+                    sum(losses) AS round_losses,
+                    sum(ties) AS round_ties,
+                    sum((wins > losses)::INT) AS wins,
+                    sum((wins < losses)::INT) AS losses,
+                    sum((wins = losses)::INT) AS ties
+                FROM player_stats
                 WHERE steamid64 = %s
                 GROUP BY steamid64
            ) AS overview
@@ -67,21 +67,22 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
                        array_agg(duration * 1.0 / log.duration)
                    FROM unnest(class_durations) AS duration
                ) AS class_pct,
-               round_wins AS wins,
-               round_losses AS losses,
-               round_ties AS ties,
+               wins,
+               losses,
+               ties,
                format,
                log.duration,
-               log.kills,
-               log.deaths,
-               log.assists,
-               log.dmg * 60.0 / log.duration AS dpm,
-               log.dt * 60.0 / log.duration AS dtm,
+               ps.kills,
+               ps.deaths,
+               ps.assists,
+               ps.dmg * 60.0 / log.duration AS dpm,
+               ps.dt * 60.0 / log.duration AS dtm,
                acc,
                hsg.healing * 60.0 / log.duration AS hpm_given,
                hsr.healing * 60.0 / log.duration AS hpm_recieved,
                time
-           FROM log_wlt AS log
+           FROM log
+           JOIN player_stats AS ps USING (logid)
            JOIN map USING (mapid)
            JOIN format USING (formatid)
            JOIN (SELECT
@@ -111,13 +112,13 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
            ) AS hsg USING (logid, steamid64)
            LEFT JOIN heal_stats AS hsr ON (
                hsr.logid=log.logid
-               AND hsr.healee=log.steamid64
+               AND hsr.healee=ps.steamid64
            ) LEFT JOIN class_stats AS cs ON (
                cs.logid=log.logid
-               AND cs.steamid64=log.steamid64
+               AND cs.steamid64=ps.steamid64
                AND cs.duration * 1.5 >= log.duration
            ) LEFT JOIN class ON (class.classid=cs.classid)
-           WHERE log.steamid64 = %(steamid)s
+           WHERE ps.steamid64 = %(steamid)s
                {}
            ORDER BY log.logid DESC
            LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses),
@@ -132,14 +133,15 @@ def overview(steamid):
         """WITH classes AS MATERIALIZED (
                SELECT
                    classid,
-                   cs.duration * 1.5 > log_wlt.duration AS mostly,
-                   round_wins,
-                   round_losses,
+                   cs.duration * 1.5 > log.duration AS mostly,
+                   wins AS round_wins,
+                   losses AS round_losses,
                    cs.duration,
                    cs.dmg,
                    hits,
                    shots
-               FROM log_wlt
+               FROM log
+               JOIN player_stats USING (logid)
                JOIN class_stats cs USING (logid, steamid64)
                JOIN (SELECT
                        logid,
@@ -251,14 +253,15 @@ def peers(steamid):
                        p2.steamid64,
                        p1.teamid = p2.teamid AS with,
                        p1.teamid != p2.teamid AS against,
-                       (p1.round_wins > p1.round_losses)::INT AS win,
-                       (p1.round_wins = p1.round_losses)::INT AS tie,
+                       (p1.wins > p1.losses)::INT AS win,
+                       (p1.wins = p1.losses)::INT AS tie,
                        p1.dmg,
                        p1.dt,
                        hs1.healing AS healing_to,
                        hs2.healing AS healing_from,
-                       p1.duration
-                   FROM log_wlt AS p1
+                       log.duration
+                   FROM log
+                   JOIN player_stats AS p1 USING (logid)
                    JOIN player_stats AS p2 USING (logid)
                    LEFT JOIN heal_stats AS hs1 ON (
                        hs1.healer = p1.steamid64
@@ -364,28 +367,28 @@ def trends(steamid):
         """SELECT
                log.logid,
                time,
-               (sum((round_wins > round_losses)::INT) OVER win +
-                   0.5 * sum((round_wins = round_losses)::INT) OVER win) /
+               (sum((wins > losses)::INT) OVER win + 0.5 * sum((wins = losses)::INT) OVER win) /
                    count(*) OVER win AS winrate,
-               (sum(round_wins + 0.5 * round_ties) OVER win)
-                   / sum(round_wins + round_losses + round_ties) OVER win AS round_winrate,
-               avg(log.kills) OVER win AS kills,
-               avg(log.deaths) OVER win AS deaths,
-               avg(log.assists) OVER win AS assists,
-               sum(log.dmg) OVER win * 60.0 /
-                   sum(CASE WHEN log.dmg != 0 THEN log.duration END) OVER win AS dpm,
-               sum(log.dt) OVER win * 60.0 /
-                   sum(CASE WHEN log.dt != 0 THEN log.duration END) OVER win AS dtm,
+               (sum(wins + 0.5 * ties) OVER win) /
+                   sum(wins + losses + ties) OVER win AS round_winrate,
+               avg(ps.kills) OVER win AS kills,
+               avg(ps.deaths) OVER win AS deaths,
+               avg(ps.assists) OVER win AS assists,
+               sum(ps.dmg) OVER win * 60.0 /
+                   sum(CASE WHEN ps.dmg != 0 THEN log.duration END) OVER win AS dpm,
+               sum(ps.dt) OVER win * 60.0 /
+                   sum(CASE WHEN ps.dt != 0 THEN log.duration END) OVER win AS dtm,
                sum(hsg.healing) OVER win * 60.0 /
                    sum(CASE WHEN hsg.healing != 0 THEN log.duration END) OVER win AS hpm_given,
                sum(hsr.healing) OVER win * 60.0 /
                    sum(CASE WHEN hsr.healing != 0 THEN log.duration END) OVER win AS hpm_recieved
-           FROM log_wlt AS log
+           FROM log
+           JOIN player_stats AS ps USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)
            LEFT JOIN class_stats AS cs ON (
                cs.logid=log.logid
-               AND cs.steamid64=log.steamid64
+               AND cs.steamid64=ps.steamid64
                AND cs.duration * 1.5 >= log.duration
            ) LEFT JOIN class USING (classid)
            LEFT JOIN (SELECT
@@ -394,12 +397,12 @@ def trends(steamid):
                    sum(healing) AS healing
                FROM heal_stats
                GROUP BY logid, healer
-           ) AS hsg ON (hsg.logid=log.logid AND hsg.healer=log.steamid64)
-           LEFT JOIN heal_stats AS hsr ON (hsr.logid=log.logid AND hsr.healee=log.steamid64)
-           WHERE log.steamid64 = %(steamid)s
+           ) AS hsg ON (hsg.logid=log.logid AND hsg.healer=ps.steamid64)
+           LEFT JOIN heal_stats AS hsr ON (hsr.logid=log.logid AND hsr.healee=ps.steamid64)
+           WHERE ps.steamid64 = %(steamid)s
                {}
            WINDOW win AS (
-               PARTITION BY log.steamid64
+               PARTITION BY ps.steamid64
                ORDER BY log.logid
                GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
            ) ORDER BY log.logid DESC
