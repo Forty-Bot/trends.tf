@@ -10,7 +10,7 @@
 	<h2>Filter</h2>
 	{{ filter(filters) }}
 	<h2>Logs</h2>
-	{{ navigation(logs, '.logs', limit, offset, steamid=g.player['steamid64'], **request.args) }}
+	{{ navigation(logs, limit, offset, steamid=g.player['steamid64'], **request.args) }}
 	{{ log_table(logs, extra=True) }}
-	{{ navigation(logs, '.logs', limit, offset, steamid=g.player['steamid64'], **request.args) }}
+	{{ navigation(logs, limit, offset, steamid=g.player['steamid64'], **request.args) }}
 {% endblock %}

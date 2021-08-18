@@ -8,7 +8,7 @@
 	{{ super() }}
 	<h1>Leaderboard</h1>
 	{{ filter(filters, date=False) }}
-	{{ navigation(leaderboard, '.leaderboard', limit, offset, **request.args) }}
+	{{ navigation(leaderboard, limit, offset, **request.args) }}
 {% macro header() %}
 <tr>
 	<th>Rank</th>
@@ -39,5 +39,5 @@
 		</tbody>
 		<tfoot>{{ header() }}</tfoot>
 	</table>
-	{{ navigation(leaderboard, '.leaderboard', limit, offset, **request.args) }}
+	{{ navigation(leaderboard, limit, offset, **request.args) }}
 {% endblock %}

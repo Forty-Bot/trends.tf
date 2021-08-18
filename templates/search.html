@@ -9,7 +9,7 @@
 	{% if error %}
 	{{ error }}
 	{% else %}
-	{{ navigation(results, '.search', limit, offset, **request.args) }}
+	{{ navigation(results, limit, offset, **request.args) }}
 	<ul>
 		{% for player in results %}
 			<li><a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
@@ -17,6 +17,6 @@
 			</a>({{ ", ".join(player['aliases']) }})</li>
 		{% endfor %}
 	</ul>
-	{{ navigation(results, '.search', limit, offset, **request.args) }}
+	{{ navigation(results, limit, offset, **request.args) }}
 	{% endif %}
 {% endblock %}
