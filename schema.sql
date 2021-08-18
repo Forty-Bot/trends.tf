@@ -284,9 +284,11 @@ FROM (SELECT
 ) AS round_wlt
 JOIN log USING (logid)
 JOIN player_stats USING (logid, teamid)
-JOIN class_stats USING (logid, steamid64)
+LEFT JOIN class_stats USING (logid, steamid64)
+WHERE class_stats.duration * 1.5 >= log.duration
 GROUP BY CUBE (steamid64, formatid, classid, mapid)
-ORDER BY mapid, classid, formatid, steamid64;
+ORDER BY mapid, classid, formatid, steamid64
+WITH NO DATA;
 
 CREATE UNIQUE INDEX IF NOT EXISTS leaderboard_pkey
 	ON leaderboard_cube (mapid, classid, formatid, steamid64);
