@@ -631,8 +631,10 @@ def main():
 	               ADD FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64);""")
     cur.execute("""ALTER TABLE chat
                    ADD FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)""")
-    # And we will need this index to calculate formats efficiently
-    cur.execute("CREATE INDEX IF NOT EXISTS class_stats_logid ON class_stats (logid);")
+    # We need this index to calculate formats efficiently
+    cur.execute("CREATE INDEX class_stats_logid ON class_stats (logid);")
+    # And this index to limit dupes
+    cur.execute("CREATE INDEX log_time ON log (time);")
     # Finally, add some convenience views
     cur.execute("""CREATE TEMP VIEW combined_logs AS
                    SELECT * FROM log
