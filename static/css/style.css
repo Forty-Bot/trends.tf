@@ -117,3 +117,7 @@ td.left {
 	padding: 3px;
 	margin: 0;
 }
+
+a.sort {
+	color: var(--link);
+}

@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
+# Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import flask
 import sqlite3
 
-from common import get_filters
+from common import get_filters, get_order
 from sql import get_db
 from steamid import SteamID
 
@@ -89,9 +89,9 @@ def search():
 
 @root.route('/leaderboard')
 def leaderboard():
-    sort = flask.request.args.get('sort', 'rating', str)
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
+    order = get_order(flask.request.args, 'rating')
     filters = get_filters(flask.request.args)
 
     db = get_db()
@@ -108,7 +108,6 @@ def leaderboard():
                            WHERE format = %(format)s
                        ) AS formatid;""", filters)
     ids = ids.fetchone()
-    print(ids)
     leaderboard = db.cursor()
     leaderboard.execute("""SELECT
                                name,
@@ -138,15 +137,20 @@ def leaderboard():
                                            OR (%(map)s ISNULL AND map ISNULL))
                                    GROUP BY steamid64
                                ) AS player_filtered
-                               ORDER BY CASE %(sort)s
-                                   WHEN 'logs' THEN logs
-                                   WHEN 'duration' THEN duration
-                                   WHEN 'rating' THEN rating
-                               END DESC
+                               ORDER BY CASE (%(sort)s, %(sort_dir)s)::TEXT
+                                   WHEN '(duration,asc)' THEN duration
+                                   WHEN '(duration,desc)' THEN -duration
+                                   WHEN '(logs,asc)' THEN logs
+                                   WHEN '(logs,desc)' THEN -logs
+                                   WHEN '(winrate,asc)' THEN winrate
+                                   WHEN '(winrate,desc)' THEN -winrate
+                                   WHEN '(rating,asc)' THEN rating
+                                   WHEN '(rating,desc)' THEN -rating
+                               END ASC
                                LIMIT %(limit)s OFFSET %(offset)s
                            ) AS players_sorted
                            LEFT JOIN player_last USING (steamid64)
                            LEFT JOIN name USING (nameid);""",
-                           { **filters, **ids, 'sort': sort, 'limit': limit, 'offset': offset })
+                           { **filters, **ids, **order, 'limit': limit, 'offset': offset })
     return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall(),
-                                 filters=filters, offset=offset, limit=limit)
+                                 filters=filters, order=order, offset=offset, limit=limit)

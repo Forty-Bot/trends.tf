@@ -34,3 +34,9 @@ filter_clauses = \
        AND (map ILIKE %(map)s OR %(map)s ISNULL)
        AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
        AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)"""
+
+def get_order(args, column, dir='desc'):
+    return {
+            'sort': args.get('sort', column, str),
+            'sort_dir': args.get('sort_dir', dir, str),
+    }
