@@ -1,6 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/class.html" import class_map %}
+{% from "macros/form.html" import hidden_excluding %}
 {% macro create_options(default, options) %}
 {% for key, content in options.items() %}
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
@@ -8,6 +9,7 @@
 {% endmacro %}
 {% macro filter(filters, date=True) %}
 <form>
+	{{ hidden_excluding('class', 'format', 'map', 'timezone', 'date_from', 'date_to') }}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">

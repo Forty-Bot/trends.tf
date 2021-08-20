@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/form.html" import hidden_excluding %}
 {% macro create_dir(order, dir, content) %}
 	<input type="radio" name="sort_dir" value="{{ dir }}"
 	 {{ "checked" if dir == order['sort_dir'] }}>
@@ -8,6 +9,7 @@
 {% endmacro %}
 {% macro sort(order, columns) %}
 <form>
+	{{ hidden_excluding('sort', 'sort_dir') }}
 	<label>Sort by:
 		<select name="sort">
 		{% for column, content in columns.items() %}

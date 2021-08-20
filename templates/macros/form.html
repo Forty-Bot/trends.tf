@@ -1,0 +1,13 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% macro hidden_excluding() %}
+	{# Workaround for https://github.com/pallets/jinja/issues/1484 #}
+	{% do varargs %}
+	{# Always go back to the first page #}
+	{% set varargs = varargs + ('limit', 'offset') %}
+	{% for key, val in request.args.copy().items() %}
+		{% if key not in varargs %}
+			<input type="hidden" name="{{ key }}" value="{{ val }}">
+		{% endif %}
+	{% endfor %}
+{% endmacro %}
