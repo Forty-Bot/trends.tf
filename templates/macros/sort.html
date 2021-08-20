@@ -1,25 +1,24 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
-{% macro create_sort(order, args) %}
-	{% if order['sort'] == args['sort'] and order['sort_dir'] == args['sort_dir'] %}
-		{% set elem = 'span' %}
-	{% else %}
-		{% set elem = 'a' %}
-	{% endif %}
-	<{{ elem | safe }} class="sort" href="{{ url_for(request.endpoint, **args) }}"
-	   title="{{ {'asc': "Sort Ascending", 'desc': "Sort Descending"}[args['sort_dir']] }}">
-		{{ {'asc': "\u25B2", 'desc':"\u25BC"}[args['sort_dir']] }}
-	</{{ elem | safe }}>
+{% macro create_dir(order, dir, content) %}
+	<input type="radio" name="sort_dir" value="{{ dir }}"
+	 {{ "checked" if dir == order['sort_dir'] }}>
+		{{ content }}
+	</input>
 {% endmacro %}
-{% macro sort(order, column) %}
-	{% set args = request.args.copy() %}
-	{% do args.update(request.view_args) %}
-	{# Reset our page position #}
-	{% do args.pop('limit', None) %}
-	{% do args.pop('offset', None) %}
-	{% do args.__setitem__('sort', column) %}
-	{% do args.__setitem__('sort_dir', 'desc') %}
-	{{ create_sort(order, args) }}
-	{% do args.__setitem__('sort_dir', 'asc') %}
-	{{ create_sort(order, args) }}
+{% macro sort(order, columns) %}
+<form>
+	<label>Sort by:
+		<select name="sort">
+		{% for column, content in columns.items() %}
+			<option {{ "selected" if column == order['sort'] }} value="{{ column }}">
+				{{ content }}
+			</option>
+		{% endfor %}
+		</select>
+	</label>
+	{{ create_dir(order, 'desc', "Descending") }}
+	{{ create_dir(order, 'asc', "Ascending") }}
+	<button type="submit">Sort</button>
+</form>
 {% endmacro %}

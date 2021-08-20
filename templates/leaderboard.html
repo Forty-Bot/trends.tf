@@ -9,15 +9,21 @@
 	{{ super() }}
 	<h1>Leaderboard</h1>
 	{{ filter(filters, date=False) }}
+	{{ sort(order, {
+		'logs': "Logs",
+		'winrate': "Winrate",
+		'rating': "Rating",
+		'duration': "Time Played",
+	   }) }}
 	{{ navigation(leaderboard, limit, offset) }}
 {% macro header() %}
 <tr>
 	<th>Rank</th>
 	<th>Player</th>
-	<th><abbr title="Total logs">Logs</abbr>{{ sort(order, 'logs') }}</th>
+	<th><abbr title="Total logs">Logs</abbr></th>
 	<th><abbr title="Winrate, ties count as 0.5 wins">Winrate</abbr></th>
-	<th><abbr title="Winrate with 50 wins and 50 losses added">Rating</abbr>{{ sort(order, 'rating') }}</th>
-	<th>Time Played{{ sort(order, 'duration') }}</td>
+	<th><abbr title="Winrate with 50 wins and 50 losses added">Rating</abbr></th>
+	<th>Time Played</td>
 </tr>
 {% endmacro %}
 	<table>
