@@ -1,11 +1,25 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/pagination.html" import navigation %}
+{% from "macros/sort.html" import sort %}
 {% extends "player/base.html" %}
 {% block title %}Peers - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
 	<h2>Peers</h2>
+	{{ sort(order, {
+		'logs': "Total logs",
+		'with': "Logs with",
+		'against': "Logs against",
+		'winrate_with': "Winrate with",
+		'winrate_against': "Winrate against",
+		'time_with': "Time played with",
+		'time_against': "Time played against",
+		'dpm': "Damage per minute with",
+		'dtm': "Damage taken per minute with",
+		'hgm': "Healing per minute given",
+		'hrm': "Healing per minute received",
+	}) }}
 	{{ navigation(peers, limit, offset) }}
 {% macro header() %}
 <tr>

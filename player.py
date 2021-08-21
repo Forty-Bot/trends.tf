@@ -237,6 +237,19 @@ def logs(steamid):
 def peers(steamid):
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
+    order, order_clause = get_order(flask.request.args, {
+        'logs': "count(*)",
+        'with': '"with"',
+        'against': '"against"',
+        'winrate_with': "winrate_with",
+        'winrate_against': "winrate_against",
+        'time_with': "time_with",
+        'time_against': "time_against",
+        'dpm': "dpm",
+        'dtm': "dtm",
+        'hgm': "hpm_to",
+        'hrm': "hpm_from",
+    }, 'logs')
     peers = get_db().cursor()
     peers.execute(
         """SELECT
@@ -291,13 +304,13 @@ def peers(steamid):
                       AND p2.teamid NOTNULL
                ) AS peers
                GROUP BY steamid64
-               ORDER BY count(*) DESC
+               ORDER BY {} NULLS LAST
                LIMIT %s OFFSET %s
            ) AS peers
            JOIN player_last USING (steamid64)
-           JOIN name USING (nameid);""", (steamid, limit, offset))
-    return flask.render_template("player/peers.html", peers=peers.fetchall(), limit=limit,
-                                 offset=offset)
+           JOIN name USING (nameid);""".format(order_clause), (steamid, limit, offset))
+    return flask.render_template("player/peers.html", peers=peers.fetchall(), order=order,
+                                 limit=limit, offset=offset)
 
 @player.route('/totals')
 def totals(steamid):
