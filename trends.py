@@ -30,13 +30,15 @@ def create_app():
 
     app.teardown_appcontext(put_db)
 
-    app.register_blueprint(root)
-    app.register_blueprint(player, url_prefix='/player/<int:steamid>')
-    app.register_blueprint(api, url_prefix='/api/v1')
-
+    app.jinja_options['trim_blocks'] = True
+    app.jinja_options['lstrip_blocks'] = True
     app.jinja_env.policies["json.dumps_kwargs"] = { 'default': json_default }
     app.jinja_env.globals.update(zip=zip)
     app.jinja_env.add_extension('jinja2.ext.do')
+
+    app.register_blueprint(root)
+    app.register_blueprint(player, url_prefix='/player/<int:steamid>')
+    app.register_blueprint(api, url_prefix='/api/v1')
 
     return app
 
