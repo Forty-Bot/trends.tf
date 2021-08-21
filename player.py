@@ -3,7 +3,7 @@
 
 import flask
 
-from common import get_filters, filter_clauses
+from common import get_filters, filter_clauses, get_order
 from sql import get_db
 
 player = flask.Blueprint('player', __name__)
@@ -54,7 +54,7 @@ def get_player(endpoint, values):
     else:
         flask.abort(404)
 
-def get_logs(c, steamid, filters, limit=100, offset=0):
+def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0):
     logs = c.cursor()
     logs.execute(
         """SELECT
@@ -119,8 +119,8 @@ def get_logs(c, steamid, filters, limit=100, offset=0):
            ) LEFT JOIN class ON (class.classid=cs.classid)
            WHERE ps.steamid64 = %(steamid)s
                {}
-           ORDER BY log.logid DESC
-           LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses),
+           ORDER BY {} NULLS LAST
+           LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
            { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
     return logs
 
@@ -210,12 +210,28 @@ def overview(steamid):
 
 @player.route('/logs')
 def logs(steamid):
-        limit = flask.request.args.get('limit', 100, int)
-        offset = flask.request.args.get('offset', 0, int)
-        filters = get_filters(flask.request.args)
-        logs = get_logs(get_db(), steamid, filters, limit=limit, offset=offset).fetchall()
-        return flask.render_template("player/logs.html", logs=logs, filters=filters, limit=limit,
-                                     offset=offset)
+    limit = flask.request.args.get('limit', 100, int)
+    offset = flask.request.args.get('offset', 0, int)
+    filters = get_filters(flask.request.args)
+    order, order_clause = get_order(flask.request.args, {
+        'logid': "logid",
+        'wins': "wins",
+        'losses': "losses",
+        'ties': "ties",
+        'duration': "duration",
+        'kills': "kills",
+        'deaths': "deaths",
+        'assists': "assists",
+        'dpm': "dpm",
+        'dtm': "dtm",
+        'hgm': "hpm_given",
+        'hrm': "hpm_recieved",
+        'acc': "acc",
+        'date': "time",
+	}, 'logid')
+    logs = get_logs(get_db(), steamid, filters, order_clause, limit=limit, offset=offset).fetchall()
+    return flask.render_template("player/logs.html", logs=logs, filters=filters, order=order,
+                                 limit=limit, offset=offset)
 
 @player.route('/peers')
 def peers(steamid):

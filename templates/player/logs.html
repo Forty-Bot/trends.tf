@@ -2,14 +2,30 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
 {% from "macros/pagination.html" import navigation %}
+{% from "macros/sort.html" import sort %}
 {% from "macros/logs.html" import log_table %}
 {% extends "player/base.html" %}
 {% block title %}Logs - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
-	<h2>Filter</h2>
-	{{ filter(filters) }}
 	<h2>Logs</h2>
+	{{ filter(filters) }}
+	{{ sort(order, {
+		'logid': "Log ID",
+		'wins': "Rounds won",
+		'losses': "Rounds lost",
+		'ties': "Rounds tied",
+		'duration': "Duration",
+		'kills': "Kills",
+		'deaths': "Deaths",
+		'assists': "Assists",
+		'dpm': "Damage per minute",
+		'dtm': "Damage taken per minute",
+		'hgm': "Heals given per minute",
+		'hrm': "Heals received per minute",
+		'acc': "Accuracy",
+		'date': "Date",
+	   }) }}
 	{{ navigation(logs, limit, offset) }}
 	{{ log_table(logs, extra=True) }}
 	{{ navigation(logs, limit, offset) }}
