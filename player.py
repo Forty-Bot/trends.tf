@@ -354,6 +354,12 @@ def totals(steamid):
 @player.route('/weapons')
 def weapons(steamid):
     filters = get_filters(flask.request.args)
+    order, order_clause = get_order(flask.request.args, {
+        'weapon': "weapon",
+        'kills': "kills",
+        'dpm': 'dpm',
+        'acc': 'acc',
+    }, 'weapon', 'asc')
     weapons = get_db().cursor()
     weapons.execute(
         """SELECT
@@ -370,9 +376,11 @@ def weapons(steamid):
            JOIN map USING (mapid)
            WHERE steamid64 = %(steamid)s
                {}
-           GROUP BY weapon;""".format(filter_clauses),
+           GROUP BY weapon
+           ORDER BY {} NULLS LAST;""".format(filter_clauses, order_clause),
         {'steamid': steamid, **filters})
-    return flask.render_template("player/weapons.html", weapons=weapons, filters=filters)
+    return flask.render_template("player/weapons.html", weapons=weapons, filters=filters,
+                                 order=order)
 
 @player.route('/trends')
 def trends(steamid):
