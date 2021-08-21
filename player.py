@@ -35,7 +35,6 @@ def get_player(endpoint, values):
                    (round_wins + round_losses + round_ties) AS round_winrate
            FROM (
                 SELECT
-                    steamid64,
                     sum(wins) AS round_wins,
                     sum(losses) AS round_losses,
                     sum(ties) AS round_ties,
@@ -43,11 +42,11 @@ def get_player(endpoint, values):
                     sum((wins < losses)::INT) AS losses,
                     sum((wins = losses)::INT) AS ties
                 FROM player_stats
-                WHERE steamid64 = %s
-                GROUP BY steamid64
+                WHERE steamid64 = %(steamid)s
            ) AS overview
-           JOIN player_last USING (steamid64)
-           JOIN name USING (nameid);""", (values['steamid'],))
+           CROSS JOIN player_last
+           JOIN name USING (nameid)
+           WHERE steamid64 = %(steamid)s;""", values)
 
     for row in cur:
         flask.g.player = row
