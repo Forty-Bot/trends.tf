@@ -35,8 +35,15 @@ filter_clauses = \
        AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
        AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)"""
 
-def get_order(args, column, dir='desc'):
-    return {
-            'sort': args.get('sort', column, str),
-            'sort_dir': args.get('sort_dir', dir, str),
-    }
+def get_order(args, column_map, default_column, default_dir='desc'):
+    column = args.get('sort', None, str)
+    if column not in column_map.keys():
+        column = default_column
+
+    dir_map = {'desc': "DESC", 'asc': "ASC"}
+    dir = args.get('sort_dir', None, str)
+    if dir not in dir_map.keys():
+        dir = default_dir
+
+    return ({ 'sort': column, 'sort_dir': dir },
+            "{} {}".format(column_map[column], dir_map[dir]))
