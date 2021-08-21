@@ -11,6 +11,15 @@
 	<dl>
 		<dt>Logs</dt>
 		<dd>{{ totals['logs'] }}</dd>
+		<dt><abbr title="Wins-Losses-Ties">W-L-T</abbr></dt>
+		<dd>{{ wlt(totals['wins'], totals['losses'], totals['ties']) }}</dd>
+		<dt><abbr title="Ties count as 0.5 wins">Winrate</abbr></dt>
+		<dd>{{ "{:.2%}".format(totals['winrate']) }}</dd>
+		<dt><abbr title="Wins-Losses-Ties, without ties under 60s">Round W-L-T</abbr></dt>
+		<dd>{{ wlt(totals['round_wins'], totals['round_losses'],
+		       totals['round_ties']) }}</dd>
+		<dt><abbr title="Ties count as 0.5 wins">Round Winrate</abbr></dt>
+		<dd>{{ "{:.2%}".format(totals['round_winrate']) }}</dd>
 		<dt>Kills</dt>
 		<dd>{{ "{:,.0f}".format(totals['kills']) }}</dd>
 		<dt>Deaths</dt>
