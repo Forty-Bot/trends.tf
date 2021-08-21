@@ -2,7 +2,7 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/class.html" import class_map %}
 {% from "macros/form.html" import hidden_excluding %}
-{% macro create_options(default, options) %}
+{% macro _create_options(default, options) %}
 {% for key, content in options.items() %}
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
 {% endfor %}
@@ -14,13 +14,13 @@
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">
 			<option></option>
-			{{ create_options(filters['class'], class_map) }}
+			{{ _create_options(filters['class'], class_map) }}
 		</select>
 	</label>
 	<label>Format:
 		<select name="format">
 			<option></option>
-			{{ create_options(filters['format'], {
+			{{ _create_options(filters['format'], {
 				'sixes': "Sixes",
 				'highlander': "Highlander",
 				'prolander': "Prolander",

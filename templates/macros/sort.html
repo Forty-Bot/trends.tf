@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/form.html" import hidden_excluding %}
-{% macro create_dir(order, dir, content) %}
+{% macro _create_dir(order, dir, content) %}
 	<input type="radio" name="sort_dir" value="{{ dir }}"
 	 {{ "checked" if dir == order['sort_dir'] }}>
 		{{ content }}
@@ -19,8 +19,8 @@
 		{% endfor %}
 		</select>
 	</label>
-	{{ create_dir(order, 'desc', "Descending") }}
-	{{ create_dir(order, 'asc', "Ascending") }}
+	{{ _create_dir(order, 'desc', "Descending") }}
+	{{ _create_dir(order, 'asc', "Ascending") }}
 	<button type="submit">Sort</button>
 </form>
 {% endmacro %}

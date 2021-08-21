@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/wlt.html" import wlt %}
-{% macro log_header(extra) %}
+{% macro _log_header(extra) %}
 <tr>
 	<th>Title</th>
 	<th>Map</th>
@@ -26,7 +26,7 @@
 {% endmacro %}
 {% macro log_table(logs, extra=False) %}
 <table>
-	<thead>{{ log_header(extra) }}</thead>
+	<thead>{{ _log_header(extra) }}</thead>
 	<tbody>
 		{% for log in logs %}
 		<tr>
@@ -61,7 +61,7 @@
 		{% endfor %}
 	</tbody>
 	{% if extra %}
-		<tfoot>{{ log_header(extra) }}</tfoot>
+		<tfoot>{{ _log_header(extra) }}</tfoot>
 	{% endif %}
 </table>
 {% endmacro %}
