@@ -51,7 +51,7 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
 
             for log in log_list['logs']:
                 if log['date'] >= since:
-                    yield log['id']
+                    yield log['id'], log['date']
                 else:
                     # Don't fetch any more pages
                     count = fetched

@@ -26,10 +26,21 @@ def filter_logids(c, logids):
     """
 
     for logid in logids:
+        try:
+            time = logid[1]
+            logid = logid[0]
+        except TypeError:
+            time = None
+
         cur = c.cursor()
-        cur.execute("SELECT 1 FROM public.log WHERE logid=%s", (logid,))
-        for _ in cur:
-            break
+        cur.execute("""SELECT
+                           time < %s
+                       FROM public.log
+                       WHERE logid = %s""", (time, logid))
+
+        for row in cur:
+            if row[0]:
+                yield logid
         else:
             yield logid
 
