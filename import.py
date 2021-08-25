@@ -12,7 +12,7 @@ import zstandard
 
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher
 from steamid import SteamID
-from sql import db_connect, db_init
+from sql import db_connect, db_init, table_columns
 
 def filter_logids(c, logids):
     """Filter log ids to exclude those already present in the database.
@@ -674,11 +674,15 @@ def main():
         update_formats(cur)
         update_wlt(cur)
         for table in temp_tables:
+            set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
+                                   for col in table_columns(c, table[0]))
             cur.execute("""INSERT INTO public.{}
                            SELECT
                                *
                            FROM {}
-                           ORDER BY {};""".format(table[0], table[0], table[1]))
+                           ORDER BY {}
+                           ON CONFLICT ({}) DO UPDATE
+                           SET {};""".format(table[0], table[0], table[1], table[1], set_clause))
         for table in reversed(temp_tables):
             cur.execute("DELETE FROM {};".format(table[0]))
         cur.execute("COMMIT;")

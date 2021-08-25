@@ -34,3 +34,13 @@ def put_db(exception):
     db = getattr(flask.g, 'db_conn', None)
     if db:
         db.close()
+
+def table_columns(c, table):
+    cur = c.cursor()
+    cur.execute("""SELECT
+                       column_name
+                   FROM information_schema.columns
+                   WHERE table_catalog = current_catalog
+                       AND table_schema = current_schema
+                       AND table_name = %s;""", (table,))
+    return (row[0] for row in cur)
