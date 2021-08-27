@@ -172,6 +172,7 @@ def import_log(cctx, c, logid, log):
         if not info.get('hasIntel'):
             player['ic'] = None
         player['suicides'] = player.get('suicides')
+        player['heal'] = player.get('heal')
 
         c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", player)
         c.execute("INSERT INTO player (steamid64) VALUES (%(steamid)s) ON CONFLICT DO NOTHING;",

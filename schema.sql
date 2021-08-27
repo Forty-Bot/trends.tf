@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS player_stats_extra (
 	headshots INT, -- headshot kills
 	headshots_hit INT, -- headshot non-kills
 	sentries INT, -- sentries built
-	healing INT NOT NULL,
+	healing INT,
 	cpc INT, -- Capture Point Captures
 	ic INT, -- Intel Captures
 	PRIMARY KEY (steamid64, logid),
