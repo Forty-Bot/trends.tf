@@ -722,7 +722,7 @@ def main():
             count += 1
 
         now = datetime.now()
-        if (now - start).total_seconds() > 60:
+        if (now - start).total_seconds() > 60 or count > 500:
             commit()
             logging.info("Committed %s imported log(s)...", count)
             cur.execute("BEGIN;")
