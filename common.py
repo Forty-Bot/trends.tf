@@ -4,6 +4,24 @@
 from datetime import datetime, timedelta
 from dateutil import tz
 
+classes = (
+    'demoman',
+    'engineer',
+    'heavyweapons',
+    'medic',
+    'pyro',
+    'scout',
+    'sniper',
+    'soldier',
+    'spy'
+)
+
+events = {
+    'classkills': 'kill',
+    'classdeaths': 'death',
+    'classkillassists': 'assist',
+}
+
 def get_filters(args):
     ret = {}
 

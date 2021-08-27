@@ -10,6 +10,8 @@ import logging
 import psycopg2
 import zstandard
 
+import common
+from common import classes
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher
 from steamid import SteamID
 from sql import db_connect, db_init, table_columns
@@ -198,8 +200,7 @@ def import_log(cctx, c, logid, log):
                              %(ic)s
                          );""", player)
 
-        for (prop, event) in (('classkills', 'kill'), ('classdeaths', 'death'),
-                              ('classkillassists', 'assist')):
+        for prop, event in common.events.items():
             if not log.get(prop):
                 continue
 
@@ -211,8 +212,7 @@ def import_log(cctx, c, logid, log):
             events['logid'] = logid
             events['steamid'] = steamid
             events['event'] = event
-            for cls in ('demoman', 'engineer', 'heavyweapons', 'medic', 'pyro', 'scout', 'sniper',
-                        'soldier', 'spy'):
+            for cls in classes:
                 events[cls] = events.get(cls, 0)
 
             # There are also 'unknown' events, but we skip them; they can be determined by the
