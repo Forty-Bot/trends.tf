@@ -1,11 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+import collections
 import itertools
 import json
 import logging
 import requests
+import sqlite3
 import time
+
+from common import classes, events
 
 class APIError(OSError):
     """The logs.tf API returned a failure"""
@@ -215,3 +219,193 @@ class FileFetcher(Fetcher):
     def get_log(self, logid):
         with open(self.logs[logid]) as logfile:
             return json.load(logfile)
+
+class CloneLogsFetcher(Fetcher):
+    """Fetcher for SQLite databases created with clone_logs"""
+    def __init__(self, db=None, **kwargs):
+        """Create a ``CloneLogsFetcher``
+
+        :param db: Name of the database
+        :type db: str
+        """
+
+        self.c = sqlite3.connect(db)
+        self.c.row_factory = sqlite3.Row
+
+        # Add some indices for better performance
+        for table in ('chat', 'heal_spread', 'player', 'player_weapon', 'round'):
+            self.c.execute("CREATE INDEX IF NOT EXISTS {0}_pkey ON {0} (log_id)".format(table))
+
+        super().__init__(**kwargs)
+
+    def date_colspec(self, column='date'):
+        return "cast(strftime('%s', {}, 'utc') AS INT)".format(column)
+
+    def get_logids(self):
+        return self.c.execute("SELECT id, {} FROM log".format(self.date_colspec()))
+
+    def get_log(self, logid):
+        class_keys = [('heavy', 'heavyweapons') if cls == 'heavy' else cls for cls in classes]
+        def extract(row, keys, format_string='{}'):
+            ret = {}
+            global cur_row
+            cur_row = row
+            for key in keys:
+                try:
+                    ret[key[1]] = row[format_string.format(key[0])]
+                except IndexError:
+                    try:
+                        ret[key] = row[format_string.format(key)]
+                    except IndexError:
+                        logging.error("No such key %s", key)
+                        raise
+
+            return ret
+
+        ret = {
+            'version': 3,
+        }
+        log = self.c.execute("""SELECT
+                                    {} AS date,
+                                    *
+                                FROM log
+                                WHERE id = ?;""".format(self.date_colspec()), (logid,)).fetchone()
+        ret['info'] = extract(log, (
+            'date',
+            'title',
+            'map',
+            ('duration',               'total_length'),
+            ('has_real_damage',        'hasRealDamage'),
+            ('has_weapon_damage',      'hasWeaponDamage'),
+            ('has_accuracy',           'hasAccuracy'),
+            ('has_medkit_pickups',     'hasHP'),
+            ('has_medkit_pickups',     'hasHP'),
+            ('has_medkit_health',      'hasHP_real'),
+            ('has_headshot_kills',     'hasHS'),
+            ('has_headshot_hits',      'hasHS_hit'),
+            ('has_backstabs',          'hasBS'),
+            ('has_point_captures',     'hasCP'),
+            ('has_sentries_built',     'hasSB'),
+            ('has_damage_taken',       'hasDT'),
+            ('has_airshots',           'hasAS'),
+            ('has_heals_received',     'hasHR'),
+            ('has_intel_captures',     'hasIntel'),
+            ('scoring_attack_defense', 'AD_scoring'),
+        ))
+        ret['info']['uploader'] = extract(log, (('steam_id', 'id'), 'name', 'info'), 'uploader_{}')
+        team_keys = ('score', 'kills', 'deaths', ('damage', 'dmg'), 'charges', 'drops',
+                     ('first_caps', 'firstcaps'), 'caps')
+        ret['teams'] = {
+            'Red': extract(log, team_keys, 'red_{}'),
+            'Blue': extract(log, team_keys, 'blu_{}'),
+        }
+
+        ret['rounds'] = []
+        rounds = self.c.execute("""SELECT
+                                       {} AS start_time,
+                                       *
+                                   FROM round
+                                   WHERE log_id = ?
+                                   ORDER BY idx ASC;""".format(self.date_colspec('start')),
+                                (logid,))
+        for round in rounds:
+            tmp = extract(round, ('start_time',
+                                  'winner',
+                                  ('first_cap', 'firstcap'),
+                                  ('duration', 'length')))
+            round_team_keys = ('score', 'kills', ('damage', 'dmg'), ('charges', 'ubers'))
+            tmp['team'] = {}
+            tmp['team']['Red'] = extract(round, round_team_keys, 'red_{}')
+            tmp['team']['Blue'] = extract(round, round_team_keys, 'blu_{}')
+            ret['rounds'].append(tmp)
+
+        ret['players'] = {}
+        ret['names'] = {}
+        for prop in events:
+            ret[prop] = collections.defaultdict(dict)
+        players = self.c.execute("SELECT * FROM player WHERE log_id = ?;", (logid,))
+        for player in players:
+            steamid = player['steam_id']
+            ret['names'][steamid] = player['name']
+            ret['players'][steamid] = extract(player, (
+                'team',
+                'kills',
+                'deaths',
+                'assists',
+                'suicides',
+                ('damage',             'dmg'),
+                ('damage_real',        'dmg_real'),
+                ('damage_taken',       'dt'),
+                ('damage_taken_real',  'dt_real'),
+                ('heals_received',     'hr'),
+                ('longest_killstreak', 'lks'),
+                ('airshots',           'as'),
+                ('charges',            'ubers'),
+                'drops',
+                ('medkit_pickup',      'medkits'),
+                ('medkit_health',      'medkits_hp'),
+                'backstabs',
+                ('headshot_kills',     'headshots'),
+                ('headshots',          'headshots_hit'),
+                'sentries',
+                ('point_captures',     'cpc'),
+                ('intel_captures',     'ic'),
+            ))
+
+            ubertypes = extract(player, (('charges_uber', 'medigun'),
+                                         ('charges_kritzkrieg', 'kritzkrieg')))
+            if any(ubertypes.values()):
+                ret['players'][steamid]['ubertypes'] = ubertypes
+
+            medic_stats = extract(player, (
+                'advantages_lost',
+                'biggest_advantage_lost',
+                'deaths_within_20s_after_uber',
+                ('deaths_with_95_uber', 'deaths_with_95_99_uber'),
+                ('average_time_before_healing', 'avg_time_before_healing'),
+                ('average_time_before_using', 'avg_time_before_using'),
+                ('average_charge_length', 'avg_uber_length'),
+            ))
+            if any(medic_stats.values()):
+                ret['players'][steamid]['medicstats'] = medic_stats
+
+            ret['players'][steamid]['class_stats'] = []
+            for cls in classes:
+                tmp = extract(player, (('time', 'total_time'), 'kills', 'assists', 'deaths',
+                                       ('damage', 'dmg')),
+                              '{}_as_' + ('heavy' if cls == 'heavyweapons' else cls))
+                if not any(tmp.values()):
+                    continue
+
+                tmp['type'] = cls
+                weapons = self.c.execute("""SELECT
+                                                *
+                                            FROM player_weapon
+                                            WHERE log_id = ?
+                                                AND steam_id = ?
+                                                AND class = ?;""", (logid, steamid, cls))
+                tmp['weapon'] = {
+                        weapon['weapon']: extract(weapon, ('kills', ('damage', 'dmg'),
+                                                           ('average_damage', 'avg_dmg'),
+                                                           'shots', 'hits'))
+                        for weapon in weapons
+                }
+
+                ret['players'][steamid]['class_stats'].append(tmp)
+
+            for prop, event in events.items():
+                for cls in classes:
+                    val = player['{}_{}s'.format('heavy' if cls == 'heavyweapons' else cls, event)]
+                    if val:
+                        ret[prop][steamid][cls] = val
+
+        heals = self.c.execute("SELECT * FROM heal_spread WHERE log_id = ?", (logid,))
+        ret['healspread'] = collections.defaultdict(dict)
+        for heal in heals:
+            ret['healspread'][heal['healer_steam_id']][heal['target_steam_id']] = heal['heal_amount']
+
+        chat = self.c.execute("SELECT * FROM chat WHERE log_id = ? ORDER BY idx ASC", (logid,))
+        ret['chat'] = [extract(msg, (('steam_id', 'steamid'), 'name', ('message', 'msg')))
+                       for msg in chat]
+
+        return ret

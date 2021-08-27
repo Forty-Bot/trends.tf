@@ -12,7 +12,7 @@ import zstandard
 
 import common
 from common import classes
-from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher
+from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from steamid import SteamID
 from sql import db_connect, db_init, table_columns
 
@@ -596,8 +596,12 @@ def parse_args(*args, **kwargs):
                    dest='logids', help="Fetch log LOGID")
     r = sub.add_parser("reverse", help="Import all logs in reverse order from logs.tf")
     r.set_defaults(fetcher=ReverseFetcher)
+    c = sub.add_parser("clone_logs", help="Import a sqlite database generated with clone_logs")
+    c.set_defaults(fetcher=CloneLogsFetcher)
+    c.add_argument("-d", "--database", type=str, metavar="DB", dest='db',
+                   help="Database to import logs from")
 
-    for p in (f, b, l, r):
+    for p in (f, b, l, r, c):
         p.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
                             help=("Print additional debug information. May be specified multiple "
                                   "times for increased verbosity."))
