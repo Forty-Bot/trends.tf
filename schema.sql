@@ -1,6 +1,8 @@
 -- SPDX-License-Identifier: AGPL-3.0-only
 -- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
 -- Compatibility functions for migration from SQLite
 
 CREATE OR REPLACE FUNCTION add(FLOAT, anyelement) RETURNS FLOAT
