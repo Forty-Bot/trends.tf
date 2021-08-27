@@ -1,5 +1,4 @@
-# SPDX-License-Identifier: MIT
-# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-License-Identifier: MIT AND AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 # Copyright (c) 2017 Nate the great
 # Copyright (c) 2015 Alexander Corn
@@ -69,8 +68,13 @@ class SteamID:
 
         reg = re.compile("^STEAM_([0-5]):([0-1]):([0-9]+)$")
         reg3 = re.compile("^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]")
-        mat = reg.match(input)
-        mat3 = reg3.match(input)
+        try:
+            mat = reg.match(input)
+            mat3 = reg3.match(input)
+        except TypeError:
+            mat = None
+            mat3 = None
+
         if mat:
             self.universe = int(mat[1]) or SteamID.Universe["PUBLIC"]
             self.type = SteamID.Type["INDIVIDUAL"]
