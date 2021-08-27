@@ -37,6 +37,7 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
     # logs added since we started enumerating
     extra = offset
     total = None
+    last_logid = None
 
     try:
         while True:
@@ -54,11 +55,14 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
                 raise APIError(log_list['error'])
 
             for log in log_list['logs']:
-                if log['date'] >= since:
+                if last_logid and log['id'] >= last_logid:
+                    continue
+                elif log['date'] >= since:
                     yield log['id'], log['date']
                 else:
                     # Don't fetch any more pages
                     count = fetched
+            last_logid = log_list['logs'][-1]['id']
 
             # Keep track if new logs get added while we are iterating
             if total:
