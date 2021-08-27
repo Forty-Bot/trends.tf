@@ -14,7 +14,7 @@ from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher
 from steamid import SteamID
 from sql import db_connect, db_init, table_columns
 
-def filter_logids(c, logids):
+def filter_logids(c, logids, update_only=False):
     """Filter log ids to exclude those already present in the database.
 
     :param sqlite3.Connection c: The database connection
@@ -42,7 +42,8 @@ def filter_logids(c, logids):
             if row[0]:
                 yield logid
         else:
-            yield logid
+            if not update_only:
+                yield logid
 
 def import_log(cctx, c, logid, log):
     """Import a log into the database.
@@ -601,6 +602,8 @@ def parse_args(*args, **kwargs):
                                   "times for increased verbosity."))
 
     parser.add_argument("database", default="logs.db", help="SQLite database to store logs in")
+    parser.add_argument("-u", "--update-only", action='store_true',
+                        help="Only update logs already in the database")
 
     return parser.parse_args(*args, **kwargs)
 
@@ -700,7 +703,7 @@ def main():
 
     count = 0
     start = datetime.now()
-    for logid in filter_logids(c, fetcher.get_logids()):
+    for logid in filter_logids(c, fetcher.get_logids(), update_only=args.update_only):
         log = fetcher.get_log(logid)
         if log is None:
             continue
