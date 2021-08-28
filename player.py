@@ -386,7 +386,8 @@ def weapons(steamid):
         """SELECT
                weapon,
                avg(ws.kills) as kills,
-               sum(ws.dmg) * 60.0 / sum(CASE WHEN ws.dmg != 0 THEN class_stats.duration END) AS dpm,
+               sum(ws.dmg) * 60.0 /
+                   nullif(sum(CASE WHEN ws.dmg != 0 THEN class_stats.duration END), 0) AS dpm,
                total(hits) / nullif(sum(shots), 0.0) AS acc
            FROM weapon_stats AS ws
            JOIN weapon USING (weaponid)
