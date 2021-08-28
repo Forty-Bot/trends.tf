@@ -621,7 +621,7 @@ def main():
         log_level = logging.INFO
     elif args.verbosity > 1:
         log_level = logging.DEBUG
-    logging.basicConfig(level=log_level)
+    logging.basicConfig(level=log_level, format='[%(asctime)s] %(module)s: %(message)s')
 
     cctx = zstandard.ZstdCompressor()
 
