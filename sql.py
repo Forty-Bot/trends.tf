@@ -16,6 +16,7 @@ def db_connect(url):
     """
 
     psycopg2.extensions.register_adapter(SteamID, psycopg2.extensions.AsIs)
+    psycopg2.extensions.set_wait_callback(psycopg2.extras.wait_select)
     c = psycopg2.connect(url, cursor_factory=psycopg2.extras.DictCursor)
     return c
 
