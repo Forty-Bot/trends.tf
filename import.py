@@ -43,6 +43,7 @@ def filter_logids(c, logids, update_only=False):
         for row in cur:
             if row[0]:
                 yield logid
+            break
         else:
             if not update_only:
                 yield logid
