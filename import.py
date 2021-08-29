@@ -602,14 +602,13 @@ def parse_args(*args, **kwargs):
     c.add_argument("-d", "--database", type=str, metavar="DB", dest='db',
                    help="Database to import logs from")
 
-    for p in (f, b, l, r, c):
-        p.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
-                            help=("Print additional debug information. May be specified multiple "
-                                  "times for increased verbosity."))
-
-    parser.add_argument("database", default="logs.db", help="SQLite database to store logs in")
+    parser.add_argument("database", default="postgresql:///trends", metavar="DATABASE",
+                        help="Database URL to connect to")
     parser.add_argument("-u", "--update-only", action='store_true',
                         help="Only update logs already in the database")
+    parser.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
+                        help=("Print additional debug information. May be specified multiple "
+                              "times for increased verbosity."))
 
     return parser.parse_args(*args, **kwargs)
 
