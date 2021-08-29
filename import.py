@@ -577,8 +577,8 @@ def parse_args(*args, **kwargs):
     f = sub.add_parser("file", help="Import from the local filesystem")
     f.set_defaults(fetcher=FileFetcher)
     f.add_argument("-l", "--log", action=LogAction, nargs=2, metavar=("LOGID", "LOG"),
-                        dest='logs',
-                        help="Import a log with a given id. May be specified multiple times")
+                   dest='logs',
+                   help="Import a log with a given id. May be specified multiple times")
     b = sub.add_parser("bulk", help="Bulk import from logs.tf")
     b.set_defaults(fetcher=BulkFetcher)
     b.add_argument("-p", "--player", action='append', type=SteamID, metavar="STEAMID",
@@ -588,9 +588,9 @@ def parse_args(*args, **kwargs):
                    default=datetime.fromtimestamp(0), metavar="DATE",
                    help="Only fetch logs created since DATE")
     b.add_argument("-c", "--count", type=int, default=None,
-                        help="Fetch up to COUNT logs, defaults to unlimited")
+                   help="Fetch up to COUNT logs, defaults to unlimited")
     b.add_argument("-o", "--offset", type=int, default=0,
-                        help="Start at OFFSET")
+                   help="Start at OFFSET")
     l = sub.add_parser("list", help="Import a list of logs from logs.tf")
     l.set_defaults(fetcher=ListFetcher)
     l.add_argument("-i", "--id", action='append', type=int, metavar="LOGID",
