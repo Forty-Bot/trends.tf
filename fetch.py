@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
+# Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import collections
 import itertools
@@ -41,14 +41,14 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
 
     try:
         while True:
-            player_param = ""
+            params = {
+                'offset': fetched + extra,
+                'limit': min(count - fetched, limit) if count is not None else limit,
+            }
             if players:
-                player_param = "&player={}".format((",".join((str(player) for player in players))))
-            limit_param = min(count - fetched, limit) if count is not None else limit
-            url = "https://logs.tf/api/v1/log?offset={}&limit={}{}"
-            url = url.format(fetched + extra, limit_param, player_param)
+                params['player'] = ",".join(str(player) for player in players)
 
-            resp = s.get(url)
+            resp = s.get("https://logs.tf/api/v1/log", params=params)
             resp.raise_for_status()
             log_list = resp.json()
             if not log_list['success']:
