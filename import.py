@@ -642,9 +642,11 @@ def main():
                    ('weapon_stats', 'steamid64, logid, classid, weaponid'),
                    ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
     # Initialize temporary tables
-    cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
+    cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY) ON COMMIT DELETE ROWS;")
     for table in temp_tables:
-        cur.execute("CREATE TEMP TABLE {} (LIKE {} INCLUDING ALL);".format(table[0], table[0]))
+        cur.execute("""CREATE TEMP TABLE {} (
+                           LIKE {} INCLUDING ALL
+                       ) ON COMMIT DELETE ROWS;""".format(table[0], table[0]))
     # This doesn't include foreign keys, so include some which we want to handle in import_log
     cur.execute("""ALTER TABLE heal_stats
                    ADD FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
@@ -687,7 +689,6 @@ def main():
                            );""".format(table[0]))
         cur.execute("SELECT count(*) FROM to_delete;")
         logging.info("Removed %s bad log(s)", cur.fetchone()[0])
-        cur.execute("DELETE FROM to_delete;")
 
         delete_dup_rounds(cur)
         update_stalemates(cur)
@@ -703,8 +704,6 @@ def main():
                            ORDER BY {}
                            ON CONFLICT ({}) DO UPDATE
                            SET {};""".format(table[0], table[0], table[1], table[1], set_clause))
-        for table in reversed(temp_tables):
-            cur.execute("DELETE FROM {};".format(table[0]))
         cur.execute("COMMIT;")
 
     count = 0
