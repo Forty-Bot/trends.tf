@@ -102,7 +102,9 @@ CREATE TABLE IF NOT EXISTS name (
 CREATE INDEX IF NOT EXISTS name_fts ON name USING GIN (to_tsvector('english', name));
 
 CREATE TABLE IF NOT EXISTS player (
-	steamid64 BIGINT PRIMARY KEY
+	steamid64 BIGINT PRIMARY KEY,
+	nameid INT NOT NULL REFERENCES name (nameid),
+	avatarhash TEXT
 );
 
 CREATE TABLE IF NOT EXISTS player_stats (
@@ -132,11 +134,11 @@ CREATE OR REPLACE VIEW player_last AS
 SELECT
 	logid,
 	p.steamid64,
-	nameid
+	p.nameid,
+	p.avatarhash
 FROM player AS p
 CROSS JOIN LATERAL (SELECT
-		logid,
-		nameid
+		logid
 	FROM player_stats AS ps
 	WHERE ps.steamid64 = p.steamid64
 	ORDER BY logid DESC
