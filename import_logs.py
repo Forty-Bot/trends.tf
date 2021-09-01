@@ -1,4 +1,3 @@
-#!/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
@@ -14,7 +13,7 @@ import common
 from common import classes
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from steamid import SteamID
-from sql import db_connect, db_init, table_columns
+from sql import table_columns
 
 def filter_logids(c, logids, update_only=False):
     """Filter log ids to exclude those already present in the database.
@@ -553,7 +552,7 @@ def update_wlt(c):
                  WHERE ps.logid = new.logid
                      AND ps.steamid64 = new.steamid64""")
 
-def parse_args(*args, **kwargs):
+def create_logs_parser(sub):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
             if kwargs['nargs'] != 2:
@@ -572,14 +571,15 @@ def parse_args(*args, **kwargs):
 
             setattr(namespace, self.dest, items)
 
-    parser = argparse.ArgumentParser()
-    sub = parser.add_subparsers()
-    f = sub.add_parser("file", help="Import from the local filesystem")
+    logs = sub.add_parser("logs", help="Import logs")
+    logs.set_defaults(importer=import_logs)
+    log_sub = logs.add_subparsers()
+    f = log_sub.add_parser("file", help="Import from the local filesystem")
     f.set_defaults(fetcher=FileFetcher)
     f.add_argument("-l", "--log", action=LogAction, nargs=2, metavar=("LOGID", "LOG"),
                    dest='logs',
                    help="Import a log with a given id. May be specified multiple times")
-    b = sub.add_parser("bulk", help="Bulk import from logs.tf")
+    b = log_sub.add_parser("bulk", help="Bulk import from log_sub.tf")
     b.set_defaults(fetcher=BulkFetcher)
     b.add_argument("-p", "--player", action='append', type=SteamID, metavar="STEAMID",
                    dest='players',
@@ -591,42 +591,22 @@ def parse_args(*args, **kwargs):
                    help="Fetch up to COUNT logs, defaults to unlimited")
     b.add_argument("-o", "--offset", type=int, default=0,
                    help="Start at OFFSET")
-    l = sub.add_parser("list", help="Import a list of logs from logs.tf")
+    l = log_sub.add_parser("list", help="Import a list of logs from logs.tf")
     l.set_defaults(fetcher=ListFetcher)
     l.add_argument("-i", "--id", action='append', type=int, metavar="LOGID",
                    dest='logids', help="Fetch log LOGID")
-    r = sub.add_parser("reverse", help="Import all logs in reverse order from logs.tf")
+    r = log_sub.add_parser("reverse", help="Import all logs in reverse order from logs.tf")
     r.set_defaults(fetcher=ReverseFetcher)
-    c = sub.add_parser("clone_logs", help="Import a sqlite database generated with clone_logs")
+    c = log_sub.add_parser("clone_logs", help="Import a sqlite database generated with clone_logs")
     c.set_defaults(fetcher=CloneLogsFetcher)
     c.add_argument("-d", "--database", type=str, metavar="DB", dest='db',
                    help="Database to import logs from")
+    logs.add_argument("-u", "--update-only", action='store_true',
+                      help="Only update logs already in the database")
 
-    parser.add_argument("database", default="postgresql:///trends", metavar="DATABASE",
-                        help="Database URL to connect to")
-    parser.add_argument("-u", "--update-only", action='store_true',
-                        help="Only update logs already in the database")
-    parser.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
-                        help=("Print additional debug information. May be specified multiple "
-                              "times for increased verbosity."))
-
-    return parser.parse_args(*args, **kwargs)
-
-def main():
-    args = parse_args()
+def import_logs(args, c):
     fetcher = args.fetcher(**vars(args))
-
-    log_level = logging.WARNING
-    if args.verbosity == 1:
-        log_level = logging.INFO
-    elif args.verbosity > 1:
-        log_level = logging.DEBUG
-    logging.basicConfig(level=log_level, format='[%(asctime)s] %(module)s: %(message)s')
-
     cctx = zstandard.ZstdCompressor()
-
-    c = db_connect(args.database)
-    db_init(c)
     cur = c.cursor()
 
     # Create some temporary tables so deletes don't cost so much later
@@ -736,6 +716,3 @@ def main():
 
     logging.info("Committing %s imported log(s)...", count)
     commit()
-
-if __name__ == "__main__":
-    main()
