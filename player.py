@@ -21,6 +21,17 @@ def duration_filter(timestamp):
     else:
         return "{:.0f}:{:02.0f}".format(mm, ss)
 
+@player.app_template_filter('avatar')
+def avatar_filter(hash, size='full'):
+    if not hash:
+        return ''
+    url = "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/{}/{}{}.jpg"
+    return url.format(hash[0:2], hash, {
+            'small': '',
+            'medium': '_medium',
+            'full': '_full',
+        }[size])
+
 @player.url_value_preprocessor
 def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
@@ -29,6 +40,7 @@ def get_player(endpoint, values):
         """SELECT
                *,
                name,
+               avatarhash,
                (wins + 0.5 * ties) /
                    (wins + losses + ties) AS winrate,
                (round_wins + 0.5 * round_ties) /
@@ -44,7 +56,7 @@ def get_player(endpoint, values):
                 FROM player_stats
                 WHERE steamid64 = %(steamid)s
            ) AS overview
-           CROSS JOIN player_last
+           CROSS JOIN player
            JOIN name USING (nameid)
            WHERE steamid64 = %(steamid)s;""", values)
 

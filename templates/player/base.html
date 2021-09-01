@@ -5,9 +5,12 @@
 {% block title %}{{ g.player['name'] }} - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
-	<h1><a href="http://steamcommunity.com/profiles/{{ g.player['steamid64'] }}">
+	<div class="avatar">
+		<img src="{{ g.player['avatarhash'] | avatar('full') }}">
+		<h1><a href="http://steamcommunity.com/profiles/{{ g.player['steamid64'] }}">
 			{{ g.player['name'] }}
-	</a></h1>
+		</a></h1>
+	</div>
 	<dl>
 		<dt><abbr title="Wins-Losses-Ties">W-L-T</abbr></dt>
 		<dd>{{ wlt(g.player['wins'], g.player['losses'], g.player['ties']) }}</dd>

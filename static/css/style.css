@@ -108,6 +108,16 @@ td.left {
 	padding: 5px;
 }
 
+.avatar {
+	display: flex;
+	align-items: center;
+}
+
+.avatar > img {
+	width: 100px;
+	margin-right: 10px;
+}
+
 .row {
 	display: flex;
 	align-items: center;
