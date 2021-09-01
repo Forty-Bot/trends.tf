@@ -7,11 +7,13 @@ import logging
 
 from sql import db_connect, db_init
 from import_logs import import_logs, create_logs_parser
+from import_players import import_players, create_players_parser
 
 def create_parser():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers()
     create_logs_parser(sub)
+    create_players_parser(sub)
     parser.add_argument("database", default="postgresql:///trends", metavar="DATABASE",
                         help="Database URL to connect to")
     parser.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
