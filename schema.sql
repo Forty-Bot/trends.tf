@@ -2,6 +2,7 @@
 -- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS tsm_system_rows;
 
 -- Compatibility functions for migration from SQLite
 

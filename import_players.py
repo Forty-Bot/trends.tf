@@ -25,12 +25,20 @@ def get_steamids_full(c):
         last_steamid = steamids[-1][0]
         yield steamids
 
+def get_steamids_random(c):
+    cur = c.cursor()
+    while True:
+        cur.execute("SELECT steamid64 FROM player TABLESAMPLE SYSTEM_ROWS(100);")
+        yield cur.fetchall()
+
 def create_players_parser(sub):
     players = sub.add_parser("players", help="Import players")
     players.set_defaults(importer=import_players)
     player_sub = players.add_subparsers()
     full = player_sub.add_parser("full", help="Import all players in order")
     full.set_defaults(get_steamids=get_steamids_full, wait=0)
+    random = player_sub.add_parser("random", help="Import 100 random players each request")
+    random.set_defaults(get_steamids=get_steamids_random, wait=1)
     players.add_argument("-k", "--key", type=str, metavar="KEY", help="Steam API key")
     players.add_argument("-w", "--wait", type=int, metavar="DELAY",
                          help="Seconds to wait between API requests")
