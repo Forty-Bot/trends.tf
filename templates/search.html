@@ -12,9 +12,12 @@
 	{{ navigation(results, limit, offset) }}
 	<ul>
 		{% for player in results %}
-			<li><a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
+		<li>
+			<img src="{{ player['avatarhash'] | avatar('small') }}">
+			<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
 				{{ player['name'] }}
-			</a>({{ ", ".join(player['aliases']) }})</li>
+			</a>({{ ", ".join(player['aliases']) }})
+		</li>
 		{% endfor %}
 	</ul>
 	{{ navigation(results, limit, offset) }}

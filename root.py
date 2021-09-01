@@ -52,7 +52,8 @@ def search():
         results.execute(
             """SELECT
                    steamid64,
-                   name AS name,
+                   name,
+                   avatarhash,
                    aliases
                FROM (SELECT
                        steamid64,
