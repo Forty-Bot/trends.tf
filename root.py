@@ -78,9 +78,9 @@ def search():
                    ) AS matches
                    GROUP BY steamid64
                ) AS matches
-               JOIN player_last USING (steamid64)
+               JOIN player USING (steamid64)
                JOIN name USING (nameid)
-               ORDER BY rank DESC, logid DESC
+               ORDER BY rank DESC, last_active DESC
                LIMIT %s OFFSET %s;""", (q, limit, offset))
         results = results.fetchall()
     else:

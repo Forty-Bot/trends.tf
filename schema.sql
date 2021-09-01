@@ -132,21 +132,6 @@ CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid, steamid64,
 -- Covering index for name FTS queries
 CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats (nameid, steamid64);
 
-CREATE OR REPLACE VIEW player_last AS
-SELECT
-	logid,
-	p.steamid64,
-	p.nameid,
-	p.avatarhash
-FROM player AS p
-CROSS JOIN LATERAL (SELECT
-		logid
-	FROM player_stats AS ps
-	WHERE ps.steamid64 = p.steamid64
-	ORDER BY logid DESC
-	LIMIT 1
-) AS last;
-
 CREATE TABLE IF NOT EXISTS player_stats_extra (
 	logid INT NOT NULL,
 	steamid64 BIGINT NOT NULL,
