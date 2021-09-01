@@ -46,6 +46,7 @@
 			{% for peer in peers %}
 			<tr>
 				<td class="left">
+					<img src="{{ peer['avatarhash'] | avatar('small') }}">
 					<a href="{{ url_for('.overview', steamid=peer['steamid64']) }}">
 						{{ peer['name'] }}
 					</a>

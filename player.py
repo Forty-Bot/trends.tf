@@ -266,7 +266,8 @@ def peers(steamid):
     peers.execute(
         """SELECT
                *,
-               name
+               name,
+               avatarhash
            FROM (SELECT
                    steamid64,
                    total("with"::INT) AS with,
@@ -319,7 +320,7 @@ def peers(steamid):
                ORDER BY {} NULLS LAST
                LIMIT %s OFFSET %s
            ) AS peers
-           JOIN player_last USING (steamid64)
+           JOIN player USING (steamid64)
            JOIN name USING (nameid);""".format(order_clause), (steamid, limit, offset))
     return flask.render_template("player/peers.html", peers=peers.fetchall(), order=order,
                                  limit=limit, offset=offset)
