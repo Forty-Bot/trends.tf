@@ -33,6 +33,7 @@
 			<tr>
 				<td>{{ loop.index + offset }}</td>
 				<td class="left">
+					<img src="{{ player.avatarhash | avatar('small') }}">
 					<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
 						{{ player['name'] }}
 					</a>

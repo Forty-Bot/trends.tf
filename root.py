@@ -117,6 +117,7 @@ def leaderboard():
     leaderboard = db.cursor()
     leaderboard.execute("""SELECT
                                name,
+                               avatarhash,
                                steamid64,
                                duration,
                                logs,
@@ -143,7 +144,7 @@ def leaderboard():
                                ORDER BY {} NULLS LAST
                                LIMIT %(limit)s OFFSET %(offset)s
                            ) AS leaderboard
-                           LEFT JOIN player_last USING (steamid64)
+                           LEFT JOIN player USING (steamid64)
                            LEFT JOIN name USING (nameid);""".format(order_clause),
                            { **filters, **ids, 'limit': limit, 'offset': offset })
     return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall(),
