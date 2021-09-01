@@ -121,10 +121,14 @@ def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0
                FROM heal_stats
                GROUP BY logid, healer
            ) AS hsg USING (logid, steamid64)
-           LEFT JOIN heal_stats AS hsr ON (
-               hsr.logid=log.logid
-               AND hsr.healee=ps.steamid64
-           ) LEFT JOIN class_stats AS cs ON (
+           LEFT JOIN (SELECT
+                   logid,
+                   healee AS steamid64,
+                   total(healing) AS healing
+               FROM heal_stats
+               GROUP BY logid, healee
+           ) AS hsr USING (logid, steamid64)
+           LEFT JOIN class_stats AS cs ON (
                cs.logid=log.logid
                AND cs.steamid64=ps.steamid64
                AND cs.duration * 1.5 >= log.duration
