@@ -4,6 +4,7 @@
 
 import argparse
 import logging
+import sys
 
 from sql import db_connect, db_init
 from import_logs import import_logs, create_logs_parser
@@ -28,7 +29,11 @@ def init_logging(verbosity):
         log_level = logging.INFO
     elif verbosity > 1:
         log_level = logging.DEBUG
-    logging.basicConfig(level=log_level, format='[%(asctime)s] %(module)s: %(message)s')
+    if sys.stdout.isatty():
+        fmt = '[%(asctime)s] %(module)s: %(message)s'
+    else:
+        fmt = '%(module)s: %(message)s'
+    logging.basicConfig(level=log_level, format=fmt)
 
 def main():
     parser = create_parser()
