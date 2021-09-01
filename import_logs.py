@@ -144,6 +144,7 @@ def import_log(cctx, c, logid, log):
 
         player['logid'] = logid
         player['steamid'] = steamid
+        player['time'] = info['date']
         player['name'] = log['names'][steamid_str] 
 
         # If we don't have a property, it may be absent or set to 0.
@@ -179,11 +180,16 @@ def import_log(cctx, c, logid, log):
         c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", player)
         c.execute("""INSERT INTO player (
                          steamid64,
-                         nameid
+                         nameid,
+                         last_active
                      ) VALUES (
                          %(steamid)s,
-                         (SELECT nameid FROM name WHERE name = %(name)s)
-                     ) ON CONFLICT DO NOTHING;""", player)
+                         (SELECT nameid FROM name WHERE name = %(name)s),
+                         %(time)s
+                     ) ON CONFLICT (steamid64)
+                     DO UPDATE SET
+                         last_active = greatest(player.last_active, EXCLUDED.last_active);""",
+                  player)
         c.execute("""INSERT INTO player_stats (
                          logid, steamid64, teamid, nameid, kills, assists, deaths, dmg, dt
                      ) VALUES (
