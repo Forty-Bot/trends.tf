@@ -71,18 +71,12 @@ def import_players(args, c):
                                name
                            FROM player_update
                            ON CONFLICT DO NOTHING;""")
-            cur.execute("""INSERT INTO player (steamid64, nameid, avatarhash)
-                           SELECT
-                               steamid64::BIGINT,
-                               nameid,
-                               avatarhash
-                           FROM player_update
-                           JOIN name USING (name)
-                           ORDER BY steamid64
-                           ON CONFLICT (steamid64) DO UPDATE
+            cur.execute("""UPDATE player
                            SET
-                              nameid = EXCLUDED.nameid,
-                              avatarhash = EXCLUDED.avatarhash;""")
+                              nameid = (SELECT nameid FROM name WHERE name = player_update.name),
+                              avatarhash = player_update.avatarhash
+                           FROM player_update
+                           WHERE player_update.steamid64::BIGINT = player.steamid64;""")
             cur.execute("COMMIT;")
         except OSError as e:
             # Bail on client errors, except for rate-limiting
