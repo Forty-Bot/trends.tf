@@ -354,8 +354,18 @@ def import_log(cctx, c, logid, log):
 
                 c.execute("ROLLBACK TO SAVEPOINT before_chat;")
                 c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
-                c.execute("INSERT INTO player (steamid64) VALUES (%s) ON CONFLICT DO NOTHING;",
-                          (steamid,));
+                c.execute("""INSERT INTO player (
+                                 steamid64,
+                                 nameid,
+                                 last_active
+                             ) VALUES (
+                                 %s,
+                                 (SELECT nameid FROM name WHERE name = %s),
+                                 %s
+                             ) ON CONFLICT (steamid64)
+                             DO UPDATE SET
+                                 last_active = greatest(player.last_active, EXCLUDED.last_active);""",
+                          (steamid, msg['name'], info['date']))
                 c.execute("""INSERT INTO player_stats (
                                logid, steamid64, nameid, kills, assists, deaths, dmg
                            ) VALUES (
