@@ -81,8 +81,8 @@ def import_players(args, c):
         except OSError as e:
             # Bail on client errors, except for rate-limiting
             if isinstance(e, requests.exceptions.HTTPError) \
-               and e.resp.status_code < 500 \
-               and e.resp.status_code != requests.codes.too_many:
+               and e.response.status_code < 500 \
+               and e.response.status_code != requests.codes.too_many:
                 raise
             # Otherwise just log and try again later
             logging.exception("Could not fetch player info")
