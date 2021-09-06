@@ -13,14 +13,14 @@
 		<tr><td class="left"><abbr title="Wins-Losses-Ties">W-L-T</abbr></td>
 		<td>{{ wlt(totals['wins'], totals['losses'], totals['ties']) }}</td></tr>
 		<tr><td class="left"><abbr title="Ties count as 0.5 wins">Winrate</abbr></td>
-		<td>{{ "{:.2%}".format(totals['winrate']) }}</td></tr>
+		<td>{{ "{:.2%}".format(totals['winrate']) if totals['winrate'] is not none }}</td></tr>
 		<tr><td class="left"><abbr title="Wins-Losses-Ties, without ties under 60s">
 			Round W-L-T
 		</abbr></td>
 		<td>{{ wlt(totals['round_wins'], totals['round_losses'],
 		       totals['round_ties']) }}</td></tr>
 		<tr><td class="left"><abbr title="Ties count as 0.5 wins">Round Winrate</abbr></td>
-		<td>{{ "{:.2%}".format(totals['round_winrate']) }}</td></tr>
+		<td>{{ "{:.2%}".format(totals['round_winrate']) if totals['round_winrate'] is not none }}</td></tr>
 		<tr><td class="left">Kills</td>
 		<td>{{ "{:,.0f}".format(totals['kills']) }}</td></tr>
 		<tr><td class="left">Deaths</td>

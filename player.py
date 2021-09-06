@@ -336,8 +336,10 @@ def totals(steamid):
     totals.execute(
         """SELECT
                count(*) AS logs,
-               (sum((wins > losses)::INT) + 0.5 * sum((wins = losses)::INT)) / count(*) AS winrate,
-               (sum(wins) + 0.5 * sum(ties)) / sum(wins + losses + ties) AS round_winrate,
+               (sum((wins > losses)::INT) + 0.5 * sum((wins = losses)::INT)) /
+                   nullif(count(*), 0) AS winrate,
+               (sum(wins) + 0.5 * sum(ties)) /
+                   nullif(sum(wins + losses + ties), 0) AS round_winrate,
                sum(wins) AS round_wins,
                sum(losses) AS round_losses,
                sum(ties) AS round_ties,
