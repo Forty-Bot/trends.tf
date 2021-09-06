@@ -10,16 +10,16 @@
 	<table>
 		<tr><td class="left">Logs</td>
 		<td>{{ totals['logs'] }}</td></tr>
-		<tr><td class="left"><abbr title="Wins-Losses-Ties">W-L-T</abbr></td>
+		<tr><td class="left">Wins-Losses-Ties</td>
 		<td>{{ wlt(totals['wins'], totals['losses'], totals['ties']) }}</td></tr>
 		<tr><td class="left"><abbr title="Ties count as 0.5 wins">Winrate</abbr></td>
 		<td>{{ "{:.2%}".format(totals['winrate']) if totals['winrate'] is not none }}</td></tr>
-		<tr><td class="left"><abbr title="Wins-Losses-Ties, without ties under 60s">
-			Round W-L-T
+		<tr><td class="left"><abbr title="Not including ties under 60s">
+			Rounds Won-Lost-Tied
 		</abbr></td>
 		<td>{{ wlt(totals['round_wins'], totals['round_losses'],
 		       totals['round_ties']) }}</td></tr>
-		<tr><td class="left"><abbr title="Ties count as 0.5 wins">Round Winrate</abbr></td>
+		<tr><td class="left"><abbr title="Ties count as 0.5 wins">Round winrate</abbr></td>
 		<td>{{ "{:.2%}".format(totals['round_winrate']) if totals['round_winrate'] is not none }}</td></tr>
 		<tr><td class="left">Kills</td>
 		<td>{{ "{:,.0f}".format(totals['kills']) }}</td></tr>
@@ -27,49 +27,49 @@
 		<td>{{ "{:,.0f}".format(totals['deaths']) }}</td></tr>
 		<tr><td class="left">Assists</td>
 		<td>{{ "{:,.0f}".format(totals['assists']) }}</td></tr>
-		<tr><td class="left">Time Played</td>
+		<tr><td class="left">Time played</td>
 		<td>{{ totals['duration'] | duration }}</td></tr>
 		<tr><td class="left">Damage</td>
 		<td>{{ "{:,.0f}".format(totals['dmg']) }}</td></tr>
-		<tr><td class="left">Damage Taken</td>
+		<tr><td class="left">Damage taken</td>
 		<td>{{ "{:,.0f}".format(totals['dt']) }}</td></tr>
-		<tr><td class="left">Heals Received</td>
+		<tr><td class="left">Heals received</td>
 		<td>{{ "{:,.0f}".format(totals['hr']) }}</td></tr>
 		<tr><td class="left">Airshots</td>
 		<td>{{ "{:,.0f}".format(totals['airshots']) }}</td></tr>
 		<tr><td class="left"><abbr title="Medkits taken: small = 1, medium = 2, large = 3">
-			Medkits Taken
+			Medkit score
 		</abbr></td>
 		<td>{{ "{:,.0f}".format(totals['medkits']) }}</td></tr>
-		<tr><td class="left">Healing From Medkits</td>
+		<tr><td class="left">Healing from medkits</td>
 		<td>{{ "{:,.0f}".format(totals['medkits_hp']) }}</td></tr>
 		<tr><td class="left">Backstabs</td>
 		<td>{{ "{:,.0f}".format(totals['backstabs']) }}</td></tr>
 		<tr><td class="left">Headshots</td>
 		<td>{{ "{:,.0f}".format(totals['headshots_hit']) }}</td></tr>
-		<tr><td class="left">Headshot Kills</td>
+		<tr><td class="left">Headshot kills</td>
 		<td>{{ "{:,.0f}".format(totals['headshots']) }}</td></tr>
 		<tr><td class="left">
-			<abbr title="Sentries Built: level 1 = 1, level 2 = 2, level 3 = 3">
-				Sentries Built
+			<abbr title="Sentries built: level 1 = 1, level 2 = 2, level 3 = 3">
+				Sentry score
 			</abbr>
 		</td>
 		<td>{{ "{:,.0f}".format(totals['sentries']) }}</td></tr>
 		<tr><td class="left">Healing</td>
 		<td>{{ "{:,.0f}".format(totals['healing']) }}</td></tr>
-		<tr><td class="left">Capture Points Captured</td>
+		<tr><td class="left">Capture points captured</td>
 		<td>{{ "{:,.0f}".format(totals['cpc']) }}</td></tr>
-		<tr><td class="left">Intelligences Captured</td>
+		<tr><td class="left">Intelligences captured</td>
 		<td>{{ "{:,.0f}".format(totals['ic']) }}</td></tr>
-		<tr><td class="left">Ubers</td>
+		<tr><td class="left">Übers</td>
 		<td>{{ "{:,.0f}".format(totals['ubers']) }}</td></tr>
 		<tr><td class="left">Drops</td>
 		<td>{{ "{:,.0f}".format(totals['drops']) }}</td></tr>
-		<tr><td class="left">Advantages Lost</td>
+		<tr><td class="left">Advantages lost</td>
 		<td>{{ "{:,.0f}".format(totals['advantages_lost']) }}</td></tr>
-		<tr><td class="left">Deaths After Uber</td>
+		<tr><td class="left">Deaths after über</td>
 		<td>{{ "{:,.0f}".format(totals['deaths_after_uber']) }}</td></tr>
-		<tr><td class="left">Deaths Before Uber</td>
+		<tr><td class="left">Deaths before über</td>
 		<td>{{ "{:,.0f}".format(totals['deaths_before_uber']) }}</td></tr>
 	</table>
 {% endblock %}
