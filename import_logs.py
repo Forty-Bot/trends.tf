@@ -645,8 +645,9 @@ def import_logs(args, c):
     cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY) ON COMMIT DELETE ROWS;")
     for table in temp_tables:
         cur.execute("""CREATE TEMP TABLE {} (
-                           LIKE {} INCLUDING ALL
-                       ) ON COMMIT DELETE ROWS;""".format(table[0], table[0]))
+                           LIKE {} INCLUDING ALL EXCLUDING INDEXES,
+                           PRIMARY KEY ({})
+                       ) ON COMMIT DELETE ROWS;""".format(table[0], table[0], table[1]))
     # This doesn't include foreign keys, so include some which we want to handle in import_log
     cur.execute("""ALTER TABLE heal_stats
                    ADD FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
