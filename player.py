@@ -198,11 +198,9 @@ def overview(steamid):
                    coalesce(avg(sniper), 0.0) AS sniper,
                    coalesce(avg(soldier), 0.0) AS soldier,
                    coalesce(avg(spy), 0.0) AS spy
-               FROM (
-                   SELECT *
-                   FROM event
-                   LEFT JOIN event_stats ON (event_stats.eventid=event.eventid AND steamid64=%s)
-               ) AS events
+               FROM event
+               LEFT JOIN event_stats USING (eventid)
+               WHERE steamid64=%s
                GROUP BY event
                ORDER BY event DESC;""", (steamid,))
     aliases = c.cursor()
