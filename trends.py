@@ -25,9 +25,6 @@ def create_app():
     app.config.from_object(DefaultConfig)
     app.config.from_envvar('CONFIG', silent=True)
 
-    with db_connect(app.config['DATABASE']) as c:
-        db_init(c)
-
     app.teardown_appcontext(put_db)
 
     app.jinja_options['trim_blocks'] = True
