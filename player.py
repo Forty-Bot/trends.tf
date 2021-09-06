@@ -367,19 +367,19 @@ def totals(steamid):
                total(deaths_after_uber) AS deaths_after_uber,
                total(deaths_before_uber) AS deaths_before_uber
            FROM player_stats AS ps
-           LEFT JOIN player_stats_extra AS pse ON (
-               pse.logid=ps.logid
-               AND pse.steamid64=ps.steamid64
-           ) JOIN log ON (ps.logid=log.logid)
+           LEFT JOIN player_stats_extra AS pse USING (logid, steamid64)
+           JOIN log USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)
-           LEFT JOIN medic_stats AS ms ON (
-               ms.logid=ps.logid
-               AND ms.steamid64=ps.steamid64)
-           LEFT JOIN heal_stats AS hs ON (
-               hs.logid=ps.logid
-               AND hs.healer=ps.steamid64
-           ) LEFT JOIN class_stats AS cs ON (
+           LEFT JOIN medic_stats AS ms USING (logid, steamid64)
+           LEFT JOIN (SELECT
+                   logid,
+                   healer AS steamid64,
+                   sum(healing) AS healing
+               FROM heal_stats
+               GROUP BY logid, steamid64
+           ) AS hs USING (logid, steamid64)
+           LEFT JOIN class_stats AS cs ON (
                cs.logid=ps.logid
                AND cs.steamid64=ps.steamid64
                AND cs.duration * 1.5 >= log.duration
