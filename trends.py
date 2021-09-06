@@ -65,5 +65,12 @@ def avatar_filter(hash, size='full'):
             'full': '_full',
         }[size])
 
+@application.template_filter()
+def anynone(iterable):
+    for item in iterable:
+        if item is None:
+            return False
+    return True
+
 if __name__ == '__main__':
     application.run()

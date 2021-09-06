@@ -1,6 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
+{% from "macros/format.html" import optformat %}
 {% from "macros/sort.html" import sort %}
 {% extends "player/base.html" %}
 {% block title %}Weapons - {{ super() }}{% endblock %}
@@ -38,10 +39,9 @@
 			{% for weapon in weapons %}
 			<tr>
 				<td class="left">{{ weapon['weapon'] }}</td>
-				<td>{{ "{:.1f}".format(weapon['k30']) if weapon['k30'] != None }}</td>
+				<td>{{ optformat("{:.1f}", weapon['k30']) }}</td>
 				<td>{{ weapon['dpm'] | int if weapon['dpm'] != None }}</td>
-				<td>{{ "{:.0%}".format(weapon['acc'])
-					if weapon['acc'] != None }}</td>
+				<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['kills']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['dmg']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['logs']) }}</td>

@@ -52,12 +52,10 @@
 					</a>
 				</td>
 				<td>{{ peer['with'] | int }}</td>
-				<td>{{ "{:.2%}".format(peer['winrate_with'])
-					if peer['winrate_with'] != None }}</td>
+				<td>{{ optformat("{:.2%}", peer['winrate_with']) }}</td>
 				<td>{{ peer['time_with'] | duration }}</td>
 				<td>{{ peer['against'] | int }}</td>
-				<td>{{ "{:.2%}".format(peer['winrate_against'])
-					if peer['winrate_against'] != None }}</td>
+				<td>{{ optformat("{:.2%}", peer['winrate_against']) }}</td>
 				<td>{{ peer['time_against'] | duration }}</td>
 				<td>{{ peer['dpm'] | int if peer['dpm'] != None }}</td>
 				<td>{{ peer['dtm'] | int if peer['dtm'] != None }}</td>

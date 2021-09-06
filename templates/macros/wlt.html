@@ -1,7 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/format.html" import optformat %}
 {% macro wlt(wins, losses, ties) %}
-{% if wins != None and losses != None and ties != None %}
-	{{ "{:.0f}-{:.0f}-{:.0f}".format(wins, losses, ties) }}
-{% endif %}
+{{ optformat("{:.0f}-{:.0f}-{:.0f}", wins, losses, ties) }}
 {% endmacro %}
