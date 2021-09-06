@@ -41,5 +41,29 @@ def create_app():
 
 application = create_app()
 
+@application.template_filter('duration')
+def duration_filter(timestamp):
+    mm, ss = divmod(timestamp, 60)
+    hh, mm = divmod(mm, 60)
+    dd, hh = divmod(hh, 24)
+    if dd:
+        return "{:.0f} day{}, {:.0f}:{:02.0f}:{:02.0f}" \
+               .format(dd, "s" if dd > 1 else "", hh, mm, ss)
+    elif hh:
+        return "{:.0f}:{:02.0f}:{:02.0f}".format(hh, mm, ss)
+    else:
+        return "{:.0f}:{:02.0f}".format(mm, ss)
+
+@application.template_filter('avatar')
+def avatar_filter(hash, size='full'):
+    if not hash:
+        return ''
+    url = "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/{}/{}{}.jpg"
+    return url.format(hash[0:2], hash, {
+            'small': '',
+            'medium': '_medium',
+            'full': '_full',
+        }[size])
+
 if __name__ == '__main__':
     application.run()
