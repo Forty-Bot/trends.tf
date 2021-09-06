@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			value: ['kills', 'deaths', 'assists'],
 		},
 		names: {
-			kills: "Kills",
-			deaths: "Deaths",
-			assists: "Assists",
+			kills: "K/30",
+			deaths: "D/30",
+			assists: "A/30",
 		},
 		onclick: onclick,
 	};

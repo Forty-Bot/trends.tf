@@ -466,17 +466,19 @@ def trends(steamid):
                    count(*) OVER win AS winrate,
                (sum(wins + 0.5 * ties) OVER win) /
                    sum(wins + losses + ties) OVER win AS round_winrate,
-               avg(ps.kills) OVER win AS kills,
-               avg(ps.deaths) OVER win AS deaths,
-               avg(ps.assists) OVER win AS assists,
-               sum(ps.dmg) OVER win * 60.0 /
-                   sum(CASE WHEN ps.dmg != 0 THEN log.duration END) OVER win AS dpm,
+               sum(ps.kills) OVER win * 30.0 * 60 /
+                   nullif(sum(log.duration) OVER win, 0) AS kills,
+               sum(ps.deaths) OVER win * 30.0 * 60 /
+                   nullif(sum(log.duration) OVER win, 0) AS deaths,
+               sum(ps.assists) OVER win * 30.0 * 60 /
+                   nullif(sum(log.duration) OVER win, 0) AS assists,
+               sum(ps.dmg) OVER win * 60.0 / nullif(sum(log.duration) OVER win, 0) AS dpm,
                sum(ps.dt) OVER win * 60.0 /
-                   sum(CASE WHEN ps.dt != 0 THEN log.duration END) OVER win AS dtm,
+                   nullif(sum(CASE WHEN ps.dt NOTNULL THEN log.duration END) OVER win, 0) AS dtm,
                sum(hsg.healing) OVER win * 60.0 /
-                   sum(CASE WHEN hsg.healing != 0 THEN log.duration END) OVER win AS hpm_given,
+                   nullif(sum(log.duration) OVER win, 0) AS hpm_given,
                sum(hsr.healing) OVER win * 60.0 /
-                   sum(CASE WHEN hsr.healing != 0 THEN log.duration END) OVER win AS hpm_recieved
+                   nullif(sum(log.duration) OVER win, 0) AS hpm_recieved
            FROM log
            JOIN player_stats AS ps USING (logid)
            JOIN format USING (formatid)
