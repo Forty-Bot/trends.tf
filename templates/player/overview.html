@@ -64,7 +64,7 @@
 	</div>
 
 	<div class="float">
-	<h3>Averages</h3>
+	<h3>Averages per 30 minutes</h3>
 	<table>
 		<thead>
 			<tr>
@@ -88,15 +88,15 @@
 					'assist': "assisted killing",
 					'death': "died to",
 					}[event['event']] }}</td>
-				<td>{{ "{:.2f}".format(event['scout']) }}</td>
-				<td>{{ "{:.2f}".format(event['soldier']) }}</td>
-				<td>{{ "{:.2f}".format(event['pyro']) }}</td>
-				<td>{{ "{:.2f}".format(event['demoman']) }}</td>
-				<td>{{ "{:.2f}".format(event['heavyweapons']) }}</td>
-				<td>{{ "{:.2f}".format(event['engineer']) }}</td>
-				<td>{{ "{:.2f}".format(event['medic']) }}</td>
-				<td>{{ "{:.2f}".format(event['sniper']) }}</td>
-				<td>{{ "{:.2f}".format(event['spy']) }}</td>
+				<td>{{ optformat("{:.1f}", event['scout']) }}</td>
+				<td>{{ optformat("{:.1f}", event['soldier']) }}</td>
+				<td>{{ optformat("{:.1f}", event['pyro']) }}</td>
+				<td>{{ optformat("{:.1f}", event['demoman']) }}</td>
+				<td>{{ optformat("{:.1f}", event['heavyweapons']) }}</td>
+				<td>{{ optformat("{:.1f}", event['engineer']) }}</td>
+				<td>{{ optformat("{:.1f}", event['medic']) }}</td>
+				<td>{{ optformat("{:.1f}", event['sniper']) }}</td>
+				<td>{{ optformat("{:.1f}", event['spy']) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

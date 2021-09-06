@@ -165,17 +165,18 @@ def overview(steamid):
     event_stats.execute(
             """SELECT
                    event,
-                   coalesce(avg(demoman), 0.0) AS demoman,
-                   coalesce(avg(engineer), 0.0) AS engineer,
-                   coalesce(avg(heavyweapons), 0.0) AS heavyweapons,
-                   coalesce(avg(medic), 0.0) AS medic,
-                   coalesce(avg(pyro), 0.0) AS pyro,
-                   coalesce(avg(scout), 0.0) AS scout,
-                   coalesce(avg(sniper), 0.0) AS sniper,
-                   coalesce(avg(soldier), 0.0) AS soldier,
-                   coalesce(avg(spy), 0.0) AS spy
+                   total(demoman) * 30 * 60 / nullif(sum(duration), 0) AS demoman,
+                   total(engineer) * 30 * 60 / nullif(sum(duration), 0) AS engineer,
+                   total(heavyweapons) * 30 * 60 / nullif(sum(duration), 0) AS heavyweapons,
+                   total(medic) * 30 * 60 / nullif(sum(duration), 0) AS medic,
+                   total(pyro) * 30 * 60 / nullif(sum(duration), 0) AS pyro,
+                   total(scout) * 30 * 60 / nullif(sum(duration), 0) AS scout,
+                   total(sniper) * 30 * 60 / nullif(sum(duration), 0) AS sniper,
+                   total(soldier) * 30 * 60 / nullif(sum(duration), 0) AS soldier,
+                   total(spy) * 30 * 60 / nullif(sum(duration), 0) AS spy
                FROM event
                LEFT JOIN event_stats USING (eventid)
+               LEFT JOIN log USING (logid)
                WHERE steamid64=%s
                GROUP BY event
                ORDER BY event DESC;""", (steamid,))
