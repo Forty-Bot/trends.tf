@@ -6,6 +6,8 @@
 {% block content %}
 	{{ super() }}
 	{{ filter(filters) }}
+	<div class="box">
+	<div class="float">
 	<h3>Totals</h3>
 	<table>
 		<tr><td class="left">Logs</td>
@@ -72,4 +74,60 @@
 		<tr><td class="left">Deaths before über</td>
 		<td>{{ "{:,.0f}".format(totals['deaths_before_uber']) }}</td></tr>
 	</table>
+	</div>
+	{% if totals['duration'] %}
+	<div class=float>
+	<h3>Averages</h3>
+	<table>
+		<tr><td class="left">Kills per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['k30']) }}</td></tr>
+		<tr><td class="left">Deaths per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['d30']) }}</td></tr>
+		<tr><td class="left">Assists per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['a30']) }}</td></tr>
+		<tr><td class="left">Damage per minute</td>
+		<td>{{ "{:,.0f}".format(totals['dpm']) }}</td></tr>
+		<tr><td class="left">Damage taken per minute</td>
+		<td>{{ "{:,.0f}".format(totals['dtm']) }}</td></tr>
+		<tr><td class="left">Heals received per minute</td>
+		<td>{{ "{:,.0f}".format(totals['hrm']) }}</td></tr>
+		<tr><td class="left">Airshots per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['as30']) }}</td></tr>
+		<tr><td class="left"><abbr title="Medkits taken: small = 1, medium = 2, large = 3">
+			Medkit score per 30 minutes
+		</abbr></td>
+		<td>{{ "{:,.1f}".format(totals['mk30']) }}</td></tr>
+		<tr><td class="left">Healing from medkits per minute</td>
+		<td>{{ "{:,.1f}".format(totals['mkhpm']) }}</td></tr>
+		<tr><td class="left">Backstabs per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['bs30']) }}</td></tr>
+		<tr><td class="left">Headshots per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['hsh30']) }}</td></tr>
+		<tr><td class="left">Headshot kills per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['hs30']) }}</td></tr>
+		<tr><td class="left">
+			<abbr title="Sentries built: level 1 = 1, level 2 = 2, level 3 = 3">
+				Sentry score per 30 minutes
+		</td>
+		<td>{{ "{:,.1f}".format(totals['sen30']) }}</td></tr>
+		<tr><td class="left">Capture points captured per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['cpc30']) }}</td></tr>
+		<tr><td class="left">Intelligences captured per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['ic30']) }}</td></tr>
+		<tr><td class="left">Healing per minute</td>
+		<td>{{ "{:,.0f}".format(totals['hgm']) }}</td></tr>
+		<tr><td class="left">Übers per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['ub30']) }}</td></tr>
+		<tr><td class="left">Drops per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['drp30']) }}</td></tr>
+		<tr><td class="left">Advantages lost per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['adl30']) }}</td></tr>
+		<tr><td class="left">Deaths after über per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['dau30']) }}</td></tr>
+		<tr><td class="left">Deaths before über per 30 minutes</td>
+		<td>{{ "{:,.1f}".format(totals['abu30']) }}</td></tr>
+	</table>
+	</div>
+	{% endif %}
+	</div>
 {% endblock %}

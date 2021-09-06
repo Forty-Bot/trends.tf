@@ -360,14 +360,38 @@ def totals(steamid):
                total(headshots) AS headshots,
                total(headshots_hit) AS headshots_hit,
                total(sentries) AS sentries,
-               total(hs.healing) AS healing,
                total(cpc) AS cpc,
                total(ic) AS ic,
+               -- Medic stuff
+               total(hs.healing) AS healing,
                total(ubers) AS ubers,
                total(drops) AS drops,
                total(advantages_lost) AS advantages_lost,
                total(deaths_after_uber) AS deaths_after_uber,
-               total(deaths_before_uber) AS deaths_before_uber
+               total(deaths_before_uber) AS deaths_before_uber,
+               -- Averages
+               total(ps.kills) * 30 * 60 / nullif(total(log.duration), 0) AS k30,
+               total(ps.deaths) * 30 * 60 / nullif(total(log.duration), 0) AS d30,
+               total(ps.assists) * 30 * 60 / nullif(total(log.duration), 0) AS a30,
+               total(ps.dmg) * 60 / nullif(total(log.duration), 0) AS dpm,
+               total(ps.dt) * 60 / nullif(total(log.duration), 0) AS dtm,
+               total(hr) * 60 / nullif(total(log.duration), 0) AS hrm,
+               total(airshots) * 30 * 60 / nullif(total(log.duration), 0) AS as30,
+               total(medkits) * 30 * 60 / nullif(total(log.duration), 0) AS mk30,
+               total(medkits_hp) * 60 / nullif(total(log.duration), 0) AS mkhpm,
+               total(backstabs) * 30 * 60 / nullif(total(log.duration), 0) AS bs30,
+               total(headshots) * 30 * 60 / nullif(total(log.duration), 0) AS hs30,
+               total(headshots_hit) * 30 * 60 / nullif(total(log.duration), 0) AS hsh30,
+               total(sentries) * 30 * 60 / nullif(total(log.duration), 0) AS sen30,
+               total(cpc) * 30 * 60 / nullif(total(log.duration), 0) AS cpc30,
+               total(ic) * 30 * 60 / nullif(total(log.duration), 0) AS ic30,
+               -- Medic averages
+               total(hs.healing) * 60 / nullif(total(log.duration), 0) AS hgm,
+               total(ubers) * 30 * 60 / nullif(total(log.duration), 0) AS ub30,
+               total(drops) * 30 * 60 / nullif(total(log.duration), 0) AS drp30,
+               total(advantages_lost) * 30 * 60 / nullif(total(log.duration), 0) AS adl30,
+               total(deaths_after_uber) * 30 * 60 / nullif(total(log.duration), 0) AS dau30,
+               total(deaths_before_uber) * 30 * 60 / nullif(total(log.duration), 0) AS abu30
            FROM player_stats AS ps
            LEFT JOIN player_stats_extra AS pse USING (logid, steamid64)
            JOIN log USING (logid)
