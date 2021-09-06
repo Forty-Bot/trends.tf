@@ -419,22 +419,29 @@ def totals(steamid):
 def weapons(steamid):
     filters = get_filters(flask.request.args)
     order, order_clause = get_order(flask.request.args, {
-        'weapon': "weapon",
-        'kills': "kills",
+        'weapon': 'weapon',
+        'kills': 'k30',
         'dpm': 'dpm',
         'acc': 'acc',
+        'total_kills': 'kills',
+        'dmg': 'dmg',
+        'logs': 'logs',
+        'time': 'duration',
     }, 'weapon', 'asc')
     weapons = get_db().cursor()
     weapons.execute(
         """SELECT
                weapon,
-               avg(ws.kills) as kills,
-               sum(ws.dmg) * 60.0 /
-                   nullif(sum(CASE WHEN ws.dmg != 0 THEN class_stats.duration END), 0) AS dpm,
-               total(hits) / nullif(sum(shots), 0.0) AS acc
+               sum(ws.kills) * 30.0 * 60 / nullif(sum(cs.duration), 0) AS k30,
+               sum(ws.dmg) * 60.0 / nullif(sum(cs.duration), 0) AS dpm,
+               total(hits) / nullif(sum(shots), 0.0) AS acc,
+               total(ws.kills) AS kills,
+               total(cs.duration) AS duration,
+               total(ws.dmg) AS dmg,
+               count(*) AS logs
            FROM weapon_stats AS ws
            JOIN weapon USING (weaponid)
-           JOIN class_stats USING (logid, steamid64, classid)
+           JOIN class_stats AS cs USING (logid, steamid64, classid)
            JOIN class USING (classid)
            JOIN log USING (logid)
            JOIN format USING (formatid)
