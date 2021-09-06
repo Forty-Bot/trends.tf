@@ -6,6 +6,8 @@ import argparse
 import logging
 import sys
 
+import psycopg2
+
 from sql import db_connect, db_init
 from import_logs import import_logs, create_logs_parser
 from import_players import import_players, create_players_parser
@@ -41,7 +43,10 @@ def main():
     init_logging(args.verbosity)
 
     c = db_connect(args.database)
-    db_init(c)
+    try:
+        db_init(c)
+    except psycopg2.Error:
+        logging.exception("Could not load schema")
 
     args.importer(args, c)
 
