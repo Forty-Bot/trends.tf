@@ -12,10 +12,13 @@
 		src="{{ url_for('static', filename="js/dates.js") }}" defer></script>
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/filter.js") }}" defer></script>
+	<link rel="icon" href="{{ url_for('static', filename="img/favicon.ico") }}">
 {% endblock %}
 </head>
 <body>
 	<div id='header' class='row'>
+		<img class="logo" src="{{ url_for('static', filename="img/logo.png") }}"
+		 alt="logo">
 		<h3><a href="{{ url_for('root.index') }}">Trends.tf</a></h3>
 		<a href="{{ url_for('root.leaderboard') }}">Leaderboards</a>
 		<form action="{{ url_for('root.search') }}" role="search">

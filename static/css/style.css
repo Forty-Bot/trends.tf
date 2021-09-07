@@ -131,3 +131,7 @@ td.left {
 a.sort {
 	color: var(--link);
 }
+
+.logo {
+	width: 48px;
+}
