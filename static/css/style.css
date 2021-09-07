@@ -96,7 +96,8 @@ td.left {
 }
 
 .classicon {
-	height: 1.1em;
+	width: 1em;
+	height: 1em;
 }
 
 .box {
@@ -114,6 +115,7 @@ td.left {
 }
 
 .avatar > img {
+	height: 100px;
 	width: 100px;
 	margin-right: 10px;
 }
@@ -133,5 +135,11 @@ a.sort {
 }
 
 .logo {
+	height: 48px;
 	width: 48px;
+}
+
+.avatar_small {
+	height: 1em;
+	width: 1em;
 }

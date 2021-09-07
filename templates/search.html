@@ -13,7 +13,8 @@
 	<ul>
 		{% for player in results %}
 		<li>
-			<img src="{{ player['avatarhash'] | avatar('small') }}">
+			<img class="avatar_small"
+			 src="{{ player['avatarhash'] | avatar('small') }}">
 			<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
 				{{ player['name'] }}
 			</a>({{ ", ".join(player['aliases']) }})
