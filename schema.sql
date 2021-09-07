@@ -191,10 +191,10 @@ CREATE TABLE IF NOT EXISTS heal_stats (
 	FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64)
 );
 
--- Reverse lookup index for deletes in player_stats
-CREATE INDEX IF NOT EXISTS heal_stats_healee ON heal_stats (logid, healee);
-
 -- Index for looking up people healed in logs
+CREATE INDEX IF NOT EXISTS heal_stats_healee ON heal_stats (healee);
+
+-- Index for looking up people by healer in logs
 CREATE INDEX IF NOT EXISTS heal_stats_healer ON heal_stats (healer);
 
 CREATE STATISTICS IF NOT EXISTS heal_stats (ndistinct)
