@@ -17,8 +17,12 @@
 </head>
 <body>
 	<div id='header' class='row'>
-		<img class="logo" src="{{ url_for('static', filename="img/logo.png") }}"
-		 alt="logo">
+		<picture>
+			<source srcset="{{ url_for('static', filename="img/logo.webp") }}"
+			 type="image/webp">
+			<img class="logo" src="{{ url_for('static', filename="img/logo.png") }}"
+			 alt="logo">
+		</picture>
 		<h3><a href="{{ url_for('root.index') }}">Trends.tf</a></h3>
 		<a href="{{ url_for('root.leaderboard') }}">Leaderboards</a>
 		<form action="{{ url_for('root.search') }}" role="search">
