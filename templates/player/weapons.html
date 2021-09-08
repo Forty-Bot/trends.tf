@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
-{% from "macros/format.html" import optformat %}
+{% from "macros/format.html" import optformat, optint %}
 {% from "macros/sort.html" import sort %}
 {% extends "player/base.html" %}
 {% block title %}Weapons - {{ super() }}{% endblock %}
@@ -40,7 +40,7 @@
 			<tr>
 				<td class="left">{{ weapon['weapon'] }}</td>
 				<td>{{ optformat("{:.1f}", weapon['k30']) }}</td>
-				<td>{{ weapon['dpm'] | int if weapon['dpm'] != None }}</td>
+				<td>{{ optint(weapon['dpm']) }}</td>
 				<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['kills']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['dmg']) }}</td>

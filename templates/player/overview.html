@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/class.html" import class_map %}
-{% from "macros/format.html" import optformat %}
+{% from "macros/format.html" import optformat, optint %}
 {% from "macros/logs.html" import log_table %}
 {% from "macros/wlt.html" import wlt %}
 {% extends "player/base.html" %}
@@ -34,7 +34,7 @@
 				<td class="left">{{ class_map[cls['class']] }}</td>
 				<td>{{ wlt(cls['wins'], cls['losses'], cls['ties']) }}</td>
 				<td>{{ optformat("{:.2%}", cls['winrate']) }}</td>
-				<td>{{ cls['dpm'] | int if cls['dpm'] != None }}</td>
+				<td>{{ optint(cls['dpm']) }}</td>
 				<td>{{ optformat("{:.0%}", cls['acc']) }}</td>
 				<td>{{ cls['time'] | duration }}</td>
 			</tr>

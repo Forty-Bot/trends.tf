@@ -1,6 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
-{% from "macros/format.html" import optformat %}
+{% from "macros/format.html" import optformat, optint %}
 {% from "macros/wlt.html" import wlt %}
 {% macro _log_header(extra) %}
 <tr>
@@ -52,7 +52,7 @@
 			<td>{{ log['assists'] }}</td>
 			{% if extra %}
 			<td>{{ log['dpm'] | int }}</td>
-			<td>{{ log['dtm'] | int if log['dtm'] != None }}</td>
+			<td>{{ optint(log['dtm']) }}</td>
 			<td>{{ log['hpm_given'] | int }}</td>
 			<td>{{ log['hpm_recieved'] | int }}</td>
 			<td>{{ optformat("{:.0%}", log['acc']) }}</td>

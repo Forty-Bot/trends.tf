@@ -5,3 +5,6 @@
 	{{ fmt.format(*varargs) }}
 {% endif %}
 {% endmacro %}
+{% macro optint(n) %}
+	{{ n | int if n != None }}
+{% endmacro %}

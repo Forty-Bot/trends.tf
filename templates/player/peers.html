@@ -1,6 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
-{% from "macros/format.html" import optformat %}
+{% from "macros/format.html" import optformat, optint %}
 {% from "macros/pagination.html" import navigation %}
 {% from "macros/sort.html" import sort %}
 {% extends "player/base.html" %}
@@ -59,10 +59,10 @@
 				<td>{{ peer['against'] | int }}</td>
 				<td>{{ optformat("{:.2%}", peer['winrate_against']) }}</td>
 				<td>{{ peer['time_against'] | duration }}</td>
-				<td>{{ peer['dpm'] | int if peer['dpm'] != None }}</td>
-				<td>{{ peer['dtm'] | int if peer['dtm'] != None }}</td>
-				<td>{{ peer['hpm_to'] | int if peer['hpm_to'] != None }}</td>
-				<td>{{ peer['hpm_from'] | int if peer['hpm_from'] != None }}</td>
+				<td>{{ optint(peer['dpm']) }}</td>
+				<td>{{ optint(peer['dtm']) }}</td>
+				<td>{{ optint(peer['hpm_to']) }}</td>
+				<td>{{ optint(peer['hpm_from']) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
