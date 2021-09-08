@@ -3,7 +3,10 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 from decimal import Decimal
+import gettext
+
 import flask
+import werkzeug.routing
 
 from api import api
 from player import player
@@ -34,6 +37,8 @@ def create_app():
     app.jinja_env.policies["json.dumps_kwargs"] = { 'default': json_default }
     app.jinja_env.globals.update(zip=zip)
     app.jinja_env.add_extension('jinja2.ext.do')
+    app.jinja_env.add_extension('jinja2.ext.i18n')
+    app.jinja_env.install_null_translations(newstyle=True)
 
     app.register_blueprint(root)
     app.register_blueprint(player, url_prefix='/player/<int:steamid>')

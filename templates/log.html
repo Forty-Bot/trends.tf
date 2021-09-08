@@ -1,0 +1,462 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/class.html" import class_map, classicon %}
+{% from "macros/format.html" import optformat, optint %}
+{% extends "base.html" %}
+{% set has = {
+	'dt': False,
+	'airshots': False,
+	'medkits': False,
+	'medkit_hp': False,
+	'backstabs': False,
+	'headshots': False,
+	'headshots_hit': False,
+	'sentries': False,
+	'cpc': False,
+	'ic': False,
+} %}
+{% for player in players.values() %}
+	{% for col in has.keys() %}
+		{% if player[col] %}
+			{% do has.__setitem__(col, True) %}
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+{% block title %}
+	{{ ngettext("Log", "Logs", logids | count) }} {{ logids | join(", ") }} - {{ super() }}
+{% endblock %}
+{% block head %}
+	{{ super() }}
+	<script type="text/javascript"
+		src="{{ url_for('static', filename="js/hider.js") }}" defer></script>
+{% endblock %}
+{% macro div(dividend, divisor) %}
+	{{ divident / divisor if divisor }}
+{% endmacro %}
+{% macro weapon_table(weapons) %}
+	{% for weapon in weapons %}
+		{% if loop.first %}
+		<tr class="{{ weapon['steamid64'] }}{{ weapon['class'] }} hidden">
+			<td colspan="{{ logids | count + 1 }}"></th>
+			<th>Weapon</th>
+			<th><abbr title="Kills">K</abbr></th>
+			<th></th>
+			<th></th>
+			<th><abbr title="Damage">DA</abbr></th>
+			<th></th>
+			<th><abbr title="Accuracy">Acc</abbr></th>
+			<th><abbr title="Damage per shot">DA/S</abbr></th>
+		</tr>
+		{% endif %}
+	<tr class="{{ weapon['steamid64'] }}{{ weapon['class'] }} hidden">
+		<td colspan="{{ logids | count + 1 }}"></th>
+		<td>{{ weapon['weapon'] }}</td>
+		<td>{{ weapon['kills'] }}</td>
+		<td colspan="2"></td>
+		<td>{{ weapon['dmg'] }}</td>
+		<td></td>
+		<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
+		<td>{{ optint(weapon['dps']) }}</td>
+	</tr>
+	{% endfor %}
+{% endmacro %}
+{% macro class_table(classes) %}
+	{% for cls in classes %}
+	{% set class_weapons =
+		weapons | selectattr('steamid64', 'eq', cls['steamid64'])
+		        | selectattr('class', 'eq', cls['class']) | list %}
+		<tr id="{{ cls['steamid64'] }}{{ cls['class'] }}"
+		 class="{{ cls['steamid64'] }} hider hidden">
+		<td colspan="{{ logids | count + 1 }}"></th>
+		<td class="left">{{ classicon(cls['class'], cls['pct']) }}</td>
+		<td>{{ cls['kills'] }}</td>
+		<td>{{ cls['deaths'] }}</td>
+		<td>{{ cls['assists'] }}</td>
+		<td>{{ cls['dmg'] }}</td>
+		<td>{{ cls['dpm'] | int }}</td>
+		{% if has['dt'] %}
+			<td colspan="2"></td>
+		{% endif %}
+		{# +3 for heal/hpm/lks #}
+		<td colspan="{{ has.values() | sum - has['dt'] + 3 }}"></td>
+		<td>{{ cls['duration'] | duration }}</td>
+	</tr>
+	{{ weapon_table(class_weapons) }}
+	{% endfor %}
+{% endmacro %}
+{% macro player_headers() %}
+	<th colspan="{{ logids | count }}">{{ ngettext("Team", "Teams", logids | count) }}</th>
+	<th>Player</th>
+{% endmacro %}
+{% macro stat_headers() %}
+	<th><abbr title="Kills">K</abbr></th>
+	<th><abbr title="Deaths">D</abbr></th>
+	<th><abbr title="Assists">A</abbr></th>
+	<th><abbr title="Damage">DA</abbr></th>
+	<th><abbr title="Damage per Minute">DA/M</abbr></th>
+	{% if has['dt'] %}
+		<th><abbr title="Damage Taken">DT</abbr></th>
+		<th><abbr title="Damage Taken per Minute">DT/M</abbr></th>
+	{% endif %}
+	<th><abbr title="Heals received">HR</abbr></th>
+	<th><abbr title="Heals recieved per Minute">HR/M</abbr></th>
+	<th><abbr title="Longest Killstreak">LKS</abbr></th>
+	{% if has['airshots'] %}
+		<th><abbr title="Airshots">AS</abbr></th>
+	{% endif %}
+	{% if has['medkits'] %}
+		<th><abbr title="Medkit score: small = 1, medium = 2, large = 3">MS</abbr></th>
+	{% endif %}
+	{% if has['medkit_hp'] %}
+		<th><abbr title="Healing from medkits">MKHP</abbr></th>
+	{% endif %}
+	{% if has['backstabs'] %}
+		<th><abbr title="Backstabs">BS</abbr></th>
+	{% endif %}
+	{% if has['headshots'] %}
+		<th><abbr title="Headshot kills">HSK</abbr></th>
+	{% endif %}
+	{% if has['headshots_hit'] %}
+		<th><abbr title="Headshots"></abbr>HS</th>
+	{% endif %}
+	{% if has['sentries'] %}
+		<th><abbr title="Sentry score: level 1 = 1, level 2 = 2, level 3 = 3">S</abbr></th>
+	{% endif %}
+	{% if has['cpc'] %}
+		<th><abbr title="Capture Points Captured">CPC</abbr></th>
+	{% endif %}
+	{% if has['ic'] %}
+		<th><abbr title="Intelligences Captured">IC</abbr></th>
+	{% endif %}
+{% endmacro %}
+{% macro team_cols(player) %}
+	{% for logid in logids %}
+		{% set team = player['teams'][logid | string] %}
+		<td class="left {{ team | lower }}">{{ team }}</td>
+	{% endfor %}
+{% endmacro %}
+{% macro player_col(player) %}
+	<td class="left">
+		<img class="avatar_small" src="{{ player.avatarhash | avatar('small') }}">
+		<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
+			{{ ', '.join(player['names']) }}
+		</a>
+	</td>
+{% endmacro %}
+{% macro stat_cols(row) %}
+	<td>{{ row['kills'] }}</td>
+	<td>{{ row['deaths'] }}</td>
+	<td>{{ row['assists'] }}</td>
+	<td>{{ row['dmg'] }}</td>
+	<td>{{ row['dpm'] | int }}</td>
+	{% if has['dt'] %}
+		<td>{{ row['dt'] }}</td>
+		<td>{{ optint(row['dtm']) }}</td>
+	{% endif %}
+	<td>{{ row['healing'] | int }}</td>
+	<td>{{ row['hpm'] | int }}</td>
+	<td>{{ row['lks'] }}</td>
+	{% macro optcol(col) %}
+		{% if has[col] %}
+			<td>{{ optint(row[col]) }}</td>
+		{% endif %}
+	{% endmacro %}
+	{{ optcol('airshots') }}
+	{{ optcol('medkits') }}
+	{{ optcol('medkits_hp') }}
+	{{ optcol('backstabs') }}
+	{{ optcol('headshots') }}
+	{{ optcol('headshots_hit') }}
+	{{ optcol('sentries') }}
+	{{ optcol('cpc') }}
+	{{ optcol('ic') }}
+{% endmacro %}
+{% macro player_table_header() %}
+	{{ player_headers() }}
+	<th><abbr title="Classes, ordered by playtime">Classes</abbr></th>
+	{{ stat_headers() }}
+	<th>Time Played</th>
+{% endmacro %}
+{% block content %}
+	{{ super() }}
+	<h1>
+	       {{ ngettext("Log", "Logs", logids | count) }}
+	       {% set comma = joiner(", ") %}
+	       {% for logid in logids -%}
+		       {{ comma() }}
+		       <a href="{{ url_for('root.log', id=logid) }}">{{ logid }}</a>
+	       {%- endfor %}
+	</h1>
+	<table><thead>
+		<th>Title</th>
+		<th>Map</th>
+		<th>Format</th>
+		<th>Red Score</th>
+		<th>Blue Score</th>
+		<th>Duration</th>
+		<th>Date</th>
+	</thead>
+	<tbody class="hier">
+	{% for log in logs %}
+	<tr id="{{ log['logid'] }}" class="hider">
+		<td class="left">
+			<a href="https://logs.tf/{{ log['logid'] }}">{{ log['title'] }}</a>
+		</td>
+		<td class="left">{{ log['map'] }}</td>
+		<td class="left">{{ log['format'] | capitalize }}</td>
+		<td>{{ log['red_score'] }}</td>
+		<td>{{ log['blue_score'] }}</td>
+		<td>{{ log['duration'] | duration }}</td>
+		<td class="left date" timestamp="{{ log['time'] }}"></td>
+	</tr>
+		{% for round in rounds if round['logid'] == log['logid'] %}
+			<tr class="{{ round['logid'] }} hidden">
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>{{ round['red_score'] }}</td>
+			<td>{{ round['blue_score'] }}</td>
+			<td>{{ round['duration'] | duration }}</td>
+		</tr>
+		{% endfor %}
+	{% endfor %}
+	{% if logs | count > 1 %}
+	<tr>
+		<th>Totals</th>
+		<td></td>
+		<td></td>
+		<td>{{ logs | map(attribute='red_score') | sum }}</td>
+		<td>{{ logs | map(attribute='blue_score') | sum }}</td>
+		<td>{{ logs | map(attribute='duration') | sum | duration }}</td>
+		<td></td>
+	</tr>
+	{% endif %}
+	</tbody></table>
+	{% if logids | count < 5 %}
+	<form>
+		{% for logid in logids %}
+			<input type="hidden" name="id" value="{{ logid }}">
+		{% endfor %}
+		<label>Log id:
+			<input type="text" name="id" pattern="\d+" title="numeric log id">
+		</label>
+		<button type="submit">Add log</button>
+	</form>
+	{% endif %}
+	<h2>Players</h2>
+	<table>
+		<thead>{{ player_table_header() }}</thead>
+		<tbody class="hier">
+		{% for player in players.values() %}
+		{% set player_classes =
+			classes | selectattr('steamid64', 'eq', player['steamid64']) | list %}
+		<tr id="{{ player['steamid64'] }}" class="hider">
+			{{ team_cols(player) }}
+			{{ player_col(player) }}
+			<td class="left">
+				{% for cls in player_classes %}
+					{{ classicon(cls['class'], cls['pct']) }}
+				{% endfor %}
+			</td>
+			{{ stat_cols(player) }}
+			<td>{{ player_classes | map(attribute='duration') | sum | duration }}</td>
+		</tr>
+		{{ class_table(player_classes) }}
+		{% endfor %}
+		</tbody>
+		<tfoot>{{ player_table_header() }}</tfoot>
+	</table>
+	<h2>Totals</h2>
+	<table>
+		<thead>
+			<th colspan="{{ logids | count }}">Team/Round</th>
+			{{ stat_headers() }}
+			<th><abbr title="Ubers">U</abbr></th>
+			<th>Duration</th>
+		</thead>
+		<tbody class="hier">
+		{% for team in totals %}
+		{% set teamsym = team['team'] | lower %}
+		{% set log_rounds = rounds | selectattr('logid', 'eq', team['logid']) | list %}
+		<tr id="{{ team['logid'] }}{{ team['teamid'] }}" class="hider">
+			{% for logid in logids %}
+				{% if logid == team['logid'] %}
+					<td class="left {{ team['team'] | lower }}">
+						{{ team['team'] }}
+					</td>
+				{% else %}
+					<td></td>
+				{% endif %}
+			{% endfor %}
+			{{ stat_cols(team) }}
+			<td>{{ log_rounds | map(attribute="{}_ubers".format(teamsym)) | sum }}</td>
+			<td>
+				{{ (logs | selectattr('logid', 'eq', team['logid'])
+				    | first)['duration'] | duration }}
+			</td>
+		</tr>
+			{% for round in log_rounds %}
+			<tr class="{{ team['logid'] }}{{ team['teamid'] }} hidden">
+				{% for logid in logids %}
+					<td class="left">
+						{{ round['seq'] + 1 if logid == team['logid'] }}
+					</td>
+				{% endfor %}
+				<td>{{ round["{}_kills".format(teamsym)] }}</td>
+				<td></td>
+				<td></td>
+				<td>{{ round["{}_dmg".format(teamsym)] }}</td>
+				<td>{{ round["{}_dpm".format(teamsym)] | int }}</td>
+				<td colspan="{{ has.values() | sum + has['dt'] + 3 }}"></td>
+				<td>{{ round["{}_ubers".format(teamsym)] | int }}</td>
+				<td>{{ round['duration'] | duration }}</td>
+			</tr>
+			{% endfor %}
+		{% endfor %}
+		</tbody>
+	</table>
+	<h2>Medics</h2>
+	<table>
+		<thead>
+			{{ player_headers() }}
+			<th>Class</th>
+			<th><abbr title="Healing">H</abbr></th>
+			<th><abbr title="Healing per minute">H/M</abbr></th>
+			<th><abbr title="Percent healing">H%</abbr></th>
+			<th><abbr title="Übers">Ü</abbr></th>
+			<th><abbr title="Medigun übers">MÜ</abbr></th>
+			<th><abbr title="Kritz übers">KÜ</abbr></th>
+			<th><abbr title="Other übers">OÜ</abbr></th>
+			<th><abbr title="Drops">D</abbr></th>
+			<th><abbr title="Advantages lost">AL</abbr></th>
+			<th><abbr title="Biggest advantage lost">BAL</abbr></th>
+			<th><abbr title="Deaths after über">DAÜ</abbr></th>
+			<th><abbr title="Deaths before über">DBÜ</abbr></th>
+			<th>Time Played</th>
+		</thead>
+		<tbody class="hier">
+		{% for medic in medics %}
+		<tr id="medic{{ medic['steamid64'] }}" class="hider">
+			{{ team_cols(medic) }}
+			{{ player_col(players[medic['steamid64']]) }}
+			<td class="left">{{ classicon('medic') }}</td>
+			<td>{{ optint(medic['healing']) }}</td>
+			<td>{{ optint(medic['hpm']) }}</td>
+			<td>100%</td>
+			<td>{{ optint(medic['ubers']) }}</td>
+			<td>{{ optint(medic['medigun_ubers']) }}</td>
+			<td>{{ optint(medic['kritz_ubers']) }}</td>
+			<td>{{ optint(medic['other_ubers']) }}</td>
+			<td>{{ optint(medic['drops']) }}</td>
+			<td>{{ optint(medic['advantages_lost']) }}</td>
+			<td>{{ medic['biggest_advantage_lost'] | duration if
+			       medic['biggest_advantage_lost'] != None}}</td>
+			<td>{{ optint(medic['deaths_after_uber']) }}</td>
+			<td>{{ optint(medic['deaths_before_uber']) }}</td>
+			<td>{{ medic['duration'] | duration }}</td>
+		</tr>
+			{% for healee in medic['healees'] %}
+			<tr class="medic{{ medic['steamid64'] }} hidden">
+				{% for logid in logids %}
+					{% set team =
+					   players[healee['steamid64']]['teams'][logid | string] %}
+					{% set team = team if medic['teamids'][logid | string] %}
+					<td class="left {{ team | lower }}">{{ team }}</td>
+				{% endfor %}
+				{{ player_col(players[healee['steamid64']]) }}
+				<td class="left">
+					{% for (cls, pct) in
+					   zip(healee['classes'], healee['class_pcts']) %}
+						{{ classicon(cls, pct) }}
+					{% endfor %}
+				</td>
+				<td>{{ healee['healing'] }}</td>
+				<td>{{ healee['hpm'] | int}}</td>
+				<td>{{ optformat("{:.0%}", healee['healing']
+							   / medic['healing']) }}</td>
+				<td colspan="9"></td>
+				<td>{{ healee['duration'] | duration }}</td>
+			</tr>
+			{% endfor %}
+		{% endfor %}
+		</tbody>
+	</table>
+	<h2>Events</h2>
+	{% macro event(event_stats) %}
+	<table>
+		<thead><tr>
+			{{ player_headers() }}
+			<th>Scout</th>
+			<th>Soldier</th>
+			<th>Pyro</th>
+			<th>Demo</th>
+			<th>Heavy</th>
+			<th>Engineer</th>
+			<th>Medic</th>
+			<th>Sniper</th>
+			<th>Spy</th>
+			<th>Total</th>
+		</tr></thead>
+		<tbody>
+		{% for stats in event_stats %}
+		{% set player = players[stats['steamid64']] %}
+		{% if stats %}
+			<tr>
+				{{ team_cols(player) }}
+				{{ player_col(player) }}
+				<td>{{ stats['scout'] }}</td>
+				<td>{{ stats['soldier'] }}</td>
+				<td>{{ stats['pyro'] }}</td>
+				<td>{{ stats['demoman'] }}</td>
+				<td>{{ stats['heavyweapons'] }}</td>
+				<td>{{ stats['engineer'] }}</td>
+				<td>{{ stats['medic'] }}</td>
+				<td>{{ stats['sniper'] }}</td>
+				<td>{{ stats['spy'] }}</td>
+				<td>{{ stats['total'] }}</td>
+			</tr>
+		{% endif %}
+		{% endfor %}
+		</tbody>
+	</table>
+	{% endmacro %}
+	<h3>Kills</h3>
+	{{ event(events['kill']) }}
+	<h3>Deaths</h3>
+	{{ event(events['death']) }}
+	<h3>Assists</h3>
+	{{ event(events['assist']) }}
+	<h2>Chat</h2>
+	{% for chat in chats %}
+	<h3>{{ chat['title'] }}</h3>
+	<table>
+		<thead><tr>
+			<th>Team</th>
+			<th>Player</th>
+			<th>Message</th>
+		</tr></thead>
+		<tbody>
+		{% for msg in chat['messages'] %}
+		<tr>
+			{% set team = msg['team'] or '' %}
+			<td class="left {{ team | lower }}">{{ team }}</td>
+			<td class="left">
+				{% set player = players[msg['steamid64']] %}
+				<img class="avatar_small"
+				     src="{{ player['avatarhash'] | avatar('small') if player }}">
+				{% if player %}
+					<a href="{{ url_for('player.overview',
+							    steamid=msg['steamid64']) }}">
+						{{ msg['name'] }}
+					</a>
+				{% else %}
+					{{ msg['name'] }}
+				{% endif %}
+			</td>
+			<td class="left">{{ msg['msg'] }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% endfor %}
+{% endblock %}

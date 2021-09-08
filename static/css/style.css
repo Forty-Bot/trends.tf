@@ -9,6 +9,9 @@
 	--darkbg: #eee;
 	--link: #3F56AD;
 	--visited: #3e3c2a;
+	--red: #A75D50;
+	--blue: #5B818F;
+	--lighttext: #fff;
 }
 
 body {
@@ -75,7 +78,7 @@ thead {
 	top: 0;
 }
 
-tbody tr:nth-child(odd) {
+tbody:not(.hier) tr:nth-child(odd) {
 	background-color: var(--darkbg);
 }
 
@@ -142,4 +145,26 @@ a.sort {
 .avatar_small {
 	height: 1em;
 	width: 1em;
+}
+
+.hider {
+	cursor: pointer;
+}
+
+.hider:hover {
+	background-color: var(--darkbg);
+}
+
+.hidden {
+	display: none;
+}
+
+.red {
+	background-color: var(--red);
+	color: var(--lighttext);
+}
+
+.blue {
+	background-color: var(--blue);
+	color: var(--lighttext);
 }

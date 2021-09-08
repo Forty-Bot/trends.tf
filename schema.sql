@@ -246,6 +246,9 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 );
 
+-- For logs page
+CREATE INDEX IF NOT EXISTS class_stats_logid ON class_stats (logid);
+
 CREATE STATISTICS IF NOT EXISTS class_stats (ndistinct)
 ON logid, steamid64
 FROM class_stats;
@@ -297,6 +300,9 @@ CREATE STATISTICS IF NOT EXISTS weapon_stats (ndistinct)
 ON logid, steamid64, classid
 FROM weapon_stats;
 
+-- For logs page
+CREATE INDEX IF NOT EXISTS weapon_stats_logid ON weapon_stats (logid);
+
 CREATE TABLE IF NOT EXISTS event (
 	eventid SERIAL PRIMARY KEY,
 	event TEXT NOT NULL UNIQUE
@@ -320,6 +326,9 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	PRIMARY KEY (steamid64, logid, eventid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
 );
+
+-- For logs page
+CREATE INDEX IF NOT EXISTS event_logid ON event_stats (logid);
 
 CREATE TABLE IF NOT EXISTS chat (
 	logid INT NOT NULL REFERENCES log (logid),
