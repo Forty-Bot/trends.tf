@@ -119,6 +119,7 @@ def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0
 @player.route('/')
 def overview(steamid):
     c = get_db()
+    filters = get_filters(flask.request.args)
     classes = c.cursor()
     classes.execute(
         """WITH classes AS MATERIALIZED (
@@ -132,8 +133,11 @@ def overview(steamid):
                    hits,
                    shots
                FROM log
+               LEFT JOIN format USING (formatid)
+               LEFT JOIN map USING (mapid)
                JOIN player_stats USING (logid)
                JOIN class_stats cs USING (logid, steamid64)
+               LEFT JOIN class USING (classid)
                JOIN (SELECT
                        logid,
                        steamid64,
@@ -143,7 +147,8 @@ def overview(steamid):
                    FROM weapon_stats
                    GROUP BY logid, steamid64, classid
                ) AS ws USING (logid, steamid64, classid)
-               WHERE steamid64 = %s
+               WHERE steamid64 = %(steamid)s
+                   {}
            ) SELECT
                *,
                (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
@@ -158,28 +163,36 @@ def overview(steamid):
                    total(hits) / nullif(sum(shots), 0.0) AS acc
                FROM class
                LEFT JOIN classes USING (classid)
+               WHERE class = %(class)s OR %(class)s ISNULL
                GROUP BY classid
                ORDER BY classid
-           ) AS classes;""", (steamid,))
+           ) AS classes;""".format(filter_clauses),
+        { 'steamid': steamid, **filters})
     event_stats = c.cursor()
     event_stats.execute(
             """SELECT
                    event,
-                   total(demoman) * 30 * 60 / nullif(sum(duration), 0) AS demoman,
-                   total(engineer) * 30 * 60 / nullif(sum(duration), 0) AS engineer,
-                   total(heavyweapons) * 30 * 60 / nullif(sum(duration), 0) AS heavyweapons,
-                   total(medic) * 30 * 60 / nullif(sum(duration), 0) AS medic,
-                   total(pyro) * 30 * 60 / nullif(sum(duration), 0) AS pyro,
-                   total(scout) * 30 * 60 / nullif(sum(duration), 0) AS scout,
-                   total(sniper) * 30 * 60 / nullif(sum(duration), 0) AS sniper,
-                   total(soldier) * 30 * 60 / nullif(sum(duration), 0) AS soldier,
-                   total(spy) * 30 * 60 / nullif(sum(duration), 0) AS spy
+                   total(demoman) * 30 * 60 / nullif(sum(log.duration), 0) AS demoman,
+                   total(engineer) * 30 * 60 / nullif(sum(log.duration), 0) AS engineer,
+                   total(heavyweapons) * 30 * 60 / nullif(sum(log.duration), 0) AS heavyweapons,
+                   total(medic) * 30 * 60 / nullif(sum(log.duration), 0) AS medic,
+                   total(pyro) * 30 * 60 / nullif(sum(log.duration), 0) AS pyro,
+                   total(scout) * 30 * 60 / nullif(sum(log.duration), 0) AS scout,
+                   total(sniper) * 30 * 60 / nullif(sum(log.duration), 0) AS sniper,
+                   total(soldier) * 30 * 60 / nullif(sum(log.duration), 0) AS soldier,
+                   total(spy) * 30 * 60 / nullif(sum(log.duration), 0) AS spy
                FROM event
                LEFT JOIN event_stats USING (eventid)
                LEFT JOIN log USING (logid)
-               WHERE steamid64=%s
+               LEFT JOIN format USING (formatid)
+               LEFT JOIN map USING (mapid)
+               LEFT JOIN class_stats USING (logid, steamid64)
+               LEFT JOIN class USING (classid)
+               WHERE steamid64 = %(steamid)s
+                   {}
                GROUP BY event
-               ORDER BY event DESC;""", (steamid,))
+               ORDER BY event DESC;""".format(filter_clauses),
+               { 'steamid': steamid, **filters })
     aliases = c.cursor()
     aliases.execute(
             """SELECT
@@ -195,9 +208,9 @@ def overview(steamid):
                    LIMIT 10
                ) AS names
                JOIN name USING (nameid)""", (steamid,))
-    logs = get_logs(c, steamid, get_filters(flask.request.args), limit=25)
+    logs = get_logs(c, steamid, filters, limit=25)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
-                                 event_stats=event_stats, aliases=aliases)
+                                 event_stats=event_stats, aliases=aliases, filters=filters)
 
 @player.route('/logs')
 def logs(steamid):

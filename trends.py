@@ -26,6 +26,8 @@ def create_app():
     app.config.from_envvar('CONFIG', silent=True)
 
     app.teardown_appcontext(put_db)
+    app.add_template_filter(any)
+    app.add_template_filter(all)
 
     app.jinja_options['trim_blocks'] = True
     app.jinja_options['lstrip_blocks'] = True

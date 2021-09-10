@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
 {% from "macros/class.html" import class_map %}
 {% from "macros/format.html" import optformat, optint %}
 {% from "macros/logs.html" import log_table %}
@@ -10,6 +11,7 @@
 	{{ super() }}
 
 	<h2>Overview</h2>
+	{{ filter(filters) }}
 	<div class="box">
 	<div class="float">
 	<h3>Classes</h3>
@@ -61,6 +63,9 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	{% if request.args.values() | any %}
+		<p>Filtering aliases is not supported.</p>
+	{% endif %}
 	</div>
 
 	<div class="float">
