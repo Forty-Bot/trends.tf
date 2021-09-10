@@ -440,7 +440,7 @@ def trends(steamid):
                (sum((wins > losses)::INT) OVER win + 0.5 * sum((wins = losses)::INT) OVER win) /
                    count(*) OVER win AS winrate,
                (sum(wins + 0.5 * ties) OVER win) /
-                   sum(wins + losses + ties) OVER win AS round_winrate,
+                   nullif(sum(wins + losses + ties) OVER win, 0) AS round_winrate,
                sum(ps.kills) OVER win * 30.0 * 60 /
                    nullif(sum(log.duration) OVER win, 0) AS kills,
                sum(ps.deaths) OVER win * 30.0 * 60 /
