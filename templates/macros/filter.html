@@ -7,9 +7,10 @@
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
 {% endfor %}
 {% endmacro %}
-{% macro filter(filters, date=True) %}
+{% macro filter(filters, date=True, class=True) %}
 <form>
 	{{ hidden_excluding('class', 'format', 'map', 'timezone', 'date_from', 'date_to') }}
+	{% if class %}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">
@@ -17,6 +18,7 @@
 			{{ _create_options(filters['class'], class_map) }}
 		</select>
 	</label>
+	{% endif %}
 	<label>Format:
 		<select name="format">
 			<option></option>

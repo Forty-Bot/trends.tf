@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
+# Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import flask
 
-from common import get_filters, filter_clauses, get_order
+from common import get_filters, filter_clauses, filters_classless, get_order
 from sql import get_db
 
 player = flask.Blueprint('player', __name__)
@@ -228,6 +228,7 @@ def logs(steamid):
 def peers(steamid):
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
+    filters = get_filters(flask.request.args)
     order, order_clause = get_order(flask.request.args, {
         'logs': "count(*)",
         'with': '"with"',
@@ -281,6 +282,9 @@ def peers(steamid):
                        hs2.healing AS healing_from,
                        log.duration
                    FROM log
+                   LEFT JOIN map USING (mapid)
+                   LEFT JOIN format USING (formatid)
+                   -- TODO: class?
                    JOIN player_stats AS p1 USING (logid)
                    JOIN player_stats AS p2 USING (logid)
                    LEFT JOIN heal_stats AS hs1 ON (
@@ -291,17 +295,19 @@ def peers(steamid):
                        hs2.healer = p2.steamid64
                        AND hs2.healee = p1.steamid64
                        AND hs2.logid = p1.logid
-                   ) WHERE p1.steamid64 = %s
+                   ) WHERE p1.steamid64 = %(steamid)s
                       AND p2.steamid64 != p1.steamid64
                       AND p2.teamid NOTNULL
+                      {}
                ) AS peers
                GROUP BY steamid64
                ORDER BY {} NULLS LAST
-               LIMIT %s OFFSET %s
+               LIMIT %(limit)s OFFSET %(offset)s
            ) AS peers
            JOIN player USING (steamid64)
-           JOIN name USING (nameid);""".format(order_clause), (steamid, limit, offset))
-    return flask.render_template("player/peers.html", peers=peers.fetchall(), order=order,
+           JOIN name USING (nameid);""".format(filters_classless, order_clause),
+           { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
+    return flask.render_template("player/peers.html", peers=peers.fetchall(), filters=filters,order=order,
                                  limit=limit, offset=offset)
 
 @player.route('/totals')

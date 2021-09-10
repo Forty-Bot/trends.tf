@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
 {% from "macros/format.html" import optformat, optint %}
 {% from "macros/pagination.html" import navigation %}
 {% from "macros/sort.html" import sort %}
@@ -8,6 +9,7 @@
 {% block content %}
 	{{ super() }}
 	<h2>Peers</h2>
+	{{ filter(filters, class=False) }}
 	{{ sort(order, {
 		'logs': "Total logs",
 		'with': "Logs with",

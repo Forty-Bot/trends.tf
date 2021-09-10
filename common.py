@@ -46,12 +46,12 @@ def get_filters(args):
     return ret
 
 # These are common filter clauses which can be added to any query
-filter_clauses = \
-    """AND (class = %(class)s OR %(class)s ISNULL)
-       AND (format = %(format)s OR %(format)s ISNULL)
+filters_classless = \
+    """AND (format = %(format)s OR %(format)s ISNULL)
        AND (map ILIKE %(map)s OR %(map)s ISNULL)
        AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
        AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)"""
+filter_clauses = filters_classless + " AND (class = %(class)s OR %(class)s ISNULL)"
 
 def get_order(args, column_map, default_column, default_dir='desc'):
     column = args.get('sort', None, str)
