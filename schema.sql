@@ -219,6 +219,20 @@ CREATE STATISTICS IF NOT EXISTS heal_stats (ndistinct)
 ON logid, healer
 FROM heal_stats;
 
+CREATE OR REPLACE VIEW heal_stats_given AS SELECT
+	logid,
+	healer AS steamid64,
+	sum(healing) AS healing
+FROM heal_stats
+GROUP BY logid, healer;
+
+CREATE OR REPLACE VIEW heal_stats_received AS SELECT
+	logid,
+	healee AS steamid64,
+	sum(healing) AS healing
+FROM heal_stats
+GROUP BY logid, healee;
+
 CREATE TABLE IF NOT EXISTS class_stats (
 	logid INT NOT NULL,
 	steamid64 BIGINT NOT NULL,

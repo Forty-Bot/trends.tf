@@ -90,20 +90,8 @@ def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0
                FROM weapon_stats
                GROUP BY logid, steamid64
            ) AS ws USING (logid, steamid64)
-           LEFT JOIN (SELECT
-                   logid,
-                   healer AS steamid64,
-                   total(healing) AS healing
-               FROM heal_stats
-               GROUP BY logid, healer
-           ) AS hsg USING (logid, steamid64)
-           LEFT JOIN (SELECT
-                   logid,
-                   healee AS steamid64,
-                   total(healing) AS healing
-               FROM heal_stats
-               GROUP BY logid, healee
-           ) AS hsr USING (logid, steamid64)
+           LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
+           LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
            LEFT JOIN class ON (primary_classid=classid)
            WHERE ps.steamid64 = %(steamid)s
                {}
@@ -470,20 +458,8 @@ def trends(steamid):
            JOIN format USING (formatid)
            JOIN map USING (mapid)
            LEFT JOIN class ON (primary_classid=classid)
-           LEFT JOIN (SELECT
-                   logid,
-                   healer AS steamid64,
-                   sum(healing) AS healing
-               FROM heal_stats
-               GROUP BY logid, healer
-           ) AS hsg USING (logid, steamid64)
-           LEFT JOIN (SELECT
-                   logid,
-                   healee AS steamid64,
-                   sum(healing) AS healing
-               FROM heal_stats
-               GROUP BY logid, healee
-           ) AS hsr USING (logid, steamid64)
+           LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
+           LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
            WHERE ps.steamid64 = %(steamid)s
                {}
            WINDOW win AS (
