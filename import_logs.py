@@ -255,7 +255,7 @@ def import_log(cctx, c, logid, log):
                     medic['medigun_ubers'] = uber_types.get('medigun', 0)
                     medic['kritz_ubers'] = uber_types.get('kritzkrieg', 0)
                     # Sometimes other_ubers is missing and needs to be inferred
-                    other_ubers = player['ubers'] - player['medigun_ubers'] - player['kritz_ubers']
+                    other_ubers = medic['ubers'] - medic['medigun_ubers'] - medic['kritz_ubers']
                     medic['other_ubers'] = uber_types.get('unknown', other_ubers)
                 except KeyError:
                     medic['medigun_ubers'] = None
