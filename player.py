@@ -472,12 +472,18 @@ def trends(steamid):
            LEFT JOIN class ON (primary_classid=classid)
            LEFT JOIN (SELECT
                    logid,
-                   healer,
+                   healer AS steamid64,
                    sum(healing) AS healing
                FROM heal_stats
                GROUP BY logid, healer
-           ) AS hsg ON (hsg.logid=log.logid AND hsg.healer=ps.steamid64)
-           LEFT JOIN heal_stats AS hsr ON (hsr.logid=log.logid AND hsr.healee=ps.steamid64)
+           ) AS hsg USING (logid, steamid64)
+           LEFT JOIN (SELECT
+                   logid,
+                   healee AS steamid64,
+                   sum(healing) AS healing
+               FROM heal_stats
+               GROUP BY logid, healee
+           ) AS hsr USING (logid, steamid64)
            WHERE ps.steamid64 = %(steamid)s
                {}
            WINDOW win AS (
