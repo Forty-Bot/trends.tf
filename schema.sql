@@ -109,6 +109,23 @@ CREATE TABLE IF NOT EXISTS player (
 	last_active BIGINT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS class (
+	classid SERIAL PRIMARY KEY,
+	class TEXT NOT NULL UNIQUE
+);
+
+INSERT INTO class (class) VALUES
+	('scout'),
+	('soldier'),
+	('pyro'),
+	('demoman'),
+	('engineer'),
+	('heavyweapons'),
+	('medic'),
+	('sniper'),
+	('spy')
+ON CONFLICT DO NOTHING;
+
 CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid) NOT NULL,
 	steamid64 BIGINT REFERENCES player (steamid64) NOT NULL,
@@ -122,6 +139,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	wins INT NOT NULL DEFAULT 0, -- rounds won
 	losses INT NOT NULL DEFAULT 0, -- rounds lost
 	ties INT NOT NULL DEFAULT 0, -- rounds tied
+	primary_classid INT REFERENCES class (classid), -- Class played more than 2/3 of the time
 	PRIMARY KEY (steamid64, logid)
 );
 
@@ -200,23 +218,6 @@ CREATE INDEX IF NOT EXISTS heal_stats_healer ON heal_stats (healer);
 CREATE STATISTICS IF NOT EXISTS heal_stats (ndistinct)
 ON logid, healer
 FROM heal_stats;
-
-CREATE TABLE IF NOT EXISTS class (
-	classid SERIAL PRIMARY KEY,
-	class TEXT NOT NULL UNIQUE
-);
-
-INSERT INTO class (class) VALUES
-	('scout'),
-	('soldier'),
-	('pyro'),
-	('demoman'),
-	('engineer'),
-	('heavyweapons'),
-	('medic'),
-	('sniper'),
-	('spy')
-ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS class_stats (
 	logid INT NOT NULL,

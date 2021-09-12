@@ -104,11 +104,7 @@ def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0
                FROM heal_stats
                GROUP BY logid, healee
            ) AS hsr USING (logid, steamid64)
-           LEFT JOIN class_stats AS cs ON (
-               cs.logid=log.logid
-               AND cs.steamid64=ps.steamid64
-               AND cs.duration * 1.5 >= log.duration
-           ) LEFT JOIN class ON (class.classid=cs.classid)
+           LEFT JOIN class ON (primary_classid=classid)
            WHERE ps.steamid64 = %(steamid)s
                {}
            ORDER BY {} NULLS LAST
@@ -125,19 +121,19 @@ def overview(steamid):
         """WITH classes AS MATERIALIZED (
                SELECT
                    classid,
-                   cs.duration * 1.5 > log.duration AS mostly,
+                   classid = primary_classid AS mostly,
                    wins AS round_wins,
                    losses AS round_losses,
                    cs.duration,
                    cs.dmg,
                    hits,
                    shots
-               FROM log
-               LEFT JOIN format USING (formatid)
-               LEFT JOIN map USING (mapid)
-               JOIN player_stats USING (logid)
+               FROM player_stats
                JOIN class_stats cs USING (logid, steamid64)
                LEFT JOIN class USING (classid)
+               JOIN log USING (logid)
+               JOIN format USING (formatid)
+               JOIN map USING (mapid)
                JOIN (SELECT
                        logid,
                        steamid64,
@@ -186,8 +182,8 @@ def overview(steamid):
                LEFT JOIN log USING (logid)
                LEFT JOIN format USING (formatid)
                LEFT JOIN map USING (mapid)
-               LEFT JOIN class_stats USING (logid, steamid64)
-               LEFT JOIN class USING (classid)
+               LEFT JOIN player_stats USING (logid, steamid64)
+               LEFT JOIN class ON (primary_classid=classid)
                WHERE steamid64 = %(steamid)s
                    {}
                GROUP BY event
@@ -399,11 +395,7 @@ def totals(steamid):
                FROM heal_stats
                GROUP BY logid, steamid64
            ) AS hs USING (logid, steamid64)
-           LEFT JOIN class_stats AS cs ON (
-               cs.logid=ps.logid
-               AND cs.steamid64=ps.steamid64
-               AND cs.duration * 1.5 >= log.duration
-           ) LEFT JOIN class USING (classid)
+           LEFT JOIN class ON (primary_classid=classid)
            WHERE ps.steamid64 = %(steamid)s
                {};""".format(filter_clauses),
         {'steamid': steamid, **filters})
@@ -477,11 +469,7 @@ def trends(steamid):
            JOIN player_stats AS ps USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)
-           LEFT JOIN class_stats AS cs ON (
-               cs.logid=log.logid
-               AND cs.steamid64=ps.steamid64
-               AND cs.duration * 1.5 >= log.duration
-           ) LEFT JOIN class USING (classid)
+           LEFT JOIN class ON (primary_classid=classid)
            LEFT JOIN (SELECT
                    logid,
                    healer,

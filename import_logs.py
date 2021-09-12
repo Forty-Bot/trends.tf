@@ -573,6 +573,21 @@ def update_wlt(c):
                  WHERE ps.logid = new.logid
                      AND ps.steamid64 = new.steamid64""")
 
+def update_primary_class(c):
+    c.execute("""UPDATE player_stats AS ps
+                 SET primary_classid = classid
+                 FROM (SELECT
+                         logid,
+                         steamid64,
+                         classid
+                     FROM class_stats
+                     JOIN log USING (logid)
+                     WHERE class_stats.duration * 1.5 > log.duration
+                     ORDER BY steamid64, logid
+                 ) AS cs
+                 WHERE cs.logid = ps.logid
+                 AND cs.steamid64 = ps.steamid64;""")
+
 def create_logs_parser(sub):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -695,6 +710,7 @@ def import_logs(args, c):
         update_stalemates(cur)
         update_formats(cur)
         update_wlt(cur)
+        update_primary_class(cur)
         for table in temp_tables:
             set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
                                    for col in table_columns(c, table[0]))
