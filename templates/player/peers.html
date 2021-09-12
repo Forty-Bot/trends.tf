@@ -9,7 +9,7 @@
 {% block content %}
 	{{ super() }}
 	<h2>Peers</h2>
-	{{ filter(filters, class=False) }}
+	{{ filter(filters) }}
 	{{ sort(order, {
 		'logs': "Total logs",
 		'with': "Logs with",

@@ -3,7 +3,7 @@
 
 import flask
 
-from common import get_filters, filter_clauses, filters_classless, get_order
+from common import get_filters, filter_clauses, get_order
 from sql import get_db
 
 player = flask.Blueprint('player', __name__)
@@ -293,9 +293,9 @@ def peers(steamid):
                    FROM log
                    LEFT JOIN map USING (mapid)
                    LEFT JOIN format USING (formatid)
-                   -- TODO: class?
                    JOIN player_stats AS p1 USING (logid)
                    JOIN player_stats AS p2 USING (logid)
+                   LEFT JOIN class ON (p1.primary_classid=classid)
                    LEFT JOIN heal_stats AS hs1 ON (
                        hs1.healer = p1.steamid64
                        AND hs1.healee = p2.steamid64
@@ -314,7 +314,7 @@ def peers(steamid):
                LIMIT %(limit)s OFFSET %(offset)s
            ) AS peers
            JOIN player USING (steamid64)
-           JOIN name USING (nameid);""".format(filters_classless, order_clause),
+           JOIN name USING (nameid);""".format(filter_clauses, order_clause),
            { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
     return flask.render_template("player/peers.html", peers=peers.fetchall(), filters=filters,order=order,
                                  limit=limit, offset=offset)
