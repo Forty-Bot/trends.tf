@@ -356,8 +356,11 @@ class CloneLogsFetcher(Fetcher):
                 ('intel_captures',     'ic'),
             ))
 
-            ubertypes = extract(player, (('charges_uber', 'medigun'),
-                                         ('charges_kritzkrieg', 'kritzkrieg')))
+            ubertypes = {}
+            if player['charges_uber']:
+                ubertypes['medigun'] = player['charges_uber']
+            if player['charges_kritzkrieg']:
+                ubertypes['kritzkrieg'] = player['charges_kritzkrieg']
             if any(ubertypes.values()):
                 ret['players'][steamid]['ubertypes'] = ubertypes
 
