@@ -25,8 +25,9 @@
 					W-L-T
 				</abbr></th>
 				<th><abbr title="Winrate, ties count as 0.5 wins">Winrate</th>
-				<th><abbr title="Average Damage per Minute">D/M</abbr></th>
+				<th><abbr title="Average Damage per Minute">DA/M</abbr></th>
 				<th><abbr title="Average Accuracy">Acc</abbr></th>
+				<th><abbr title="Average damage per shot">DA/S</abbr></th>
 				<th>Time Played</td>
 			</tr>
 		</thead>
@@ -38,6 +39,7 @@
 				<td>{{ optformat("{:.2%}", cls['winrate']) }}</td>
 				<td>{{ optint(cls['dpm']) }}</td>
 				<td>{{ optformat("{:.0%}", cls['acc']) }}</td>
+				<td>{{ optint(cls['dps']) }}</td>
 				<td>{{ cls['time'] | duration }}</td>
 			</tr>
 			{% endfor %}

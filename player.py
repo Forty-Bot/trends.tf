@@ -144,7 +144,8 @@ def overview(steamid):
                    sum(CASE WHEN mostly THEN (round_wins = round_losses)::INT END) AS ties,
                    total(duration) AS time,
                    sum(dmg) * 60.0 / sum(duration) AS dpm,
-                   total(hits) / nullif(sum(shots), 0.0) AS acc
+                   total(hits) / nullif(sum(shots), 0.0) AS acc,
+                   total(dmg) / nullif(sum(shots), 0.0) AS dps
                FROM class
                LEFT JOIN classes USING (classid)
                WHERE class = %(class)s OR %(class)s ISNULL
