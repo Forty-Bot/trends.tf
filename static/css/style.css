@@ -147,6 +147,10 @@ a.sort {
 	width: 1em;
 }
 
+.trends_graph {
+	height: 300px;
+}
+
 .hider {
 	cursor: pointer;
 }
