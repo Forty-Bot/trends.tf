@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/class.html" import classicon %}
 {% from "macros/format.html" import optformat, optint %}
 {% from "macros/wlt.html" import wlt %}
 {% macro _log_header(extra) %}
@@ -38,10 +39,7 @@
 			<td class="left">{{ log['map'] }}</td>
 			<td class="left">
 			{% for (cls, pct) in zip(log['classes'], log['class_pct']) %}
-				<img class="classicon"
-				 src="{{ url_for('static', filename="img/{}.png".format(cls)) }}"
-				 alt="{{ cls }}"
-				 title="{{ "{:.0%}".format(pct) }}">
+				{{ classicon(cls, pct) }}
 			{% endfor %}
 			</td>
 			<td>{{ wlt(log['wins'], log['losses'], log['ties']) }}</td>

@@ -9,3 +9,12 @@
                      'medic': "Medic", 
                      'sniper': "Sniper", 
 		     'spy': "Spy" } %}
+{% macro classicon(cls, pct=None) %}
+	<img class="classicon"
+	 src="{{ url_for('static', filename="img/{}.png".format(cls)) }}"
+	 alt="{{ class_map[cls] }}"
+	{% if pct != None %}
+		 title="{{ "{:.0%}".format(pct) }}"
+	{% endif %}
+	>
+{% endmacro %}
