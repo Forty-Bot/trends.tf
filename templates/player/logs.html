@@ -6,6 +6,11 @@
 {% from "macros/logs.html" import log_table %}
 {% extends "player/base.html" %}
 {% block title %}Logs - {{ super() }}{% endblock %}
+{% block head %}
+	{{ super() }}
+	<script type="text/javascript"
+		src="{{ url_for('static', filename="js/combine.js") }}" defer></script>
+{% endblock %}
 {% block content %}
 	{{ super() }}
 	<h2>Logs</h2>
@@ -26,6 +31,9 @@
 		'acc': "Accuracy",
 		'date': "Date",
 	   }) }}
+	<form id="combine" action="{{ url_for('root.log') }}">
+		<button type="submit">Combine selected logs</button>
+	</form>
 	{{ navigation(logs, limit, offset) }}
 	{{ log_table(logs, extra=True) }}
 	{{ navigation(logs, limit, offset) }}

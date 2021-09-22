@@ -5,6 +5,9 @@
 {% from "macros/wlt.html" import wlt %}
 {% macro _log_header(extra) %}
 <tr>
+	{% if extra %}
+	<th></th>
+	{% endif %}
 	<th>Title</th>
 	<th>Map</th>
 	<th><abbr title="Classes, ordered by playtime">Classes</abbr></th>
@@ -32,9 +35,14 @@
 	<tbody>
 		{% for log in logs %}
 		<tr>
-			<td class="left"><a href="https://logs.tf/{{ "{}#{}".format(log['logid'],
-								     g.player['steamid64']) }}">
-					{{ log['title'] }}
+			{% if extra %}
+			<td class="left">
+				<input form="combine" class="combine" type="checkbox" name="id"
+				 value="{{ log['logid'] }}">
+			</td>
+			{% endif %}
+			<td class="left"><a href="{{ url_for('root.log', id=log['logid']) }}">
+				{{ log['title'] }}
 			</a></td>
 			<td class="left">{{ log['map'] }}</td>
 			<td class="left">
