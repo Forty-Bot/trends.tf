@@ -172,3 +172,7 @@ a.sort {
 input:disabled {
 	filter: invert(25%);
 }
+
+form {
+	padding: 3px;
+}
