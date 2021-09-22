@@ -2,11 +2,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
+import base64
 from decimal import Decimal
 import gettext
+import hashlib
+import os.path
 
 import flask
 import werkzeug.routing
+import werkzeug.utils
 
 from api import api
 from player import player
@@ -66,7 +70,7 @@ def avatar_filter(hash, size='full'):
     if not hash:
         return ''
     url = "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/{}/{}{}.jpg"
-    return url.format(hash[0:2], hash, {
+    return url.format(hash[:2], hash, {
             'small': '',
             'medium': '_medium',
             'full': '_full',
@@ -78,6 +82,29 @@ def anynone(iterable):
         if item is None:
             return False
     return True
+
+application.static_cache = {}
+@application.url_defaults
+def foo(endpoint, values):
+    if endpoint != 'static' or 'filename' not in values:
+        return
+
+    filename = werkzeug.utils.safe_join(application.static_folder, values['filename'])
+    if not os.path.isfile(filename):
+        return
+
+    mtime, hash = application.static_cache.get(filename, (None, None))
+    if mtime == os.path.getmtime(filename):
+        values['h'] = hash
+        return
+
+    hash = hashlib.md5()
+    with open(filename, 'rb') as file:
+        hash.update(file.read())
+    hash = base64.urlsafe_b64encode(hash.digest())[:10]
+
+    application.static_cache[filename] = (mtime, hash)
+    values['h'] = hash
 
 if __name__ == '__main__':
     application.run()
