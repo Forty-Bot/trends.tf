@@ -5,11 +5,9 @@
 {% block title %}Trends - {{ super() }}{% endblock %}
 {% block head %}
 	{{ super() }}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/c3@0.7.20/c3.css">
 	<script type="text/javascript" defer>steamid64 = "{{ g.player['steamid64'] }}";</script>
 	<script id="trend-data" type="application/json">{{ trends | tojson }}</script>
-	<script type="module" src="https://d3js.org/d3.v5.min.js"></script>
-	<script type="module" src="https://cdn.jsdelivr.net/npm/c3@0.7.20/c3.min.js"></script>
+	<script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.js"></script>
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/trends.js") }}" defer></script>
 {% endblock %}
@@ -19,7 +17,13 @@
 	{{ filter(filters) }}
 	<h2>Trends</h2>
 	Moving averages of the last 20 games.
-	<div id="pm-chart"></div>
-	<div id="kda-chart"></div>
-	<div id="wr-chart"></div>
+	<div class="trends_graph">
+		<canvas id="pm-chart" ></canvas>
+	</div>
+	<div class="trends_graph">
+		<canvas id="kda-chart" ></canvas>
+	</div>
+	<div class="trends_graph">
+		<canvas id="wr-chart" ></canvas>
+	</div>
 {% endblock %}
