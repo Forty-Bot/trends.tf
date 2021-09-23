@@ -1,0 +1,52 @@
+This project generally takes inspiration from the Linux kernel in terms of how the development
+process is structured. In particular, the following guide is broadly applicable:
+
+	https://www.kernel.org/doc/html/latest/process/submitting-patches.html
+
+All commits are expected to follow the above guidelines (although we do take Github PRs). In
+particular, commits are expected to be in the following format:
+
+	Add frobnicator to fizzbuzz page
+
+	This is an extended description outlining the major changes found in the
+	patch. It consists of multiple sentences and covers the substance of the
+	commit, as well as the reasoning behind the commit. If there are any
+	nonintuitive parts to the implementation, they are described here.
+	Alternative paths not taken are also discussed. This description is wrapped
+	at 75 characters.
+
+	Closes: #999
+	Signed-off-by: J. Random Developer <jrdeveloper@example.com>
+
+The following style guidelines apply to all code:
+
+- Function and variable names should be written in snake_case. Class names should be written in
+  CamelCase.
+- Indentation should be done with (8-space) tabs and not spaces. It is acceptable to use spaces for
+  alignment purposes. Python code indents with four space.
+- Only one blank (empty) line may occur in a row.
+- Lines should be wrapped at 100 columns. If there is a significant readability gain, lines may be
+  wrapped at 110 columns.
+- All files must have a trailing newline.
+- When expressions are broken across multiple lines, the operator should be at the beginning of the
+  following lines.
+
+The following guidelines apply to HTML:
+
+- Inline CSS should be avoided wherever possible.
+- Blocks may be left unindented to avoid excessive indentation
+
+The following guidelines apply to SQL:
+
+- SQL embedded in python may be enclosed in double quotes if it is only one line. Othewise, it
+  should be enclosed in triple double quotes (""").
+- All statements should end in a semicolon.
+- Additional clauses should be indented to match the opening statement, and result columns should be
+  indented an additional time.
+- AS must be used when renaming tables or columns
+- Wherever possible, USING should be used when joining tables.
+- Opening and closing parantheses should not be on their own line.
+- JOINs should not be prefixed with unnecessary qualifiers such as "FULL OUTER".
+
+Modifications to the above style guidelines may be submitted. Such modifications should update this
+document, and change all code to comply with the new guideline.
