@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	function onclick(d) {
 		Object.assign(document.createElement('a'), {
 			target: '_blank',
-			href: `https://logs.tf/${data[d.index].logid}#${steamid64}`,
+			href: `/log?id=${data[d.index].logid}`,
 		}).click();
 	}
 
