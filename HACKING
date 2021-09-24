@@ -3,8 +3,8 @@ process is structured. In particular, the following guide is broadly applicable:
 
 	https://www.kernel.org/doc/html/latest/process/submitting-patches.html
 
-All commits are expected to follow the above guidelines (although we do take Github PRs). In
-particular, commits are expected to be in the following format:
+All commits are expected to follow the above guidelines. In particular, commits are expected to be
+in the following format:
 
 	Add frobnicator to fizzbuzz page
 
@@ -18,18 +18,24 @@ particular, commits are expected to be in the following format:
 	Closes: #999
 	Signed-off-by: J. Random Developer <jrdeveloper@example.com>
 
+Unlike Linux, we accept GitHub PRs. All code is expected to be ready to be cherry-picked onto
+master as-is. In particular, merge commits and incremental updates are not allowed. Rebase your
+commits if I update master, and squash your fixes if you need to make changes.
+
 The following style guidelines apply to all code:
 
 - Function and variable names should be written in snake_case. Class names should be written in
   CamelCase.
 - Indentation should be done with (8-space) tabs and not spaces. It is acceptable to use spaces for
-  alignment purposes. Python code indents with four space.
+  alignment purposes. Python code uses 4 spaces for indentation.
 - Only one blank (empty) line may occur in a row.
 - Lines should be wrapped at 100 columns. If there is a significant readability gain, lines may be
   wrapped at 110 columns.
 - All files must have a trailing newline.
 - When expressions are broken across multiple lines, the operator should be at the beginning of the
   following lines.
+- There should be one space between binary operators and their arguments. There should be no spaces
+  between the inside of parentheses and their contents.
 
 The following guidelines apply to HTML:
 
