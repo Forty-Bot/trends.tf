@@ -662,7 +662,7 @@ def import_logs(args, c):
         cur.execute("""CREATE TEMP TABLE {} (
                            LIKE {} INCLUDING ALL EXCLUDING INDEXES,
                            PRIMARY KEY ({})
-                       ) ON COMMIT DELETE ROWS;""".format(table[0], table[0], table[1]))
+                       );""".format(table[0], table[0], table[1]))
     # This doesn't include foreign keys, so include some which we want to handle in import_log
     cur.execute("""ALTER TABLE heal_stats
                    ADD FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
@@ -687,10 +687,8 @@ def import_logs(args, c):
                    SELECT * FROM public.round
                    JOIN public.round_extra USING (logid, seq);""")
 
-    # Only commit every 60s for performance
-    cur.execute("BEGIN;");
-
     def commit():
+        cur.execute("BEGIN;")
         cur.execute("SET CONSTRAINTS ALL DEFERRED;");
         delete_dup_logs(c)
         delete_bogus_logs(cur)
@@ -721,6 +719,9 @@ def import_logs(args, c):
                            ORDER BY {}
                            ON CONFLICT ({}) DO UPDATE
                            SET {};""".format(table[0], table[0], table[1], table[1], set_clause))
+
+        for table in temp_tables[::-1]:
+            cur.execute("""DELETE FROM {};""".format(table[0]))
         cur.execute("COMMIT;")
 
     count = 0
@@ -730,7 +731,8 @@ def import_logs(args, c):
         if log is None:
             continue
 
-        cur.execute("SAVEPOINT import")
+        cur.execute("BEGIN;")
+        cur.execute("SAVEPOINT import;")
         try:
             import_log(cctx, c.cursor(), logid, log)
         except (IndexError, KeyError, psycopg2.errors.NumericValueOutOfRange):
@@ -742,6 +744,7 @@ def import_logs(args, c):
             raise
         else:
             count += 1
+        cur.execute("COMMIT;")
 
         now = datetime.now()
         if (now - start).total_seconds() > 60 or count > 500:
