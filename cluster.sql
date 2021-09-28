@@ -12,4 +12,4 @@ CLUSTER VERBOSE class_stats USING class_stats_pkey;
 CLUSTER VERBOSE weapon_stats USING weapon_stats_pkey;
 CLUSTER VERBOSE event_stats USING event_stats_pkey;
 
-VACUUM ANALYZE;
+VACUUM FULL VERBOSE ANALYZE;
