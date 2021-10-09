@@ -51,8 +51,9 @@ The following guidelines apply to SQL:
   indented an additional time.
 - AS must be used when renaming tables or columns
 - Wherever possible, USING should be used when joining tables.
-- Opening and closing parantheses should not be on their own line.
+- Opening and closing parentheses should not be on their own line.
 - JOINs should not be prefixed with unnecessary qualifiers such as "FULL OUTER".
 
 Modifications to the above style guidelines may be submitted. Such modifications should update this
-document, and change all code to comply with the new guideline.
+document, and change all code to comply with the new guideline. If you find code which does not
+adhere to the above guidelines, please submit a patch to fix it.
