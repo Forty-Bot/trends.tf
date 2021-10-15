@@ -563,11 +563,24 @@ def update_wlt(c):
                  FROM (SELECT
                          logid,
                          steamid64,
-                         coalesce(sum((teamid = round.winner)::INT), 0::BIGINT) AS wins,
-                         coalesce(sum((teamid != round.winner)::INT), 0::BIGINT) AS losses,
+                         coalesce(
+                             sum((teamid = round.winner)::INT),
+                             CASE teamid
+                                 WHEN 0 THEN max(red_score)
+                                 WHEN 1 THEN max(blue_score)
+                             END,
+                             0::BIGINT) AS wins,
+                         coalesce(
+                             sum((teamid != round.winner)::INT),
+                             CASE teamid
+                                 WHEN 0 THEN max(blue_score)
+                                 WHEN 1 THEN max(red_score)
+                             END,
+                             0::BIGINT) AS losses,
                          sum((round.winner ISNULL AND round.duration >= 60)::INT) AS ties
                      FROM player_stats
-                     JOIN round USING (logid)
+                     JOIN log USING (logid)
+                     LEFT JOIN round USING (logid)
                      GROUP BY logid, steamid64
                  ) AS new
                  WHERE ps.logid = new.logid
