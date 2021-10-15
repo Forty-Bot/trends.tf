@@ -409,34 +409,40 @@ def log():
                                   'duration', duration,
                                   'classes', classes,
                                   'class_pcts', (SELECT
-                                                     array_agg(duration * 1.0 / hs.duration)
+                                                     array_agg(duration * 1.0 / cs.duration)
                                                  FROM unnest(class_durations) AS duration)
                               ) ORDER BY healing DESC) AS healees
                           FROM (SELECT
                                   healer,
                                   healee,
-                                  sum(healing) AS healing,
+                                  sum(healing) AS healing
+                              FROM heal_stats
+                              WHERE logid IN %s
+                              GROUP BY healer, healee
+                          ) AS hs
+                          JOIN (SELECT
+                                  healer,
+                                  healee,
                                   sum(duration) AS duration,
                                   array_agg(class ORDER BY duration DESC) AS classes,
                                   array_agg(duration ORDER BY duration DESC) AS class_durations
                               FROM (SELECT
                                       healer,
-                                      healee,
+                                      steamid64 AS healee,
                                       classid,
-                                      sum(duration) AS duration,
-                                      sum(healing) AS healing
-                                  FROM heal_stats AS hs
-                                  JOIN class_stats AS cs ON (
+                                      sum(duration) AS duration
+                                  FROM class_stats AS cs
+                                  JOIN heal_stats AS hs ON (
                                       hs.logid = cs.logid
                                       AND hs.healee = cs.steamid64
-                                  ) WHERE hs.logid in %s
-                                  GROUP BY healer, healee, classid
-                              ) AS hs
+                                  ) WHERE hs.logid IN %s
+                                  GROUP BY healer, steamid64, classid
+                              ) AS cs
                               JOIN class USING (classid)
                               GROUP BY healer, healee
-                          ) AS hs
+                          ) AS cs USING (healer, healee)
                           GROUP BY healer
-                      ) AS heal_stats USING (steamid64);""", (logids, logids));
+                      ) AS heal_stats USING (steamid64);""", (logids, logids, logids));
     medics = medics.fetchall()
     medics.sort(key=player_key)
 
