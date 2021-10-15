@@ -198,6 +198,9 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	       (advantages_lost ISNULL AND biggest_advantage_lost ISNULL))
 );
 
+-- For logs page
+CREATE INDEX IF NOT EXISTS medic_stats_logid ON medic_stats (logid);
+
 CREATE TABLE IF NOT EXISTS heal_stats (
 	logid INT NOT NULL,
 	healer BIGINT NOT NULL,
