@@ -56,11 +56,7 @@ application = create_app()
 def duration_filter(timestamp):
     mm, ss = divmod(timestamp, 60)
     hh, mm = divmod(mm, 60)
-    dd, hh = divmod(hh, 24)
-    if dd:
-        return "{:.0f} day{}, {:.0f}:{:02.0f}:{:02.0f}" \
-               .format(dd, "s" if dd > 1 else "", hh, mm, ss)
-    elif hh:
+    if hh:
         return "{:.0f}:{:02.0f}:{:02.0f}".format(hh, mm, ss)
     else:
         return "{:.0f}:{:02.0f}".format(mm, ss)
