@@ -11,6 +11,26 @@
 			{{ g.player['name'] }}
 		</a></h1>
 	</div>
+
+	<ul class="affiliate">
+		<li><a href="https://rgl.gg/Public/PlayerProfile.aspx?p={{ g.player['steamid64'] }}">
+			<img title="RGL.gg"
+			 src="{{ url_for('static', filename="img/rgl.png") }}">
+		</a></li>
+		<li><a href="https://www.ugcleague.com/players_page.cfm?player_id={{ g.player['steamid64'] }}">
+			<img title="UGC League"
+			 src="{{ url_for('static', filename="img/ugc.png") }}">
+		</a></li>
+		<li><a href="http://etf2l.org/search/{{ g.player['steamid64'] }}/">
+			<img title="European Team Fortress 2 League"
+			 src="{{ url_for('static', filename="img/etf2l.png") }}">
+		</a></li>
+		<li><a href="https://ozfortress.com/users?q={{ g.player['steamid64'] }}">
+			<img title="OZFortress"
+			 src="{{ url_for('static', filename="img/ozf.png") }}">
+		</a></li>
+	</ul>
+
 	<dl>
 		<dt><abbr title="Wins-Losses-Ties">W-L-T</abbr></dt>
 		<dd>{{ wlt(g.player['wins'], g.player['losses'], g.player['ties']) }}</dd>
