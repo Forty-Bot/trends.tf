@@ -25,6 +25,10 @@ def index():
     return flask.render_template("index.html", logstat=logstat.fetchone(),
                                  players=players.fetchone()[0])
 
+@root.route('/favicon.ico')
+def favicon():
+    return flask.redirect(flask.url_for('static', filename="img/favicon.ico"))
+
 @root.route('/search')
 def search():
     args = flask.request.args
