@@ -1,6 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
+{% from "macros/form.html" import hidden_excluding %}
 {% extends "player/base.html" %}
 {% block title %}Trends - {{ super() }}{% endblock %}
 {% block head %}
@@ -16,7 +17,14 @@
 	<h2>Filter</h2>
 	{{ filter(filters) }}
 	<h2>Trends</h2>
-	Moving averages of the last 20 games.
+	<form>
+		{{ hidden_excluding('window') }}
+		<label>Moving average of the last
+			<input type="number" name="window" min="1" max=500" value="{{ window }}">
+			games.
+		</label>
+		<button type="submit">Resize Window</button>
+	</form>
 	<div class="trends_graph">
 		<canvas id="pm-chart" ></canvas>
 	</div>

@@ -3,7 +3,7 @@
 
 import flask
 
-from common import get_filters, filter_clauses, get_order
+from common import clamp, get_filters, filter_clauses, get_order
 from sql import get_db
 
 player = flask.Blueprint('player', __name__)
@@ -432,6 +432,7 @@ def weapons(steamid):
 @player.route('/trends')
 def trends(steamid):
     filters = get_filters(flask.request.args)
+    window = clamp(flask.request.args.get('window', 20, int), 1, 500)
     cur = get_db().cursor()
     cur.execute(
         """SELECT
@@ -466,10 +467,11 @@ def trends(steamid):
            WINDOW win AS (
                PARTITION BY ps.steamid64
                ORDER BY log.logid
-               GROUPS BETWEEN 19 PRECEDING AND CURRENT ROW
+               GROUPS BETWEEN %(window)s - 1 PRECEDING AND CURRENT ROW
            ) ORDER BY log.logid DESC
-           LIMIT 1000;""".format(filter_clauses),
-           {'steamid': steamid, **filters})
+           LIMIT 10000;""".format(filter_clauses),
+           {'steamid': steamid, 'window': window, **filters})
     trends = list(dict(row) for row in cur)
     trends.reverse()
-    return flask.render_template("player/trends.html", trends=trends, filters=filters)
+    return flask.render_template("player/trends.html", trends=trends, filters=filters,
+                                 window=window)

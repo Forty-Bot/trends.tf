@@ -22,6 +22,9 @@ events = {
     'classkillassists': 'assist',
 }
 
+def clamp(n, lower, upper):
+    return max(lower, min(n, upper))
+
 def get_filters(args):
     ret = {}
 
