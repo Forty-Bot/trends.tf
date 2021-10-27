@@ -3,9 +3,11 @@
 
 import flask
 
+import common
 from sql import get_db
 
 api = flask.Blueprint('api', __name__)
+api.add_url_rule("/logs", view_func=common.logs, defaults={ 'api': True })
 
 @api.after_request
 def do_cache(resp):

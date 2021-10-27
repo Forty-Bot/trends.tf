@@ -33,6 +33,9 @@ def get_filters(args):
     ret['format'] = args.get('format', None, str) or None
     map = args.get('map', None, str)
     ret['map'] = "%{}%".format(map) if map else None
+    title = args.get('title', None, str)
+    ret['title'] = "%{}%".format(title) if title else None
+    ret['players'] = tuple(args.getlist('steamid64', int)) or (None,)
 
     timezone = args.get('timezone', tz.UTC, tz.gettz)
 

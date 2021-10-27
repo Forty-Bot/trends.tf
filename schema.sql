@@ -41,7 +41,7 @@ CREATE INDEX IF NOT EXISTS map_names ON map USING gin (map gin_trgm_ops);
 
 CREATE TABLE IF NOT EXISTS log (
 	logid INTEGER PRIMARY KEY, -- SQLite won't infer a rowid alias unless the type is INTEGER
-	time BIGINT NOT NULL, -- End time
+	time BIGINT NOT NULL, -- Upload time
 	duration INT NOT NULL,
 	title TEXT NOT NULL,
 	mapid INT NOT NULL REFERENCES map (mapid),
@@ -55,13 +55,17 @@ CREATE TABLE IF NOT EXISTS log (
 	CHECK (logid < duplicate_of)
 );
 
+-- For log search
+CREATE INDEX IF NOT EXISTS log_title ON log USING gin (title gin_trgm_ops);
+
+-- To filter by date
+CREATE INDEX IF NOT EXISTS log_time ON log (time);
+
 -- The original json, zstd compressed
 CREATE TABLE IF NOT EXISTS log_json (
 	logid INTEGER PRIMARY KEY REFERENCES log (logid),
 	data BYTEA NOT NULL
 );
-
-CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
 CREATE TABLE IF NOT EXISTS team (
 	teamid SERIAL PRIMARY KEY,
