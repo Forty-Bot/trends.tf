@@ -7,9 +7,20 @@
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
 {% endfor %}
 {% endmacro %}
-{% macro filter(filters, date=True) %}
+{% macro filter(filters, date=True, logs=False) %}
 <form>
-	{{ hidden_excluding('class', 'format', 'map', 'timezone', 'date_from', 'date_to') }}
+	{{ hidden_excluding('class', 'format', 'map', 'timezone', 'title', 'steamid64',
+			    'date_from', 'date_to') }}
+	{% if logs %}
+	<label>Title:
+		<input type="text" name="title"
+		       value="{{ (filters['title'] or "") | trim("%") }}">
+	</label>
+	<label><abbr title="SteamID64 of a player">Player</abbr>:
+		<input type="text" name="steamid64" pattern="\d+"
+		       value="{{ filters['players'] | first or "" }}">
+	</label>
+	{% else %}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">
@@ -17,6 +28,7 @@
 			{{ _create_options(filters['class'], class_map) }}
 		</select>
 	</label>
+	{% endif %}
 	<label>Format:
 		<select name="format">
 			<option></option>

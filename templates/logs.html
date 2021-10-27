@@ -1,0 +1,46 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/sort.html" import sort %}
+{% extends "base.html" %}
+{% block title %}Logs - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h1>Logs</h1>
+	{{ filter(filters, logs=True) }}
+	{{ sort(order, {
+		'logid': "Log ID",
+		'duration': "Duration",
+		'date': "Date",
+	   }) }}
+	{{ navigation(logs, limit, offset) }}
+{% macro header() %}
+<tr>
+	<th>Title</th>
+	<th>Map</th>
+	<th>Format</th>
+	<th>Duration</th>
+	<th>Date</th>
+</tr>
+{% endmacro %}
+	<table>
+		<thead>{{ header() }}</thead>
+		<tbody>
+			{% for log in logs %}
+			<tr>
+				<td class="left">
+					<a href="{{ url_for('root.log', id=log['logid']) }}">
+						{{ log['title'] }}
+				</a></td>
+				<td class="left">{{ log['map'] }}</td>
+				<td class="left">{{ log['format'] or '' }}</td>
+				<td>{{ log['duration'] | duration }}</td>
+				<td class="left date" timestamp="{{ log['time'] }}"></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>{{ header() }}</tfoot>
+	</table>
+	{{ navigation(logs, limit, offset) }}
+{% endblock %}
