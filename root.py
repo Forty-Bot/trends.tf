@@ -4,9 +4,9 @@
 import flask
 import sqlite3
 
-from common import get_filters, get_order
 from sql import get_db
 from steamid import SteamID
+from util import get_filters, get_order
 
 root = flask.Blueprint('root', __name__)
 

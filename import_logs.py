@@ -10,10 +10,10 @@ import psycopg2
 import zstandard
 
 import common
-from common import classes
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from steamid import SteamID
 from sql import table_columns
+from util import classes
 
 def filter_logids(c, logids, update_only=False):
     """Filter log ids to exclude those already present in the database.
