@@ -4,7 +4,7 @@
 import flask
 
 from sql import get_db
-from util import clamp, get_filters, filter_clauses, get_order
+from util import clamp, get_filters, common_clauses, get_order
 
 player = flask.Blueprint('player', __name__)
 
@@ -41,6 +41,8 @@ def get_player(endpoint, values):
         break
     else:
         flask.abort(404)
+
+player_clauses = common_clauses + "\nAND (class = %(class)s OR %(class)s ISNULL)"
 
 def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0):
     logs = c.cursor()
@@ -96,7 +98,7 @@ def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0
            WHERE ps.steamid64 = %(steamid)s
                {}
            ORDER BY {} NULLS LAST
-           LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
+           LIMIT %(limit)s OFFSET %(offset)s;""".format(player_clauses, order_clause),
            { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
     return logs
 
@@ -151,7 +153,7 @@ def overview(steamid):
                WHERE class = %(class)s OR %(class)s ISNULL
                GROUP BY classid
                ORDER BY classid
-           ) AS classes;""".format(filter_clauses),
+           ) AS classes;""".format(player_clauses),
         { 'steamid': steamid, **filters})
     event_stats = c.cursor()
     event_stats.execute(
@@ -176,7 +178,7 @@ def overview(steamid):
                WHERE steamid64 = %(steamid)s
                    {}
                GROUP BY event
-               ORDER BY event DESC;""".format(filter_clauses),
+               ORDER BY event DESC;""".format(player_clauses),
                { 'steamid': steamid, **filters })
     aliases = c.cursor()
     aliases.execute(
@@ -303,7 +305,7 @@ def peers(steamid):
                LIMIT %(limit)s OFFSET %(offset)s
            ) AS peers
            JOIN player USING (steamid64)
-           JOIN name USING (nameid);""".format(filter_clauses, order_clause),
+           JOIN name USING (nameid);""".format(player_clauses, order_clause),
            { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
     return flask.render_template("player/peers.html", peers=peers.fetchall(), filters=filters,order=order,
                                  limit=limit, offset=offset)
@@ -386,7 +388,7 @@ def totals(steamid):
            ) AS hs USING (logid, steamid64)
            LEFT JOIN class ON (primary_classid=classid)
            WHERE ps.steamid64 = %(steamid)s
-               {};""".format(filter_clauses),
+               {};""".format(player_clauses),
         {'steamid': steamid, **filters})
     return flask.render_template("player/totals.html", totals=totals.fetchone(), filters=filters)
 
@@ -424,7 +426,7 @@ def weapons(steamid):
            WHERE steamid64 = %(steamid)s
                {}
            GROUP BY weapon
-           ORDER BY {} NULLS LAST;""".format(filter_clauses, order_clause),
+           ORDER BY {} NULLS LAST;""".format(player_clauses, order_clause),
         {'steamid': steamid, **filters})
     return flask.render_template("player/weapons.html", weapons=weapons, filters=filters,
                                  order=order)
@@ -469,7 +471,7 @@ def trends(steamid):
                ORDER BY log.logid
                GROUPS BETWEEN %(window)s - 1 PRECEDING AND CURRENT ROW
            ) ORDER BY log.logid DESC
-           LIMIT 10000;""".format(filter_clauses),
+           LIMIT 10000;""".format(player_clauses),
            {'steamid': steamid, 'window': window, **filters})
     trends = list(dict(row) for row in cur)
     trends.reverse()

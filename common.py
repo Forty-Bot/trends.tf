@@ -4,7 +4,7 @@
 import flask
 
 from sql import get_db
-from util import get_filters, get_order
+from util import common_clauses, get_filters, get_order
 
 def logs(api):
     limit = flask.request.args.get('limit', 100, int)
@@ -34,12 +34,9 @@ def logs(api):
                     ) AS ps USING (logid)
                     WHERE (ps.logid NOTNULL OR %(players)s ISNULL)
                         AND (title ILIKE %(title)s OR %(title)s ISNULL)
-                        AND (format = %(format)s OR %(format)s ISNULL)
-                        AND (map ILIKE %(map)s OR %(map)s ISNULL)
-                        AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
-                        AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)
+                        {}
                     ORDER BY {}
-                    LIMIT %(limit)s OFFSET %(offset)s;""".format(order_clause),
+                    LIMIT %(limit)s OFFSET %(offset)s;""".format(common_clauses, order_clause),
                 { **filters, 'limit': limit, 'offset': offset })
 
     logs = logs.fetchall()

@@ -52,9 +52,8 @@ def get_filters(args):
     return ret
 
 # These are common filter clauses which can be added to any query
-filter_clauses = \
-    """AND (class = %(class)s OR %(class)s ISNULL)
-       AND (format = %(format)s OR %(format)s ISNULL)
+common_clauses = \
+    """AND (format = %(format)s OR %(format)s ISNULL)
        AND (map ILIKE %(map)s OR %(map)s ISNULL)
        AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
        AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)"""
