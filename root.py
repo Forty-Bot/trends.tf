@@ -378,8 +378,21 @@ def log():
 
     medics = db.cursor()
     medics.execute("""SELECT
-                          medic_stats.*,
-                          heal_stats.*,
+                          teamids,
+                          teams,
+                          medic_stats.steamid64,
+                          duration,
+                          ubers,
+                          medigun_ubers,
+                          kritz_ubers,
+                          other_ubers,
+                          drops,
+                          advantages_lost,
+                          biggest_advantage_lost,
+                          deaths_after_uber,
+                          deaths_before_uber,
+                          healing,
+                          healees,
                           healing * 60.0 / nullif(duration, 0) AS hpm
                       FROM (SELECT
                              json_object_agg(logid, teamid) AS teamids,

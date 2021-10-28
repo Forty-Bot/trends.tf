@@ -355,7 +355,7 @@
 			<td>{{ optint(medic['deaths_before_uber']) }}</td>
 			<td>{{ medic['duration'] | duration }}</td>
 		</tr>
-			{% for healee in medic['healees'] %}
+			{% for healee in medic['healees'] or [] %}
 			<tr class="medic{{ medic['steamid64'] }} hidden">
 				{% for logid in logids %}
 					{% set team =
