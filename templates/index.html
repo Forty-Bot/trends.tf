@@ -6,9 +6,13 @@
 	<h1>Team Fortress 2 Stats and Trends</h1>
 	<dl>
 		<dt>Players</dt>
-		<dd>{{ "{:,}".format(players) }}</dd>
+		<dd><a href="{{ url_for('root.leaderboard') }}">
+			{{ "{:,}".format(players) }}
+		</a></dd>
 		<dt>Logs</dt>
-		<dd>{{ "{:,}".format(logstat['count']) }}</dd>
+		<dd><a href="{{ url_for('root.logs') }}">
+			{{ "{:,}".format(logstat['count']) }}
+		</a></dd>
 		<dt>Newest log</dt>
 		<dd class="date" timestamp="{{ logstat['newest'] }}"></dt>
 		<dt>Oldest log</dt>
