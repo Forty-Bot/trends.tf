@@ -17,8 +17,9 @@ def do_cache(resp):
 
 @api.route('/maps')
 def maps():
+    limit = flask.request.args.get('limit', 500, int)
+    offset = flask.request.args.get('offset', 0, int)
     maps = get_db().cursor()
-    # We use statistics here to avoid a sequential scan on log just to order results
     maps.execute("""SELECT
                      map
                  FROM map
@@ -28,5 +29,7 @@ def maps():
                      FROM log
                      GROUP BY mapid
                  ) AS log USING (mapid)
-                 ORDER BY popularity DESC, mapid ASC;""")
+                 ORDER BY popularity DESC, mapid ASC
+                 LIMIT %s OFFSET %s;""",
+                 (limit, offset))
     return flask.jsonify(maps=[row[0] for row in maps])
