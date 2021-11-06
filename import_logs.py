@@ -670,7 +670,7 @@ def import_logs(args, c):
                    ('weapon_stats', 'steamid64, logid, classid, weaponid'),
                    ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
     # Initialize temporary tables
-    cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY) ON COMMIT DELETE ROWS;")
+    cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
     for table in temp_tables:
         cur.execute("""CREATE TEMP TABLE {} (
                            LIKE {} INCLUDING ALL EXCLUDING INDEXES,
@@ -716,6 +716,7 @@ def import_logs(args, c):
                            );""".format(table[0]))
         cur.execute("SELECT count(*) FROM to_delete;")
         logging.info("Removed %s bad log(s)", cur.fetchone()[0])
+        cur.execute("""DELETE FROM to_delete;""")
 
         delete_dup_rounds(cur)
         update_stalemates(cur)
