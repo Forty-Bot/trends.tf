@@ -194,6 +194,7 @@
 		<th>Red Score</th>
 		<th>Blue Score</th>
 		<th>Duration</th>
+		<th><abbr title="Some logs may be uploaded more than once">Duplicate of</abbr></th>
 		<th>Date</th>
 	</thead>
 	<tbody class="hier">
@@ -207,6 +208,13 @@
 		<td>{{ log['red_score'] }}</td>
 		<td>{{ log['blue_score'] }}</td>
 		<td>{{ log['duration'] | duration }}</td>
+		<td>
+			{% if log['duplicate_of'] %}
+			<a href="{{ url_for('root.log', id=log['duplicate_of']) }}">
+				{{ log['duplicate_of'] }}
+			</a>
+			{% endif %}
+		</td>
 		<td class="left date" timestamp="{{ log['time'] }}"></td>
 	</tr>
 		{% for round in rounds if round['logid'] == log['logid'] %}

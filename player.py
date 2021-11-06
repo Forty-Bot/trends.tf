@@ -121,7 +121,7 @@ def overview(steamid):
                FROM player_stats
                JOIN class_stats cs USING (logid, steamid64)
                LEFT JOIN class USING (classid)
-               JOIN log USING (logid)
+               JOIN log_nodups USING (logid)
                JOIN format USING (formatid)
                JOIN map USING (mapid)
                JOIN (SELECT
@@ -170,7 +170,7 @@ def overview(steamid):
                    total(spy) * 30 * 60 / nullif(sum(log.duration), 0) AS spy
                FROM event
                LEFT JOIN event_stats USING (eventid)
-               LEFT JOIN log USING (logid)
+               LEFT JOIN log_nodups AS log USING (logid)
                LEFT JOIN format USING (formatid)
                LEFT JOIN map USING (mapid)
                LEFT JOIN player_stats USING (logid, steamid64)
@@ -281,7 +281,7 @@ def peers(steamid):
                        hs1.healing AS healing_to,
                        hs2.healing AS healing_from,
                        log.duration
-                   FROM log
+                   FROM log_nodups AS log
                    LEFT JOIN map USING (mapid)
                    LEFT JOIN format USING (formatid)
                    JOIN player_stats AS p1 USING (logid)
@@ -375,7 +375,7 @@ def totals(steamid):
                total(deaths_before_uber) * 30 * 60 / nullif(total(log.duration), 0) AS abu30
            FROM player_stats AS ps
            LEFT JOIN player_stats_extra AS pse USING (logid, steamid64)
-           JOIN log USING (logid)
+           JOIN log_nodups AS log USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)
            LEFT JOIN medic_stats AS ms USING (logid, steamid64)
@@ -420,7 +420,7 @@ def weapons(steamid):
            JOIN weapon USING (weaponid)
            JOIN class_stats AS cs USING (logid, steamid64, classid)
            JOIN class USING (classid)
-           JOIN log USING (logid)
+           JOIN log_nodups AS log USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)
            WHERE steamid64 = %(steamid)s
@@ -457,7 +457,7 @@ def trends(steamid):
                    nullif(sum(log.duration) OVER win, 0) AS hpm_given,
                sum(hsr.healing) OVER win * 60.0 /
                    nullif(sum(log.duration) OVER win, 0) AS hpm_recieved
-           FROM log
+           FROM log_nodups AS log
            JOIN player_stats AS ps USING (logid)
            JOIN format USING (formatid)
            JOIN map USING (mapid)

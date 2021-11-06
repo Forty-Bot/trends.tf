@@ -166,33 +166,21 @@ def log():
         flask.abort(400)
 
     logs = db.cursor()
-    logs.execute("""WITH RECURSIVE logs_full AS (
-                        SELECT
-                            *,
-                            logid AS original_logid
-                        FROM log
-                        WHERE logid IN %s
-                        UNION ALL
-                        SELECT
-                            log.*,
-                            logs_full.original_logid
-                        FROM logs_full
-                        JOIN log ON (log.logid = logs_full.duplicate_of)
-                    ) SELECT
+    logs.execute("""SELECT
                         logid,
-                        original_logid,
                         time,
                         title,
                         map,
                         format,
                         duration,
                         red_score,
-                        blue_score
-                    FROM logs_full
-                    JOIN format USING (formatid)
+                        blue_score,
+                        duplicate_of
+                    FROM log
+                    LEFT JOIN format USING (formatid)
                     JOIN map USING (mapid)
-                    WHERE duplicate_of ISNULL
-                    ORDER BY array_position(%s, original_logid);""", (tuple(logids), logids))
+                    WHERE logid IN %s
+                    ORDER BY array_position(%s, logid);""", (tuple(logids), logids))
     logs = logs.fetchall()
     logids = tuple(log['logid'] for log in logs)
     if not logids:

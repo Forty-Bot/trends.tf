@@ -28,7 +28,7 @@ def maps():
                          count(*) AS popularity
                      FROM log
                      GROUP BY mapid
-                 ) AS log USING (mapid)
+                 ) AS log_nodups USING (mapid)
                  ORDER BY popularity DESC, mapid ASC
                  LIMIT %s OFFSET %s;""",
                  (limit, offset))

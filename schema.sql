@@ -55,6 +55,22 @@ CREATE TABLE IF NOT EXISTS log (
 	CHECK (logid < duplicate_of)
 );
 
+-- For the below view
+CREATE INDEX IF NOT EXISTS log_nodups_pkey ON log (logid)
+	WHERE duplicate_of ISNULL;
+
+CREATE OR REPLACE VIEW log_nodups AS SELECT
+	logid,
+	time,
+	duration,
+	title,
+	mapid,
+	red_score,
+	blue_score,
+	formatid
+FROM log
+WHERE duplicate_of ISNULL;
+
 -- For log search
 CREATE INDEX IF NOT EXISTS log_title ON log USING gin (title gin_trgm_ops);
 
@@ -269,7 +285,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	sum((wins > losses)::INT) AS wins,
 	sum((wins = losses)::INT) AS ties,
 	sum((wins < losses)::INT) AS losses
-FROM log
+FROM log_nodups AS log
 JOIN player_stats USING (logid)
 LEFT JOIN class_stats USING (logid, steamid64)
 WHERE class_stats.duration * 1.5 >= log.duration
