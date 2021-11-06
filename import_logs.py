@@ -9,7 +9,6 @@ import logging
 import psycopg2
 import zstandard
 
-import common
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from steamid import SteamID
 from sql import table_columns
@@ -211,7 +210,7 @@ def import_log(cctx, c, logid, log):
                              %(ic)s
                          );""", player)
 
-        for prop, event in common.events.items():
+        for prop, event in util.events.items():
             if not log.get(prop):
                 continue
 
