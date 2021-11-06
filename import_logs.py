@@ -444,7 +444,6 @@ def delete_dup_logs(c):
                      AND r2.blue_ubers=r1.blue_ubers
                  ) GROUP BY r1.logid;""")
 
-    cur.execute("INSERT INTO to_delete SELECT logid FROM dupes;")
     cur.execute("""UPDATE log
                  SET duplicate_of=dupes.of
                  FROM dupes
