@@ -12,7 +12,7 @@ import zstandard
 from fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from steamid import SteamID
 from sql import table_columns
-from util import classes
+import util
 
 def filter_logids(c, logids, update_only=False):
     """Filter log ids to exclude those already present in the database.
@@ -222,7 +222,7 @@ def import_log(cctx, c, logid, log):
             events['logid'] = logid
             events['steamid'] = steamid
             events['event'] = event
-            for cls in classes:
+            for cls in util.classes:
                 events[cls] = events.get(cls, 0)
 
             # There are also 'unknown' events, but we skip them; they can be determined by the
