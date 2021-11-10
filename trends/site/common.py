@@ -3,8 +3,8 @@
 
 import flask
 
-from sql import get_db
-from util import common_clauses, get_filters, get_order
+from ..sql import get_db
+from ..util import common_clauses, get_filters, get_order
 
 def logs(api):
     limit = flask.request.args.get('limit', 100, int)

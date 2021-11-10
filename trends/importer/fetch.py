@@ -9,7 +9,7 @@ import requests
 import sqlite3
 import time
 
-from util import classes, events
+from ..util import classes, events
 
 class APIError(OSError):
     """The logs.tf API returned a failure"""

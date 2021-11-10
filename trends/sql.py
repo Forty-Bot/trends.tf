@@ -7,7 +7,7 @@ import sys
 import flask
 import psycopg2, psycopg2.extras
 
-from steamid import SteamID
+from .steamid import SteamID
 
 def db_connect(url, name=None):
     """Setup a database connection

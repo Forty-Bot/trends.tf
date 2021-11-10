@@ -1,4 +1,3 @@
-#!/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
@@ -8,9 +7,9 @@ import sys
 
 import psycopg2
 
-from sql import db_connect, db_init
-from import_logs import import_logs, create_logs_parser
-from import_players import import_players, create_players_parser
+from ..sql import db_connect, db_init
+from .logs import import_logs, create_logs_parser
+from .players import import_players, create_players_parser
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -49,6 +48,3 @@ def main():
         logging.exception("Could not load schema")
 
     args.importer(args, c)
-
-if __name__ == '__main__':
-    main()

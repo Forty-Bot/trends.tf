@@ -1,4 +1,3 @@
-#!/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
@@ -12,10 +11,10 @@ import flask
 import werkzeug.routing
 import werkzeug.utils
 
-from api import api
-from player import player
-from root import root
-from sql import db_connect, db_init, get_db, put_db
+from .api import api
+from .player import player
+from .root import root
+from ..sql import db_connect, db_init, get_db, put_db
 
 class DefaultConfig:
     DATABASE = "postgresql:///trends"
@@ -104,8 +103,3 @@ def create_app():
     app.register_blueprint(api, url_prefix='/api/v1')
 
     return app
-
-application = create_app()
-
-if __name__ == '__main__':
-    application.run()
