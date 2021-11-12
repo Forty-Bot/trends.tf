@@ -6,7 +6,7 @@ import setuptools
 
 setuptools.setup(
     name = 'trends.tf',
-    version = '0',
+    use_scm_version = True,
     description = "Team Fortress 2 stats and trends",
     author = 'Sean Anderson',
     author_email = 'seanga2@gmail.com',
@@ -17,6 +17,7 @@ setuptools.setup(
         'COPYING',
         'LICENSES/*',
     ],
+    setup_requires = ['setuptools_scm'],
     install_requires = [
         'psycopg2',
         'requests',

@@ -1,0 +1,5 @@
+# Files created by salt
+etc/salt/
+var/
+# Files the user should create
+id_rsa.pub

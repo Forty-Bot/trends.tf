@@ -1,0 +1,5 @@
+# All paths are relative to the cwd (aka Saltfile) and not this file for whatever reason
+root_dir: salt
+file_roots:
+   base:
+     - salt

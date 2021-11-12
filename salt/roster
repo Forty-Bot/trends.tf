@@ -1,0 +1,4 @@
+trends.tf:
+  host: trends.tf
+  user: sean
+  sudo: True
