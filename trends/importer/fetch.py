@@ -129,7 +129,7 @@ class ListFetcher(Fetcher):
             resp.close()
             new_request = resp.request.copy()
             new_request.retries = retries + 1
-            time.sleep(0.1 * (2 ** retries))
+            time.sleep(0.25 * (2 ** retries))
 
             new_resp = resp.connection.send(new_request, **kwargs)
             new_resp.history.append(resp)
