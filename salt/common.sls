@@ -23,3 +23,14 @@ nano:
     - refresh: False
     - require:
       - vim
+
+/etc/profile.d/editor.sh:
+  file.managed:
+    - mode: 755
+    - contents: |
+        #!/bin/sh
+
+        export EDITOR=vim
+        export VISUAL=vim
+    - require:
+      - vim
