@@ -71,3 +71,76 @@ To launch a development server, run
 
 If you are using a different database, you will need to set the `DATABASE` environmental variable to
 its connection string.
+
+== Deploying trends.tf
+
+These are the instructions to deploy a new server hosting trends.tf. The only requirements are that
+it be running Arch Linux or Debian (Ubuntu will also likely work), and that there is ssh access
+available (for the root user).
+
+First, edit `salt/roster` to contain a new entry like
+
+[source,yaml]
+----
+<name>:
+  host: <ipaddr>
+  user: root
+----
+
+Where `<name>` is the name you will use to refer to the server in the upcoming commands, and
+`<ipaddr>` is the IP address of the server. Then, run
+
+    $ salt-ssh -i <name> test.ping
+
+The `-i` option will accept the server's host SSH key. You should see a response like
+
+    <name>:
+        True
+
+The next few steps will create a user with ssh access and sudoer privileges. Create a link to the
+ssh key you wish to install:
+
+    $ ln -s ~/.ssh/id_rsa.pub salt/
+
+Then, run
+
+    $ salt-ssh <name> state.apply bootstrap
+
+The output of this command should show all changes made to the server. Next, switch to using the
+`sean` user to connect to the server. Modify the entry you previously made in `salt/roster` to be
+
+[source,yaml]
+----
+<name>:
+  host: <ipaddr>
+  user: sean
+  sudo: True
+----
+
+Then, run
+
+    $ salt-ssh <name> state.apply
+
+This will take a while (around 2 minutes). Once it is done, all states should have succeeded except
+for `nginx.service` and `player_import.service`. This is because the certificates are missing, the
+site is not deployed, and the steamkey has not been set. To fix the first problem, copy over the
+certificates from an existing site. That is, run
+
+    [server1]$ sudo tar -cvf /tmp/certs.tar.gz /etc/letsencrypt/
+    $ scp <server1>:/tmp/certs.tar.gz <server2>:/tmp/
+    [server2]$ sudo tar -xvf /tmp/certs.tar.gz -C /
+
+I would like to fix this at some point. For the second issue, run
+
+    $ make PROD=<ipaddr> deploy
+
+to deploy the site to your server. Lastly, create a file `/etc/default/trends` containing
+
+----
+STEAMKEY=<steam API key>
+----
+
+with your https://steamcommunity.com/dev/apikey[Steam API key]. This really should be read from
+pillar. Once this is complete, re-apply the top-level state.
+
+    $ salt-ssh <name> state.apply
