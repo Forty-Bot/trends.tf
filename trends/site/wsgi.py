@@ -5,7 +5,7 @@ import base64
 from decimal import Decimal
 import gettext
 import hashlib
-import os.path
+import os, os.path
 
 import flask
 import werkzeug.routing
@@ -19,6 +19,13 @@ from ..sql import db_connect, db_init, get_db, put_db
 class DefaultConfig:
     DATABASE = "postgresql:///trends"
     TIMEOUT = 60000
+
+class EnvConfig:
+    def __init__(self):
+        for name in ("DATABASE", "TIMEOUT"):
+            val = os.environ.get(name)
+            if val is not None:
+                setattr(self, name, val)
 
 def json_default(obj):
     if isinstance(obj, Decimal):
@@ -79,7 +86,7 @@ class StaticHashDefaults:
 def create_app():
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
-    app.config.from_envvar('CONFIG', silent=True)
+    app.config.from_object(EnvConfig())
 
     app.teardown_appcontext(put_db)
     app.url_defaults(StaticHashDefaults(app))
