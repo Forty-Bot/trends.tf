@@ -6,10 +6,19 @@
 uwsgi:
   user.present:
     - home: /srv/uwsgi
+    - createhome: False
     - system: True
     - shell: /usr/bin/nologin
   postgres_user.present:
     - runas: postgres
+    - require:
+      - user: uwsgi
+
+/srv/uwsgi:
+  file.directory:
+    - user: uwsgi
+    - group: uwsgi
+    - dir_mode: 755
     - require:
       - user: uwsgi
 
