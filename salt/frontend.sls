@@ -190,8 +190,6 @@ nginx.service:
   service.running:
     - enable: True
     - reload: True
-    - onchanges:
-      - /etc/nginx
     - require:
       - certbot
       - /srv/uwsgi/trends
