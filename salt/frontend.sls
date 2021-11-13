@@ -55,18 +55,23 @@ uwsgi_{{ name }}_privs:
 
 virtualenv:
   pkg.installed:
+    - refresh: False
     - pkgs:
-      {% if grains.os_family == 'Debian' %}
+{% if grains.os_family == 'Debian' %}
       - libpq-dev
       - python3-dev
       - python3
       - virtualenv
-      {% else %}
-      - base-devel
+{% else %}
       - python
       - python-virtualenv
-      {% endif %}
+    - require:
+      - base-devel
+
+base-devel:
+  pkg.group_installed:
     - refresh: False
+{% endif %}
 
 /srv/uwsgi/trends:
   file.directory:
