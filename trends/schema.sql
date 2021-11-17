@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS log (
 	red_score INT NOT NULL,
 	blue_score INT NOT NULL,
 	formatid INT REFERENCES format (formatid),
+	ad_scoring BOOLEAN, -- Whether attack/defense scoring is enabled
 	-- Some logs may be duplicates or subsets of another log
 	duplicate_of INT REFERENCES log (logid),
 	-- All duplicates must be earlier (and have smaller logids) than what they are duplicates of

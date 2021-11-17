@@ -3,6 +3,7 @@
 
 from datetime import datetime, timedelta
 from dateutil import tz
+import itertools
 
 classes = (
     'demoman',
@@ -24,6 +25,17 @@ events = {
 
 def clamp(n, lower, upper):
     return max(lower, min(n, upper))
+
+# Adapted from https://stackoverflow.com/a/8998040/5086505
+def chunk(iterable, n):
+    it = iter(iterable)
+    while True:
+        slice = itertools.islice(it, n)
+        try:
+            first = next(slice)
+        except StopIteration:
+            return
+        yield itertools.chain((first,), slice)
 
 def get_filters(args):
     ret = {}

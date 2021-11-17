@@ -8,6 +8,7 @@ import sys
 import psycopg2
 
 from ..sql import db_connect, db_init
+from .ad import create_ad_parser
 from .logs import create_logs_parser
 from .players import create_players_parser
 
@@ -16,6 +17,7 @@ def create_parser():
     sub = parser.add_subparsers()
     create_logs_parser(sub)
     create_players_parser(sub)
+    create_ad_parser(sub)
     parser.add_argument("database", default="postgresql:///trends", metavar="DATABASE",
                         help="Database URL to connect to")
     parser.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
