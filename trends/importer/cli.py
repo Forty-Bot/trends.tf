@@ -8,8 +8,8 @@ import sys
 import psycopg2
 
 from ..sql import db_connect, db_init
-from .logs import import_logs, create_logs_parser
-from .players import import_players, create_players_parser
+from .logs import create_logs_parser
+from .players import create_players_parser
 
 def create_parser():
     parser = argparse.ArgumentParser()
