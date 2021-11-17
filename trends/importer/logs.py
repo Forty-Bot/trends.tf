@@ -62,6 +62,7 @@ def import_log(cctx, c, logid, log):
 
     info = log['info']
     info['logid'] = logid
+    info['AD_scoring'] = info.get('AD_scoring', None)
 
     try:
         info['red_score'] = log['teams']['Red']['score']
@@ -73,10 +74,11 @@ def import_log(cctx, c, logid, log):
 
     c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", info)
     c.execute("""INSERT INTO log (
-                     logid, time, duration, title, mapid, red_score, blue_score
+                     logid, time, duration, title, mapid, red_score, blue_score, ad_scoring
                  ) VALUES (
                      %(logid)s, %(date)s, %(total_length)s, %(title)s,
-                     (SELECT mapid FROM map WHERE map = %(map)s), %(red_score)s, %(blue_score)s
+                     (SELECT mapid FROM map WHERE map = %(map)s), %(red_score)s, %(blue_score)s,
+                     %(AD_scoring)s
                  );""",
               info)
     c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)",
