@@ -15,19 +15,18 @@ def create_ad_parser(sub):
 
 def extract_ad(c):
     dctx = zstandard.ZstdDecompressor()
-    cur = c.cursor(name='ad', withhold=True)
-
-    cur.execute("""SELECT
-                       logid,
-                       data
-                   FROM log_json
-                   JOIN log USING (logid)
-                   WHERE ad_scoring ISNULL""")
-    for log in cur:
-        try:
-            yield log[0], json.loads(dctx.decompress(log[1]))['info']['AD_scoring']
-        except (IndexError, KeyError):
-            logging.exception("Could not parse log %s", logid)
+    with c.cursor(name='ad', withhold=True) as cur:
+        cur.execute("""SELECT
+                           logid,
+                           data
+                       FROM log_json
+                       JOIN log USING (logid)
+                       WHERE ad_scoring ISNULL""")
+        for log in cur:
+            try:
+                yield log[0], json.loads(dctx.decompress(log[1]))['info']['AD_scoring']
+            except (IndexError, KeyError):
+                logging.exception("Could not parse log %s", logid)
 
 def import_ad(args, c):
     cur = c.cursor()
