@@ -50,11 +50,10 @@ def get_filters(args):
     ret['players'] = tuple(args.getlist('steamid64', int)) or (None,)
 
     timezone = args.get('timezone', tz.UTC, tz.gettz)
-
     def parse_date(name):
         date = args.get(name, None, datetime.fromisoformat)
         if date:
-            date.replace(tzinfo=timezone)
+            date = date.replace(tzinfo=timezone).astimezone(tz.UTC)
             return (date.date().isoformat(), date.timestamp())
         return (None, None)
 
