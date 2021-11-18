@@ -16,6 +16,7 @@ install: FORCE
 .PHONY: FORCE
 FORCE:
 
+export SOURCE_DATE_EPOCH := $(shell date +%s)
 PACKAGE := dist/$(shell $(PYTHON) setup.py --fullname)-py3-none-any.whl
 $(PACKAGE): FORCE
 	$(PYTHON) setup.py bdist_wheel --plat-name any
