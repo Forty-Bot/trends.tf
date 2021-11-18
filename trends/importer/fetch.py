@@ -5,9 +5,11 @@ import collections
 import itertools
 import json
 import logging
-import requests
 import sqlite3
 import time
+
+import requests, requests.adapters
+import urllib3.util
 
 from ..util import classes, events
 
@@ -109,35 +111,10 @@ class ListFetcher(Fetcher):
         :type logids: iteratable of ints
         """
 
-        def retry_hook(resp, *args, **kwargs):
-            """Retry a request when asked to back off
-
-            :param requests.Response resp: The response to the request to (possibly) retry
-            :return: The retried response (or ``resp`` if we give up)
-            :rtype: requests.Response
-            """
-
-            if resp.status_code != requests.codes.too_many:
-                return resp
-
-            retries = getattr(resp.request, 'retries', 0)
-            if retries > 4:
-                return resp
-
-            # This dance is taken from requests/auth.py
-            resp.content
-            resp.close()
-            new_request = resp.request.copy()
-            new_request.retries = retries + 1
-            time.sleep(0.25 * (2 ** retries))
-
-            new_resp = resp.connection.send(new_request, **kwargs)
-            new_resp.history.append(resp)
-            new_resp.request = new_request
-            return new_resp
-
         self.s = requests.Session()
-        self.s.hooks['response'].append(retry_hook)
+        retries = urllib3.util.Retry(total=4, backoff_factor=0.1,
+                                     status_forcelist=(requests.codes.too_many,))
+        self.s.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
         self.logids = logids if logids is not None else iter(())
         super().__init__(**kwargs)
 
