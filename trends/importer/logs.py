@@ -557,31 +557,46 @@ def update_formats(c):
 
 def update_wlt(c):
     c.execute("""UPDATE player_stats AS ps
-                 SET wins = new.wins,
-                     losses = new.losses,
-                     ties = new.ties
+                 SET wins = CASE new.teamid
+                         WHEN 1 THEN new.red_score
+                         WHEN 2 THEN new.blue_score
+                         ELSE 0
+                     END,
+                     losses = CASE new.teamid
+                         WHEN 1 THEN new.blue_score
+                         WHEN 2 THEN new.red_score
+                         ELSE 0
+                     END,
+                     ties = CASE WHEN new.teamid NOTNULL
+                         THEN new.ties
+                         ELSE 0
+                     END
                  FROM (SELECT
                          logid,
                          steamid64,
-                         coalesce(
-                             sum((teamid = round.winner)::INT),
-                             CASE teamid
-                                 WHEN 0 THEN max(red_score)
-                                 WHEN 1 THEN max(blue_score)
-                             END,
-                             0::BIGINT) AS wins,
-                         coalesce(
-                             sum((teamid != round.winner)::INT),
-                             CASE teamid
-                                 WHEN 0 THEN max(blue_score)
-                                 WHEN 1 THEN max(red_score)
-                             END,
-                             0::BIGINT) AS losses,
-                         sum((round.winner ISNULL AND round.duration >= 60)::INT) AS ties
+                         teamid,
+                         CASE WHEN ad_scoring
+                             THEN log.red_score
+                             ELSE coalesce(round.red_score, log.red_score)
+                         END AS red_score,
+                         CASE WHEN ad_scoring
+                             THEN log.blue_score
+                             ELSE coalesce(round.blue_score, log.blue_score)
+                         END AS blue_score,
+                         CASE WHEN ad_scoring
+                             THEN 0
+                             ELSE coalesce(round.ties, 0)
+                         END AS ties
                      FROM player_stats
                      JOIN log USING (logid)
-                     LEFT JOIN round USING (logid)
-                     GROUP BY logid, steamid64
+                     LEFT JOIN (SELECT
+                             logid,
+                             sum((round.winner = 1)::INT) AS red_score,
+                             sum((round.winner = 2)::INT) AS blue_score,
+                             sum((round.winner ISNULL AND round.duration >= 60)::INT) AS ties
+                         FROM round
+                         GROUP BY logid
+                     ) AS round USING (logid)
                  ) AS new
                  WHERE ps.logid = new.logid
                      AND ps.steamid64 = new.steamid64""")
