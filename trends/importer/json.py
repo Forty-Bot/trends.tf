@@ -23,9 +23,9 @@ def pack_log(c):
                    FROM log
                    LEFT JOIN log_json USING (logid)
                    WHERE data ISNULL;""")
-    for log in cur:
-        fetcher.get_log(log[0])
-        yield log[0], cctx.compress(json.dumps(log).encode())
+    for logid in cur:
+        log = fetcher.get_log(logid[0])
+        yield logid[0], cctx.compress(json.dumps(log).encode())
 
 def import_json(args, c):
     cur = c.cursor()
