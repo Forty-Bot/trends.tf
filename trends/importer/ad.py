@@ -25,8 +25,8 @@ def extract_ad(c):
         for log in cur:
             try:
                 yield log[0], json.loads(dctx.decompress(log[1]))['info']['AD_scoring']
-            except (IndexError, KeyError):
-                logging.exception("Could not parse log %s", logid)
+            except (IndexError, KeyError, TypeError):
+                logging.exception("Could not parse log %s", log[0])
 
 def import_ad(args, c):
     cur = c.cursor()
