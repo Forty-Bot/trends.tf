@@ -1,6 +1,16 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
+upstream netdata {
+	server unix:/run/netdata/netdata.sock;
+	keepalive 64;
+}
+
+map $http_upgrade $connection_upgrade {
+	default upgrade;
+	""      close;
+}
+
 {% set certdir = "/etc/letsencrypt/live/trends.tf" %}
 server {
 	listen                  443 ssl http2;
@@ -53,13 +63,32 @@ server {
 	# favicon.ico
 	location = /favicon.ico {
 		access_log off;
-		return 301 https://$host/static/img/favicon.ico;
+		return 301 /static/img/favicon.ico;
 	}
 
 	# robots.txt
 	location = /robots.txt {
 		access_log off;
-		return 301 https://$host/static/robots.txt;
+		return 301 /static/robots.txt;
+	}
+
+	# netdata metrics
+	location /netdata {
+		return 301 /netdata/;
+	}
+
+	location /netdata/ {
+		allow 127.0.0.0/8;
+		deny all;
+
+		proxy_pass                        http://netdata/;
+		proxy_set_header Connection       $connection_upgrade;
+		proxy_set_header Host             $host;
+		proxy_set_header X-Forwarded-Host $host;
+		proxy_set_header X-Forwarded-Port $server_port;
+
+		proxy_http_version 1.1;
+		proxy_cache_bypass $http_upgrade;
 	}
 }
 

@@ -107,6 +107,77 @@ uwsgi_service:
       - uwsgi_installed
       - uwsgi_config
 
+# Metrics
+netdata:
+  pkg.installed:
+    - refresh: False
+  postgres_user.present:
+    - runas: postgres
+    - require:
+      - pkg: netdata
+
+python-psycopg2:
+  pkg.installed:
+    - refresh: False
+
+/etc/netdata/.opt-out-from-anonymous-statistics:
+  file.managed:
+    - require:
+      - netdata
+
+/etc/netdata/netdata.conf:
+  file.managed:
+    - contents: |
+        [global]
+          run as user = netdata
+          access log = none
+
+          memory mode = dbengine
+          page cache size = 32
+          dbengine multihost disk space = 4096
+
+          process scheduling policy = idle
+          OOM score = 1000
+
+        [web]
+          web files owner = root
+          web files group = netdata
+          bind to = unix:/run/netdata/netdata.sock
+    - require:
+      - netdata
+
+/etc/netdata/python.d/web_log.conf:
+  file.managed:
+    - contents: |
+        nginx_log:
+          name: 'nginx'
+          path: '/var/log/nginx/access.log'
+          histogram: [1,10,100,1000]
+    - require:
+      - netdata
+
+/etc/netdata/python.d/postgres.conf:
+  file.managed:
+    - contents: |
+        socket:
+          name: 'local'
+          user: 'netdata'
+          database: 'trends'
+    - require:
+      - netdata
+
+netdata.service:
+  service.running:
+    - enable: True
+    - reload: True
+    - requires:
+      - netdata
+      - python-psycopg2
+      - /etc/netdata/.opt-out-from-anonymous-statistics
+      - /etc/netdata/netdata.conf
+      - /etc/netdata/python.d/web_log.conf
+      - /etc/netdata/python.d/postgres.conf
+
 certbot:
   pkg.installed:
     - refresh: False
@@ -195,3 +266,4 @@ nginx.service:
       - /srv/uwsgi/trends
       - nginx_service
       - uwsgi_service
+      - netdata.service
