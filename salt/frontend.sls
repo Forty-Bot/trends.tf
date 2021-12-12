@@ -233,6 +233,7 @@ nginx:
     - template: jinja
     - defaults:
       os: {{ grains.os_family }}
+      certdir: /etc/letsencrypt/live/trends.tf
       # Massive hack, sorry!
       site_packages: /srv/uwsgi/trends/lib/{{ grains.pythonpath[4].split("/") | last }}/site-packages
       uwsgi_socket: {{ uwsgi_socket }}

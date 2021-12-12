@@ -11,7 +11,6 @@ map $http_upgrade $connection_upgrade {
 	""      close;
 }
 
-{% set certdir = "/etc/letsencrypt/live/trends.tf" %}
 server {
 	listen                  443 ssl http2;
 	listen                  [::]:443 ssl http2;
