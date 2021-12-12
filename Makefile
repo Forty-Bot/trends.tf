@@ -5,14 +5,6 @@ PYTHON := python
 PROD := trends.tf
 PROD_PREFIX := /srv/uwsgi/trends
 
-.PHONY:
-version:
-	@echo $(VERSION)
-
-.PHONY: install
-install: FORCE
-	$(PYTHON) setup.py install --root="$(DESTDIR)" --optimize=1
-
 .PHONY: FORCE
 FORCE:
 
