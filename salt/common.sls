@@ -17,6 +17,8 @@ kernel-modules-hook:
 vim:
   pkg.installed:
     - refresh: False
+    - require:
+      - update_system
 
 nano:
   pkg.purged:
