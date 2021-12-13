@@ -146,7 +146,11 @@ psycopg2:
 
         [web]
           web files owner = root
+{% if grains.os_family == 'Debian' %}
+          web files group = root
+{% else %}
           web files group = netdata
+{% endif %}
           bind to = unix:/run/netdata/netdata.sock
     - require:
       - netdata
