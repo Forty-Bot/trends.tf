@@ -11,23 +11,28 @@ map $http_upgrade $connection_upgrade {
 	""      close;
 }
 
+{% set ssl %}
+ssl_certificate         {{ certdir }}/fullchain.pem;
+ssl_certificate_key     {{ certdir }}/privkey.pem;
+ssl_trusted_certificate {{ certdir }}/chain.pem;
+{% endset %}
+
+{% set security %}
+add_header X-Frame-Options           "SAMEORIGIN" always;
+add_header X-XSS-Protection          "1; mode=block" always;
+add_header X-Content-Type-Options    "nosniff" always;
+add_header Referrer-Policy           "no-referrer-when-downgrade" always;
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+{% endset %}
+
 server {
 	listen                  443 ssl http2;
 	listen                  [::]:443 ssl http2;
 	server_name             trends.tf;
 
-	# SSL
-	ssl_certificate         {{ certdir }}/fullchain.pem;
-	ssl_certificate_key     {{ certdir }}/privkey.pem;
-	ssl_trusted_certificate {{ certdir }}/chain.pem;
-
-	# security
-	add_header X-Frame-Options           "SAMEORIGIN" always;
-	add_header X-XSS-Protection          "1; mode=block" always;
-	add_header X-Content-Type-Options    "nosniff" always;
-	add_header Referrer-Policy           "no-referrer-when-downgrade" always;
+	{{ ssl }}
+	{{ security }}
 	add_header Content-Security-Policy   "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
-	add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 	
 	# . files
 	location ~ /\.(?!well-known) {
@@ -97,10 +102,8 @@ server {
 	listen                  [::]:443 ssl http2;
 	server_name             *.trends.tf;
 
-	# SSL
-	ssl_certificate         {{ certdir }}/fullchain.pem;
-	ssl_certificate_key     {{ certdir }}/privkey.pem;
-	ssl_trusted_certificate {{ certdir }}/chain.pem;
+	{{ ssl }}
+
 	return                  301 https://trends.tf$request_uri;
 }
 
