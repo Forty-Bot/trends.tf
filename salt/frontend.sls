@@ -254,6 +254,12 @@ nginx:
     - require:
       - nginx
 
+/etc/nginx/ca.crt:
+  file.managed:
+    - source: salt://ca.crt
+    - require:
+      - nginx
+
 /etc/systemd/system/nginx.service.d/override.conf:
   file.managed:
     - makedirs: True

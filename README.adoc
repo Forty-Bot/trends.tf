@@ -102,7 +102,7 @@ ssh key you wish to install:
 
     $ ln -s ~/.ssh/id_rsa.pub salt/
 
-Then, run
+You will need to do the same thing for ca.crt if you want to access netdata. Then, run
 
     $ salt-ssh <name> state.apply bootstrap
 

@@ -70,17 +70,22 @@ server {
 		access_log off;
 		return 301 /static/robots.txt;
 	}
+}
 
-	# netdata metrics
-	location /netdata {
-		return 301 /netdata/;
-	}
+# netdata metrics
+server {
+	listen                  443 ssl http2;
+	listen                  [::]:443 ssl http2;
+	server_name             netdata.trends.tf;
 
-	location /netdata/ {
-		allow 127.0.0.0/8;
-		deny all;
+	{{ ssl }}
+	ssl_client_certificate ca.crt;
+	ssl_verify_client on;
+	{{ security }}
+	add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline' 'unsafe-eval'" always;
 
-		proxy_pass                        http://netdata/;
+	location / {
+		proxy_pass                        http://unix:/run/netdata/netdata.sock;
 		proxy_set_header Connection       $connection_upgrade;
 		proxy_set_header Host             $host;
 		proxy_set_header X-Forwarded-Host $host;
