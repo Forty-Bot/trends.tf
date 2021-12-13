@@ -53,6 +53,26 @@ uwsgi_{{ name }}_privs:
  {% set uwsgi_config = "/etc/uwsgi/trends.ini" %}
 {% endif %}
 
+git:
+  pkg.installed:
+    - refresh: False
+
+https://github.com/Forty-Bot/trends.tf.git:
+  git.cloned:
+    - target: /srv/uwsgi/trends
+    - require:
+      - git
+
+/srv/uwsgi/trends:
+  file.directory:
+    - user: sean
+    - group: sean
+    - recurse:
+      - user
+      - group
+    - require:
+      - https://github.com/Forty-Bot/trends.tf.git
+
 virtualenv:
   pkg.installed:
     - refresh: False
@@ -73,13 +93,21 @@ base-devel:
     - refresh: False
 {% endif %}
 
-/srv/uwsgi/trends:
-  file.directory:
-    - user: sean
+/srv/uwsgi/trends/venv:
   virtualenv.managed:
     - user: sean
+    - group: sean
     - require:
       - virtualenv
+      - file: /srv/uwsgi/trends
+
+trends.tf:
+  pip.installed:
+    - user: sean
+    - editable: /srv/uwsgi/trends
+    - bin_env: /srv/uwsgi/trends/venv
+    - require:
+      - /srv/uwsgi/trends/venv
 
 uwsgi_installed:
   pkg.installed:
@@ -243,8 +271,7 @@ nginx:
     - defaults:
       os: {{ grains.os_family }}
       certdir: /etc/letsencrypt/live/trends.tf
-      # Massive hack, sorry!
-      site_packages: /srv/uwsgi/trends/lib/{{ grains.pythonpath[4].split("/") | last }}/site-packages
+      site_packages: /srv/uwsgi/trends
       uwsgi_socket: {{ uwsgi_socket }}
     - require:
       - nginx

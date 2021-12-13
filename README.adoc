@@ -122,19 +122,15 @@ Then, run
     $ salt-ssh <name> state.apply
 
 This will take a while (around 2 minutes). Once it is done, all states should have succeeded except
-for `nginx.service` and `player_import.service`. This is because the certificates are missing, the
-site is not deployed, and the steamkey has not been set. To fix the first problem, copy over the
-certificates from an existing site. That is, run
+for `nginx.service` and `player_import.service`. This is because the certificates are missing and
+the steamkey has not been set. To fix the first problem, copy over the certificates from an existing
+site. That is, run
 
     [server1]$ sudo tar -cvf /tmp/certs.tar.gz /etc/letsencrypt/
     $ scp <server1>:/tmp/certs.tar.gz <server2>:/tmp/
     [server2]$ sudo tar -xvf /tmp/certs.tar.gz -C /
 
-I would like to fix this at some point. For the second issue, run
-
-    $ make PROD=<ipaddr> deploy
-
-to deploy the site to your server. Lastly, create a file `/etc/default/trends` containing
+I would like to fix this at some point. Then, create a file `/etc/default/trends` containing
 
 ----
 STEAMKEY=<steam API key>

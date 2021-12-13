@@ -3,7 +3,7 @@
 
 # Set up the backend (the import scripts)
 
-{% set prefix = "/srv/uwsgi/trends" %}
+{% set prefix = "/srv/uwsgi/trends/venv" %}
 
 /etc/systemd/system/log_import.service:
   file.managed:
