@@ -96,17 +96,6 @@ server {
 	}
 }
 
-# subdomains redirect
-server {
-	listen                  443 ssl http2;
-	listen                  [::]:443 ssl http2;
-	server_name             *.trends.tf;
-
-	{{ ssl }}
-
-	return                  301 https://trends.tf$request_uri;
-}
-
 # HTTP redirect
 server {
 	listen      80;
@@ -119,6 +108,6 @@ server {
 	}
 
 	location / {
-		return 301 https://$host$request_uri;
+		return 301 https://trends.tf$request_uri;
 	}
 }
