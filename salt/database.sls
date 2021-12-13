@@ -62,6 +62,9 @@ postgresql:
     - user: postgres
     - group: postgres
     - mode: 700
+    - recurse:
+      - user
+      - group
     - require:
       - /var/lib/postgres
 
@@ -78,6 +81,9 @@ postgresql:
     - user: postgres
     - group: postgres
     - mode: 700
+    - recurse:
+      - user
+      - group
     - require:
       - /srv/postgres
 

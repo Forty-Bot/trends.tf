@@ -116,8 +116,13 @@ netdata:
     - require:
       - pkg: netdata
 
-python-psycopg2:
+psycopg2:
   pkg.installed:
+{% if grains.os_family == 'Debian' %}
+    - name: python3-psycopg2
+{% else %}
+    - name: python-psycopg2
+{% endif %}
     - refresh: False
 
 /etc/netdata/.opt-out-from-anonymous-statistics:
@@ -172,7 +177,7 @@ netdata.service:
     - reload: True
     - requires:
       - netdata
-      - python-psycopg2
+      - psycopg2
       - /etc/netdata/.opt-out-from-anonymous-statistics
       - /etc/netdata/netdata.conf
       - /etc/netdata/python.d/web_log.conf
