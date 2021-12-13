@@ -11,12 +11,12 @@ FORCE:
 export SOURCE_DATE_EPOCH := $(shell date +%s)
 PACKAGE := dist/$(shell $(PYTHON) setup.py --fullname)-py3-none-any.whl
 $(PACKAGE): FORCE
-	$(PYTHON) setup.py -q bdist_wheel --plat-name any
+	$(PYTHON) setup.py $(if $(V),,-q) bdist_wheel --plat-name any
 
 .PHONY: deploy
 deploy: $(PACKAGE)
 	scp $< $(PROD):/tmp
-	ssh $(PROD) '$(PROD_PREFIX)/bin/pip -q install /tmp/$(<F)'
+	ssh $(PROD) '$(PROD_PREFIX)/bin/pip $(if $(V),,-q) install /tmp/$(<F)'
 
 .PHONY: clean
 clean:
