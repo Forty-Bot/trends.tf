@@ -34,11 +34,6 @@ server {
 	{{ security }}
 	add_header Content-Security-Policy   "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
 	
-	# . files
-	location ~ /\.(?!well-known) {
-		deny all;
-	}
-
 	location / {
 		# default uwsgi_params
 		include                       uwsgi_params;
