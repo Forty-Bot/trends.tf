@@ -24,6 +24,7 @@ sean:
     - groups:
       - wheel
       - systemd-journal
+    - shell: /bin/bash
     - require:
       - wheel
 
