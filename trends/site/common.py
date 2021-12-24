@@ -6,13 +6,14 @@ from dateutil import tz
 
 import flask
 
-from .util import common_clauses, get_filters, get_order
+from .util import get_filter_params, get_filter_clauses, get_order
 from ..sql import get_db
 
 def logs(api):
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
-    filters = get_filters(flask.request.args)
+    filters = get_filter_params(flask.request.args)
+    filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid')
     order, order_clause = get_order(flask.request.args, {
         'logid': "logid",
         'duration': "duration",
@@ -29,17 +30,10 @@ def logs(api):
                     FROM log
                     JOIN map USING (mapid)
                     LEFT JOIN format USING (formatid)
-                    LEFT JOIN (SELECT
-                            logid
-                        FROM player_stats
-                        WHERE steamid64 IN %(players)s
-                        GROUP BY logid
-                    ) AS ps USING (logid)
-                    WHERE (ps.logid NOTNULL OR %(players)s ISNULL)
-                        AND (title ILIKE %(title)s OR %(title)s ISNULL)
+                    WHERE TRUE
                         {}
                     ORDER BY {}
-                    LIMIT %(limit)s OFFSET %(offset)s;""".format(common_clauses, order_clause),
+                    LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
                 { **filters, 'limit': limit, 'offset': offset })
 
     logs = logs.fetchall()

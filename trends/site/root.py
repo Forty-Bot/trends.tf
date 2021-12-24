@@ -5,7 +5,7 @@ import flask
 import sqlite3
 
 from . import common
-from .util import get_filters, get_order
+from .util import get_filter_params, get_filter_clauses, get_order
 from ..sql import get_db
 from ..steamid import SteamID
 
@@ -98,7 +98,16 @@ def search():
 def leaderboard():
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
-    filters = get_filters(flask.request.args)
+    filters = get_filter_params(flask.request.args)
+    filter_clauses = get_filter_clauses(filters, 'classid', 'formatid', 'mapid')
+
+    # Since we are using a cube, we need to explicitly select the NULL rows
+    cube_clauses = []
+    for (name, column) in (('class', 'classid'), ('format', 'formatid'), ('map', 'mapid')):
+        if not filters[name]:
+            cube_clauses.append("AND {} ISNULL".format(column))
+    cube_clauses = '\n'.join(cube_clauses)
+
     order, order_clause = get_order(flask.request.args, {
         'duration': "duration",
         'logs': "logs",
@@ -107,19 +116,6 @@ def leaderboard():
     }, 'rating')
 
     db = get_db()
-    ids = db.cursor()
-    ids.execute("""SELECT
-                       (SELECT
-                               classid
-                           FROM class
-                           WHERE class = %(class)s
-                       ) AS classid,
-                       (SELECT
-                               formatid
-                           FROM format
-                           WHERE format = %(format)s
-                       ) AS formatid;""", filters)
-    ids = ids.fetchone()
     leaderboard = db.cursor()
     leaderboard.execute("""SELECT
                                name,
@@ -138,21 +134,17 @@ def leaderboard():
                                    (50 + sum(0.5 * ties + wins)) /
                                        (100 + sum(wins + losses + ties)) AS rating
                                FROM leaderboard_cube
-                               LEFT JOIN map USING (mapid)
                                WHERE steamid64 NOTNULL
-                                   AND (classid = %(classid)s
-                                       OR (%(classid)s ISNULL AND classid ISNULL))
-                                   AND (formatid = %(formatid)s
-                                       OR (%(formatid)s ISNULL AND formatid ISNULL))
-                                   AND (map ILIKE %(map)s
-                                       OR (%(map)s ISNULL AND map ISNULL))
+                                   {}
+                                   {}
                                GROUP BY steamid64
                                ORDER BY {} NULLS LAST
                                LIMIT %(limit)s OFFSET %(offset)s
                            ) AS leaderboard
                            LEFT JOIN player USING (steamid64)
-                           LEFT JOIN name USING (nameid);""".format(order_clause),
-                           { **filters, **ids, 'limit': limit, 'offset': offset })
+                           LEFT JOIN name USING (nameid);"""
+                           .format(filter_clauses, cube_clauses, order_clause),
+                        { **filters, 'limit': limit, 'offset': offset })
     return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall(),
                                  filters=filters, order=order, offset=offset, limit=limit)
 

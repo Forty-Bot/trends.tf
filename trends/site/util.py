@@ -4,37 +4,84 @@
 from datetime import datetime, timedelta
 from dateutil import tz
 
-def get_filters(args):
-    ret = {}
+def get_filter_params(args):
+    params = {}
 
-    # We need the or None to turn false-y values into NULLs
-    ret['class'] = args.get('class', None, str) or None
-    ret['format'] = args.get('format', None, str) or None
-    map = args.get('map', None, str)
-    ret['map'] = "%{}%".format(map) if map else None
-    title = args.get('title', None, str)
-    ret['title'] = "%{}%".format(title) if title else None
-    ret['players'] = tuple(args.getlist('steamid64', int)) or (None,)
+    params['class'] = args.get('class', type=str)
+    params['format'] = args.get('format', type=str)
+    params['players'] = args.getlist('steamid64', type=int)
+
+    def set_like_param(name):
+        if val := args.get(name, type=str):
+            params[name] = "%{}%".format(val)
+        else:
+            params[name] = None
+
+    set_like_param('map')
+    set_like_param('title')
 
     timezone = args.get('timezone', tz.UTC, tz.gettz)
-    def parse_date(name):
-        date = args.get(name, None, datetime.fromisoformat)
-        if date:
-            date = date.replace(tzinfo=timezone).astimezone(tz.UTC)
-            return (date.date().isoformat(), date.timestamp())
-        return (None, None)
+    def set_date_params(name):
+        name_ts = "{}_ts".format(name)
+        if date := args.get(name, None, datetime.fromisoformat):
+            utcdate = date.replace(tzinfo=timezone).astimezone(tz.UTC)
+            params[name] = date.date().isoformat()
+            params[name_ts] = utcdate.timestamp()
+        else:
+            params[name] = None
+            params[name_ts] = None
 
-    (ret['date_from'], ret['date_from_ts']) = parse_date('date_from')
-    (ret['date_to'], ret['date_to_ts']) = parse_date('date_to')
+    set_date_params('date_from')
+    set_date_params('date_to')
 
-    return ret
+    return params
 
-# These are common filter clauses which can be added to any query
-common_clauses = \
-    """AND (format = %(format)s OR %(format)s ISNULL)
-       AND (map ILIKE %(map)s OR %(map)s ISNULL)
-       AND (time >= %(date_from_ts)s::BIGINT OR %(date_from_ts)s ISNULL)
-       AND (time <= %(date_to_ts)s::BIGINT OR %(date_to_ts)s ISNULL)"""
+def get_filter_clauses(params, *valid_columns):
+    clauses = []
+
+    def simple_clause(name, column):
+        if not params[name]:
+            return
+
+        if name in valid_columns:
+            clauses.append("AND {0} = %({0})s".format(name))
+        elif column in valid_columns:
+            clauses.append("AND {0} = (SELECT {0} FROM {1} WHERE {1} = %({1})s)"
+                           .format(column, name))
+
+    simple_clause('class', 'classid')
+    simple_clause('format', 'formatid')
+
+    if 'primary_classid' in valid_columns and params['class']:
+        clauses.append("AND primary_classid = (SELECT classid FROM class WHERE class = %(class)s)")
+
+    def like_clause(name):
+        if name in valid_columns and params[name]:
+            clauses.append("AND {0} ILIKE %({0})s".format(name))
+    like_clause('title')
+    like_clause('map')
+
+    if 'mapid' in valid_columns and params['map']:
+        clauses.append("AND mapid IN (SELECT mapid FROM map WHERE map ILIKE %(map)s)")
+
+    def date_clause(name, op):
+        if 'time' in valid_columns and params[name]:
+            clauses.append("AND time {} %({})s::BIGINT".format(op, name))
+
+    date_clause('date_from_ts', '>=')
+    date_clause('date_to_ts', '<=')
+
+    if 'logid' in valid_columns:
+        for i, player in enumerate(params['players']):
+            key = "player_{}".format(i)
+            params[key] = player
+            clauses.append("""AND logid IN (
+                                  SELECT logid
+                                  FROM player_stats
+                                  WHERE steamid64 = %({})s
+                           )""".format(key))
+
+    return "\n".join(clauses)
 
 def get_order(args, column_map, default_column, default_dir='desc'):
     column = args.get('sort', None, str)
