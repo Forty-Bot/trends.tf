@@ -5,9 +5,9 @@ import flask
 import sqlite3
 
 from . import common
+from .util import get_filters, get_order
 from ..sql import get_db
 from ..steamid import SteamID
-from ..util import get_filters, get_order
 
 root = flask.Blueprint('root', __name__)
 root.add_url_rule("/logs", view_func=common.logs, defaults={ 'api': False })

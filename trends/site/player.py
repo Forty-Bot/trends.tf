@@ -3,8 +3,9 @@
 
 import flask
 
+from .util import get_filters, common_clauses, get_order
 from ..sql import get_db
-from ..util import clamp, get_filters, common_clauses, get_order
+from ..util import clamp
 
 player = flask.Blueprint('player', __name__)
 
