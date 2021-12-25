@@ -3,7 +3,7 @@
 
 import flask
 
-from .util import get_filter_params, get_filter_clauses, get_order
+from .util import get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..sql import get_db
 from ..util import clamp
 
@@ -205,8 +205,7 @@ def overview(steamid):
 
 @player.route('/logs')
 def logs(steamid):
-    limit = flask.request.args.get('limit', 100, int)
-    offset = flask.request.args.get('offset', 0, int)
+    limit, offset = get_pagination()
     filters = get_filter_params()
     order, order_clause = get_order(flask.request.args, {
         'logid': "logid",
@@ -230,8 +229,7 @@ def logs(steamid):
 
 @player.route('/peers')
 def peers(steamid):
-    limit = flask.request.args.get('limit', 100, int)
-    offset = flask.request.args.get('offset', 0, int)
+    limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns,
                                         player_prefix='p1.', log_prefix='log.')

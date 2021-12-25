@@ -4,7 +4,7 @@
 import flask
 
 from . import common
-from .util import get_filter_params, get_filter_clauses, get_order
+from .util import get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..sql import get_db
 from ..steamid import SteamID
 
@@ -33,8 +33,7 @@ def favicon():
 @root.route('/search')
 def search():
     args = flask.request.args
-    limit = args.get('limit', 25, int)
-    offset = args.get('offset', 0, int)
+    limit, offset = get_pagination(limit=25)
     q = args.get('q', '', str)
 
     if len(q) < 3:
@@ -92,8 +91,7 @@ def search():
 
 @root.route('/leaderboard')
 def leaderboard():
-    limit = flask.request.args.get('limit', 100, int)
-    offset = flask.request.args.get('offset', 0, int)
+    limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'classid', 'formatid', 'mapid')
 

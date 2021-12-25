@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
+from collections import namedtuple
 from datetime import datetime, timedelta
 from dateutil import tz
 
 import flask
+
+from ..util import clamp
 
 def global_context(name):
     def decorator(f):
@@ -117,3 +120,12 @@ def get_order(args, column_map, default_column, default_dir='desc'):
 
     return ({ 'sort': column, 'sort_dir': dir },
             "{} {}".format(column_map[column], dir_map[dir]))
+
+Page = namedtuple('Page', ('limit', 'offset'))
+
+@global_context('page')
+def get_pagination(limit=100, offset=0):
+    args = flask.request.args
+    limit = clamp(args.get('limit', limit, int), 0, limit)
+    offset = max(args.get('offset', offset, int), 0)
+    return Page(limit, offset)

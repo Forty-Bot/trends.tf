@@ -6,12 +6,11 @@ from dateutil import tz
 
 import flask
 
-from .util import get_filter_params, get_filter_clauses, get_order
+from .util import get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..sql import get_db
 
 def logs(api):
-    limit = flask.request.args.get('limit', 100, int)
-    offset = flask.request.args.get('offset', 0, int)
+    limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid')
     order, order_clause = get_order(flask.request.args, {

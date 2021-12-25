@@ -5,6 +5,7 @@ import flask
 import werkzeug.exceptions
 
 from . import common
+from .util import get_pagination
 from ..sql import get_db
 
 api = flask.Blueprint('api', __name__)
@@ -26,8 +27,7 @@ def do_cache(resp):
 
 @api.route('/maps')
 def maps():
-    limit = flask.request.args.get('limit', 500, int)
-    offset = flask.request.args.get('offset', 0, int)
+    limit, offset = get_pagination(limit=500)
     maps = get_db().cursor()
     maps.execute("""SELECT
                      map
