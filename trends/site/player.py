@@ -157,10 +157,10 @@ def overview(steamid):
                    total(dmg) / nullif(sum(shots), 0.0) AS dps
                FROM class
                LEFT JOIN classes USING (classid)
-               WHERE class = %(class)s OR %(class)s ISNULL
+                   {}
                GROUP BY classid
                ORDER BY classid
-           ) AS classes;""".format(filter_clauses),
+           ) AS classes;""".format(filter_clauses, get_filter_clauses(filters, 'class')),
         { 'steamid': steamid, **filters})
     event_stats = c.cursor()
     event_stats.execute(
