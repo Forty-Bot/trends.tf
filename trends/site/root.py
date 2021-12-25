@@ -2,7 +2,6 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import flask
-import sqlite3
 
 from . import common
 from .util import get_filter_params, get_filter_clauses, get_order
