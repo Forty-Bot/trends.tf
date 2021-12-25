@@ -48,9 +48,11 @@ base_filter_columns = frozenset({'formatid', 'title', 'mapid', 'time', 'logid'})
 # These columns filters should be used when pretty names for class, format, and map are not used
 surrogate_filter_columns = base_filter_columns.union({'primary_classid'})
 
-def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0):
+def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", limit=100, offset=0):
     filter_clauses = get_filter_clauses(filters, 'primary_classid', 'format', 'title', 'map',
                                         'time', 'logid')
+    if not duplicates:
+        filter_clauses += "\nAND duplicate_of ISNULL"
     logs = c.cursor()
     logs.execute(
         """SELECT
@@ -75,6 +77,7 @@ def get_logs(c, steamid, filters, order_clause="logid DESC", limit=100, offset=0
                acc,
                hsg.healing * 60.0 / log.duration AS hpm_given,
                hsr.healing * 60.0 / log.duration AS hpm_recieved,
+               duplicate_of,
                time
            FROM log
            JOIN player_stats AS ps USING (logid)
@@ -196,7 +199,7 @@ def overview(steamid):
                    LIMIT 10
                ) AS names
                JOIN name USING (nameid)""", (steamid,))
-    logs = get_logs(c, steamid, filters, limit=25)
+    logs = get_logs(c, steamid, filters, limit=25, duplicates=False)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  event_stats=event_stats, aliases=aliases, filters=filters)
 

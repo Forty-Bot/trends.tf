@@ -19,14 +19,15 @@
 	<th><abbr title="Kills">K</abbr></th>
 	<th><abbr title="Deaths">D</abbr></th>
 	<th><abbr title="Assists">A</abbr></th>
-	{% if extra %}
 	<th><abbr title="Damage per Minute">D/M</abbr></th>
 	<th><abbr title="Damage Taken per Minute">DT/M</abbr></th>
 	<th><abbr title="Healing Given per Minute ">HG/M</abbr></th>
 	<th><abbr title="Healing Recieved per Minute ">HR/M</abbr></th>
 	<th><abbr title="Accuracy">Acc</abbr></th>
-	{% endif %}
 	<th>Date</th>
+	{% if extra %}
+	<th><abbr title="Some logs are duplicates of other logs">Duplicate of</abbr></th>
+	{% endif %}
 </tr>
 {% endmacro %}
 {% macro log_table(logs, extra=False) %}
@@ -56,14 +57,21 @@
 			<td>{{ log['kills'] }}</td>
 			<td>{{ log['deaths'] }}</td>
 			<td>{{ log['assists'] }}</td>
-			{% if extra %}
 			<td>{{ log['dpm'] | int }}</td>
 			<td>{{ optint(log['dtm']) }}</td>
 			<td>{{ log['hpm_given'] | int }}</td>
 			<td>{{ log['hpm_recieved'] | int }}</td>
 			<td>{{ optformat("{:.0%}", log['acc']) }}</td>
-			{% endif %}
 			<td class="left date" timestamp="{{ log['time'] }}"></td>
+			{% if extra %}
+			<td>
+				{% if log['duplicate_of'] %}
+				<a href="{{ url_for('root.log', logids=log['duplicate_of']) }}">
+					{{ log['duplicate_of'] }}
+				</a>
+				{% endif %}
+			</td>
+			{% endif %}
 		</tr>
 		{% endfor %}
 	</tbody>

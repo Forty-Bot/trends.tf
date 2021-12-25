@@ -26,7 +26,8 @@ def logs(api):
                         duration,
                         title,
                         map,
-                        format
+                        format,
+                        duplicate_of
                     FROM log
                     JOIN map USING (mapid)
                     LEFT JOIN format USING (formatid)

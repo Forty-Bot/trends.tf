@@ -22,6 +22,7 @@
 	<th>Format</th>
 	<th>Duration</th>
 	<th>Date</th>
+	<th><abbr title="Some logs are duplicates of other logs">Duplicate of</abbr></th>
 </tr>
 {% endmacro %}
 	<table>
@@ -37,6 +38,13 @@
 				<td class="left">{{ log['format'] or '' }}</td>
 				<td>{{ log['duration'] | duration }}</td>
 				<td class="left date" timestamp="{{ log['time'] }}"></td>
+				<td>
+					{% if log['duplicate_of'] %}
+					<a href="{{ url_for('root.log', logids=log['duplicate_of']) }}">
+						{{ log['duplicate_of'] }}
+					</a>
+					{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
