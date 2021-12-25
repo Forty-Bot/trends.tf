@@ -202,6 +202,7 @@ def log():
     players.execute(
         """SELECT
                players.*,
+               class_stats,
                heal_stats.healing,
                healing * 60.0 / nullif(duration, 0) AS hpm,
                avatarhash
@@ -236,16 +237,83 @@ def log():
                JOIN name USING (nameid)
                WHERE logid IN %(logids)s
                GROUP BY steamid64
-               ORDER BY array_agg(teamid ORDER BY logid), array_agg(DISTINCT name)
            ) AS players
            JOIN player USING (steamid64)
+           LEFT JOIN ({}) AS cs USING (steamid64)
            LEFT JOIN (SELECT
                     healee AS steamid64,
                     total(healing) AS healing
                 FROM heal_stats
                 WHERE logid IN %(logids)s
                 GROUP BY healee
-           ) AS heal_stats USING (steamid64);""", params)
+           ) AS heal_stats USING (steamid64);""".format(
+        """SELECT
+               steamid64,
+               array_agg(json_build_object(
+                   'classid', classid,
+                   'class', class,
+                   'duration', classes.duration,
+                   'kills', kills,
+                   'deaths', deaths,
+                   'assists', assists,
+                   'dmg', dmg,
+                   'dpm', dpm,
+                   'pct', classes.duration * 1.0 / logs.duration,
+                   'tot_duration', logs.duration,
+                   'weapon_stats', weapon_stats
+               ) ORDER BY classes.duration DESC) AS class_stats
+           FROM (SELECT
+                   steamid64,
+                   classid,
+                   sum(duration) AS duration,
+                   sum(kills) AS kills,
+                   sum(deaths) AS deaths,
+                   sum(assists) AS assists,
+                   sum(dmg) AS dmg,
+                   sum(dmg) * 60.0 / sum(duration) AS dpm
+               FROM class_stats
+               WHERE logid IN %(logids)s
+               GROUP BY steamid64, classid
+           ) AS classes
+           JOIN (SELECT
+                  steamid64,
+                  sum(duration) AS duration
+               FROM player_stats
+               JOIN log USING (logid)
+               WHERE logid IN %(logids)s
+               GROUP BY steamid64
+           ) AS logs USING (steamid64)
+           LEFT JOIN ({}) AS ws USING (steamid64, classid)
+           JOIN class USING (classid)
+           GROUP BY steamid64""".format(
+        """SELECT
+               steamid64,
+               classid,
+               array_agg(json_build_object(
+                   'weapon', weapon,
+                   'kills', kills,
+                   'dmg', dmg,
+                   'shots', shots,
+                   'hits', hits,
+                   'acc', hits * 1.0 / nullif(shots, 0),
+                   'dps', dmg * 1.0 / nullif(shots, 0)
+               ) ORDER BY dmg DESC) AS weapon_stats
+           FROM (SELECT
+                   steamid64,
+                   classid,
+                   weaponid,
+                   sum(kills) AS kills,
+                   sum(dmg) AS dmg,
+                   sum(shots) AS shots,
+                   sum(hits) AS hits
+               FROM weapon_stats
+               WHERE logid IN %(logids)s
+               GROUP BY steamid64, classid, weaponid
+           ) AS weapons
+           JOIN class USING (classid)
+           JOIN weapon USING (weaponid)
+           GROUP BY steamid64, classid"""
+    )), params)
     players=players.fetchall()
 
     # This is difficult to do in SQL, since we don't have any rows for players who didn't play in a
@@ -257,62 +325,6 @@ def log():
         return (*teams, *names)
     players.sort(key=player_key)
     players = { player['steamid64']: player for player in players }
-
-    classes = db.cursor()
-    classes.execute("""SELECT
-                           classes.*,
-                           class,
-                           classes.duration * 1.0 / logs.duration AS pct,
-                           logs.duration AS tot_duration
-                       FROM (SELECT
-                               steamid64,
-                               classid,
-                               sum(duration) AS duration,
-                               sum(kills) AS kills,
-                               sum(deaths) AS deaths,
-                               sum(assists) AS assists,
-                               sum(dmg) AS dmg,
-                               sum(dmg) * 60.0 / sum(duration) AS dpm
-                           FROM class_stats
-                           WHERE logid IN %(logids)s
-                           GROUP BY steamid64, classid
-                       ) AS classes
-                       JOIN (SELECT
-                              steamid64,
-                              sum(duration) AS duration
-                           FROM player_stats
-                           JOIN log USING (logid)
-                           WHERE LOGID IN %(logids)s
-                           GROUP BY steamid64
-                       ) AS logs USING (steamid64)
-                       JOIN class USING (classid)
-                       ORDER BY classes.duration DESC;""", params)
-
-    weapons = db.cursor()
-    weapons.execute("""SELECT
-                           steamid64,
-                           class,
-                           weapon,
-                           kills,
-                           dmg,
-                           shots,
-                           hits,
-                           hits * 1.0 / nullif(shots, 0) AS acc,
-                           dmg * 1.0 / nullif(shots, 0) AS dps
-                       FROM (SELECT
-                               steamid64,
-                               classid,
-                               weaponid,
-                               sum(kills) AS kills,
-                               sum(dmg) AS dmg,
-                               sum(shots) AS shots,
-                               sum(hits) AS hits
-                           FROM weapon_stats
-                           WHERE logid IN %(logids)s
-                           GROUP BY steamid64, classid, weaponid
-                           ) AS weapons
-                       JOIN class USING (classid)
-                       JOIN weapon USING (weaponid);""", params)
 
     # This query could be constructed based on the results of the above queries, but for now it is
     # done separately to aid development
@@ -513,6 +525,5 @@ def log():
                     ORDER BY array_position(%(llogids)s, logid);""", params)
 
     return flask.render_template("log.html", logids=logids, logs=logs, rounds=rounds.fetchall(),
-                                 players=players, classes=classes.fetchall(),
-                                 weapons=weapons.fetchall(), totals=totals, medics=medics,
+                                 players=players, totals=totals, medics=medics,
                                  events=events, chats=chats)

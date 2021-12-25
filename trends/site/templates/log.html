@@ -33,10 +33,10 @@
 {% macro div(dividend, divisor) %}
 	{{ divident / divisor if divisor }}
 {% endmacro %}
-{% macro weapon_table(weapons) %}
+{% macro weapon_table(steamid64, class, weapons) %}
 	{% for weapon in weapons %}
 		{% if loop.first %}
-		<tr class="{{ weapon['steamid64'] }}{{ weapon['class'] }} hidden">
+		<tr class="{{ steamid64 }}_{{ class }} hidden">
 			<td colspan="{{ logids | count + 1 }}"></th>
 			<th>Weapon</th>
 			<th><abbr title="Kills">K</abbr></th>
@@ -48,7 +48,7 @@
 			<th><abbr title="Damage per shot">DA/S</abbr></th>
 		</tr>
 		{% endif %}
-	<tr class="{{ weapon['steamid64'] }}{{ weapon['class'] }} hidden">
+	<tr class="{{ steamid64 }}_{{ class }} hidden">
 		<td colspan="{{ logids | count + 1 }}"></th>
 		<td>{{ weapon['weapon'] }}</td>
 		<td>{{ weapon['kills'] }}</td>
@@ -60,13 +60,10 @@
 	</tr>
 	{% endfor %}
 {% endmacro %}
-{% macro class_table(classes) %}
+{% macro class_table(steamid64, classes) %}
 	{% for cls in classes %}
-	{% set class_weapons =
-		weapons | selectattr('steamid64', 'eq', cls['steamid64'])
-		        | selectattr('class', 'eq', cls['class']) | list %}
-		<tr id="{{ cls['steamid64'] }}{{ cls['class'] }}"
-		 class="{{ cls['steamid64'] }} hider hidden">
+		<tr id="{{ steamid64 }}_{{ cls['class'] }}"
+		 class="{{ steamid64 }} hider hidden">
 		<td colspan="{{ logids | count + 1 }}"></th>
 		<td class="left">{{ classicon(cls['class'], cls['pct']) }}</td>
 		<td>{{ cls['kills'] }}</td>
@@ -81,7 +78,7 @@
 		<td colspan="{{ has.values() | sum - has['dt'] + 3 }}"></td>
 		<td>{{ cls['duration'] | duration }}</td>
 	</tr>
-	{{ weapon_table(class_weapons) }}
+	{{ weapon_table(steamid64, cls['class'], cls.weapon_stats) if cls.weapon_stats }}
 	{% endfor %}
 {% endmacro %}
 {% macro player_headers() %}
@@ -256,20 +253,20 @@
 		<thead>{{ player_table_header() }}</thead>
 		<tbody class="hier">
 		{% for player in players.values() %}
-		{% set player_classes =
-			classes | selectattr('steamid64', 'eq', player['steamid64']) | list %}
 		<tr id="{{ player['steamid64'] }}" class="hider">
 			{{ team_cols(player) }}
 			{{ player_col(player) }}
 			<td class="left">
-				{% for cls in player_classes %}
+				{% for cls in player.class_stats %}
 					{{ classicon(cls['class'], cls['pct']) }}
 				{% endfor %}
 			</td>
 			{{ stat_cols(player) }}
-			<td>{{ player_classes | map(attribute='duration') | sum | duration }}</td>
+			<td>{{ player.class_stats | map(attribute='duration')
+			       | sum | duration }}</td>
+			<td>{{ player.order }}</td>
 		</tr>
-		{{ class_table(player_classes) }}
+		{{ class_table(player['steamid64'], player.class_stats) }}
 		{% endfor %}
 		</tbody>
 		<tfoot>{{ player_table_header() }}</tfoot>
