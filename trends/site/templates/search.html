@@ -6,9 +6,6 @@
 {% block content %}
 	{{ super() }}
 	<h1>Search results for {{ q }}</h1>
-	{% if error %}
-	{{ error }}
-	{% else %}
 	{{ navigation(results, limit, offset) }}
 	<ul>
 		{% for player in results %}
@@ -22,5 +19,4 @@
 		{% endfor %}
 	</ul>
 	{{ navigation(results, limit, offset) }}
-	{% endif %}
 {% endblock %}

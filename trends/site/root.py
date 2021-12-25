@@ -37,6 +37,9 @@ def search():
     offset = args.get('offset', 0, int)
     q = args.get('q', '', str)
 
+    if len(q) < 3:
+        flask.abort(400, "Searches must contain at least 3 characters")
+
     try:
         steamid = SteamID(q)
         cur = get_db().cursor()
@@ -50,47 +53,41 @@ def search():
     except ValueError:
         pass
 
-    error = None
-    results = []
-    if len(q) >= 3:
-        results = get_db().cursor()
-        results.execute(
-            """SELECT
+    results = get_db().cursor()
+    results.execute(
+        """SELECT
+               steamid64,
+               name,
+               avatarhash,
+               aliases
+           FROM (SELECT
                    steamid64,
-                   name,
-                   avatarhash,
-                   aliases
+                   array_agg(DISTINCT name) AS aliases,
+                   max(rank) AS rank
                FROM (SELECT
                        steamid64,
-                       array_agg(DISTINCT name) AS aliases,
-                       max(rank) AS rank
+                       name,
+                       ts_rank(name_vector, query) AS rank
                    FROM (SELECT
-                           steamid64,
+                           nameid,
                            name,
-                           ts_rank(name_vector, query) AS rank
-                       FROM (SELECT
-                               nameid,
-                               name,
-                               to_tsvector('english', name) AS name_vector
-                           FROM name
-                       ) AS name
-                       JOIN (SELECT
-                               phraseto_tsquery('english', %s) AS query
-                       ) AS query ON (TRUE)
-                       JOIN player_stats USING (nameid)
-                       WHERE query @@ name_vector
-                       ORDER BY rank DESC
-                   ) AS matches
-                   GROUP BY steamid64
+                           to_tsvector('english', name) AS name_vector
+                       FROM name
+                   ) AS name
+                   JOIN (SELECT
+                           phraseto_tsquery('english', %s) AS query
+                   ) AS query ON (TRUE)
+                   JOIN player_stats USING (nameid)
+                   WHERE query @@ name_vector
+                   ORDER BY rank DESC
                ) AS matches
-               JOIN player USING (steamid64)
-               JOIN name USING (nameid)
-               ORDER BY rank DESC, last_active DESC
-               LIMIT %s OFFSET %s;""", (q, limit, offset))
-        results = results.fetchall()
-    else:
-        error = "Searches must contain at least 3 characters"
-    return flask.render_template("search.html", q=q, results=results, error=error,
+               GROUP BY steamid64
+           ) AS matches
+           JOIN player USING (steamid64)
+           JOIN name USING (nameid)
+           ORDER BY rank DESC, last_active DESC
+           LIMIT %s OFFSET %s;""", (q, limit, offset))
+    return flask.render_template("search.html", q=q, results=results.fetchall(),
                                  offset=offset, limit=limit)
 
 @root.route('/leaderboard')
