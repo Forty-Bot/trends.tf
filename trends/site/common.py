@@ -13,7 +13,7 @@ def logs(api):
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid')
-    order, order_clause = get_order(flask.request.args, {
+    order, order_clause = get_order({
         'logid': "logid",
         'duration': "duration",
         'date': "time",

@@ -108,13 +108,17 @@ def get_filter_clauses(params, *valid_columns, player_prefix='', log_prefix=''):
 
     return "\n".join(clauses)
 
-def get_order(args, column_map, default_column, default_dir='desc'):
-    column = args.get('sort', None, str)
+dir_map = {'desc': "DESC", 'asc': "ASC"}
+
+@global_context('order')
+def get_order(column_map, default_column, default_dir='desc'):
+    args = flask.request.args
+
+    column = args.get('sort', type=str)
     if column not in column_map.keys():
         column = default_column
 
-    dir_map = {'desc': "DESC", 'asc': "ASC"}
-    dir = args.get('sort_dir', None, str)
+    dir = args.get('sort_dir', type=str)
     if dir not in dir_map.keys():
         dir = default_dir
 

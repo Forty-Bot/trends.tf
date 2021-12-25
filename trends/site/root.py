@@ -102,7 +102,7 @@ def leaderboard():
             cube_clauses.append("AND {} ISNULL".format(column))
     cube_clauses = '\n'.join(cube_clauses)
 
-    order, order_clause = get_order(flask.request.args, {
+    order, order_clause = get_order({
         'duration': "duration",
         'logs': "logs",
         'winrate': "winrate",

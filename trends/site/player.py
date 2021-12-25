@@ -207,7 +207,7 @@ def overview(steamid):
 def logs(steamid):
     limit, offset = get_pagination()
     filters = get_filter_params()
-    order, order_clause = get_order(flask.request.args, {
+    order, order_clause = get_order({
         'logid': "logid",
         'wins': "wins",
         'losses': "losses",
@@ -233,7 +233,7 @@ def peers(steamid):
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns,
                                         player_prefix='p1.', log_prefix='log.')
-    order, order_clause = get_order(flask.request.args, {
+    order, order_clause = get_order({
         'logs': "count(*)",
         'with': '"with"',
         'against': '"against"',
@@ -394,7 +394,7 @@ def totals(steamid):
 def weapons(steamid):
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'classid', *base_filter_columns)
-    order, order_clause = get_order(flask.request.args, {
+    order, order_clause = get_order({
         'weapon': 'weapon',
         'kills': 'k30',
         'dpm': 'dpm',
