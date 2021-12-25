@@ -36,37 +36,46 @@ def get_filter_params(args):
 
     return params
 
-def get_filter_clauses(params, *valid_columns):
+def get_filter_clauses(params, *valid_columns, player_prefix='', log_prefix=''):
     clauses = []
 
-    def simple_clause(name, column):
+    def simple_clause(name, column, prefix):
         if not params[name]:
             return
 
         if name in valid_columns:
-            clauses.append("AND {0} = %({0})s".format(name))
+            clauses.append("AND {0}{1} = %({1})s".format(prefix, name))
         elif column in valid_columns:
-            clauses.append("AND {0} = (SELECT {0} FROM {1} WHERE {1} = %({1})s)"
-                           .format(column, name))
+            clauses.append("AND {0}{1} = (SELECT {1} FROM {2} WHERE {2} = %({2})s)"
+                           .format(prefix, column, name))
 
-    simple_clause('class', 'classid')
-    simple_clause('format', 'formatid')
+    simple_clause('class', 'classid', player_prefix)
+    simple_clause('format', 'formatid', log_prefix)
 
     if 'primary_classid' in valid_columns and params['class']:
-        clauses.append("AND primary_classid = (SELECT classid FROM class WHERE class = %(class)s)")
+        clauses.append("""AND {}primary_classid = (
+                              SELECT classid
+                              FROM class
+                              WHERE class = %(class)s
+                          )""".format(player_prefix))
 
     def like_clause(name):
         if name in valid_columns and params[name]:
-            clauses.append("AND {0} ILIKE %({0})s".format(name))
+            clauses.append("AND {0}{1} ILIKE %({1})s".format(log_prefix, name))
+
     like_clause('title')
     like_clause('map')
 
     if 'mapid' in valid_columns and params['map']:
-        clauses.append("AND mapid IN (SELECT mapid FROM map WHERE map ILIKE %(map)s)")
+        clauses.append("""AND {}mapid IN (
+                              SELECT mapid
+                              FROM map
+                              WHERE map ILIKE %(map)s
+                          )""".format(log_prefix))
 
     def date_clause(name, op):
         if 'time' in valid_columns and params[name]:
-            clauses.append("AND time {} %({})s::BIGINT".format(op, name))
+            clauses.append("AND {}time {} %({})s::BIGINT".format(log_prefix, op, name))
 
     date_clause('date_from_ts', '>=')
     date_clause('date_to_ts', '<=')
@@ -75,11 +84,11 @@ def get_filter_clauses(params, *valid_columns):
         for i, player in enumerate(params['players']):
             key = "player_{}".format(i)
             params[key] = player
-            clauses.append("""AND logid IN (
+            clauses.append("""AND {}logid IN (
                                   SELECT logid
                                   FROM player_stats
                                   WHERE steamid64 = %({})s
-                           )""".format(key))
+                           )""".format(log_prefix, key))
 
     return "\n".join(clauses)
 

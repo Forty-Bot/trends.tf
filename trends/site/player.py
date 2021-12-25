@@ -233,7 +233,8 @@ def peers(steamid):
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
     filters = get_filter_params(flask.request.args)
-    filter_clauses = get_filter_clauses(filters, 'class', *base_filter_columns)
+    filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns,
+                                        player_prefix='p1.', log_prefix='log.')
     order, order_clause = get_order(flask.request.args, {
         'logs': "count(*)",
         'with': '"with"',
@@ -289,7 +290,6 @@ def peers(steamid):
                    FROM log_nodups AS log
                    JOIN player_stats AS p1 USING (logid)
                    JOIN player_stats AS p2 USING (logid)
-                   LEFT JOIN class ON (p1.primary_classid=classid)
                    LEFT JOIN heal_stats AS hs1 ON (
                        hs1.healer = p1.steamid64
                        AND hs1.healee = p2.steamid64
