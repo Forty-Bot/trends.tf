@@ -193,6 +193,7 @@
 		<th>Duration</th>
 		<th><abbr title="Some logs may be uploaded more than once">Duplicate of</abbr></th>
 		<th>Date</th>
+		<th></th>
 	</thead>
 	<tbody class="hier">
 	{% for log in logs %}
@@ -213,6 +214,14 @@
 			{% endif %}
 		</td>
 		<td class="left date" timestamp="{{ log['time'] }}"></td>
+		<td class="left">
+			{% if logs | count > 1 %}
+			<a href="{{ url_for('.log',
+					    logids=(logids | reject('eq', log['logid']))) }}">
+				Remove log
+			</a>
+			{% endif %}
+		</td>
 	</tr>
 		{% for round in rounds if round['logid'] == log['logid'] %}
 			<tr class="{{ round['logid'] }} hidden">
