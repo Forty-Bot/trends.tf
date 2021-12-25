@@ -8,10 +8,11 @@ import hashlib
 import os, os.path
 
 import flask
+import werkzeug.exceptions
 import werkzeug.routing
 import werkzeug.utils
 
-from .api import api
+from .api import api, json_handler
 from .player import player
 from .root import root
 from ..sql import db_connect, db_init, get_db, put_db
@@ -94,6 +95,11 @@ class IntListConverter(werkzeug.routing.BaseConverter):
         except TypeError:
             return str(values)
 
+def html_handler(error):
+    if flask.request.path.startswith('/api/'):
+        return json_handler(error)
+    return flask.render_template("error.html", error=error), error.code
+
 def create_app():
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
@@ -117,6 +123,7 @@ def create_app():
     app.jinja_env.add_extension('jinja2.ext.i18n')
     app.jinja_env.install_null_translations(newstyle=True)
 
+    app.register_error_handler(werkzeug.exceptions.HTTPException, html_handler)
     app.register_blueprint(root)
     app.register_blueprint(player, url_prefix='/player/<int:steamid>')
     app.register_blueprint(api, url_prefix='/api/v1')

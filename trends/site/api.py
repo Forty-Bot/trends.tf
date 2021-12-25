@@ -2,12 +2,21 @@
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
 import flask
+import werkzeug.exceptions
 
 from . import common
 from ..sql import get_db
 
 api = flask.Blueprint('api', __name__)
 api.add_url_rule("/logs", view_func=common.logs, defaults={ 'api': True })
+
+@api.errorhandler(werkzeug.exceptions.HTTPException)
+def json_handler(error):
+    return flask.jsonify(error={
+        'code': error.code,
+        'name': error.name,
+        'description': error.description,
+    }), error.code
 
 @api.after_request
 def do_cache(resp):
