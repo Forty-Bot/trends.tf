@@ -181,7 +181,7 @@
 	       {% set comma = joiner(", ") %}
 	       {% for logid in logids -%}
 		       {{ comma() }}
-		       <a href="{{ url_for('root.log', id=logid) }}">{{ logid }}</a>
+		       <a href="{{ url_for('root.log', logids=logid) }}">{{ logid }}</a>
 	       {%- endfor %}
 	</h1>
 	<table><thead>
@@ -207,7 +207,7 @@
 		<td>{{ log['duration'] | duration }}</td>
 		<td>
 			{% if log['duplicate_of'] %}
-			<a href="{{ url_for('root.log', id=log['duplicate_of']) }}">
+			<a href="{{ url_for('root.log', logids=log['duplicate_of']) }}">
 				{{ log['duplicate_of'] }}
 			</a>
 			{% endif %}

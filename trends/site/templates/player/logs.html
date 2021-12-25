@@ -31,7 +31,7 @@
 		'acc': "Accuracy",
 		'date': "Date",
 	   }) }}
-	<form id="combine" action="{{ url_for('root.log') }}">
+	<form id="combine" action="{{ url_for('root.log_form') }}">
 		<button type="submit">Combine selected logs</button>
 	</form>
 	{{ navigation(logs, limit, offset) }}

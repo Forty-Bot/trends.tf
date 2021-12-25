@@ -149,9 +149,13 @@ def leaderboard():
                                  filters=filters, order=order, offset=offset, limit=limit)
 
 @root.route('/log')
-def log():
-    db = get_db()
+def log_form():
     logids = flask.request.args.getlist('id', int)
+    return flask.redirect(flask.url_for('.log', logids=logids))
+
+@root.route('/log/<intlist:logids>')
+def log(logids):
+    db = get_db()
     if not logids:
         flask.abort(404)
     elif len(logids) > 5:

@@ -83,6 +83,17 @@ class StaticHashDefaults:
         self.cache[filename] = (mtime, hash)
         values['h'] = hash
 
+class IntListConverter(werkzeug.routing.BaseConverter):
+    def to_python(self, value):
+        return [int(val) for val in value.split('+')]
+
+    def to_url(self, values):
+        try:
+            return '+'.join(str(value) for value in values)
+        # flask turns (foo) into bare foo, so handle this special case
+        except TypeError:
+            return str(values)
+
 def create_app():
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
@@ -90,6 +101,7 @@ def create_app():
 
     app.teardown_appcontext(put_db)
     app.url_defaults(StaticHashDefaults(app))
+    app.url_map.converters['intlist'] = IntListConverter
 
     app.add_template_filter(any)
     app.add_template_filter(all)

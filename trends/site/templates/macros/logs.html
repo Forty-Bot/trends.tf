@@ -41,7 +41,7 @@
 				 value="{{ log['logid'] }}">
 			</td>
 			{% endif %}
-			<td class="left"><a href="{{ url_for('root.log', id=log['logid']) }}">
+			<td class="left"><a href="{{ url_for('root.log', logids=log['logid']) }}">
 				{{ log['title'] }}
 			</a></td>
 			<td class="left">{{ log['map'] }}</td>
