@@ -223,7 +223,7 @@ def logs(steamid):
         'acc': "acc",
         'date': "time",
 	}, 'logid')
-    logs = get_logs(get_db(), steamid, filters, order_clause, limit=limit, offset=offset)
+    logs = get_logs(get_db(), steamid, filters, order_clause=order_clause, limit=limit, offset=offset)
     return flask.render_template("player/logs.html", logs=logs.fetchall(), filters=filters,
                                  order=order, limit=limit, offset=offset)
 
