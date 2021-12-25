@@ -73,6 +73,13 @@ https://github.com/Forty-Bot/trends.tf.git:
     - require:
       - https://github.com/Forty-Bot/trends.tf.git
 
+receive.denyCurrentBranch:
+  git.config_set:
+    - value: updateInstead
+    - repo: /srv/uwsgi/trends
+    - require:
+      - https://github.com/Forty-Bot/trends.tf.git
+
 virtualenv:
   pkg.installed:
     - refresh: False
