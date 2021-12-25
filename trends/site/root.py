@@ -177,6 +177,7 @@ def log():
     logids = tuple(log['logid'] for log in logs)
     if not logids:
         flask.abort(404)
+    params = { 'logids': logids, 'llogids': list(logids) }
 
     rounds = db.cursor()
     rounds.execute("""SELECT
@@ -195,7 +196,7 @@ def log():
                           blue_ubers
                       FROM round
                       JOIN round_extra USING (logid, seq)
-                      WHERE logid IN %s;""", (logids,))
+                      WHERE logid IN %(logids)s;""", params)
 
     players = db.cursor()
     players.execute(
@@ -233,7 +234,7 @@ def log():
                LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
                JOIN team USING (teamid)
                JOIN name USING (nameid)
-               WHERE logid IN %s
+               WHERE logid IN %(logids)s
                GROUP BY steamid64
                ORDER BY array_agg(teamid ORDER BY logid), array_agg(DISTINCT name)
            ) AS players
@@ -242,9 +243,9 @@ def log():
                     healee AS steamid64,
                     total(healing) AS healing
                 FROM heal_stats
-                WHERE logid IN %s
+                WHERE logid IN %(logids)s
                 GROUP BY healee
-           ) AS heal_stats USING (steamid64);""", (logids, logids))
+           ) AS heal_stats USING (steamid64);""", params)
     players=players.fetchall()
 
     # This is difficult to do in SQL, since we don't have any rows for players who didn't play in a
@@ -273,7 +274,7 @@ def log():
                                sum(dmg) AS dmg,
                                sum(dmg) * 60.0 / sum(duration) AS dpm
                            FROM class_stats
-                           WHERE logid IN %s
+                           WHERE logid IN %(logids)s
                            GROUP BY steamid64, classid
                        ) AS classes
                        JOIN (SELECT
@@ -281,11 +282,11 @@ def log():
                               sum(duration) AS duration
                            FROM player_stats
                            JOIN log USING (logid)
-                           WHERE LOGID IN %s
+                           WHERE LOGID IN %(logids)s
                            GROUP BY steamid64
                        ) AS logs USING (steamid64)
                        JOIN class USING (classid)
-                       ORDER BY classes.duration DESC;""", (logids, logids))
+                       ORDER BY classes.duration DESC;""", params)
 
     weapons = db.cursor()
     weapons.execute("""SELECT
@@ -307,11 +308,11 @@ def log():
                                sum(shots) AS shots,
                                sum(hits) AS hits
                            FROM weapon_stats
-                           WHERE logid IN %s
+                           WHERE logid IN %(logids)s
                            GROUP BY steamid64, classid, weaponid
                            ) AS weapons
                        JOIN class USING (classid)
-                       JOIN weapon USING (weaponid);""", (logids,))
+                       JOIN weapon USING (weaponid);""", params)
 
     # This query could be constructed based on the results of the above queries, but for now it is
     # done separately to aid development
@@ -347,14 +348,14 @@ def log():
                                   healee AS steamid64,
                                   sum(healing) AS healing
                               FROM heal_stats
-                              WHERE logid IN %s
+                              WHERE logid IN %(logids)s
                               GROUP BY healee
                           ) hsr USING (steamid64)
-                          WHERE logid IN %s
+                          WHERE logid IN %(logids)s
                           GROUP BY logid, teamid
-                          ORDER BY array_position(%s, logid), teamid
+                          ORDER BY array_position(%(llogids)s, logid), teamid
                       ) AS totals
-                      JOIN team USING (teamid);""", (logids, logids, list(logids)));
+                      JOIN team USING (teamid);""", params);
 
     medics = db.cursor()
     medics.execute("""SELECT
@@ -394,7 +395,7 @@ def log():
                           JOIN log USING (logid)
                           CROSS JOIN class
                           LEFT JOIN class_stats AS cs USING (logid, steamid64, classid)
-                          WHERE logid IN %s
+                          WHERE logid IN %(logids)s
                               AND class = 'medic'
                           GROUP BY steamid64
                       ) AS medic_stats
@@ -416,7 +417,7 @@ def log():
                                   healee,
                                   sum(healing) AS healing
                               FROM heal_stats
-                              WHERE logid IN %s
+                              WHERE logid IN %(logids)s
                               GROUP BY healer, healee
                           ) AS hs
                           JOIN (SELECT
@@ -434,14 +435,14 @@ def log():
                                   JOIN heal_stats AS hs ON (
                                       hs.logid = cs.logid
                                       AND hs.healee = cs.steamid64
-                                  ) WHERE hs.logid IN %s
+                                  ) WHERE hs.logid IN %(logids)s
                                   GROUP BY healer, steamid64, classid
                               ) AS cs
                               JOIN class USING (classid)
                               GROUP BY healer, healee
                           ) AS cs USING (healer, healee)
                           GROUP BY healer
-                      ) AS heal_stats USING (steamid64);""", (logids, logids, logids));
+                      ) AS heal_stats USING (steamid64);""", params);
     medics = medics.fetchall()
     medics.sort(key=player_key)
 
@@ -477,11 +478,11 @@ def log():
                                   + sum(pyro) + sum(scout) + sum(sniper) + sum(soldier) + sum(spy)
                                   AS total
                           FROM event_stats
-                          WHERE logid IN %s
+                          WHERE logid IN %(logids)s
                           GROUP BY eventid, steamid64
                       ) AS events
                       JOIN event USING (eventid)
-                      GROUP BY event;""", (logids,))
+                      GROUP BY event;""", params)
     events = { event_stats['event']: event_stats['events'] for event_stats in events.fetchall() }
 
     chats = db.cursor()
@@ -505,11 +506,11 @@ def log():
                         LEFT JOIN player_stats USING (logid, steamid64)
                         LEFT JOIN name USING (nameid)
                         LEFT JOIN team USING (teamid)
-                        WHERE logid IN %s
+                        WHERE logid IN %(logids)s
                     ) AS chat
                     JOIN log USING (logid)
                     GROUP BY logid, title
-                    ORDER BY array_position(%s, logid);""", (logids, list(logids)))
+                    ORDER BY array_position(%(llogids)s, logid);""", params)
 
     return flask.render_template("log.html", logids=logids, logs=logs, rounds=rounds.fetchall(),
                                  players=players, classes=classes.fetchall(),
