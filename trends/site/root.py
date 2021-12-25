@@ -94,7 +94,7 @@ def search():
 def leaderboard():
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
-    filters = get_filter_params(flask.request.args)
+    filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'classid', 'formatid', 'mapid')
 
     # Since we are using a cube, we need to explicitly select the NULL rows

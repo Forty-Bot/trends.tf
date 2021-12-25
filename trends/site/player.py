@@ -114,7 +114,7 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
 @player.route('/')
 def overview(steamid):
     c = get_db()
-    filters = get_filter_params(flask.request.args)
+    filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns)
     classes = c.cursor()
     classes.execute(
@@ -207,7 +207,7 @@ def overview(steamid):
 def logs(steamid):
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
-    filters = get_filter_params(flask.request.args)
+    filters = get_filter_params()
     order, order_clause = get_order(flask.request.args, {
         'logid': "logid",
         'wins': "wins",
@@ -232,7 +232,7 @@ def logs(steamid):
 def peers(steamid):
     limit = flask.request.args.get('limit', 100, int)
     offset = flask.request.args.get('offset', 0, int)
-    filters = get_filter_params(flask.request.args)
+    filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns,
                                         player_prefix='p1.', log_prefix='log.')
     order, order_clause = get_order(flask.request.args, {
@@ -315,7 +315,7 @@ def peers(steamid):
 
 @player.route('/totals')
 def totals(steamid):
-    filters = get_filter_params(flask.request.args)
+    filters = get_filter_params()
     totals = get_db().cursor()
     totals.execute(
         """SELECT
@@ -394,7 +394,7 @@ def totals(steamid):
 
 @player.route('/weapons')
 def weapons(steamid):
-    filters = get_filter_params(flask.request.args)
+    filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'classid', *base_filter_columns)
     order, order_clause = get_order(flask.request.args, {
         'weapon': 'weapon',
@@ -431,7 +431,7 @@ def weapons(steamid):
 
 @player.route('/trends')
 def trends(steamid):
-    filters = get_filter_params(flask.request.args)
+    filters = get_filter_params()
     window = clamp(flask.request.args.get('window', 20, int), 1, 500)
     cur = get_db().cursor()
     cur.execute(

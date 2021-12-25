@@ -4,7 +4,20 @@
 from datetime import datetime, timedelta
 from dateutil import tz
 
-def get_filter_params(args):
+import flask
+
+def global_context(name):
+    def decorator(f):
+        def decorated(*args, **kwargs):
+            if name not in flask.g:
+                setattr(flask.g, name, f(*args, **kwargs))
+            return flask.g.get(name)
+        return decorated
+    return decorator
+
+@global_context('filters')
+def get_filter_params():
+    args = flask.request.args
     params = {}
 
     params['class'] = args.get('class', type=str)
