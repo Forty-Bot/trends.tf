@@ -394,7 +394,7 @@ def totals(steamid):
 
 @player.route('/weapons')
 def weapons(steamid):
-    filters = get_filter_clauses(flask.request.args)
+    filters = get_filter_params(flask.request.args)
     filter_clauses = get_filter_clauses(filters, 'classid', *base_filter_columns)
     order, order_clause = get_order(flask.request.args, {
         'weapon': 'weapon',
