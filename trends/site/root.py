@@ -322,7 +322,10 @@ def log():
         # 500 is probably greater than any teamid :)
         teams = (player['teamids'].get(str(logid), 500) for logid in logids)
         names = player.get('names', ())
-        return (*teams, *names)
+        if classes := player.get('class_stats'):
+            classes = tuple(cls['classid'] for cls in classes)
+            return (*teams, classes, names)
+        return (*teams, names)
     players.sort(key=player_key)
     players = { player['steamid64']: player for player in players }
 
