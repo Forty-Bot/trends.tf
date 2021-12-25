@@ -8,7 +8,7 @@
 	{{ super() }}
 	<script type="text/javascript" defer>steamid64 = "{{ g.player['steamid64'] }}";</script>
 	<script id="trend-data" type="application/json">{{ trends | tojson }}</script>
-	<script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.js"></script>
+	<script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/trends.js") }}" defer></script>
 {% endblock %}
