@@ -41,7 +41,7 @@ def get_players(q):
     results = get_db().cursor()
     results.execute(
         """SELECT
-               steamid64,
+               steamid64::TEXT,
                name,
                avatarhash,
                aliases

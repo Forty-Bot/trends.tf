@@ -4,7 +4,7 @@
 import flask
 import werkzeug.exceptions
 
-from .common import get_logs
+from .common import get_logs, get_players
 from .util import get_db, get_pagination
 
 api = flask.Blueprint('api', __name__)
@@ -44,3 +44,8 @@ def maps():
                  LIMIT %s OFFSET %s;""",
                  (limit, offset))
     return flask.jsonify(maps=[row[0] for row in maps])
+
+@api.route('/players')
+def players():
+    q = flask.request.args.get('q', '', str)
+    return flask.jsonify(players=[dict(player) for player in get_players(q)])
