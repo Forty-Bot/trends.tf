@@ -15,7 +15,7 @@ import werkzeug.utils
 from .api import api, json_handler
 from .player import player
 from .root import root
-from ..sql import db_connect, db_init, get_db, put_db
+from .util import put_db
 
 class DefaultConfig:
     DATABASE = "postgresql:///trends"

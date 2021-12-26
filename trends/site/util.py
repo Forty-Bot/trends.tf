@@ -4,10 +4,12 @@
 from collections import namedtuple
 from datetime import datetime, timedelta
 from dateutil import tz
+import sys
 
 import flask
 
 from ..util import clamp
+from ..sql import db_connect
 
 def global_context(name):
     def decorator(f):
@@ -17,6 +19,17 @@ def global_context(name):
             return flask.g.get(name)
         return decorated
     return decorator
+
+@global_context('db_conn')
+def get_db():
+    c = db_connect(flask.current_app.config['DATABASE'],
+                      "{} {}".format(sys.argv[0], flask.request.path))
+    c.cursor().execute("SET statement_timeout = %s;", (flask.current_app.config['TIMEOUT'],))
+    return c
+
+def put_db(exception):
+    if db := flask.g.pop('db_conn', None):
+        db.close()
 
 @global_context('filters')
 def get_filter_params():

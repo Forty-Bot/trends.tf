@@ -4,8 +4,7 @@
 import flask
 
 from . import common
-from .util import get_filter_params, get_filter_clauses, get_order, get_pagination
-from ..sql import get_db
+from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..steamid import SteamID
 
 root = flask.Blueprint('root', __name__)

@@ -3,8 +3,7 @@
 
 import flask
 
-from .util import get_filter_params, get_filter_clauses, get_order, get_pagination
-from ..sql import get_db
+from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..util import clamp
 
 player = flask.Blueprint('player', __name__)

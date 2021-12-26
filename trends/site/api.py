@@ -5,8 +5,7 @@ import flask
 import werkzeug.exceptions
 
 from . import common
-from .util import get_pagination
-from ..sql import get_db
+from .util import get_db, get_pagination
 
 api = flask.Blueprint('api', __name__)
 api.add_url_rule("/logs", view_func=common.logs, defaults={ 'api': True })

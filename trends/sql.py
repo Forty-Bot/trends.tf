@@ -4,7 +4,6 @@
 import os
 import sys
 
-import flask
 import psycopg2, psycopg2.extras
 
 from .steamid import SteamID
@@ -26,19 +25,6 @@ def db_connect(url, name=None):
 def db_init(c):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
         c.cursor().execute(schema.read())
-
-def get_db():
-    if not getattr(flask.g, 'db_conn', None):
-        flask.g.db_conn = db_connect(flask.current_app.config['DATABASE'],
-                                     "{} {}".format(sys.argv[0], flask.request.path))
-        flask.g.db_conn.cursor().execute("SET statement_timeout = %s;",
-                                         (flask.current_app.config['TIMEOUT'],))
-    return flask.g.db_conn
-
-def put_db(exception):
-    db = getattr(flask.g, 'db_conn', None)
-    if db:
-        db.close()
 
 def table_columns(c, table):
     cur = c.cursor()
