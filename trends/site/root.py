@@ -105,7 +105,8 @@ def logs():
 
 @root.route('/log')
 def log_form():
-    logids = flask.request.args.getlist('id', int)
+    if not (logids := flask.request.args.getlist('id', int)):
+        flask.abort(404)
     return flask.redirect(flask.url_for('.log', logids=logids), 301)
 
 @root.route('/log/<intlist:logids>')
