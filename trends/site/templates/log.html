@@ -453,9 +453,9 @@
 			<td class="left {{ team | lower }}">{{ team }}</td>
 			<td class="left">
 				{% set player = players[msg['steamid64']] %}
-				<img class="avatar_small"
-				     src="{{ player['avatarhash'] | avatar('small') if player }}">
 				{% if player %}
+					<img class="avatar_small"
+					 src="{{ player['avatarhash'] | avatar('small') }}">
 					<a href="{{ url_for('player.overview',
 							    steamid=msg['steamid64']) }}">
 						{{ msg['name'] }}
