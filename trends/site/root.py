@@ -85,8 +85,7 @@ def search():
            JOIN name USING (nameid)
            ORDER BY rank DESC, last_active DESC
            LIMIT %s OFFSET %s;""", (q, limit, offset))
-    return flask.render_template("search.html", q=q, results=results.fetchall(),
-                                 offset=offset, limit=limit)
+    return flask.render_template("search.html", q=q, results=results.fetchall())
 
 @root.route('/leaderboard')
 def leaderboard():
@@ -138,8 +137,7 @@ def leaderboard():
                            LEFT JOIN name USING (nameid);"""
                            .format(filter_clauses, cube_clauses, order_clause),
                         { **filters, 'limit': limit, 'offset': offset })
-    return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall(),
-                                 filters=filters, order=order, offset=offset, limit=limit)
+    return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall())
 
 @root.route('/log')
 def log_form():

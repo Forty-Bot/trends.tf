@@ -201,7 +201,7 @@ def overview(steamid):
                JOIN name USING (nameid)""", (steamid,))
     logs = get_logs(c, steamid, filters, limit=25, duplicates=False)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
-                                 event_stats=event_stats, aliases=aliases, filters=filters)
+                                 event_stats=event_stats, aliases=aliases)
 
 @player.route('/logs')
 def logs(steamid):
@@ -224,8 +224,7 @@ def logs(steamid):
         'date': "time",
 	}, 'logid')
     logs = get_logs(get_db(), steamid, filters, order_clause=order_clause, limit=limit, offset=offset)
-    return flask.render_template("player/logs.html", logs=logs.fetchall(), filters=filters,
-                                 order=order, limit=limit, offset=offset)
+    return flask.render_template("player/logs.html", logs=logs.fetchall())
 
 @player.route('/peers')
 def peers(steamid):
@@ -308,8 +307,7 @@ def peers(steamid):
            JOIN player USING (steamid64)
            JOIN name USING (nameid);""".format(filter_clauses, order_clause),
         { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
-    return flask.render_template("player/peers.html", peers=peers.fetchall(), filters=filters,
-                                 order=order, limit=limit, offset=offset)
+    return flask.render_template("player/peers.html", peers=peers.fetchall())
 
 @player.route('/totals')
 def totals(steamid):
@@ -388,7 +386,7 @@ def totals(steamid):
            WHERE ps.steamid64 = %(steamid)s
                {};""".format(get_filter_clauses(filters, *surrogate_filter_columns)),
         {'steamid': steamid, **filters})
-    return flask.render_template("player/totals.html", totals=totals.fetchone(), filters=filters)
+    return flask.render_template("player/totals.html", totals=totals.fetchone())
 
 @player.route('/weapons')
 def weapons(steamid):
@@ -424,8 +422,7 @@ def weapons(steamid):
            GROUP BY weapon
            ORDER BY {} NULLS LAST;""".format(filter_clauses, order_clause),
         {'steamid': steamid, **filters})
-    return flask.render_template("player/weapons.html", weapons=weapons, filters=filters,
-                                 order=order)
+    return flask.render_template("player/weapons.html", weapons=weapons)
 
 @player.route('/trends')
 def trends(steamid):
@@ -468,5 +465,4 @@ def trends(steamid):
            {'steamid': steamid, 'window': window, **filters})
     trends = list(dict(row) for row in cur)
     trends.reverse()
-    return flask.render_template("player/trends.html", trends=trends, filters=filters,
-                                 window=window)
+    return flask.render_template("player/trends.html", trends=trends, window=window)

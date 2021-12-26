@@ -39,5 +39,4 @@ def logs(api):
     if (api):
         return flask.jsonify(logs=[dict(log) for log in logs])
     else:
-        return flask.render_template("logs.html", logs=logs, limit=limit, offset=offset,
-                                     filters=filters, order=order)
+        return flask.render_template("logs.html", logs=logs)
