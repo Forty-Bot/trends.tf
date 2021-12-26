@@ -296,6 +296,7 @@ def log(logids):
                       FROM (SELECT
                               logid,
                               teamid,
+                              log.duration,
                               sum(kills) AS kills,
                               sum(deaths) AS deaths,
                               sum(assists) AS assists,

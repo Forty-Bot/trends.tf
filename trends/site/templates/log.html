@@ -304,10 +304,7 @@
 			{% endfor %}
 			{{ stat_cols(team) }}
 			<td>{{ log_rounds | map(attribute="{}_ubers".format(teamsym)) | sum }}</td>
-			<td>
-				{{ (logs | selectattr('logid', 'eq', team['logid'])
-				    | first)['duration'] | duration }}
-			</td>
+			<td>{{ team['duration'] | duration }}</td>
 		</tr>
 			{% for round in log_rounds %}
 			<tr class="{{ team['logid'] }}{{ team['teamid'] }} hidden">
