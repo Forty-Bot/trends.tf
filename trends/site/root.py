@@ -3,7 +3,7 @@
 
 import flask
 
-from .common import get_logs
+from .common import get_logs, get_players
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..steamid import SteamID
 
@@ -30,12 +30,7 @@ def favicon():
 
 @root.route('/search')
 def search():
-    args = flask.request.args
-    limit, offset = get_pagination(limit=25)
-    q = args.get('q', '', str)
-
-    if len(q) < 3:
-        flask.abort(400, "Searches must contain at least 3 characters")
+    q = flask.request.args.get('q', '', str)
 
     try:
         steamid = SteamID(q)
@@ -50,41 +45,7 @@ def search():
     except ValueError:
         pass
 
-    results = get_db().cursor()
-    results.execute(
-        """SELECT
-               steamid64,
-               name,
-               avatarhash,
-               aliases
-           FROM (SELECT
-                   steamid64,
-                   array_agg(DISTINCT name) AS aliases,
-                   max(rank) AS rank
-               FROM (SELECT
-                       steamid64,
-                       name,
-                       ts_rank(name_vector, query) AS rank
-                   FROM (SELECT
-                           nameid,
-                           name,
-                           to_tsvector('english', name) AS name_vector
-                       FROM name
-                   ) AS name
-                   JOIN (SELECT
-                           phraseto_tsquery('english', %s) AS query
-                   ) AS query ON (TRUE)
-                   JOIN player_stats USING (nameid)
-                   WHERE query @@ name_vector
-                   ORDER BY rank DESC
-               ) AS matches
-               GROUP BY steamid64
-           ) AS matches
-           JOIN player USING (steamid64)
-           JOIN name USING (nameid)
-           ORDER BY rank DESC, last_active DESC
-           LIMIT %s OFFSET %s;""", (q, limit, offset))
-    return flask.render_template("search.html", q=q, results=results.fetchall())
+    return flask.render_template("search.html", q=q, results=get_players(q).fetchall())
 
 @root.route('/leaderboard')
 def leaderboard():

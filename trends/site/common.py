@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
+import flask
+
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
 
 def get_logs():
@@ -30,3 +32,44 @@ def get_logs():
                     LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
                 { **filters, 'limit': limit, 'offset': offset })
     return logs
+
+def get_players(q):
+    if len(q) < 3:
+        flask.abort(400, "Searches must contain at least 3 characters")
+
+    limit, offset = get_pagination(limit=25)
+    results = get_db().cursor()
+    results.execute(
+        """SELECT
+               steamid64,
+               name,
+               avatarhash,
+               aliases
+           FROM (SELECT
+                   steamid64,
+                   array_agg(DISTINCT name) AS aliases,
+                   max(rank) AS rank
+               FROM (SELECT
+                       steamid64,
+                       name,
+                       ts_rank(name_vector, query) AS rank
+                   FROM (SELECT
+                           nameid,
+                           name,
+                           to_tsvector('english', name) AS name_vector
+                       FROM name
+                   ) AS name
+                   JOIN (SELECT
+                           phraseto_tsquery('english', %s) AS query
+                   ) AS query ON (TRUE)
+                   JOIN player_stats USING (nameid)
+                   WHERE query @@ name_vector
+                   ORDER BY rank DESC
+               ) AS matches
+               GROUP BY steamid64
+           ) AS matches
+           JOIN player USING (steamid64)
+           JOIN name USING (nameid)
+           ORDER BY rank DESC, last_active DESC
+           LIMIT %s OFFSET %s;""", (q, limit, offset))
+    return results
