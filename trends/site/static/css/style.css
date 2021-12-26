@@ -196,3 +196,12 @@ input:disabled {
 form {
 	padding: 3px;
 }
+
+.ts-wrapper {
+	display: inline;
+}
+
+.ts-control {
+	display: inline !important;
+	padding: 8px !important;
+}

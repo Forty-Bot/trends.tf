@@ -16,10 +16,6 @@
 		<input type="text" name="title"
 		       value="{{ (g.filters['title'] or "") | trim("%") }}">
 	</label>
-	<label><abbr title="SteamID64 of a player">Player</abbr>:
-		<input type="text" name="steamid64" pattern="\d+"
-		       value="{{ g.filters['players'] | first or "" }}">
-	</label>
 	{% else %}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
@@ -43,8 +39,12 @@
 	</label>
 	<label>Map:
 		<input id="map_input" type="text" name="map" list="maps"
-		       value="{{ (g.filters['map'] or "") | trim("%") }}">
+		 value="{{ (g.filters['map'] or "") | trim("%") }}">
 		<datalist id="maps"></datalist>
+	</label>
+	<label>Players:
+		<input id="players_input" type="text" name="steamid64" multiple
+		 value="{{ g.filters['players'] | join(',') }}">
 	</label>
 	{% if date %}
 	<input id="timezone" type="hidden" name="timezone">

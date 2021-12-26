@@ -10,6 +10,10 @@
 	<title>{% block title %}trends.tf{% endblock %}</title>
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/dates.js") }}" defer></script>
+	<script type="module"
+	 src="https://cdn.jsdelivr.net/npm/tom-select@2.0.0/dist/js/tom-select.popular.min.js"></script>
+	<link rel="stylesheet" type="text/css"
+	 href="https://cdn.jsdelivr.net/npm/tom-select@2.0.0/dist/css/tom-select.min.css">
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/filter.js") }}" defer></script>
 	<link rel="icon" href="{{ url_for('static', filename="img/favicon.ico") }}">

@@ -3,14 +3,16 @@
 
 var maplist = document.getElementById('maps');
 
+function unwrap_json(response) {
+	if (!response.ok) {
+		return {};
+	}
+	return response.json();
+}
+
 function autocomplete_maps() {
 	fetch("/api/v1/maps")
-		.then(response => {
-			if (!response.ok) {
-				return {};
-			}
-			return response.json();
-		})
+		.then(unwrap_json)
 		.then(json => {
 			json.maps.forEach(map => {
 				option = document.createElement("option");
@@ -20,3 +22,21 @@ function autocomplete_maps() {
 		})
 }
 document.getElementById('map_input').addEventListener('focus', autocomplete_maps, {once: true });
+
+document.addEventListener('DOMContentLoaded', () => {
+	new TomSelect(document.getElementById('players_input'), {
+		plugins: ['remove_button'],
+		maxItems: 5,
+		valueField: 'steamid64',
+		labelField: 'name',
+		searchField: ['aliases', 'name'],
+		load: (query, callback) => {
+			fetch(`/api/v1/players?q=${query}`)
+				.then(unwrap_json)
+				.then(json => {
+					callback(json.players);
+				});
+		},
+		shouldLoad: query => query.length > 3,
+	});
+})
