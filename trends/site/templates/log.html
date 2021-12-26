@@ -247,7 +247,7 @@
 	{% endif %}
 	</tbody></table>
 	{% if logids | count < 5 %}
-	<form>
+	<form action="{{ url_for('.log_form') }}">
 		{% for logid in logids %}
 			<input type="hidden" name="id" value="{{ logid }}">
 		{% endfor %}
