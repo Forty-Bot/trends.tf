@@ -44,7 +44,7 @@
 					 name="id" value="{{ log['logid'] }}">
 				</td>
 				<td class="left">
-					<a href="{{ url_for('root.log', logids=log['logid']) }}">
+					<a href="{{ url_for('.log', logids=log['logid']) }}">
 						{{ log['title'] }}
 				</a></td>
 				<td class="left">{{ log['map'] }}</td>
@@ -53,7 +53,7 @@
 				<td class="left date" timestamp="{{ log['time'] }}"></td>
 				<td>
 					{% if log['duplicate_of'] %}
-					<a href="{{ url_for('root.log', logids=log['duplicate_of']) }}">
+					<a href="{{ url_for('.log', logids=log['duplicate_of']) }}">
 						{{ log['duplicate_of'] }}
 					</a>
 					{% endif %}
