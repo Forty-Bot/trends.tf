@@ -3,12 +3,11 @@
 
 import flask
 
-from . import common
+from .common import get_logs
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..steamid import SteamID
 
 root = flask.Blueprint('root', __name__)
-root.add_url_rule("/logs", view_func=common.logs, defaults={ 'api': False })
 
 @root.route('/')
 def index():
@@ -138,6 +137,10 @@ def leaderboard():
                            .format(filter_clauses, cube_clauses, order_clause),
                         { **filters, 'limit': limit, 'offset': offset })
     return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall())
+
+@root.route('/logs')
+def logs():
+    return flask.render_template("logs.html", logs=get_logs().fetchall())
 
 @root.route('/log')
 def log_form():

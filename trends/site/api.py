@@ -4,11 +4,10 @@
 import flask
 import werkzeug.exceptions
 
-from . import common
+from .common import get_logs
 from .util import get_db, get_pagination
 
 api = flask.Blueprint('api', __name__)
-api.add_url_rule("/logs", view_func=common.logs, defaults={ 'api': True })
 
 @api.errorhandler(werkzeug.exceptions.HTTPException)
 def json_handler(error):
@@ -23,6 +22,10 @@ def do_cache(resp):
     resp.add_etag()
     resp.cache_control.max_age = 300
     return resp
+
+@api.route('/logs')
+def logs():
+    return flask.jsonify(logs=[dict(log) for log in get_logs()])
 
 @api.route('/maps')
 def maps():

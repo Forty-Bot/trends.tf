@@ -1,14 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
-from datetime import datetime, timedelta
-from dateutil import tz
-
-import flask
-
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
 
-def logs(api):
+def get_logs():
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid')
@@ -34,9 +29,4 @@ def logs(api):
                     ORDER BY {}
                     LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
                 { **filters, 'limit': limit, 'offset': offset })
-
-    logs = logs.fetchall()
-    if (api):
-        return flask.jsonify(logs=[dict(log) for log in logs])
-    else:
-        return flask.render_template("logs.html", logs=logs)
+    return logs
