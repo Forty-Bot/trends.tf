@@ -52,18 +52,10 @@ def get_players(q):
                FROM (SELECT
                        steamid64,
                        name,
-                       ts_rank(name_vector, query) AS rank
-                   FROM (SELECT
-                           nameid,
-                           name,
-                           to_tsvector('english', name) AS name_vector
-                       FROM name
-                   ) AS name
-                   JOIN (SELECT
-                           phraseto_tsquery('english', %s) AS query
-                   ) AS query ON (TRUE)
+                       similarity(name, %(q)s) AS rank
+                   FROM name
                    JOIN player_stats USING (nameid)
-                   WHERE query @@ name_vector
+                   WHERE name ILIKE %(q)s
                    ORDER BY rank DESC
                ) AS matches
                GROUP BY steamid64
@@ -71,5 +63,6 @@ def get_players(q):
            JOIN player USING (steamid64)
            JOIN name USING (nameid)
            ORDER BY rank DESC, last_active DESC
-           LIMIT %s OFFSET %s;""", (q, limit, offset))
+           LIMIT %(limit)s OFFSET %(offset)s;""",
+        { 'q': "%{}%".format(q), 'limit': limit, 'offset': offset})
     return results

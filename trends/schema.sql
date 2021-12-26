@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS name (
 	name TEXT NOT NULL UNIQUE
 );
 
-CREATE INDEX IF NOT EXISTS name_fts ON name USING GIN (to_tsvector('english', name));
+CREATE INDEX IF NOT EXISTS name_tgrm ON name USING GIN (name gin_trgm_ops);
 
 CREATE TABLE IF NOT EXISTS player (
 	steamid64 BIGINT PRIMARY KEY,
