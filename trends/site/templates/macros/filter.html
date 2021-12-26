@@ -45,7 +45,8 @@
 	<label>Players:
 		<select id="players_input" name="steamid64" multiple>
 			{% for player in g.filters['players'] %}
-			<option selected value="{{ player['steamid64'] }}">
+			<option selected value="{{ player['steamid64'] }}"
+			 data-avatarhash="{{ player['avatarhash'] }}">
 				{{ player['name'] }}
 			</option>
 			{% endfor %}

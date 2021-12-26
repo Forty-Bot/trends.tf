@@ -23,6 +23,16 @@ function autocomplete_maps() {
 }
 document.getElementById('map_input').addEventListener('focus', autocomplete_maps, {once: true });
 
+function render_option(data, escape) {
+	div = document.createElement('div');
+	img = document.createElement('img');
+	img.classList.add('avatar_small');
+	img.setAttribute('src', "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/" +
+	                        `avatars/${data.avatarhash.slice(0, 2)}/${data.avatarhash}.jpg`);
+	div.append(img, " ", data.name);
+	return div;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	new TomSelect(document.getElementById('players_input'), {
 		plugins: ['remove_button'],
@@ -38,5 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				});
 		},
 		shouldLoad: query => query.length > 3,
+		render: {
+			item: render_option,
+			option: render_option,
+		},
 	});
 })
