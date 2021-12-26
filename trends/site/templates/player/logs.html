@@ -14,8 +14,8 @@
 {% block content %}
 	{{ super() }}
 	<h2>Logs</h2>
-	{{ filter(filters) }}
-	{{ sort(order, {
+	{{ filter() }}
+	{{ sort({
 		'logid': "Log ID",
 		'wins': "Rounds won",
 		'losses': "Rounds lost",
@@ -34,7 +34,7 @@
 	<form id="combine" action="{{ url_for('root.log_form') }}">
 		<button type="submit">Combine selected logs</button>
 	</form>
-	{{ navigation(logs, limit, offset) }}
+	{{ navigation(logs) }}
 	{{ log_table(logs, extra=True) }}
-	{{ navigation(logs, limit, offset) }}
+	{{ navigation(logs) }}
 {% endblock %}

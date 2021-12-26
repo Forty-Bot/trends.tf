@@ -8,8 +8,8 @@
 {% block content %}
 	{{ super() }}
 	<h2>Weapons</h2>
-	{{ filter(filters) }}
-	{{ sort(order, {
+	{{ filter() }}
+	{{ sort({
 		'weapon': "Weapon name",
 		'kills': "Kills per 30 minutes",
 		'dpm': "Damage per minute",

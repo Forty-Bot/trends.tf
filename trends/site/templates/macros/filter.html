@@ -7,32 +7,32 @@
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
 {% endfor %}
 {% endmacro %}
-{% macro filter(filters, date=True, logs=False) %}
+{% macro filter(date=True, logs=False) %}
 <form>
 	{{ hidden_excluding('class', 'format', 'map', 'timezone', 'title', 'steamid64',
 			    'date_from', 'date_to') }}
 	{% if logs %}
 	<label>Title:
 		<input type="text" name="title"
-		       value="{{ (filters['title'] or "") | trim("%") }}">
+		       value="{{ (g.filters['title'] or "") | trim("%") }}">
 	</label>
 	<label><abbr title="SteamID64 of a player">Player</abbr>:
 		<input type="text" name="steamid64" pattern="\d+"
-		       value="{{ filters['players'] | first or "" }}">
+		       value="{{ g.filters['players'] | first or "" }}">
 	</label>
 	{% else %}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">
 			<option></option>
-			{{ _create_options(filters['class'], class_map) }}
+			{{ _create_options(g.filters['class'], class_map) }}
 		</select>
 	</label>
 	{% endif %}
 	<label>Format:
 		<select name="format">
 			<option></option>
-			{{ _create_options(filters['format'], {
+			{{ _create_options(g.filters['format'], {
 				'sixes': "Sixes",
 				'highlander': "Highlander",
 				'prolander': "Prolander",
@@ -43,16 +43,16 @@
 	</label>
 	<label>Map:
 		<input id="map_input" type="text" name="map" list="maps"
-		       value="{{ (filters['map'] or "") | trim("%") }}">
+		       value="{{ (g.filters['map'] or "") | trim("%") }}">
 		<datalist id="maps"></datalist>
 	</label>
 	{% if date %}
 	<input id="timezone" type="hidden" name="timezone">
 	<label>From:
-		<input type="date" name="date_from" value="{{ filters['date_from'] or "" }}">
+		<input type="date" name="date_from" value="{{ g.filters['date_from'] or "" }}">
 	</label>
 	<label>To:
-		<input type="date" name="date_to" value="{{ filters['date_to'] or "" }}">
+		<input type="date" name="date_to" value="{{ g.filters['date_to'] or "" }}">
 	</label>
 	{% endif %}
 	<button type="submit">Filter</button>

@@ -7,20 +7,21 @@
 		{{ content }}
 	</input>
 {% endmacro %}
-{% macro sort(order, columns) %}
+{% macro sort(columns) %}
 <form>
 	{{ hidden_excluding('sort', 'sort_dir') }}
 	<label>Sort by:
 		<select name="sort">
 		{% for column, content in columns.items() %}
-			<option {{ "selected" if column == order['sort'] }} value="{{ column }}">
+			<option {{ "selected" if column == g.order[0]['sort'] }}
+			 value="{{ column }}">
 				{{ content }}
 			</option>
 		{% endfor %}
 		</select>
 	</label>
-	{{ _create_dir(order, 'desc', "Descending") }}
-	{{ _create_dir(order, 'asc', "Ascending") }}
+	{{ _create_dir(g.order[0], 'desc', "Descending") }}
+	{{ _create_dir(g.order[0], 'asc', "Ascending") }}
 	<button type="submit">Sort</button>
 </form>
 {% endmacro %}

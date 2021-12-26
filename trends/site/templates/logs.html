@@ -8,13 +8,13 @@
 {% block content %}
 	{{ super() }}
 	<h1>Logs</h1>
-	{{ filter(filters, logs=True) }}
-	{{ sort(order, {
+	{{ filter(logs=True) }}
+	{{ sort({
 		'logid': "Log ID",
 		'duration': "Duration",
 		'date': "Date",
 	   }) }}
-	{{ navigation(logs, limit, offset) }}
+	{{ navigation(logs) }}
 {% macro header() %}
 <tr>
 	<th>Title</th>
@@ -50,5 +50,5 @@
 		</tbody>
 		<tfoot>{{ header() }}</tfoot>
 	</table>
-	{{ navigation(logs, limit, offset) }}
+	{{ navigation(logs) }}
 {% endblock %}
