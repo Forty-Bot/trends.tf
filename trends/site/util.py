@@ -39,7 +39,19 @@ def get_filter_params():
 
     params['class'] = args.get('class', type=str)
     params['format'] = args.get('format', type=str)
-    params['players'] = args.getlist('steamid64', type=int)[:5]
+    if val := tuple(args.getlist('steamid64', type=int)[:5]):
+        players = get_db().cursor()
+        players.execute("""SELECT
+                               steamid64,
+                               avatarhash,
+                               name
+                           FROM player
+                           JOIN name USING (nameid)
+                           WHERE steamid64 IN %s;""",
+                        (val,))
+        params['players'] = players.fetchall()
+    else:
+        params['players'] = ()
 
     def set_like_param(name):
         if val := args.get(name, type=str):
@@ -113,7 +125,7 @@ def get_filter_clauses(params, *valid_columns, player_prefix='', log_prefix=''):
     if 'logid' in valid_columns:
         for i, player in enumerate(params['players']):
             key = "player_{}".format(i)
-            params[key] = player
+            params[key] = player['steamid64']
             clauses.append("""AND {}logid IN (
                                   SELECT logid
                                   FROM player_stats
