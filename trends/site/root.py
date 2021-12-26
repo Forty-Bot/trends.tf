@@ -26,7 +26,7 @@ def index():
 
 @root.route('/favicon.ico')
 def favicon():
-    return flask.redirect(flask.url_for('static', filename="img/favicon.ico"))
+    return flask.redirect(flask.url_for('static', filename="img/favicon.ico"), 301)
 
 @root.route('/search')
 def search():
@@ -41,7 +41,7 @@ def search():
                WHERE steamid64 = %s
                LIMIT 1""", (steamid,))
         for (steamid,) in cur:
-            return flask.redirect(flask.url_for('player.overview', steamid=steamid), 302)
+            return flask.redirect(flask.url_for('player.overview', steamid=steamid), 307)
     except ValueError:
         pass
 
@@ -106,7 +106,7 @@ def logs():
 @root.route('/log')
 def log_form():
     logids = flask.request.args.getlist('id', int)
-    return flask.redirect(flask.url_for('.log', logids=logids))
+    return flask.redirect(flask.url_for('.log', logids=logids), 301)
 
 @root.route('/log/<intlist:logids>')
 def log(logids):
