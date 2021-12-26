@@ -39,13 +39,7 @@ def get_filter_params():
 
     params['class'] = args.get('class', type=str)
     params['format'] = args.get('format', type=str)
-    if val := args.get('steamid64', type=str):
-        try:
-            params['players'] = [int(player) for player in islice(val.split(','), 5)]
-        except ValueError:
-            params['players'] = []
-    else:
-        params['players'] = []
+    params['players'] = args.getlist('steamid64', type=int)[:5]
 
     def set_like_param(name):
         if val := args.get(name, type=str):

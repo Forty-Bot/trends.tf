@@ -43,8 +43,13 @@
 		<datalist id="maps"></datalist>
 	</label>
 	<label>Players:
-		<input id="players_input" type="text" name="steamid64" multiple
-		 value="{{ g.filters['players'] | join(',') }}">
+		<select id="players_input" name="steamid64" multiple>
+			{% for player in g.filters['players'] %}
+			<option selected>
+				{{ player }}
+			</option>
+			{% endfor %}
+		</select>
 	</label>
 	{% if date %}
 	<input id="timezone" type="hidden" name="timezone">
