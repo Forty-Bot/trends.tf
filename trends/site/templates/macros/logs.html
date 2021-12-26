@@ -42,9 +42,12 @@
 				 value="{{ log['logid'] }}">
 			</td>
 			{% endif %}
-			<td class="left"><a href="{{ url_for('root.log', logids=log['logid']) }}">
-				{{ log['title'] }}
-			</a></td>
+			<td class="left">
+				<a href="{{ url_for('root.log', logids=log['logid'],
+				                    _anchor=g.player['steamid64']) }}">
+					{{ log['title'] }}
+				</a>
+			</td>
 			<td class="left">{{ log['map'] }}</td>
 			<td class="left">
 			{% for (cls, pct) in zip(log['classes'], log['class_pct']) %}

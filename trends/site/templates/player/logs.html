@@ -31,7 +31,7 @@
 		'acc': "Accuracy",
 		'date': "Date",
 	   }) }}
-	<form id="combine" action="{{ url_for('root.log_form') }}">
+	<form id="combine" action="{{ url_for('root.log_form', _anchor=g.player['steamid64']) }}">
 		<button type="submit">Combine selected logs</button>
 	</form>
 	{{ navigation(logs) }}
