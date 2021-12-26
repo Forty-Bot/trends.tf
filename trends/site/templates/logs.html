@@ -5,6 +5,11 @@
 {% from "macros/sort.html" import sort %}
 {% extends "base.html" %}
 {% block title %}Logs - {{ super() }}{% endblock %}
+{% block head %}
+	{{ super() }}
+	<script type="text/javascript"
+		src="{{ url_for('static', filename="js/combine.js") }}" defer></script>
+{% endblock %}
 {% block content %}
 	{{ super() }}
 	<h1>Logs</h1>
@@ -14,9 +19,13 @@
 		'duration': "Duration",
 		'date': "Date",
 	   }) }}
+	<form id="combine" action="{{ url_for('.log_form') }}">
+		<button type="submit">Combine selected logs</button>
+	</form>
 	{{ navigation(logs) }}
 {% macro header() %}
 <tr>
+	<th></th>
 	<th>Title</th>
 	<th>Map</th>
 	<th>Format</th>
@@ -30,6 +39,10 @@
 		<tbody>
 			{% for log in logs %}
 			<tr>
+				<td class="left">
+					<input form="combine" class="combine" type="checkbox"
+					 name="id" value="{{ log['logid'] }}">
+				</td>
 				<td class="left">
 					<a href="{{ url_for('root.log', logids=log['logid']) }}">
 						{{ log['title'] }}
