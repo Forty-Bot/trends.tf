@@ -156,6 +156,7 @@ def overview(steamid):
                    total(dmg) / nullif(sum(shots), 0.0) AS dps
                FROM class
                LEFT JOIN classes USING (classid)
+               WHERE TRUE
                    {}
                GROUP BY classid
                ORDER BY classid
