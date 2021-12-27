@@ -414,7 +414,7 @@ def weapons(steamid):
                total(ws.dmg) AS dmg,
                count(*) AS logs
            FROM weapon_stats AS ws
-           JOIN weapon USING (weaponid)
+           JOIN weapon_pretty USING (weaponid)
            JOIN class_stats AS cs USING (logid, steamid64, classid)
            JOIN log_nodups AS log USING (logid)
            WHERE steamid64 = %(steamid)s

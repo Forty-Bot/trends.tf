@@ -271,7 +271,7 @@ def log(logids):
                GROUP BY steamid64, classid, weaponid
            ) AS weapons
            JOIN class USING (classid)
-           JOIN weapon USING (weaponid)
+           JOIN weapon_pretty USING (weaponid)
            GROUP BY steamid64, classid"""
     )), params)
     players=players.fetchall()

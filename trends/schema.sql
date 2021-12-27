@@ -306,6 +306,11 @@ CREATE TABLE IF NOT EXISTS weapon (
 	name TEXT
 );
 
+CREATE OR REPLACE VIEW weapon_pretty AS SELECT
+	weaponid,
+	coalesce(name, initcap(replace(weapon, '_', ' '))) AS weapon
+FROM weapon;
+
 CREATE TABLE IF NOT EXISTS weapon_stats (
 	logid INT NOT NULL,
 	steamid64 BIGINT NOT NULL,
