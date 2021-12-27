@@ -67,6 +67,29 @@
         [Install]
         WantedBy=timers.target
 
+/etc/systemd/system/weapon_import.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Import weapons from https://github.com/SteamDatabase/GameTracking-TF2
+
+        [Service]
+        Type=oneshot
+        ExecStart={{ prefix }}/bin/trends_importer -vv weapons remote postgres:///trends
+        User=daemon
+
+/etc/systemd/system/weapon_import.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Check for item updates
+
+        [Timer]
+        OnCalendar=hourly
+
+        [Install]
+        WantedBy=timers.target
+
 backend_services:
   module.run:
     - name: service.systemctl_reload
@@ -76,6 +99,8 @@ backend_services:
       - /etc/systemd/system/player_import.service
       - /etc/systemd/system/leaderboard_refresh.service
       - /etc/systemd/system/leaderboard_refresh.timer
+      - /etc/systemd/system/weapon_import.service
+      - /etc/systemd/system/weapon_import.timer
 
 log_import.timer:
   service.running:
@@ -90,6 +115,12 @@ player_import.service:
       - backend_services
 
 leaderboard_refresh.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+weapon_import.timer:
   service.running:
     - enable: True
     - require:
