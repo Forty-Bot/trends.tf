@@ -86,7 +86,10 @@ class StaticHashDefaults:
 
 class IntListConverter(werkzeug.routing.BaseConverter):
     def to_python(self, value):
-        return [int(val) for val in value.split('+')]
+        try:
+            return [int(val) for val in value.split('+')]
+        except ValueError:
+            return []
 
     def to_url(self, values):
         try:
