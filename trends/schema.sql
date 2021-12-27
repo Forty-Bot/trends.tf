@@ -302,7 +302,8 @@ CREATE INDEX IF NOT EXISTS leaderboard_classid ON leaderboard_cube (classid, for
 
 CREATE TABLE IF NOT EXISTS weapon (
 	weaponid SERIAL PRIMARY KEY,
-	weapon TEXT NOT NULL UNIQUE
+	weapon TEXT NOT NULL UNIQUE,
+	name TEXT
 );
 
 CREATE TABLE IF NOT EXISTS weapon_stats (
