@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
+var checkboxes;
+
 function update_checkboxes() {
 	var checked = 0;
-	checkboxes = document.getElementsByClassName("combine");
 	for (let checkbox of checkboxes) {
 		if (checkbox.checked) {
 			checked++;
@@ -26,7 +27,7 @@ function update_checkboxes() {
 }
 
 function register_checkboxes() {
-	checkboxes = document.getElementsByClassName("combine");
+	checkboxes = document.querySelectorAll("input[form=combine]");
 	for (let checkbox of checkboxes) {
 		checkbox.addEventListener('change', update_checkboxes);
 	}

@@ -40,8 +40,8 @@
 			{% for log in logs %}
 			<tr>
 				<td class="left">
-					<input form="combine" class="combine" type="checkbox"
-					 name="id" value="{{ log['logid'] }}">
+					<input form="combine" type="checkbox" name="id"
+					 value="{{ log['logid'] }}">
 				</td>
 				<td class="left">
 					<a href="{{ url_for('.log', logids=log['logid']) }}">
