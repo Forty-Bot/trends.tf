@@ -10,7 +10,7 @@ function update_checkboxes() {
 		}
 	}
 
-	if (checked >= 5) {
+	if (checked >= 10) {
 		for (let checkbox of checkboxes) {
 			if (!checkbox.checked) {
 				checkbox.disabled = true;

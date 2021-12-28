@@ -114,7 +114,7 @@ def log(logids):
     db = get_db()
     if not logids:
         flask.abort(404)
-    elif len(logids) > 5:
+    elif len(logids) > 10:
         flask.abort(400)
 
     logs = db.cursor()
