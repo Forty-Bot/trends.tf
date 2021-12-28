@@ -197,14 +197,23 @@
 	</thead>
 	<tbody class="hier">
 	{% for log in logs %}
+	{% if log['red_score'] > log['blue_score'] %}
+		{% set winner = 'red' %}
+	{% elif log['blue_score'] > log['red_score'] %}
+		{% set winner = 'blue' %}
+	{% endif %}
 	<tr id="{{ log['logid'] }}" class="hider">
 		<td class="left">
 			<a href="https://logs.tf/{{ log['logid'] }}">{{ log['title'] }}</a>
 		</td>
 		<td class="left">{{ log['map'] }}</td>
 		<td class="left">{{ log['format'] | capitalize }}</td>
-		<td>{{ log['red_score'] }}</td>
-		<td>{{ log['blue_score'] }}</td>
+		<td {% if winner == 'red' %}class="red"{% endif %}>
+			{{ log['red_score'] }}
+		</td>
+		<td {% if winner == 'blue' %}class="blue"{% endif %}>
+			{{ log['blue_score'] }}
+		</td>
 		<td>{{ log['duration'] | duration }}</td>
 		<td>
 			{% if log['duplicate_of'] %}
@@ -224,12 +233,32 @@
 		</td>
 	</tr>
 		{% for round in rounds if round['logid'] == log['logid'] %}
+			{% if loop.previtem is defined %}
+				{% set red_diff = round['red_score'] - loop.previtem['red_score'] %}
+				{% set blue_diff = round['blue_score'] - loop.previtem['blue_score'] %}
+			{% else %}
+				{% set red_diff = round['red_score'] %}
+				{% set blue_diff = round['blue_score'] %}
+			{% endif %}
+			{% if red_diff < 0 or blue_diff < 0 %}
+				{% set red_diff = round['red_score'] %}
+				{% set blue_diff = round['blue_score'] %}
+			{% endif %}
+			{% if red_diff > blue_diff %}
+				{% set rwinner = 'red' %}
+			{% elif blue_diff > red_diff %}
+				{% set rwinner = 'blue' %}
+			{% endif %}
 			<tr class="{{ round['logid'] }} hidden">
 			<td></td>
 			<td></td>
 			<td></td>
-			<td>{{ round['red_score'] }}</td>
-			<td>{{ round['blue_score'] }}</td>
+			<td {% if rwinner == 'red' %}class="red"{% endif %}>
+				{{ round['red_score'] }}
+			</td>
+			<td {% if rwinner == 'blue' %}class="blue"{% endif %}>
+				{{ round['blue_score'] }}
+			</td>
 			<td>{{ round['duration'] | duration }}</td>
 		</tr>
 		{% endfor %}
