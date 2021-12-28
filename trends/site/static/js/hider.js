@@ -21,6 +21,8 @@ function register_hiders() {
 	hiders = document.getElementsByClassName("hider");
 	for (let hider of hiders) {
 		hider.addEventListener('click', function (evt) {
+			if (evt.target.tagName == "A")
+				return
 			update_hidden(evt.currentTarget, false);
 		});
 	}
