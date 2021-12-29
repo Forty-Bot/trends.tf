@@ -151,7 +151,7 @@ def overview(steamid):
                    sum(CASE WHEN mostly THEN (round_wins < round_losses)::INT END) AS losses,
                    sum(CASE WHEN mostly THEN (round_wins = round_losses)::INT END) AS ties,
                    total(duration) AS time,
-                   sum(dmg) * 60.0 / sum(duration) AS dpm,
+                   sum(dmg) * 60.0 / nullif(sum(duration), 0.0) AS dpm,
                    total(hits) / nullif(sum(shots), 0.0) AS acc,
                    total(dmg) / nullif(sum(shots), 0.0) AS dps
                FROM class

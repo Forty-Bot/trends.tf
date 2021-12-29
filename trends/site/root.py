@@ -230,7 +230,7 @@ def log(logids):
                    sum(deaths) AS deaths,
                    sum(assists) AS assists,
                    sum(dmg) AS dmg,
-                   sum(dmg) * 60.0 / sum(duration) AS dpm
+                   sum(dmg) * 60.0 / nullif(sum(duration), 0.0) AS dpm
                FROM class_stats
                WHERE logid IN %(logids)s
                GROUP BY steamid64, classid
