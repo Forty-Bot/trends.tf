@@ -25,6 +25,17 @@ try:
         integrations=[FlaskIntegration()],
         traces_sample_rate=0.1
     )
+
+    def trace_template_start(app, template, context):
+        span = sentry_sdk.Hub.current.start_span(op='render', description=template.name)
+        context['span'] = span
+        span.__enter__()
+
+    def trace_template_finish(app, template, context):
+        context['span'].__exit__(None, None, None)
+
+    flask.before_render_template.connect(trace_template_start)
+    flask.template_rendered.connect(trace_template_finish)
 except ImportError:
     pass
 
