@@ -8,6 +8,8 @@ from itertools import islice
 import sys
 
 import flask
+import psycopg2
+import werkzeug.exceptions
 
 from ..util import clamp
 from ..sql import db_connect
@@ -23,8 +25,12 @@ def global_context(name):
 
 @global_context('db_conn')
 def get_db():
-    c = db_connect(flask.current_app.config['DATABASE'],
-                      "{} {}".format(sys.argv[0], flask.request.path))
+    try:
+        c = db_connect(flask.current_app.config['DATABASE'],
+                          "{} {}".format(sys.argv[0], flask.request.path))
+    except psycopg2.OperationalError as error:
+        flask.current_app.logger.exception("Could not connect to database")
+        raise werkzeug.exceptions.ServiceUnavailable() from error
     c.cursor().execute("SET statement_timeout = %s;", (flask.current_app.config['TIMEOUT'],))
     return c
 
