@@ -108,13 +108,20 @@ base-devel:
       - virtualenv
       - file: /srv/uwsgi/trends
 
+setuptools_scm:
+  pip.installed:
+    - user: sean
+    - bin_env: /srv/uwsgi/trends/venv
+    - require:
+      - /srv/uwsgi/trends/venv
+
 trends.tf:
   pip.installed:
     - user: sean
     - editable: /srv/uwsgi/trends
     - bin_env: /srv/uwsgi/trends/venv
     - require:
-      - /srv/uwsgi/trends/venv
+      - setuptools_scm
 
 uwsgi_installed:
   pkg.installed:
