@@ -13,10 +13,16 @@ PACKAGE := dist/$(shell $(PYTHON) setup.py --fullname)-py3-none-any.whl
 $(PACKAGE): FORCE
 	$(PYTHON) setup.py $(if $(V),,-q) bdist_wheel --plat-name any
 
-.PHONY: deploy
-deploy: $(PACKAGE)
-	scp $< $(PROD):/tmp
-	ssh $(PROD) '$(PROD_PREFIX)/bin/pip $(if $(V),,-q) install /tmp/$(<F)'
+.PHONY: build
+build: $(PACKAGE)
+
+.PHONY: deploy deploy/%
+deploy/%:
+	git push --force ssh://$(PROD)$(PROD_PREFIX) $*
+	ssh $(PROD) '$(PROD_PREFIX)/venv/bin/pip $(if $(V),,-q) install -Ue $(PROD_PREFIX) && \
+		sudo systemctl reload uwsgi'
+
+deploy: deploy/HEAD
 
 .PHONY: clean
 clean:
