@@ -23,7 +23,7 @@ try:
 
     sentry_sdk.init(
         integrations=[FlaskIntegration()],
-        traces_sample_rate=0.1
+        traces_sample_rate=1
     )
 
     def trace_template_start(app, template, context):
