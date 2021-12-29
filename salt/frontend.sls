@@ -115,7 +115,7 @@ setuptools_scm:
     - require:
       - /srv/uwsgi/trends/venv
 
-trends.tf:
+trends.tf[sentry]:
   pip.installed:
     - user: sean
     - editable: /srv/uwsgi/trends

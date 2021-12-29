@@ -28,6 +28,9 @@ setuptools.setup(
         'python-dateutil',
         'zstandard',
     ],
+    extras_require = {
+        'sentry': "sentry-sdk[flask]",
+    },
     entry_points = {
         'console_scripts': [
             "trends_importer=trends.importer.cli:main",

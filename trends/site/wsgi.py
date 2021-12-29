@@ -17,6 +17,17 @@ from .player import player
 from .root import root
 from .util import put_db
 
+try:
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+
+    sentry_sdk.init(
+        integrations=[FlaskIntegration()],
+        traces_sample_rate=0.1
+    )
+except ImportError:
+    pass
+
 class DefaultConfig:
     DATABASE = "postgresql:///trends"
     TIMEOUT = 60000
