@@ -14,6 +14,11 @@ import werkzeug.exceptions
 from ..util import clamp
 from ..sql import db_connect
 
+try:
+    from .sentry import TracingCursor
+except ImportError:
+    TracingCursor = None
+
 def global_context(name):
     def decorator(f):
         def decorated(*args, **kwargs):
@@ -27,7 +32,7 @@ def global_context(name):
 def get_db():
     try:
         c = db_connect(flask.current_app.config['DATABASE'],
-                          "{} {}".format(sys.argv[0], flask.request.path))
+                       "{} {}".format(sys.argv[0], flask.request.path), TracingCursor)
     except psycopg2.OperationalError as error:
         flask.current_app.logger.exception("Could not connect to database")
         raise werkzeug.exceptions.ServiceUnavailable() from error

@@ -18,31 +18,7 @@ from .root import root
 from .util import put_db
 
 try:
-    import pkg_resources
-    import sentry_sdk
-    from sentry_sdk.integrations.flask import FlaskIntegration
-
-    try:
-        version = pkg_resources.require("trends.tf")[0].version
-    except pkg_resources.DistributionNotFound:
-        version = None
-
-    sentry_sdk.init(
-        release=version,
-        integrations=[FlaskIntegration()],
-        traces_sample_rate=1
-    )
-
-    def trace_template_start(app, template, context):
-        span = sentry_sdk.Hub.current.start_span(op='render', description=template.name)
-        context['span'] = span
-        span.__enter__()
-
-    def trace_template_finish(app, template, context):
-        context['span'].__exit__(None, None, None)
-
-    flask.before_render_template.connect(trace_template_start)
-    flask.template_rendered.connect(trace_template_finish)
+    from . import sentry
 except ImportError:
     pass
 
