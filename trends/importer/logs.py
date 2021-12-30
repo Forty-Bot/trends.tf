@@ -137,7 +137,11 @@ def import_log(cctx, c, logid, log):
                      );""", round)
 
     for steamid_str, player in log['players'].items():
-        steamid = None
+        # Some players don't have teams (they do actually have teams but they weren't parsed
+        # properly). Just ignore them, since we have no way to tell what team they were actually on.
+        if not player['team']:
+            continue
+
         try:
             steamid = SteamID(steamid_str)
         except ValueError:
@@ -338,45 +342,24 @@ def import_log(cctx, c, logid, log):
                              );""", weapon)
 
     for (seq, msg) in enumerate(log['chat']):
-        # poor man's goto...
-        first = True
-        while True:
-            try:
-                steamid = SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None
-                c.execute("SAVEPOINT before_chat;")
-                c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
-                          (logid, steamid, seq, msg['msg']))
+        try:
+            steamid = SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None
+        except ValueError:
+            continue
 
-            # Spectator?
-            except psycopg2.errors.ForeignKeyViolation:
-                if not first:
-                    raise
-                first = False
-
-                c.execute("ROLLBACK TO SAVEPOINT before_chat;")
-                c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
-                c.execute("""INSERT INTO player (
-                                 steamid64,
-                                 nameid,
-                                 last_active
-                             ) VALUES (
-                                 %s,
-                                 (SELECT nameid FROM name WHERE name = %s),
-                                 %s
-                             ) ON CONFLICT (steamid64)
-                             DO UPDATE SET
-                                 last_active = greatest(player.last_active, EXCLUDED.last_active);""",
-                          (steamid, msg['name'], info['date']))
-                c.execute("""INSERT INTO player_stats (
-                               logid, steamid64, nameid, kills, assists, deaths, dmg
-                           ) VALUES (
-                               %s, %s, (SELECT nameid FROM name WHERE name = %s), 0, 0, 0, 0
-                           );""",
-                          (logid, steamid, msg['name']))
-                continue
-            except ValueError:
-                break
-            break
+        c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
+        c.execute("""INSERT INTO player (
+                         steamid64,
+                         nameid,
+                         last_active
+                     ) VALUES (
+                         %s,
+                         (SELECT nameid FROM name WHERE name = %s),
+                         %s
+                     ) ON CONFLICT (steamid64) DO NOTHING;""",
+                  (steamid, msg['name'], info['date']))
+        c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
+                  (logid, steamid, seq, msg['msg']))
 
     for (healer, healees) in log['healspread'].items():
         try:
@@ -695,8 +678,6 @@ def import_logs(args, c):
     cur.execute("""ALTER TABLE heal_stats
                    ADD FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
 	               ADD FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64);""")
-    cur.execute("""ALTER TABLE chat
-                   ADD FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)""")
     # We need this index to calculate formats efficiently
     cur.execute("CREATE INDEX class_stats_logid ON class_stats (logid);")
     # And this index to limit dupes

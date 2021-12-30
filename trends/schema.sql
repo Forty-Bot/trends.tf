@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	logid INT REFERENCES log (logid) NOT NULL,
 	steamid64 BIGINT REFERENCES player (steamid64) NOT NULL,
 	nameid INT NOT NULL REFERENCES name (nameid),
-	teamid INT REFERENCES team (teamid), -- May be NULL for spectators
+	teamid INT NOT NULL REFERENCES team (teamid),
 	kills INT NOT NULL,
 	assists INT NOT NULL,
 	deaths INT NOT NULL,
@@ -363,11 +363,10 @@ CREATE INDEX IF NOT EXISTS event_logid ON event_stats (logid);
 
 CREATE TABLE IF NOT EXISTS chat (
 	logid INT NOT NULL REFERENCES log (logid),
-	steamid64 BIGINT, -- May be NULL for Console messages
+	steamid64 BIGINT REFERENCES player (steamid64), -- May be NULL for Console messages
 	seq INT NOT NULL, -- Message sequence, starting at 0; earlier messages have lower sequences
 	msg TEXT NOT NULL,
-	PRIMARY KEY (logid, seq),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
+	PRIMARY KEY (logid, seq)
 );
 
 -- Reverse index for lookups by steamid64
