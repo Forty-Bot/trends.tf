@@ -8,7 +8,7 @@ setuptools.setup(
     name = 'trends.tf',
     use_scm_version = {
         'local_scheme': lambda version: \
-            version.format_choice("+n{node}", "+n{node}.d{time:%Y%m%d.h%H%M%S}"),
+            version.format_choice("+{node}", "+{node}.d{time:%Y%m%d.h%H%M%S}"),
     },
     description = "Team Fortress 2 stats and trends",
     author = 'Sean Anderson',
