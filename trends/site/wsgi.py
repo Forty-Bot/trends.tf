@@ -18,9 +18,9 @@ from .root import root
 from .util import put_db
 
 try:
-    from . import sentry
+    from .sentry import set_user
 except ImportError:
-    pass
+    set_user = lambda: None
 
 class DefaultConfig:
     DATABASE = "postgresql:///trends"
@@ -113,6 +113,7 @@ def create_app():
     app.config.from_object(DefaultConfig)
     app.config.from_object(EnvConfig())
 
+    app.before_request(set_user)
     app.teardown_appcontext(put_db)
     app.url_defaults(StaticHashDefaults(app))
     app.url_map.converters['intlist'] = IntListConverter

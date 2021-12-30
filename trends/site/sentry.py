@@ -43,3 +43,6 @@ class TracingCursor(psycopg2.extras.DictCursor):
     def callproc(self, procname, vars=None):
         with self._log(procname, vars, paramstyle=None):
             super().callproc(procname, vars)
+
+def set_user():
+    sentry_sdk.set_user({ 'ip_address': flask.request.remote_addr })
