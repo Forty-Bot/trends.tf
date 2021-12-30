@@ -18,10 +18,17 @@ from .root import root
 from .util import put_db
 
 try:
+    import pkg_resources
     import sentry_sdk
     from sentry_sdk.integrations.flask import FlaskIntegration
 
+    try:
+        version = pkg_resources.require("trends.tf")[0].version
+    except pkg_resources.DistributionNotFound:
+        version = None
+
     sentry_sdk.init(
+        release=version,
         integrations=[FlaskIntegration()],
         traces_sample_rate=1
     )
