@@ -115,7 +115,8 @@ pg_includedir:
 
 # Budget pgtune
 {%- set connections = 20 %}
-{%- set mem = grains.mem_total * 1024 %}
+# Reserve some memory for everyone else
+{%- set mem = ( grains.mem_total - 256 ) * 1024 %}
 {%- set shared_buffers = (mem / 4) | int %}
 {%- set work_mem = ((mem - shared_buffers) / connections / 2) | int %}
 {{ pg_confdir }}/conf.d/override.conf:
