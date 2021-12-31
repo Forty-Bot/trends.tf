@@ -167,10 +167,10 @@ CREATE TABLE IF NOT EXISTS player_stats (
 
 -- This index includes steamid64 and team so that it can be used as a covering index for the peers
 -- query. This avoids a bunch of costly random reads to player_stats.
-CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid, steamid64, teamid);
+CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid) INCLUDE (steamid64, teamid);
 
 -- Covering index for name FTS queries
-CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats (nameid, steamid64);
+CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats (nameid) INCLUDE (steamid64);
 
 CREATE TABLE IF NOT EXISTS player_stats_extra (
 	logid INT NOT NULL,
