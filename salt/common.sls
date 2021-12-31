@@ -20,8 +20,11 @@ vim:
     - require:
       - update_system
 
-nano:
+remove default packages:
   pkg.purged:
+    - pkgs:
+      - nano
+      - zfs-fuse
     - refresh: False
     - require:
       - vim
