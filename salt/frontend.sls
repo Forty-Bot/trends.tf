@@ -178,7 +178,9 @@ psycopg2:
         [global]
           run as user = netdata
           access log = none
+          debug log = none
 
+          update every = 5
           memory mode = dbengine
           page cache size = 32
           dbengine multihost disk space = 4096
