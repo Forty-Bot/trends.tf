@@ -284,8 +284,9 @@ def log(logids):
         names = player.get('names', ())
         if classes := player.get('class_stats'):
             classes = tuple(cls['classid'] for cls in classes)
-            return (*teams, classes, names)
-        return (*teams, names)
+        else:
+            classes = (500,)
+        return (*teams, classes, names)
     players.sort(key=player_key)
     players = { player['steamid64']: player for player in players }
 

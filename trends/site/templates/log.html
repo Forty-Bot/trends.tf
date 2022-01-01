@@ -291,20 +291,24 @@
 		<thead>{{ player_table_header() }}</thead>
 		<tbody class="hier">
 		{% for player in players.values() %}
-		<tr id="{{ player['steamid64'] }}" class="hider">
+			<tr id="{{ player['steamid64'] }}"
+			 class="{{ "hider" if player.class_stats }}">
 			{{ team_cols(player) }}
 			{{ player_col(player) }}
 			<td class="left">
-				{% for cls in player.class_stats %}
-					{{ classicon(cls['class'], cls['pct']) }}
-				{% endfor %}
+				{% if player.class_stats %}
+					{% for cls in player.class_stats %}
+						{{ classicon(cls['class'], cls['pct']) }}
+					{% endfor %}
+				{% endif %}
 			</td>
 			{{ stat_cols(player) }}
 			<td>{{ player.class_stats | map(attribute='duration')
 			       | sum | duration }}</td>
-			<td>{{ player.order }}</td>
 		</tr>
-		{{ class_table(player['steamid64'], player.class_stats) }}
+		{% if player.class_stats %}
+			{{ class_table(player['steamid64'], player.class_stats) }}
+		{% endif %}
 		{% endfor %}
 		</tbody>
 		<tfoot>{{ player_table_header() }}</tfoot>
