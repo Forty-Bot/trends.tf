@@ -348,16 +348,17 @@ def import_log(cctx, c, logid, log):
             continue
 
         c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", msg)
-        c.execute("""INSERT INTO player (
-                         steamid64,
-                         nameid,
-                         last_active
-                     ) VALUES (
-                         %s,
-                         (SELECT nameid FROM name WHERE name = %s),
-                         %s
-                     ) ON CONFLICT (steamid64) DO NOTHING;""",
-                  (steamid, msg['name'], info['date']))
+        if steamid:
+            c.execute("""INSERT INTO player (
+                             steamid64,
+                             nameid,
+                             last_active
+                         ) VALUES (
+                             %s,
+                             (SELECT nameid FROM name WHERE name = %s),
+                             %s
+                         ) ON CONFLICT (steamid64) DO NOTHING;""",
+                      (steamid, msg['name'], info['date']))
         c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
                   (logid, steamid, seq, msg['msg']))
 
