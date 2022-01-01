@@ -82,7 +82,7 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
            JOIN player_stats AS ps USING (logid)
            JOIN map USING (mapid)
            LEFT JOIN format USING (formatid)
-           JOIN (SELECT
+           LEFT JOIN (SELECT
                      logid,
                      steamid64,
                      array_agg(class ORDER BY duration DESC) AS classes,

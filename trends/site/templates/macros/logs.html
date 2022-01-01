@@ -50,9 +50,11 @@
 			</td>
 			<td class="left">{{ log['map'] }}</td>
 			<td class="left">
+			{% if log['classes'] %}
 			{% for (cls, pct) in zip(log['classes'], log['class_pct']) %}
 				{{ classicon(cls, pct) }}
 			{% endfor %}
+			{% endif %}
 			</td>
 			<td>{{ wlt(log['wins'], log['losses'], log['ties']) }}</td>
 			<td class="left">{{ log['format'] }}</td>
