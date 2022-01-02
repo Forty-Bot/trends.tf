@@ -14,8 +14,12 @@
 		'kills': "Kills per 30 minutes",
 		'dpm': "Damage per minute",
 		'acc': "Accuracy",
+		'dps': "Damage per shot",
+		'dph': "Damage per hit",
 		'total_kills': "Kills",
 		'dmg': "Damage",
+		'shots': "Shots",
+		'hits': "Hits",
 		'logs': "Logs",
 		'time': "Time played",
 	}) }}
@@ -27,8 +31,12 @@
 	</abbr></th>
 	<th><abbr title="Damage/Minute">D/M</abbr></th>
 	<th><abbr title="Accuracy">Acc</abbr></th>
+	<th><abbr title="Damage/Shot">D/S</abvbr></th>
+	<th><abbr title="Damage/Hit">D/H</abvbr></th>
 	<th>Kills</th>
 	<th>Damage</th>
+	<th>Shots</th>
+	<th>Hits</th>
 	<th>Logs</th>
 	<th><abbr title="Time on class for logs with this weapon">Time played</abbr></th>
 </tr>
@@ -42,8 +50,12 @@
 				<td>{{ optformat("{:.1f}", weapon['k30']) }}</td>
 				<td>{{ optint(weapon['dpm']) }}</td>
 				<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
+				<td>{{ optint(weapon['dps']) }}</td>
+				<td>{{ optint(weapon['dph']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['kills']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['dmg']) }}</td>
+				<td>{{ optint(weapon['shots']) }}</td>
+				<td>{{ optint(weapon['hits']) }}</td>
 				<td>{{ "{:,.0f}".format(weapon['logs']) }}</td>
 				<td>{{ weapon['duration'] | duration }}</td>
 			</tr>
