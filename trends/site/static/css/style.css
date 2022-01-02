@@ -11,6 +11,8 @@
 	--visited: #3e3c2a;
 	--red: #A75D50;
 	--blue: #5B818F;
+	--green: #729E42;
+	--drab: #C5AF91;
 	--lighttext: #fff;
 }
 
@@ -179,7 +181,7 @@ a.sort {
 	display: none;
 }
 
-.red {
+.red, .loss {
 	background-color: var(--red);
 	color: var(--lighttext);
 }
@@ -187,6 +189,15 @@ a.sort {
 .blue {
 	background-color: var(--blue);
 	color: var(--lighttext);
+}
+
+.win {
+	background-color: var(--green);
+	color: var(--lighttext);
+}
+
+.tie {
+	background-color: var(--drab);
 }
 
 input:disabled {
