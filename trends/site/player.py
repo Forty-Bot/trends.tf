@@ -89,29 +89,23 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                      array_agg(duration ORDER BY duration DESC) AS class_durations
                  FROM class_stats
                  JOIN class USING (classid)
-                 -- Duplicated to reduce the fallout from postgres's abysmal join estimates
+                 -- Duplicate of below, but sqlite is dumb...
                  WHERE steamid64 = %(steamid)s
                  GROUP BY logid, steamid64
-                 ORDER BY {1} NULLS LAST
-                 LIMIT %(limit)s OFFSET %(offset)s
            ) AS classes USING (logid, steamid64)
            LEFT JOIN (SELECT
                    logid,
                    steamid64,
                    total(hits) / nullif(sum(shots), 0.0) AS acc
                FROM weapon_stats
-               -- ditto
-               WHERE steamid64 = %(steamid)s
                GROUP BY logid, steamid64
-               ORDER BY {1} NULLS LAST
-               LIMIT %(limit)s OFFSET %(offset)s
            ) AS ws USING (logid, steamid64)
            LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
            LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
            LEFT JOIN class ON (primary_classid=classid)
            WHERE ps.steamid64 = %(steamid)s
-               {0}
-           ORDER BY {1} NULLS LAST
+               {}
+           ORDER BY {} NULLS LAST
            LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
         { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
     return logs
