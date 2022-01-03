@@ -325,7 +325,7 @@
 		{% for team in totals %}
 		{% set teamsym = team['team'] | lower %}
 		{% set log_rounds = rounds | selectattr('logid', 'eq', team['logid']) | list %}
-		<tr id="{{ team['logid'] }}{{ team['teamid'] }}" class="hider">
+		<tr id="{{ team['logid'] }}_{{ team['teamid'] }}" class="hider">
 			{% for logid in logids %}
 				{% if logid == team['logid'] %}
 					<td class="left {{ team['team'] | lower }}">
@@ -340,7 +340,7 @@
 			<td>{{ team['duration'] | duration }}</td>
 		</tr>
 			{% for round in log_rounds %}
-			<tr class="{{ team['logid'] }}{{ team['teamid'] }} hidden">
+			<tr class="{{ team['logid'] }}_{{ team['teamid'] }} hidden">
 				{% for logid in logids %}
 					<td class="left">
 						{{ round['seq'] + 1 if logid == team['logid'] }}
@@ -380,7 +380,7 @@
 		</thead>
 		<tbody class="hier">
 		{% for medic in medics %}
-		<tr id="medic{{ medic['steamid64'] }}" class="hider">
+		<tr id="medic_{{ medic['steamid64'] }}" class="hider">
 			{{ team_cols(medic) }}
 			{{ player_col(players[medic['steamid64']]) }}
 			<td class="left">{{ classicon('medic') }}</td>
@@ -394,13 +394,13 @@
 			<td>{{ optint(medic['drops']) }}</td>
 			<td>{{ optint(medic['advantages_lost']) }}</td>
 			<td>{{ medic['biggest_advantage_lost'] | duration if
-			       medic['biggest_advantage_lost'] != None}}</td>
+			       medic['biggest_advantage_lost'] != None }}</td>
 			<td>{{ optint(medic['deaths_after_uber']) }}</td>
 			<td>{{ optint(medic['deaths_before_uber']) }}</td>
 			<td>{{ medic['duration'] | duration }}</td>
 		</tr>
 			{% for healee in medic['healees'] or [] %}
-			<tr class="medic{{ medic['steamid64'] }} hidden">
+			<tr class="medic_{{ medic['steamid64'] }} hidden">
 				{% for logid in logids %}
 					{% set team =
 					   players[healee['steamid64']]['teams'][logid | string] %}
