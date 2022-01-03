@@ -7,6 +7,8 @@
 	--border: #aaa;
 	--bg: #fffcf7;
 	--darkbg: #eee;
+	--darkerbg: #ddd;
+	--darkestbg: #ccc;
 	--link: #3F56AD;
 	--visited: #3e3c2a;
 	--red: #A75D50;
@@ -174,7 +176,19 @@ a.sort {
 }
 
 .hider:hover {
+	background-color: var(--darkerbg);
+}
+
+.hidable {
 	background-color: var(--darkbg);
+}
+
+.hider.hidable:hover {
+	background-color: var(--darkestbg);
+}
+
+.hidable2 {
+	background-color: var(--darkerbg);
 }
 
 .hidden {

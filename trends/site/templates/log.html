@@ -36,7 +36,7 @@
 {% macro weapon_table(steamid64, class, weapons) %}
 	{% for weapon in weapons %}
 		{% if loop.first %}
-		<tr class="{{ steamid64 }}_{{ class }} hidden">
+		<tr class="{{ steamid64 }}_{{ class }} hidden hidable2">
 			<td colspan="{{ logids | count + 1 }}"></th>
 			<th>Weapon</th>
 			<th><abbr title="Kills">K</abbr></th>
@@ -46,9 +46,10 @@
 			<th></th>
 			<th><abbr title="Accuracy">Acc</abbr></th>
 			<th><abbr title="Damage per shot">DA/S</abbr></th>
+			<td colspan="{{ has.values() | sum + 3 }}"></td>
 		</tr>
 		{% endif %}
-	<tr class="{{ steamid64 }}_{{ class }} hidden">
+	<tr class="{{ steamid64 }}_{{ class }} hidden hidable2">
 		<td colspan="{{ logids | count + 1 }}"></th>
 		<td>{{ weapon['weapon'] }}</td>
 		<td>{{ weapon['kills'] }}</td>
@@ -57,13 +58,14 @@
 		<td></td>
 		<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
 		<td>{{ optint(weapon['dps']) }}</td>
+		<td colspan="{{ has.values() | sum + 3 }}"></td>
 	</tr>
 	{% endfor %}
 {% endmacro %}
 {% macro class_table(steamid64, classes) %}
 	{% for cls in classes %}
-		<tr id="{{ steamid64 }}_{{ cls['class'] }}"
-		 class="{{ steamid64 }} hider hidden">
+	<tr id="{{ steamid64 }}_{{ cls['class'] }}"
+	    class="{{ steamid64 }} hider hidden hidable">
 		<td colspan="{{ logids | count + 1 }}"></th>
 		<td class="left">{{ classicon(cls['class'], cls['pct']) }}</td>
 		<td>{{ cls['kills'] }}</td>
@@ -249,7 +251,7 @@
 			{% elif blue_diff > red_diff %}
 				{% set rwinner = 'blue' %}
 			{% endif %}
-			<tr class="{{ round['logid'] }} hidden">
+			<tr class="{{ round['logid'] }} hidden hidable">
 			<td></td>
 			<td></td>
 			<td></td>
@@ -260,6 +262,7 @@
 				{{ round['blue_score'] }}
 			</td>
 			<td>{{ round['duration'] | duration }}</td>
+			<td colspan="3"></td>
 		</tr>
 		{% endfor %}
 	{% endfor %}
@@ -340,7 +343,7 @@
 			<td>{{ team['duration'] | duration }}</td>
 		</tr>
 			{% for round in log_rounds %}
-			<tr class="{{ team['logid'] }}_{{ team['teamid'] }} hidden">
+			<tr class="{{ team['logid'] }}_{{ team['teamid'] }} hidden hidable">
 				{% for logid in logids %}
 					<td class="left">
 						{{ round['seq'] + 1 if logid == team['logid'] }}
@@ -400,7 +403,7 @@
 			<td>{{ medic['duration'] | duration }}</td>
 		</tr>
 			{% for healee in medic['healees'] or [] %}
-			<tr class="medic_{{ medic['steamid64'] }} hidden">
+			<tr class="medic_{{ medic['steamid64'] }} hidden hidable">
 				{% for logid in logids %}
 					{% set team =
 					   players[healee['steamid64']]['teams'][logid | string] %}
