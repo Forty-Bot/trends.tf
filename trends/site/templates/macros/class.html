@@ -14,7 +14,8 @@
 	 src="{{ url_for('static', filename="img/{}.png".format(cls)) }}"
 	 alt="{{ class_map[cls] }}"
 	{% if pct != None %}
-		 title="{{ "{:.0%}".format(pct) }}"
+		title="{{ "{:.0%}".format(pct) }}"
+		style="opacity: {{ "{:.0%}".format(pct | float | opacit) }}"
 	{% endif %}
 	>
 {% endmacro %}

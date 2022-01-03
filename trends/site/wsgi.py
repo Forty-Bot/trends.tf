@@ -63,6 +63,13 @@ def anynone(iterable):
             return False
     return True
 
+# opacit(0) = 0.2
+# opacit(1) = 1
+# opacit(0.5) = 0.6
+# opacit'(0.5) = 0.2
+def opacit(x):
+    return x * (x * (2.4 * x - 3.6) + 2) + 0.2
+
 class StaticHashDefaults:
     def __init__(self, app):
         self.app = app
@@ -121,6 +128,7 @@ def create_app():
     app.add_template_filter(any)
     app.add_template_filter(all)
     app.add_template_filter(anynone)
+    app.add_template_filter(opacit)
     app.add_template_filter(duration_filter, 'duration')
     app.add_template_filter(avatar_filter, 'avatar')
 
