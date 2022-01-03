@@ -62,7 +62,11 @@
 	</tr>
 	{% endfor %}
 {% endmacro %}
+{% macro padding(id) %}
+	<tr class="{{ id }} hidden padding-row"></tr>
+{% endmacro %}
 {% macro class_table(steamid64, classes) %}
+	{{ padding(steamid64) }}
 	{% for cls in classes %}
 	<tr id="{{ steamid64 }}_{{ cls['class'] }}"
 	    class="{{ steamid64 }} hider hidden hidable">
@@ -81,7 +85,11 @@
 		<td>{{ cls['duration'] | duration }}</td>
 	</tr>
 	{{ weapon_table(steamid64, cls['class'], cls.weapon_stats) if cls.weapon_stats }}
+	{% if not loop.last %}
+		{{ padding("{}_{}".format(steamid64, cls['class'])) }}
+	{% endif %}
 	{% endfor %}
+	{{ padding(steamid64) }}
 {% endmacro %}
 {% macro player_headers() %}
 	<th colspan="{{ logids | count }}">{{ ngettext("Team", "Teams", logids | count) }}</th>
@@ -251,6 +259,9 @@
 			{% elif blue_diff > red_diff %}
 				{% set rwinner = 'blue' %}
 			{% endif %}
+			{% if loop.first %}
+				{{ padding(round['logid']) }}
+			{% endif %}
 			<tr class="{{ round['logid'] }} hidden hidable">
 			<td></td>
 			<td></td>
@@ -263,6 +274,9 @@
 			</td>
 			<td>{{ round['duration'] | duration }}</td>
 			<td colspan="3"></td>
+			{% if loop.last %}
+				{{ padding(round['logid']) }}
+			{% endif %}
 		</tr>
 		{% endfor %}
 	{% endfor %}
@@ -343,6 +357,9 @@
 			<td>{{ team['duration'] | duration }}</td>
 		</tr>
 			{% for round in log_rounds %}
+			{% if loop.first %}
+				{{ padding("{}_{}".format(team['logid'], team['teamid'])) }}
+			{% endif %}
 			<tr class="{{ team['logid'] }}_{{ team['teamid'] }} hidden hidable">
 				{% for logid in logids %}
 					<td class="left">
@@ -358,6 +375,9 @@
 				<td>{{ round["{}_ubers".format(teamsym)] | int }}</td>
 				<td>{{ round['duration'] | duration }}</td>
 			</tr>
+			{% if loop.last %}
+				{{ padding("{}_{}".format(team['logid'], team['teamid'])) }}
+			{% endif %}
 			{% endfor %}
 		{% endfor %}
 		</tbody>
@@ -403,6 +423,9 @@
 			<td>{{ medic['duration'] | duration }}</td>
 		</tr>
 			{% for healee in medic['healees'] or [] %}
+			{% if loop.first %}
+				{{ padding("medic_{}".format(medic['steamid64'])) }}
+			{% endif %}
 			<tr class="medic_{{ medic['steamid64'] }} hidden hidable">
 				{% for logid in logids %}
 					{% set team =
@@ -424,6 +447,9 @@
 				<td colspan="9"></td>
 				<td>{{ healee['duration'] | duration }}</td>
 			</tr>
+			{% if loop.last %}
+				{{ padding("medic_{}".format(medic['steamid64'])) }}
+			{% endif %}
 			{% endfor %}
 		{% endfor %}
 		</tbody>

@@ -195,6 +195,10 @@ a.sort {
 	display: none;
 }
 
+.padding-row {
+	height: 1em;
+}
+
 .red, .loss {
 	background-color: var(--red);
 	color: var(--lighttext);
