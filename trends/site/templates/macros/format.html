@@ -8,6 +8,11 @@
 {% macro optint(n) %}
 	{{ n | int if n != None }}
 {% endmacro %}
+{% macro comma_col(val) %}
+	<td data-value="{{ val if val != None }}">
+		{{ optformat("{:,.0f}", val) }}
+	</td>
+{% endmacro %}
 {% macro duration_col(dur) %}
 	<td data-value="{{ dur }}">
 		{{ dur | duration }}

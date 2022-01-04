@@ -1,28 +1,18 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
-{% from "macros/format.html" import optformat, optint %}
-{% from "macros/sort.html" import sort %}
+{% from "macros/format.html" import comma_col, duration_col, optformat, optint %}
 {% extends "player/base.html" %}
 {% block title %}Weapons - {{ super() }}{% endblock %}
+{% block head %}
+	{{ super() }}
+	<script type="text/javascript",
+		src="{{ url_for('static', filename="js/sort.js") }}" defer></script>
+{% endblock %}
 {% block content %}
 	{{ super() }}
 	<h2>Weapons</h2>
 	{{ filter() }}
-	{{ sort({
-		'weapon': "Weapon name",
-		'kills': "Kills per 30 minutes",
-		'dpm': "Damage per minute",
-		'acc': "Accuracy",
-		'dps': "Damage per shot",
-		'dph': "Damage per hit",
-		'total_kills': "Kills",
-		'dmg': "Damage",
-		'shots': "Shots",
-		'hits': "Hits",
-		'logs': "Logs",
-		'time': "Time played",
-	}) }}
 {% macro header() %}
 <tr>
 	<th>Weapon</th>
@@ -42,7 +32,7 @@
 </tr>
 {% endmacro %}
 	<table>
-		<thead>{{ header() }}</thead>
+		<thead class="sortable">{{ header() }}</thead>
 		<tbody>
 			{% for weapon in weapons %}
 			<tr>
@@ -52,15 +42,15 @@
 				<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
 				<td>{{ optint(weapon['dps']) }}</td>
 				<td>{{ optint(weapon['dph']) }}</td>
-				<td>{{ "{:,.0f}".format(weapon['kills']) }}</td>
-				<td>{{ "{:,.0f}".format(weapon['dmg']) }}</td>
-				<td>{{ optint(weapon['shots']) }}</td>
-				<td>{{ optint(weapon['hits']) }}</td>
-				<td>{{ "{:,.0f}".format(weapon['logs']) }}</td>
-				<td>{{ weapon['duration'] | duration }}</td>
+				{{ comma_col(weapon['kills']) }}
+				{{ comma_col(weapon['dmg']) }}
+				{{ comma_col(weapon['shots']) }}
+				{{ comma_col(weapon['hits']) }}
+				{{ comma_col(weapon['logs']) }}
+				{{ duration_col(weapon['duration']) }}
 			</tr>
 			{% endfor %}
 		</tbody>
-		<tfoot>{{ header() }}</tfoot>
+		<tfoot class="sortable">{{ header() }}</tfoot>
 	</table>
 {% endblock %}

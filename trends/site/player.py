@@ -392,20 +392,6 @@ def totals(steamid):
 def weapons(steamid):
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'classid', *base_filter_columns)
-    order, order_clause = get_order({
-        'weapon': 'weapon',
-        'kills': 'k30',
-        'dpm': 'dpm',
-        'acc': 'acc',
-        'dps': 'dps',
-        'dph': 'dph',
-        'total_kills': 'kills',
-        'shots': 'shots',
-        'hits': 'hits',
-        'dmg': 'dmg',
-        'logs': 'logs',
-        'time': 'duration',
-    }, 'weapon', 'asc')
     weapons = get_db().cursor()
     weapons.execute(
         """SELECT
@@ -428,7 +414,7 @@ def weapons(steamid):
            WHERE steamid64 = %(steamid)s
                {}
            GROUP BY weapon
-           ORDER BY {} NULLS LAST;""".format(filter_clauses, order_clause),
+           ORDER BY weapon ASC NULLS LAST;""".format(filter_clauses),
         {'steamid': steamid, **filters})
     return flask.render_template("player/weapons.html", weapons=weapons)
 
