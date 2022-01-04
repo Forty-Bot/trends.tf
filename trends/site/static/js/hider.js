@@ -17,7 +17,7 @@ function update_hidden(hider, hide, recursive) {
 	}
 }
 
-function register_hiders() {
+document.addEventListener('DOMContentLoaded', () => {
 	hiders = document.getElementsByClassName("hider");
 	for (let hider of hiders) {
 		hider.addEventListener('click', function (evt) {
@@ -34,5 +34,4 @@ function register_hiders() {
 			block: 'center',
 		});
 	}
-}
-document.addEventListener('DOMContentLoaded', register_hiders);
+});

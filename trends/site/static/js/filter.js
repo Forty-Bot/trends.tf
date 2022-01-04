@@ -10,18 +10,17 @@ function unwrap_json(response) {
 	return response.json();
 }
 
-function autocomplete_maps() {
-	fetch("/api/v1/maps")
-		.then(unwrap_json)
-		.then(json => {
+document.addEventListener('DOMContentLoaded', () => {
+	document.getElementById('map_input').addEventListener('focus', () => {
+		fetch("/api/v1/maps").then(unwrap_json).then(json => {
 			json.maps.forEach(map => {
 				option = document.createElement("option");
 				option.setAttribute('value', map);
 				maplist.append(option);
 			});
-		})
-}
-document.getElementById('map_input').addEventListener('focus', autocomplete_maps, {once: true });
+		});
+	}, {once: true });
+});
 
 function render_option(data, escape) {
 	div = document.createElement('div');

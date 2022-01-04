@@ -26,11 +26,10 @@ function update_checkboxes() {
 	}
 }
 
-function register_checkboxes() {
+document.addEventListener('DOMContentLoaded', () => {
 	checkboxes = document.querySelectorAll("input[form=combine]");
 	for (let checkbox of checkboxes) {
 		checkbox.addEventListener('change', update_checkboxes);
 	}
 	update_checkboxes();
-}
-document.addEventListener('DOMContentLoaded', register_checkboxes);
+});

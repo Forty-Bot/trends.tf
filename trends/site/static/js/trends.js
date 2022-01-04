@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		maximumFractionDigits: 2
 	})).format;
 
-
 	const base_config = (format) => ({
 		type: 'line',
 		// Keep track of the last hovered over logid so the onClick works
