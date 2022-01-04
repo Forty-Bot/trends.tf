@@ -28,7 +28,7 @@ function register_hiders() {
 	}
 
 	target = document.getElementById(window.location.hash.substring(1));
-	if (target.classList.contains("hider")) {
+	if (target && target.classList.contains("hider")) {
 		update_hidden(target, false, true);
 		target.scrollIntoView({
 			block: 'center',
