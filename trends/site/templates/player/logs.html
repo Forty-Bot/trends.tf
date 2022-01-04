@@ -1,6 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
+{% from "macros/js.html" import local_js %}
 {% from "macros/pagination.html" import navigation %}
 {% from "macros/sort.html" import sort %}
 {% from "macros/logs.html" import log_table %}
@@ -8,8 +9,7 @@
 {% block title %}Logs - {{ super() }}{% endblock %}
 {% block head %}
 	{{ super() }}
-	<script type="text/javascript"
-		src="{{ url_for('static', filename="js/combine.js") }}" defer></script>
+	{{ local_js("js/combine.js") }}
 {% endblock %}
 {% block content %}
 	{{ super() }}

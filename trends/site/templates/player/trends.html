@@ -2,6 +2,7 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
 {% from "macros/form.html" import hidden_excluding %}
+{% from "macros/js.html" import local_js %}
 {% extends "player/base.html" %}
 {% block title %}Trends - {{ super() }}{% endblock %}
 {% block head %}
@@ -9,8 +10,7 @@
 	<script type="text/javascript" defer>steamid64 = "{{ g.player['steamid64'] }}";</script>
 	<script id="trend-data" type="application/json">{{ trends | tojson }}</script>
 	<script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
-	<script type="text/javascript"
-		src="{{ url_for('static', filename="js/trends.js") }}" defer></script>
+	{{ local_js("js/trends.js") }}
 {% endblock %}
 {% block content %}
 	{{ super() }}

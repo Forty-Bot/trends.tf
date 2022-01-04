@@ -2,6 +2,7 @@
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/class.html" import class_map, classicon %}
 {% from "macros/format.html" import duration_col, optformat, optint %}
+{% from "macros/js.html" import local_js %}
 {% extends "base.html" %}
 {% set has = {
 	'dt': False,
@@ -27,10 +28,8 @@
 {% endblock %}
 {% block head %}
 	{{ super() }}
-	<script type="text/javascript"
-		src="{{ url_for('static', filename="js/hider.js") }}" defer></script>
-	<script type="text/javascript",
-		src="{{ url_for('static', filename="js/sort.js") }}" defer></script>
+	{{ local_js("js/hider.js") }}
+	{{ local_js("js/sort.js") }}
 {% endblock %}
 {% macro div(dividend, divisor) %}
 	{{ divident / divisor if divisor }}

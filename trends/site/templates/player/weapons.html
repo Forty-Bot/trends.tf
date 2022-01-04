@@ -2,12 +2,12 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
 {% from "macros/format.html" import comma_col, duration_col, optformat, optint %}
+{% from "macros/js.html" import local_js %}
 {% extends "player/base.html" %}
 {% block title %}Weapons - {{ super() }}{% endblock %}
 {% block head %}
 	{{ super() }}
-	<script type="text/javascript",
-		src="{{ url_for('static', filename="js/sort.js") }}" defer></script>
+	{{ local_js("js/sort.js") }}
 {% endblock %}
 {% block content %}
 	{{ super() }}

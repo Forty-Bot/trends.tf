@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/js.html" import local_js %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,14 +9,11 @@
 	<link rel="stylesheet" type="text/css"
 	 href="{{ url_for('static', filename='css/style.css') }}">
 	<title>{% block title %}trends.tf{% endblock %}</title>
-	<script type="text/javascript"
-		src="{{ url_for('static', filename="js/dates.js") }}" defer></script>
-	<script type="module"
-	 src="https://cdn.jsdelivr.net/npm/tom-select@2.0.0/dist/js/tom-select.popular.min.js"></script>
-	<link rel="stylesheet" type="text/css"
-	 href="https://cdn.jsdelivr.net/npm/tom-select@2.0.0/dist/css/tom-select.min.css">
-	<script type="text/javascript"
-		src="{{ url_for('static', filename="js/filter.js") }}" defer></script>
+	{% set tom_select_prefix = "https://cdn.jsdelivr.net/npm/tom-select@2.0.0/dist" %}
+	<script type="module" src="{{ tom_select_prefix }}/js/tom-select.popular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ tom_select_prefix }}/css/tom-select.min.css">
+	{{ local_js("js/dates.js") }}
+	{{ local_js("js/filter.js") }}
 	<link rel="icon" href="{{ url_for('static', filename="img/favicon.ico") }}">
 {% endblock %}
 </head>
