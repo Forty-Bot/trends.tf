@@ -1,3 +1,11 @@
+/* SPDX-License-Identifier: AGPL-3.0-only AND MIT */
+/* Copyright (C) 2020-22 Sean Anderson <seanga2@gmail.com>
+ * Copyright (c) 2014 Christian Bach
+ *
+ * The sorting arrow inline images are from the tablesorter project, licensed MIT. Everything else
+ * is AGPL-3.0-only.
+ */
+
 /* Global variables for changing colours across the site */
 :root {
 	--heading: #f3a957;
@@ -173,6 +181,22 @@ a.sort {
 
 .hider {
 	cursor: pointer;
+}
+
+.sortable th {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+	padding-right: 1em;
+}
+
+.sortable th.asc {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+}
+
+.sortable th.desc {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
 }
 
 .hider:hover {

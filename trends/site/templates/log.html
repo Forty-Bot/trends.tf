@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/class.html" import class_map, classicon %}
-{% from "macros/format.html" import optformat, optint %}
+{% from "macros/format.html" import duration_col, optformat, optint %}
 {% extends "base.html" %}
 {% set has = {
 	'dt': False,
@@ -29,6 +29,8 @@
 	{{ super() }}
 	<script type="text/javascript"
 		src="{{ url_for('static', filename="js/hider.js") }}" defer></script>
+	<script type="text/javascript",
+		src="{{ url_for('static', filename="js/sort.js") }}" defer></script>
 {% endblock %}
 {% macro div(dividend, divisor) %}
 	{{ divident / divisor if divisor }}
@@ -36,7 +38,7 @@
 {% macro weapon_table(steamid64, class, weapons) %}
 	{% for weapon in weapons %}
 		{% if loop.first %}
-		<tr class="{{ steamid64 }}_{{ class }} hidden hidable2">
+		<tr class="{{ steamid64 }}_{{ class }} hidden hidable2 subhead">
 			<td colspan="{{ logids | count + 1 }}"></th>
 			<th>Weapon</th>
 			<th><abbr title="Kills">K</abbr></th>
@@ -58,7 +60,7 @@
 		<td></td>
 		<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
 		<td>{{ optint(weapon['dps']) }}</td>
-		<td colspan="{{ has.values() | sum + 3 }}"></td>
+		<td colspan="{{ has.values() | sum + 4 }}"></td>
 	</tr>
 	{% endfor %}
 {% endmacro %}
@@ -71,7 +73,9 @@
 	<tr id="{{ steamid64 }}_{{ cls['class'] }}"
 	    class="{{ steamid64 }} hider hidden hidable">
 		<td colspan="{{ logids | count + 1 }}"></th>
-		<td class="left">{{ classicon(cls['class'], cls['pct']) }}</td>
+		<td class="left" data-value="{{ cls['classid'] }}">
+			{{ classicon(cls['class'], cls['pct']) }}
+		</td>
 		<td>{{ cls['kills'] }}</td>
 		<td>{{ cls['deaths'] }}</td>
 		<td>{{ cls['assists'] }}</td>
@@ -82,7 +86,7 @@
 		{% endif %}
 		{# +3 for heal/hpm/lks #}
 		<td colspan="{{ has.values() | sum - has['dt'] + 3 }}"></td>
-		<td>{{ cls['duration'] | duration }}</td>
+		{{ duration_col(cls['duration']) }}
 	</tr>
 	{{ weapon_table(steamid64, cls['class'], cls.weapon_stats) if cls.weapon_stats }}
 	{% if not loop.last %}
@@ -92,7 +96,9 @@
 	{{ padding(steamid64) }}
 {% endmacro %}
 {% macro player_headers() %}
-	<th colspan="{{ logids | count }}">{{ ngettext("Team", "Teams", logids | count) }}</th>
+	<th colspan="{{ logids | count }}">
+		{{ ngettext("Team", "Teams", logids | count) }}
+	</th>
 	<th>Player</th>
 {% endmacro %}
 {% macro stat_headers() %}
@@ -136,10 +142,25 @@
 		<th><abbr title="Intelligences Captured">IC</abbr></th>
 	{% endif %}
 {% endmacro %}
-{% macro team_cols(player) %}
-	{% for logid in logids %}
-		{% set team = player['teams'][logid | string] %}
-		<td class="left {{ team | lower }}">{{ team }}</td>
+{% macro team_cols(player, medic=None) %}
+	{% set teamids = [] %}
+	{% for logid in logids | map('string') %}
+		{% if not medic or medic['teamids'][logid] %}
+			{% do teamids.append(player['teamids'].get(logid, 500)) %}
+		{% endif %}
+	{% endfor %}
+
+	{% for logid in logids | map('string') %}
+		{% if not medic or medic['teamids'][logid] %}
+			{% set team = player['teams'][logid] %}
+		{% endif %}
+		<td class="left {{ team | lower }}"
+		{% if loop.first %}
+		 data-value="{{ teamids | join(",") }}"
+		{% endif %}
+		>
+		{{ team }}
+		</td>
 	{% endfor %}
 {% endmacro %}
 {% macro player_col(player) %}
@@ -305,37 +326,39 @@
 	{% endif %}
 	<h2>Players</h2>
 	<table>
-		<thead>{{ player_table_header() }}</thead>
+		<thead class="sortable">{{ player_table_header() }}</thead>
 		<tbody class="hier">
 		{% for player in players.values() %}
 			<tr id="{{ player['steamid64'] }}"
 			 class="{{ "hider" if player.class_stats }}">
 			{{ team_cols(player) }}
 			{{ player_col(player) }}
-			<td class="left">
-				{% if player.class_stats %}
+			<td class="left"
+			{% if player.class_stats %}
+			 data-value="{{ player.class_stats | map(attribute='classid') | join(',') }}">
 					{% for cls in player.class_stats %}
 						{{ classicon(cls['class'], cls['pct']) }}
 					{% endfor %}
-				{% endif %}
+			{% else %}
+			 >
+			{% endif %}
 			</td>
 			{{ stat_cols(player) }}
-			<td>{{ player.class_stats | map(attribute='duration')
-			       | sum | duration }}</td>
+			{{ duration_col(player.class_stats | map(attribute='duration') | sum) }}
 		</tr>
 		{% if player.class_stats %}
 			{{ class_table(player['steamid64'], player.class_stats) }}
 		{% endif %}
 		{% endfor %}
 		</tbody>
-		<tfoot>{{ player_table_header() }}</tfoot>
+		<tfoot class="sortable">{{ player_table_header() }}</tfoot>
 	</table>
 	<h2>Totals</h2>
 	<table>
-		<thead>
+		<thead class="sortable">
 			<th colspan="{{ logids | count }}">Team/Round</th>
 			{{ stat_headers() }}
-			<th><abbr title="Ubers">U</abbr></th>
+			<th><abbr title="Übers">U</abbr></th>
 			<th>Duration</th>
 		</thead>
 		<tbody class="hier">
@@ -343,18 +366,31 @@
 		{% set teamsym = team['team'] | lower %}
 		{% set log_rounds = rounds | selectattr('logid', 'eq', team['logid']) | list %}
 		<tr id="{{ team['logid'] }}_{{ team['teamid'] }}" class="hider">
+			{% set team_key = [500] * 5 %}
 			{% for logid in logids %}
 				{% if logid == team['logid'] %}
-					<td class="left {{ team['team'] | lower }}">
+					{% do team_key.__setitem__(loop.index0, team['teamid']) %}
+				{% endif %}
+			{% endfor %}
+
+			{% for logid in logids %}
+				{% if logid == team['logid'] %}
+					<td class="left {{ team['team'] | lower }}"
+					{% if loop.first %}
+					 data-value="{{ team_key | join(',') }}"
+					{% endif %}
+					>
 						{{ team['team'] }}
 					</td>
+				{% elif loop.first %}
+					<td data-value="{{ team_key | join(',') }}"></td>
 				{% else %}
 					<td></td>
 				{% endif %}
 			{% endfor %}
 			{{ stat_cols(team) }}
 			<td>{{ log_rounds | map(attribute="{}_ubers".format(teamsym)) | sum }}</td>
-			<td>{{ team['duration'] | duration }}</td>
+			{{ duration_col(team['duration']) }}
 		</tr>
 			{% for round in log_rounds %}
 			{% if loop.first %}
@@ -362,7 +398,11 @@
 			{% endif %}
 			<tr class="{{ team['logid'] }}_{{ team['teamid'] }} hidden hidable">
 				{% for logid in logids %}
-					<td class="left">
+					<td class="left"
+					{% if loop.first %}
+					 data-value="{{ round['seq'] + 1 }}"
+					{% endif %}
+					>
 						{{ round['seq'] + 1 if logid == team['logid'] }}
 					</td>
 				{% endfor %}
@@ -373,7 +413,7 @@
 				<td>{{ round["{}_dpm".format(teamsym)] | int }}</td>
 				<td colspan="{{ has.values() | sum + has['dt'] + 3 }}"></td>
 				<td>{{ round["{}_ubers".format(teamsym)] | int }}</td>
-				<td>{{ round['duration'] | duration }}</td>
+				{{ duration_col(round['duration']) }}
 			</tr>
 			{% if loop.last %}
 				{{ padding("{}_{}".format(team['logid'], team['teamid'])) }}
@@ -384,7 +424,7 @@
 	</table>
 	<h2>Medics</h2>
 	<table>
-		<thead>
+		<thead class="sortable">
 			{{ player_headers() }}
 			<th>Class</th>
 			<th><abbr title="Healing">H</abbr></th>
@@ -416,23 +456,22 @@
 			<td>{{ optint(medic['other_ubers']) }}</td>
 			<td>{{ optint(medic['drops']) }}</td>
 			<td>{{ optint(medic['advantages_lost']) }}</td>
-			<td>{{ medic['biggest_advantage_lost'] | duration if
-			       medic['biggest_advantage_lost'] != None }}</td>
+			{% set ad_lost = medic['biggest_advantage_lost'] %}
+			{% if ad_lost != None %}
+				{{ duration_col(ad_lost) }}
+			{% else %}
+				<td></td>
+			{% endif %}
 			<td>{{ optint(medic['deaths_after_uber']) }}</td>
 			<td>{{ optint(medic['deaths_before_uber']) }}</td>
-			<td>{{ medic['duration'] | duration }}</td>
+			{{ duration_col(medic['duration']) }}
 		</tr>
 			{% for healee in medic['healees'] or [] %}
 			{% if loop.first %}
 				{{ padding("medic_{}".format(medic['steamid64'])) }}
 			{% endif %}
 			<tr class="medic_{{ medic['steamid64'] }} hidden hidable">
-				{% for logid in logids %}
-					{% set team =
-					   players[healee['steamid64']]['teams'][logid | string] %}
-					{% set team = team if medic['teamids'][logid | string] %}
-					<td class="left {{ team | lower }}">{{ team }}</td>
-				{% endfor %}
+				{{ team_cols(players[healee['steamid64']], medic) }}
 				{{ player_col(players[healee['steamid64']]) }}
 				<td class="left">
 					{% for (cls, pct) in
@@ -445,7 +484,7 @@
 				<td>{{ optformat("{:.0%}", healee['healing']
 							   / medic['healing']) }}</td>
 				<td colspan="9"></td>
-				<td>{{ healee['duration'] | duration }}</td>
+				{{ duration_col(healee['duration']) }}
 			</tr>
 			{% if loop.last %}
 				{{ padding("medic_{}".format(medic['steamid64'])) }}
@@ -457,7 +496,7 @@
 	<h2>Events</h2>
 	{% macro event(event_stats) %}
 	<table>
-		<thead><tr>
+		<thead class="sortable"><tr>
 			{{ player_headers() }}
 			<th>Scout</th>
 			<th>Soldier</th>

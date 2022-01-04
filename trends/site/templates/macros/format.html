@@ -8,3 +8,8 @@
 {% macro optint(n) %}
 	{{ n | int if n != None }}
 {% endmacro %}
+{% macro duration_col(dur) %}
+	<td data-value="{{ dur }}">
+		{{ dur | duration }}
+	</td>
+{% endmacro %}
