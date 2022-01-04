@@ -3,7 +3,7 @@
 
 import flask
 
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
+from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, get_pagination
 from ..util import clamp
 
 player = flask.Blueprint('player', __name__)
@@ -11,6 +11,12 @@ player = flask.Blueprint('player', __name__)
 @player.url_value_preprocessor
 def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
+    mc = get_mc()
+    key = "overview_{}".format(values['steamid'])
+    if player_overview := mc.get(key):
+        flask.g.player = player_overview
+        return
+
     cur = get_db().cursor()
     cur.execute(
         """SELECT
@@ -38,6 +44,7 @@ def get_player(endpoint, values):
 
     for row in cur:
         flask.g.player = row
+        mc.set(key, row, time=300)
         break
     else:
         flask.abort(404)

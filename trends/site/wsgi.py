@@ -25,10 +25,11 @@ except ImportError:
 class DefaultConfig:
     DATABASE = "postgresql:///trends"
     TIMEOUT = 60000
+    MEMCACHED_SERVERS = "127.0.0.1:11211"
 
 class EnvConfig:
     def __init__(self):
-        for name in ("DATABASE", "TIMEOUT"):
+        for name in ("DATABASE", "TIMEOUT", "MEMCACHED_SERVERS"):
             val = os.environ.get(name)
             if val is not None:
                 setattr(self, name, val)

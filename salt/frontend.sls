@@ -41,6 +41,17 @@ uwsgi_{{ name }}_privs:
 
 # TODO: ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO uwsgi;
 
+memcached:
+  pkg.installed:
+    - refresh: False
+
+memcached.service:
+  service.running:
+    - enable: True
+    - reload: True
+    - requires:
+      - memcached
+
 {% if grains.os_family == 'Debian' %}
  {% set python = "python3" %}
  {% set uwsgi_socket = "/run/uwsgi/app/trends/socket" %}
@@ -86,10 +97,12 @@ virtualenv:
     - pkgs:
 {% if grains.os_family == 'Debian' %}
       - libpq-dev
+      - libmemcached-dev
       - python3-dev
       - python3
       - virtualenv
 {% else %}
+      - libmemcached
       - python
       - python-virtualenv
     - require:
@@ -115,7 +128,7 @@ setuptools_scm:
     - require:
       - /srv/uwsgi/trends/venv
 
-trends.tf[sentry]:
+trends.tf[cache,sentry]:
   pip.installed:
     - user: sean
     - editable: /srv/uwsgi/trends
@@ -145,6 +158,7 @@ uwsgi_service:
     - enable: True
     - reload: True
     - requires:
+      - memcached
       - /srv/uwsgi/trends
       - uwsgi_installed
       - uwsgi_config

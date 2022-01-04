@@ -15,6 +15,11 @@ from ..util import clamp
 from ..sql import db_connect
 
 try:
+    import pylibmc
+except ImportError:
+    pylibmc = None
+
+try:
     from .sentry import TracingCursor
 except ImportError:
     TracingCursor = None
@@ -42,6 +47,22 @@ def get_db():
 def put_db(exception):
     if db := flask.g.pop('db_conn', None):
         db.close()
+
+class NoopClient:
+    def get(self, key, default=None):
+        return default
+
+    def set(self, key, value, **kwargs):
+        pass
+
+@global_context('mc_conn')
+def get_mc():
+    if pylibmc:
+        try:
+            return pylibmc.Client((flask.current_app.config['MEMCACHED_SERVERS'],), binary=True)
+        except pylibmc.Error as error:
+            flask.current_app.logger.exception("Could not connect to memcached")
+    return NoopClient()
 
 @global_context('filters')
 def get_filter_params():

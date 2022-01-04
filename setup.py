@@ -29,6 +29,7 @@ setuptools.setup(
         'zstandard',
     ],
     extras_require = {
+        'cache': "pylibmc",
         'sentry': "sentry-sdk[flask]",
     },
     entry_points = {
