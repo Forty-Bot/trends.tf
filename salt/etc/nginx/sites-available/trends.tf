@@ -72,7 +72,7 @@ server {
 	}
 }
 
-# netdata metrics
+# munin metrics
 server {
 	listen                  443 ssl http2;
 	listen                  [::]:443 ssl http2;
@@ -85,14 +85,23 @@ server {
 	add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline' 'unsafe-eval'" always;
 
 	location / {
-		proxy_pass                        http://unix:/run/netdata/netdata.sock;
-		proxy_set_header Connection       $connection_upgrade;
-		proxy_set_header Host             $host;
-		proxy_set_header X-Forwarded-Host $host;
-		proxy_set_header X-Forwarded-Port $server_port;
+		include fastcgi_params;
 
-		proxy_http_version 1.1;
-		proxy_cache_bypass $http_upgrade;
+		fastcgi_pass unix:/run/munin/fcgi-html.sock;
+		fastcgi_param PATH_INFO $fastcgi_script_name;
+	}
+
+	location ^~ /graph/ {
+		include fastcgi_params;
+
+		fastcgi_split_path_info ^(/graph)(.*);
+		fastcgi_param PATH_INFO $fastcgi_path_info;
+		fastcgi_pass unix:/run/munin/fcgi-graph.sock;
+	}
+
+	location ^~ /static/ {
+		root /etc/munin/;
+		access_log off;
 	}
 }
 
@@ -105,6 +114,14 @@ server {
 	# ACME-challenge
 	location ^~ /.well-known/acme-challenge/ {
 		root /var/lib/letsencrypt/;
+	}
+
+	# Local stat collection
+	location = /nginx_status {
+		stub_status on;
+		access_log off;
+		allow 127.0.0.1;
+		deny all;
 	}
 
 	location / {

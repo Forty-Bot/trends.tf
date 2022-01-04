@@ -150,86 +150,75 @@ uwsgi_service:
       - uwsgi_config
 
 # Metrics
-netdata:
+munin:
   pkg.installed:
     - refresh: False
-  postgres_user.present:
-    - runas: postgres
-    - require:
-      - pkg: netdata
 
-psycopg2:
-  pkg.installed:
-{% if grains.os_family == 'Debian' %}
-    - name: python3-psycopg2
-{% else %}
-    - name: python-psycopg2
-{% endif %}
-    - refresh: False
-
-/etc/netdata/.opt-out-from-anonymous-statistics:
+munin_conf:
   file.managed:
-    - require:
-      - netdata
-
-/etc/netdata/netdata.conf:
-  file.managed:
+    - name: /etc/munin/munin-conf.d/override.conf
     - contents: |
-        [global]
-          run as user = netdata
-          access log = none
-          debug log = none
-
-          update every = 5
-          memory mode = dbengine
-          page cache size = 32
-          dbengine multihost disk space = 4096
-
-          process scheduling policy = idle
-          OOM score = 1000
-
-        [web]
-          web files owner = root
-{% if grains.os_family == 'Debian' %}
-          web files group = root
-{% else %}
-          web files group = netdata
-{% endif %}
-          bind to = unix:/run/netdata/netdata.sock
+        html_strategy cgi
+        graph_strategy cgi
+        cgiurl_graph /graph
     - require:
-      - netdata
+      - munin
 
-/etc/netdata/python.d/web_log.conf:
+/etc/systemd/system/munin-graph.service:
+  file.symlink:
+    - target: /usr/share/doc/munin/examples/systemd-fastcgi/munin-graph.service
+    - require:
+      - munin_conf
+
+/etc/systemd/system/munin-graph.socket:
+  file.symlink:
+    - target: /usr/share/doc/munin/examples/systemd-fastcgi/munin-graph.socket
+    - require:
+      - munin_conf
+
+/var/log/munin/munin-cgi-graph.log:
   file.managed:
-    - contents: |
-        nginx_log:
-          name: 'nginx'
-          path: '/var/log/nginx/access.log'
-          histogram: [1,10,100,1000]
+    - user: munin
+    - group: munin
+    - replace: False
     - require:
-      - netdata
+      - munin
 
-/etc/netdata/python.d/postgres.conf:
+/etc/systemd/system/munin-html.service:
+  file.symlink:
+    - target: /usr/share/doc/munin/examples/systemd-fastcgi/munin-html.service
+    - require:
+      - munin_conf
+
+/etc/systemd/system/munin-html.socket:
+  file.symlink:
+    - target: /usr/share/doc/munin/examples/systemd-fastcgi/munin-html.socket
+    - require:
+      - munin_conf
+
+/var/log/munin/munin-cgi-html.log:
   file.managed:
-    - contents: |
-        socket:
-          name: 'local'
-          user: 'netdata'
-          database: 'trends'
+    - user: munin
+    - group: munin
+    - replace: False
     - require:
-      - netdata
+      - munin
 
-netdata.service:
+munin-graph.socket:
   service.running:
     - enable: True
-    - reload: True
-    - requires:
-      - netdata
-      - psycopg2
-      - /etc/netdata/.opt-out-from-anonymous-statistics
-      - /etc/netdata/netdata.conf
-      - /etc/netdata/python.d/web_log.conf
-      - /etc/netdata/python.d/postgres.conf
+    - require:
+      - /etc/systemd/system/munin-graph.service
+      - /etc/systemd/system/munin-graph.socket
+      - /var/log/munin/munin-cgi-graph.log
+
+munin-html.socket:
+  service.running:
+    - enable: True
+    - require:
+      - /etc/systemd/system/munin-html.service
+      - /etc/systemd/system/munin-html.socket
+      - /var/log/munin/munin-cgi-html.log
 
 certbot:
   pkg.installed:
@@ -325,4 +314,21 @@ nginx.service:
       - /srv/uwsgi/trends
       - nginx_service
       - uwsgi_service
-      - netdata.service
+      - munin-graph.socket
+      - munin-html.socket
+
+munin_node:
+  pkg.installed:
+    - pkgs:
+      - libdbd-pg-perl
+      - munin-node
+      - munin-plugins-core
+    - refresh: False
+    - require:
+      - nginx.service
+
+munin-node.service:
+  service.running:
+    - enable: True
+    - require:
+      - munin_node
