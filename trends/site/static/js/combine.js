@@ -4,7 +4,7 @@
 var checkboxes;
 
 function update_checkboxes() {
-	var checked = 0;
+	let checked = 0;
 	for (let checkbox of checkboxes) {
 		if (checkbox.checked) {
 			checked++;

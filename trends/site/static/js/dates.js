@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-	var timezone = document.getElementById('timezone');
+	let timezone = document.getElementById('timezone');
 	if (timezone) {
 		timezone.value = time_formatter.resolvedOptions().timeZone;
 	}

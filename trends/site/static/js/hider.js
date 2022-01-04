@@ -2,9 +2,9 @@
 // Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
 function update_hidden(hider, hide, recursive) {
-	elements = document.getElementsByClassName(hider.id);
+	let elements = document.getElementsByClassName(hider.id);
 	for (let element of elements) {
-		hidden = true;
+		let hidden = true;
 		if (hide) {
 			element.classList.add('hidden');
 		} else {
@@ -18,7 +18,7 @@ function update_hidden(hider, hide, recursive) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	hiders = document.getElementsByClassName("hider");
+	let hiders = document.getElementsByClassName("hider");
 	for (let hider of hiders) {
 		hider.addEventListener('click', function (evt) {
 			if (evt.target.tagName == "A")
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	target = document.getElementById(window.location.hash.substring(1));
+	let target = document.getElementById(window.location.hash.substring(1));
 	if (target && target.classList.contains("hider")) {
 		update_hidden(target, false, true);
 		target.scrollIntoView({

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
-var maplist = document.getElementById('maps');
-
 function unwrap_json(response) {
 	if (!response.ok) {
 		return {};
@@ -12,9 +10,11 @@ function unwrap_json(response) {
 
 document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('map_input').addEventListener('focus', () => {
+		let maplist = document.getElementById('maps');
+
 		fetch("/api/v1/maps").then(unwrap_json).then(json => {
 			json.maps.forEach(map => {
-				option = document.createElement("option");
+				let option = document.createElement("option");
 				option.setAttribute('value', map);
 				maplist.append(option);
 			});
@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function render_option(data, escape) {
-	div = document.createElement('div');
-	img = document.createElement('img');
+	let div = document.createElement('div');
+	let img = document.createElement('img');
 	img.classList.add('avatar_small');
 	img.setAttribute('src', "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/" +
 	                        `avatars/${data.avatarhash.slice(0, 2)}/${data.avatarhash}.jpg`);
