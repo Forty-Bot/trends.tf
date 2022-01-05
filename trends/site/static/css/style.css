@@ -223,6 +223,10 @@ a.sort {
 	height: 1em;
 }
 
+.padding-row:not(.hidden) + .padding-row {
+	height: 0;
+}
+
 .red, .loss {
 	background-color: var(--red);
 	color: var(--lighttext);

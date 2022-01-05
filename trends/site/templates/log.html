@@ -88,9 +88,7 @@
 		{{ duration_col(cls['duration']) }}
 	</tr>
 	{{ weapon_table(steamid64, cls['class'], cls.weapon_stats) if cls.weapon_stats }}
-	{% if not loop.last %}
-		{{ padding("{}_{}".format(steamid64, cls['class'])) }}
-	{% endif %}
+	{{ padding("{}_{}".format(steamid64, cls['class'])) }}
 	{% endfor %}
 	{{ padding(steamid64) }}
 {% endmacro %}
