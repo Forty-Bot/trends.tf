@@ -162,7 +162,13 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	losses INT NOT NULL DEFAULT 0, -- rounds lost
 	ties INT NOT NULL DEFAULT 0, -- rounds tied
 	primary_classid INT REFERENCES class (classid), -- Class played more than 2/3 of the time
-	PRIMARY KEY (steamid64, logid)
+	classids INT[] CHECK (array_position(classids, NULL) ISNULL AND array_ndims(classids) = 1),
+	class_durations INT[] CHECK (array_position(class_durations, NULL) ISNULL
+				     AND array_ndims(class_durations) = 1),
+	PRIMARY KEY (steamid64, logid),
+	CHECK ((classids NOTNULL AND class_durations NOTNULL
+		AND array_length(classids, 1) = array_length(class_durations, 1))
+	       OR (classids ISNULL AND class_durations ISNULL))
 );
 
 -- This index includes steamid64 and team so that it can be used as a covering index for the peers

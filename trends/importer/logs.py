@@ -585,20 +585,24 @@ def update_wlt(c):
                  WHERE ps.logid = new.logid
                      AND ps.steamid64 = new.steamid64""")
 
-def update_primary_class(c):
-    c.execute("""UPDATE player_stats AS ps
-                 SET primary_classid = classid
-                 FROM (SELECT
-                         logid,
-                         steamid64,
-                         classid
-                     FROM class_stats
-                     JOIN log USING (logid)
-                     WHERE class_stats.duration * 1.5 > log.duration
-                     ORDER BY steamid64, logid
-                 ) AS cs
-                 WHERE cs.logid = ps.logid
-                 AND cs.steamid64 = ps.steamid64;""")
+def update_player_classes(cur, bounds=None):
+    cur.execute("""UPDATE player_stats AS ps SET
+                       classids = new.classids,
+                       class_durations = new.durations
+                   FROM (SELECT
+                           logid,
+                           steamid64,
+                           array_agg(classid ORDER BY duration DESC) AS classids,
+                           array_agg(duration ORDER BY duration DESC) AS durations
+                       FROM class_stats
+                       {}
+                       GROUP BY logid, steamid64
+                       ORDER BY steamid64, logid
+                   ) AS new
+                   WHERE ps.logid = new.logid
+                       AND ps.steamid64 = new.steamid64;"""
+                   .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
+                bounds)
 
 def create_logs_parser(sub):
     class LogAction(argparse.Action):
@@ -719,7 +723,7 @@ def import_logs(args, c):
         update_stalemates(cur)
         update_formats(cur)
         update_wlt(cur)
-        update_primary_class(cur)
+        update_player_classes(cur)
         for table in temp_tables:
             set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
                                    for col in table_columns(c, table[0]))
