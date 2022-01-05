@@ -139,24 +139,16 @@ pg_includedir:
         default_statistics_target = 500
         shared_preload_libraries = 'pg_stat_statements'
 
-postgresql.service:
-  service.running:
-    - enable: True
-    - watch:
-      - initdb
-    - require:
-      - pg_includedir
-      - {{ pg_confdir }}/conf.d/override.conf
-{% if grains.os_family != 'Debian' %}
-      - pg_service
-
 /etc/systemd/system/postgresql.service.d/override.conf:
   file.managed:
     - makedirs: True
     - contents: |
         [Service]
+        Restart=on-failure
+{% if grains.os_family != 'Debian' %}
         Environment=PGROOT=/srv/postgres
         PIDFile=/srv/postgres/data/postmaster.pid
+{% endif %}
 
 pg_service:
   module.run:
@@ -165,7 +157,16 @@ pg_service:
       - /etc/systemd/system/postgresql.service.d/override.conf
     - require:
       - postgresql
-{% endif %}
+
+postgresql.service:
+  service.running:
+    - enable: True
+    - watch:
+      - initdb
+    - require:
+      - pg_includedir
+      - {{ pg_confdir }}/conf.d/override.conf
+      - pg_service
 
 daemon:
   postgres_user.present:
