@@ -9,20 +9,12 @@ import sys
 
 import flask
 import psycopg2
+import pylibmc
 import werkzeug.exceptions
 
 from ..util import clamp
 from ..sql import db_connect
-
-try:
-    import pylibmc
-except ImportError:
-    pylibmc = None
-
-try:
-    from .sentry import TracingCursor
-except ImportError:
-    TracingCursor = None
+from .sentry import TracingCursor
 
 def global_context(name):
     def decorator(f):
@@ -57,11 +49,10 @@ class NoopClient:
 
 @global_context('mc_conn')
 def get_mc():
-    if pylibmc:
-        try:
-            return pylibmc.Client((flask.current_app.config['MEMCACHED_SERVERS'],), binary=True)
-        except pylibmc.Error as error:
-            flask.current_app.logger.exception("Could not connect to memcached")
+    try:
+        return pylibmc.Client((flask.current_app.config['MEMCACHED_SERVERS'],), binary=True)
+    except pylibmc.Error as error:
+        flask.current_app.logger.exception("Could not connect to memcached")
     return NoopClient()
 
 @global_context('filters')

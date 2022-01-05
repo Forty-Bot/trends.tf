@@ -27,10 +27,10 @@ setuptools.setup(
         'flask >= 2.0',
         'python-dateutil',
         'zstandard',
+        'pylibmc',
+        'sentry-sdk[flask]',
     ],
     extras_require = {
-        'cache': "pylibmc",
-        'sentry': "sentry-sdk[flask]",
     },
     entry_points = {
         'console_scripts': [

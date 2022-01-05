@@ -15,12 +15,8 @@ import werkzeug.utils
 from .api import api, json_handler
 from .player import player
 from .root import root
+from .sentry import set_user
 from .util import put_db
-
-try:
-    from .sentry import set_user
-except ImportError:
-    set_user = lambda: None
 
 class DefaultConfig:
     DATABASE = "postgresql:///trends"
