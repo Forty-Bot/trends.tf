@@ -132,8 +132,8 @@ def overview(steamid):
                    losses AS round_losses,
                    cs.duration,
                    cs.dmg,
-                   hits,
-                   shots
+                   ws.hits,
+                   ws.shots
                FROM player_stats
                JOIN class_stats cs USING (logid, steamid64)
                JOIN log_nodups USING (logid)
