@@ -604,6 +604,45 @@ def update_player_classes(cur, bounds=None):
                    .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
                 bounds)
 
+def update_acc(cur, bounds=None):
+    cur.execute("""UPDATE class_stats AS cs SET
+                        hits = new.hits,
+                        shots = new.shots
+                    FROM (SELECT
+                            logid,
+                            steamid64,
+                            classid,
+                            sum(hits) AS hits,
+                            sum(shots) AS shots
+                        FROM weapon_stats
+                        {}
+                        GROUP BY logid, steamid64, classid
+                        ORDER BY steamid64, logid, classid
+                    ) AS new
+                    WHERE cs.logid = new.logid
+                        AND cs.steamid64 = new.steamid64
+                        AND cs.classid = new.classid"""
+                 .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
+              bounds)
+
+    cur.execute("""UPDATE player_stats AS ps SET
+                        hits = new.hits,
+                        shots = new.shots
+                    FROM (SELECT
+                            logid,
+                            steamid64,
+                            sum(hits) AS hits,
+                            sum(shots) AS shots
+                        FROM weapon_stats
+                        {}
+                        GROUP BY logid, steamid64
+                        ORDER BY steamid64, logid
+                    ) AS new
+                    WHERE ps.logid = new.logid
+                        AND ps.steamid64 = new.steamid64"""
+                 .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
+              bounds)
+
 def create_logs_parser(sub):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -724,6 +763,7 @@ def import_logs(args, c):
         update_formats(cur)
         update_wlt(cur)
         update_player_classes(cur)
+        update_acc(cur)
         for table in temp_tables:
             set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
                                    for col in table_columns(c, table[0]))

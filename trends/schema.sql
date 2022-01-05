@@ -165,7 +165,10 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	classids INT[] CHECK (array_position(classids, NULL) ISNULL AND array_ndims(classids) = 1),
 	class_durations INT[] CHECK (array_position(class_durations, NULL) ISNULL
 				     AND array_ndims(class_durations) = 1),
+	shots INT,
+	hits INT,
 	PRIMARY KEY (steamid64, logid),
+	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL)),
 	CHECK ((classids NOTNULL AND class_durations NOTNULL
 		AND array_length(classids, 1) = array_length(class_durations, 1))
 	       OR (classids ISNULL AND class_durations ISNULL))
