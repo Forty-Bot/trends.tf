@@ -66,10 +66,7 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                title,
                map,
                classes,
-               (SELECT
-                       array_agg(duration * 1.0 / log.duration)
-                   FROM unnest(class_durations) AS duration
-               ) AS class_pct,
+               class_pct,
                wins,
                losses,
                ties,
@@ -80,7 +77,7 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                ps.assists,
                ps.dmg * 60.0 / log.duration AS dpm,
                ps.dt * 60.0 / log.duration AS dtm,
-               acc,
+               hits * 1.0 / nullif(shots, 0.0) AS acc,
                hsg.healing * 60.0 / log.duration AS hpm_given,
                hsr.healing * 60.0 / log.duration AS hpm_recieved,
                duplicate_of,
@@ -89,24 +86,6 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
            JOIN player_stats AS ps USING (logid)
            JOIN map USING (mapid)
            LEFT JOIN format USING (formatid)
-           LEFT JOIN (SELECT
-                     logid,
-                     steamid64,
-                     array_agg(class ORDER BY duration DESC) AS classes,
-                     array_agg(duration ORDER BY duration DESC) AS class_durations
-                 FROM class_stats
-                 JOIN class USING (classid)
-                 -- Duplicate of below, but sqlite is dumb...
-                 WHERE steamid64 = %(steamid)s
-                 GROUP BY logid, steamid64
-           ) AS classes USING (logid, steamid64)
-           LEFT JOIN (SELECT
-                   logid,
-                   steamid64,
-                   total(hits) / nullif(sum(shots), 0.0) AS acc
-               FROM weapon_stats
-               GROUP BY logid, steamid64
-           ) AS ws USING (logid, steamid64)
            LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
            LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
            WHERE ps.steamid64 = %(steamid)s
