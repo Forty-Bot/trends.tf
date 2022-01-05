@@ -5,6 +5,11 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS tsm_system_rows;
 
+-- Compute the sum of an array
+CREATE OR REPLACE FUNCTION array_sum(anyarray) RETURNS anyelement
+	AS 'SELECT sum(val) FROM unnest($1) AS val'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
 -- Compatibility functions for migration from SQLite
 
 CREATE OR REPLACE FUNCTION add(FLOAT, anyelement) RETURNS FLOAT
@@ -148,7 +153,7 @@ INSERT INTO class (class) VALUES
 	('spy')
 ON CONFLICT DO NOTHING;
 
-CREATE TABLE IF NOT EXISTS player_stats (
+CREATE TABLE IF NOT EXISTS player_stats_backing (
 	logid INT REFERENCES log (logid) NOT NULL,
 	steamid64 BIGINT REFERENCES player (steamid64) NOT NULL,
 	nameid INT NOT NULL REFERENCES name (nameid),
@@ -161,7 +166,6 @@ CREATE TABLE IF NOT EXISTS player_stats (
 	wins INT NOT NULL DEFAULT 0, -- rounds won
 	losses INT NOT NULL DEFAULT 0, -- rounds lost
 	ties INT NOT NULL DEFAULT 0, -- rounds tied
-	primary_classid INT REFERENCES class (classid), -- Class played more than 2/3 of the time
 	classids INT[] CHECK (array_position(classids, NULL) ISNULL AND array_ndims(classids) = 1),
 	class_durations INT[] CHECK (array_position(class_durations, NULL) ISNULL
 				     AND array_ndims(class_durations) = 1),
@@ -176,10 +180,24 @@ CREATE TABLE IF NOT EXISTS player_stats (
 
 -- This index includes steamid64 and team so that it can be used as a covering index for the peers
 -- query. This avoids a bunch of costly random reads to player_stats.
-CREATE INDEX IF NOT EXISTS player_stats_peers ON player_stats (logid) INCLUDE (steamid64, teamid);
+CREATE INDEX IF NOT EXISTS player_stats_peers
+	ON player_stats_backing (logid)
+	INCLUDE (steamid64, teamid);
 
 -- Covering index for name FTS queries
-CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats (nameid) INCLUDE (steamid64);
+CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats_backing (nameid) INCLUDE (steamid64);
+
+CREATE OR REPLACE VIEW player_stats AS SELECT
+	player_stats_backing.*,
+	CASE WHEN class_durations[1] * 1.5 > array_sum(class_durations)
+		THEN classids[1]
+	END AS primary_classid,
+	(SELECT array_agg(class)
+	 FROM unnest(classids) AS classid
+	 JOIN class USING (classid)) AS classes,
+	(SELECT array_agg(duration * 1.0 / array_sum(class_durations))
+	 FROM unnest(class_durations) AS duration) AS class_pct
+FROM player_stats_backing;
 
 CREATE TABLE IF NOT EXISTS player_stats_extra (
 	logid INT NOT NULL,
@@ -200,7 +218,7 @@ CREATE TABLE IF NOT EXISTS player_stats_extra (
 	cpc INT, -- Capture Point Captures
 	ic INT, -- Intel Captures
 	PRIMARY KEY (steamid64, logid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64),
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
 	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
 );
 
@@ -221,7 +239,7 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	deaths_after_uber INT, -- within 20s
 	deaths_before_uber INT, -- 95-99%
 	PRIMARY KEY (steamid64, logid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64),
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
 	CHECK ((medigun_ubers ISNULL AND kritz_ubers ISNULL AND other_ubers ISNULL) OR
 	       (medigun_ubers NOTNULL AND kritz_ubers NOTNULL AND other_ubers NOTNULL)),
 	CHECK (medigun_ubers ISNULL OR ubers = medigun_ubers + kritz_ubers + other_ubers),
@@ -239,8 +257,8 @@ CREATE TABLE IF NOT EXISTS heal_stats (
 	healing INT NOT NULL,
 	PRIMARY KEY (logid, healer, healee),
 	-- Should reference medic_stats, but some very old logs only report one class per player
-	FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
-	FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64)
+	FOREIGN KEY (logid, healer) REFERENCES player_stats_backing (logid, steamid64),
+	FOREIGN KEY (logid, healee) REFERENCES player_stats_backing (logid, steamid64)
 );
 
 -- Index for looking up people healed in logs
@@ -277,7 +295,7 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	dmg INT NOT NULL,
 	duration INT NOT NULL,
 	PRIMARY KEY (steamid64, logid, classid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64)
 );
 
 -- For logs page
@@ -297,7 +315,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	sum((wins = losses)::INT) AS ties,
 	sum((wins < losses)::INT) AS losses
 FROM log_nodups AS log
-JOIN player_stats USING (logid)
+JOIN player_stats_backing USING (logid)
 LEFT JOIN class_stats USING (logid, steamid64)
 WHERE class_stats.duration * 1.5 >= log.duration
 GROUP BY CUBE (steamid64, formatid, classid, mapid)
@@ -364,7 +382,7 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	soldier INT NOT NULL,
 	spy INT NOT NULL,
 	PRIMARY KEY (steamid64, logid, eventid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats (logid, steamid64)
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64)
 );
 
 -- For logs page

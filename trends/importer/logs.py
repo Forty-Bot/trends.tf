@@ -195,7 +195,7 @@ def import_log(cctx, c, logid, log):
                      DO UPDATE SET
                          last_active = greatest(player.last_active, EXCLUDED.last_active);""",
                   player)
-        c.execute("""INSERT INTO player_stats (
+        c.execute("""INSERT INTO player_stats_backing (
                          logid, steamid64, teamid, nameid, kills, assists, deaths, dmg, dt
                      ) VALUES (
                          %(logid)s, %(steamid)s, (SELECT teamid FROM team WHERE team = %(team)s),
@@ -540,7 +540,7 @@ def update_formats(c):
                  WHERE log.logid = new.logid;""")
 
 def update_wlt(c):
-    c.execute("""UPDATE player_stats AS ps
+    c.execute("""UPDATE player_stats_backing AS ps
                  SET wins = CASE new.teamid
                          WHEN 1 THEN new.red_score
                          WHEN 2 THEN new.blue_score
@@ -571,7 +571,7 @@ def update_wlt(c):
                              THEN 0
                              ELSE coalesce(round.ties, 0)
                          END AS ties
-                     FROM player_stats
+                     FROM player_stats_backing
                      JOIN log USING (logid)
                      LEFT JOIN (SELECT
                              logid,
@@ -586,7 +586,7 @@ def update_wlt(c):
                      AND ps.steamid64 = new.steamid64""")
 
 def update_player_classes(cur, bounds=None):
-    cur.execute("""UPDATE player_stats AS ps SET
+    cur.execute("""UPDATE player_stats_backing AS ps SET
                        classids = new.classids,
                        class_durations = new.durations
                    FROM (SELECT
@@ -625,7 +625,7 @@ def update_acc(cur, bounds=None):
                  .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
               bounds)
 
-    cur.execute("""UPDATE player_stats AS ps SET
+    cur.execute("""UPDATE player_stats_backing AS ps SET
                         hits = new.hits,
                         shots = new.shots
                     FROM (SELECT
@@ -705,7 +705,7 @@ def import_logs(args, c):
     # They may also be used to know what to delete on failure
     # The second element of the tuple is what to order by when inserting (e.g. the primary key)
     temp_tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
-                   ('round_extra', 'logid, seq'), ('player_stats', 'steamid64, logid'),
+                   ('round_extra', 'logid, seq'), ('player_stats_backing', 'steamid64, logid'),
                    ('player_stats_extra', 'steamid64, logid'), ('medic_stats', 'steamid64, logid'),
                    ('heal_stats', 'logid, healer, healee'),
                    ('class_stats', 'steamid64, logid, classid'),
@@ -720,8 +720,10 @@ def import_logs(args, c):
                        );""".format(table[0], table[0], table[1]))
     # This doesn't include foreign keys, so include some which we want to handle in import_log
     cur.execute("""ALTER TABLE heal_stats
-                   ADD FOREIGN KEY (logid, healer) REFERENCES player_stats (logid, steamid64),
-	               ADD FOREIGN KEY (logid, healee) REFERENCES player_stats (logid, steamid64);""")
+                   ADD FOREIGN KEY (logid, healer)
+                       REFERENCES player_stats_backing (logid, steamid64),
+	               ADD FOREIGN KEY (logid, healee)
+                       REFERENCES player_stats_backing (logid, steamid64);""")
     # We need this index to calculate formats efficiently
     cur.execute("CREATE INDEX class_stats_logid ON class_stats (logid);")
     # And this index to limit dupes
