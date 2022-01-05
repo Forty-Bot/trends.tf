@@ -109,7 +109,6 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
            ) AS ws USING (logid, steamid64)
            LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
            LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
-           LEFT JOIN class ON (primary_classid=classid)
            WHERE ps.steamid64 = %(steamid)s
                {}
            ORDER BY {} NULLS LAST
