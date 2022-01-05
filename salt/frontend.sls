@@ -334,15 +334,29 @@ nginx.service:
 munin_node:
   pkg.installed:
     - pkgs:
+      - libcache-memcached-perl
       - libdbd-pg-perl
       - munin-node
       - munin-plugins-core
+      - munin-plugins-extra
     - refresh: False
     - require:
       - nginx.service
+
+{% set memcached_suffixes = ('rates', 'bytes', 'counters') %}
+{% for suffix in ('rates', 'bytes', 'counters') %}
+/etc/munin/plugins/memcached_{{ suffix }}:
+  file.symlink:
+    - target: /usr/share/munin/plugins/memcached_
+    - require:
+      - munin_node
+{% endfor %}
 
 munin-node.service:
   service.running:
     - enable: True
     - require:
       - munin_node
+      {% for suffix in memcached_suffixes %}
+      - /etc/munin/plugins/memcached_{{ suffix }}
+      {% endfor %}
