@@ -71,7 +71,7 @@ li.nav a {
 	padding: 14px 16px;
 }
 
-ul.nav li.nav a:hover:not(.active){
+ul.nav li.nav a:hover:not(.active) {
 	background-color: var(--highlight);
 }
 
