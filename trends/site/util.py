@@ -50,7 +50,7 @@ class NoopClient:
 @global_context('mc_conn')
 def get_mc():
     try:
-        return pylibmc.Client((flask.current_app.config['MEMCACHED_SERVERS'],), binary=True)
+        return pylibmc.Client(flask.current_app.config['MEMCACHED_SERVERS'].split(','), binary=True)
     except pylibmc.Error as error:
         flask.current_app.logger.exception("Could not connect to memcached")
     return NoopClient()
