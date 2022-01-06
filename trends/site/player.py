@@ -374,14 +374,14 @@ def weapons(steamid):
                weapon,
                sum(ws.kills) * 30.0 * 60 / nullif(sum(cs.duration), 0) AS k30,
                sum(ws.dmg) * 60.0 / nullif(sum(cs.duration), 0) AS dpm,
-               sum(CASE WHEN shots::BOOL THEN ws.dmg END) / nullif(sum(shots), 0.0) AS dps,
-               sum(CASE WHEN hits::BOOL THEN ws.dmg END) / nullif(sum(hits), 0.0) AS dph,
-               total(hits) / nullif(sum(shots), 0.0) AS acc,
+               sum(CASE WHEN ws.shots::BOOL THEN ws.dmg END) / nullif(sum(ws.shots), 0.0) AS dps,
+               sum(CASE WHEN ws.hits::BOOL THEN ws.dmg END) / nullif(sum(ws.hits), 0.0) AS dph,
+               total(ws.hits) / nullif(sum(ws.shots), 0.0) AS acc,
                total(ws.kills) AS kills,
                total(cs.duration) AS duration,
                total(ws.dmg) AS dmg,
-               sum(shots) AS shots,
-               sum(hits) AS hits,
+               sum(ws.shots) AS shots,
+               sum(ws.hits) AS hits,
                count(*) AS logs
            FROM weapon_stats AS ws
            JOIN weapon_pretty USING (weaponid)
