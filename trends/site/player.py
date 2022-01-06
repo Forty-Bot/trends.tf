@@ -110,20 +110,11 @@ def overview(steamid):
                    losses AS round_losses,
                    cs.duration,
                    cs.dmg,
-                   ws.hits,
-                   ws.shots
+                   cs.hits,
+                   cs.shots
                FROM player_stats
                JOIN class_stats cs USING (logid, steamid64)
                JOIN log_nodups USING (logid)
-               JOIN (SELECT
-                       logid,
-                       steamid64,
-                       classid,
-                       sum(hits) AS hits,
-                       sum(shots) AS shots
-                   FROM weapon_stats
-                   GROUP BY logid, steamid64, classid
-               ) AS ws USING (logid, steamid64, classid)
                WHERE steamid64 = %(steamid)s
                    {}
            ) SELECT
