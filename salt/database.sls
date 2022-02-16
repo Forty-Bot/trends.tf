@@ -128,7 +128,7 @@ pg_includedir:
         max_connections = {{ connections }}
         shared_buffers = {{ shared_buffers }}kB
         work_mem = {{ work_mem }}kB
-        maintenance_work_mem = {{ ((shared_buffers / 2 | int), 2 * 1024 * 1024) | min }}kB
+        maintenance_work_mem = {{ ((shared_buffers / 2), 2 * 1024 * 1024) | min | int }}kB
         effective_io_concurrency = 200
         wal_buffers = 16MB
         min_wal_size = 1GB
