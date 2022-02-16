@@ -100,6 +100,7 @@ def overview(steamid):
     c = get_db()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns)
+
     classes = c.cursor()
     classes.execute(
         """WITH classes AS MATERIALIZED (
@@ -138,19 +139,22 @@ def overview(steamid):
                ORDER BY classid
            ) AS classes;""".format(filter_clauses, get_filter_clauses(filters, 'class')),
         { 'steamid': steamid, **filters})
+    classes = classes.fetchall()
+
+    duration = sum(cls['time'] or 0 for cls in classes)
     event_stats = c.cursor()
     event_stats.execute(
             """SELECT
                    event,
-                   total(demoman) * 30 * 60 / nullif(sum(log.duration), 0) AS demoman,
-                   total(engineer) * 30 * 60 / nullif(sum(log.duration), 0) AS engineer,
-                   total(heavyweapons) * 30 * 60 / nullif(sum(log.duration), 0) AS heavyweapons,
-                   total(medic) * 30 * 60 / nullif(sum(log.duration), 0) AS medic,
-                   total(pyro) * 30 * 60 / nullif(sum(log.duration), 0) AS pyro,
-                   total(scout) * 30 * 60 / nullif(sum(log.duration), 0) AS scout,
-                   total(sniper) * 30 * 60 / nullif(sum(log.duration), 0) AS sniper,
-                   total(soldier) * 30 * 60 / nullif(sum(log.duration), 0) AS soldier,
-                   total(spy) * 30 * 60 / nullif(sum(log.duration), 0) AS spy
+                   total(demoman) * 30 * 60 / nullif(%(duration)s, 0) AS demoman,
+                   total(engineer) * 30 * 60 / nullif(%(duration)s, 0) AS engineer,
+                   total(heavyweapons) * 30 * 60 / nullif(%(duration)s, 0) AS heavyweapons,
+                   total(medic) * 30 * 60 / nullif(%(duration)s, 0) AS medic,
+                   total(pyro) * 30 * 60 / nullif(%(duration)s, 0) AS pyro,
+                   total(scout) * 30 * 60 / nullif(%(duration)s, 0) AS scout,
+                   total(sniper) * 30 * 60 / nullif(%(duration)s, 0) AS sniper,
+                   total(soldier) * 30 * 60 / nullif(%(duration)s, 0) AS soldier,
+                   total(spy) * 30 * 60 / nullif(%(duration)s, 0) AS spy
                FROM event
                LEFT JOIN event_stats USING (eventid)
                LEFT JOIN log_nodups AS log USING (logid)
@@ -159,7 +163,7 @@ def overview(steamid):
                    {}
                GROUP BY event
                ORDER BY event DESC;""".format(filter_clauses),
-               { 'steamid': steamid, **filters })
+               { 'steamid': steamid, 'duration': duration, **filters })
     aliases = c.cursor()
     aliases.execute(
             """SELECT
