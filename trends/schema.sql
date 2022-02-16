@@ -84,6 +84,21 @@ CREATE INDEX IF NOT EXISTS log_title ON log USING gin (title gin_trgm_ops);
 -- To filter by date
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
+CREATE MATERIALIZED VIEW map_popularity AS
+SELECT
+	mapid,
+	popularity,
+	map
+FROM map
+JOIN (SELECT
+		mapid,
+		count(*) AS popularity
+	FROM log
+	GROUP BY mapid
+) AS map_popularity USING (mapid)
+ORDER BY popularity DESC, mapid ASC
+WITH NO DATA;
+
 -- The original json, zstd compressed
 CREATE TABLE IF NOT EXISTS log_json (
 	logid INTEGER PRIMARY KEY REFERENCES log (logid),

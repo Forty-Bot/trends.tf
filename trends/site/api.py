@@ -31,18 +31,11 @@ def logs():
 def maps():
     limit, offset = get_pagination(limit=500)
     maps = get_db().cursor()
-    maps.execute("""SELECT
-                     map
-                 FROM map
-                 JOIN (SELECT
-                         mapid,
-                         count(*) AS popularity
-                     FROM log
-                     GROUP BY mapid
-                 ) AS log_nodups USING (mapid)
-                 ORDER BY popularity DESC, mapid ASC
-                 LIMIT %s OFFSET %s;""",
-                 (limit, offset))
+    maps.execute(
+        """SELECT map
+           FROM map_popularity
+           ORDER BY popularity DESC, mapid ASC
+           LIMIT %s OFFSET %s;""", (limit, offset))
     return flask.jsonify(maps=[row[0] for row in maps])
 
 @api.route('/players')

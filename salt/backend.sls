@@ -60,12 +60,36 @@
     - contents: |
         [Unit]
         Description=Daily leaderboard refresh
-        
+
         [Timer]
         OnCalendar=7:00
-        
+
         [Install]
         WantedBy=timers.target
+
+/etc/systemd/system/map_refresh.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Refresh map popularity
+
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW CONCURRENTLY map_popularity' postgres:///trends
+        User=daemon
+
+/etc/systemd/system/map_refresh.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Daily map popularity refresh
+
+        [Timer]
+        OnCalendar=6:45
+
+        [Install]
+        WantedBy=timers.target
+
 
 /etc/systemd/system/weapon_import.service:
   file.managed:
@@ -99,6 +123,8 @@ backend_services:
       - /etc/systemd/system/player_import.service
       - /etc/systemd/system/leaderboard_refresh.service
       - /etc/systemd/system/leaderboard_refresh.timer
+      - /etc/systemd/system/map_refresh.service
+      - /etc/systemd/system/map_refresh.timer
       - /etc/systemd/system/weapon_import.service
       - /etc/systemd/system/weapon_import.timer
 
@@ -115,6 +141,12 @@ player_import.service:
       - backend_services
 
 leaderboard_refresh.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+map_refresh.timer:
   service.running:
     - enable: True
     - require:
