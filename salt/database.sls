@@ -137,6 +137,8 @@ pg_includedir:
         random_page_cost = 2
         effective_cache_size = {{ (mem * 3 / 4) | int }}kB
         default_statistics_target = 500
+        # We have a lot of backlog, so reduce this to something which will run vacuum regularly
+        autovacuum_vacuum_scale_factor = 0.005
         shared_preload_libraries = 'pg_stat_statements'
 
 /etc/systemd/system/postgresql.service.d/override.conf:
