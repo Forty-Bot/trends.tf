@@ -19,7 +19,7 @@ except pkg_resources.DistributionNotFound:
 sentry_sdk.init(
     release=version,
     integrations=[FlaskIntegration()],
-    traces_sample_rate=1
+    traces_sample_rate=0.15
 )
 
 @flask.before_render_template.connect_via(blinker.ANY)
