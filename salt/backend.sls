@@ -10,7 +10,7 @@
     - contents: |
         [Unit]
         Description=Import logs from logs.tf
-        
+
         [Service]
         Type=oneshot
         ExecStart={{ prefix }}/bin/trends_importer -vv logs bulk -c 1000 postgres:///trends
@@ -21,7 +21,7 @@
     - contents: |
         [Unit]
         Description=Import from logs.tf every 5 minutes
-        
+
         [Timer]
         OnCalendar=*:0/5
         
@@ -40,7 +40,7 @@
         ExecStart={{ prefix }}/bin/trends_importer players -k ${STEAMKEY} -w 1 random postgres:///trends
         User=daemon
         Restart=on-failure
-        
+
         [Install]
         WantedBy=multi-user.target
 
@@ -49,7 +49,7 @@
     - contents: |
         [Unit]
         Description=Refresh leaderboard
-        
+
         [Service]
         Type=oneshot
         ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW CONCURRENTLY leaderboard_cube' postgres:///trends
