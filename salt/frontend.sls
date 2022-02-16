@@ -151,6 +151,7 @@ uwsgi_config:
     - defaults:
       socket: {{ uwsgi_socket }}
       python: {{ python }}
+      workers: {{ grains.num_cpus * 2 }}
 
 uwsgi_service:
   service.running:
