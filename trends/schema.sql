@@ -84,7 +84,7 @@ CREATE INDEX IF NOT EXISTS log_title ON log USING gin (title gin_trgm_ops);
 -- To filter by date
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
 
-CREATE MATERIALIZED VIEW map_popularity AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS map_popularity AS
 SELECT
 	mapid,
 	popularity,
