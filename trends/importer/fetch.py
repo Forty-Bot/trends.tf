@@ -34,19 +34,16 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
     :rtype: iterable of ints
     """
 
-    # Number of logids fetched
-    fetched = 0
-    # logs added since we started enumerating
-    extra = offset
+    # Number of logids yielded (up to a maximum of count)
+    yielded = 0
+    # Total number of logids available to fetch
     total = None
+    # The lowest logid we've seen. We assume new logs will all have higher logids.
     last_logid = None
 
     try:
-        while True:
-            params = {
-                'offset': fetched + extra,
-                'limit': min(count - fetched, limit) if count is not None else limit,
-            }
+        while total is None or offset < total:
+            params = { 'offset': offset, 'limit': limit }
             if players:
                 params['player'] = ",".join(str(player) for player in players)
 
@@ -56,26 +53,23 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
             if not log_list['success']:
                 raise APIError(log_list['error'])
 
+            total = log_list['total']
             for log in log_list['logs']:
+                offset += 1
                 if last_logid and log['id'] >= last_logid:
                     continue
                 elif log['date'] >= since:
                     last_logid = log['id']
                     yield log['id'], log['date']
+
+                    yielded += 1
+                    if count is not None and yielded >= count:
+                        return
                 else:
-                    # Don't fetch any more pages
-                    count = fetched
-
-            # Keep track if new logs get added while we are iterating
-            if total:
-                extra += log_list['total'] - total
-            total = log_list['total']
-            if count is None:
-                count = total
-
-            fetched += log_list['results']
-            if fetched >= count or fetched + extra >= total:
-                break
+                    # We are now into older logs. There could be some more logs with older logids
+                    # but newer dates, but these are not too common. Continue parsing the current
+                    # page, but don't fetch any more pages.
+                    offset = total
     except OSError:
         logging.exception("Could not fetch log list")
     except (ValueError, KeyError):
