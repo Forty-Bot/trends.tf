@@ -9,7 +9,7 @@ import sqlite3
 import time
 
 import requests, requests.adapters
-import urllib3.util
+import urllib3.util, urllib3.exceptions
 
 from ..util import classes, events
 
@@ -70,7 +70,7 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
                     # but newer dates, but these are not too common. Continue parsing the current
                     # page, but don't fetch any more pages.
                     offset = total
-    except OSError:
+    except (OSError, urllib3.exceptions.HTTPError):
         logging.exception("Could not fetch log list")
     except (ValueError, KeyError):
         logging.exception("Could not parse log list")
@@ -124,7 +124,7 @@ class ListFetcher(Fetcher):
             if not log['success']:
                 raise APIError(log['error'])
             return log
-        except OSError:
+        except (OSError, urllib3.exceptions.HTTPError):
             logging.exception("Could not fetch log %s", logid)
         except (ValueError, KeyError):
             logging.exception("Could not parse log %s", logid)
@@ -149,7 +149,7 @@ class ReverseFetcher(ListFetcher):
                 raise APIError(log_list['error'])
 
             return range(log_list['logs'][0]['id'] + 1, 0, -1)
-        except OSError:
+        except (OSError, urllib3.exceptions.HTTPError):
             logging.exception("Could not fetch log list")
         except (ValueError, KeyError):
             logging.exception("Could not parse log list")
