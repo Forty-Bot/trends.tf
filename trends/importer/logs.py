@@ -130,7 +130,7 @@ def import_log(cctx, c, logid, log):
                          logid, seq, time, firstcap, red_score, blue_score, red_kills, blue_kills,
                          red_dmg, blue_dmg, red_ubers, blue_ubers
                      ) VALUES (
-                         %(logid)s, %(seq)s, %(start_time)s,
+                         %(logid)s, %(seq)s, %(time)s,
                          (SELECT teamid FROM team WHERE team = %(firstcap)s), %(red_score)s,
                          %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s, %(blue_dmg)s,
                          %(red_ubers)s, %(blue_ubers)s
