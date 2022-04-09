@@ -309,8 +309,11 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	deaths INT NOT NULL,
 	dmg INT NOT NULL,
 	duration INT NOT NULL,
+	shots INT,
+	hits INT,
 	PRIMARY KEY (steamid64, logid, classid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64)
+	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
+	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL))
 );
 
 -- For logs page
