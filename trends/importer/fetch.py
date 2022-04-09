@@ -198,8 +198,6 @@ class CloneLogsFetcher:
         class_keys = [('heavy', 'heavyweapons') if cls == 'heavy' else cls for cls in classes]
         def extract(row, keys, format_string='{}'):
             ret = {}
-            global cur_row
-            cur_row = row
             for key in keys:
                 try:
                     ret[key[1]] = row[format_string.format(key[0])]
