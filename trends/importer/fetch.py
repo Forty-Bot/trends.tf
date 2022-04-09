@@ -75,28 +75,7 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
     except (ValueError, KeyError):
         logging.exception("Could not parse log list")
 
-class Fetcher:
-    """Generic abstraction of different ways to fetch logs"""
-    def __init__(self, **kwargs):
-        pass
-
-    def fetch_logids(self):
-        """Fetch log ids, to be passed to ``fetch_log``
-
-        :return: log ids to fetch
-        :rtype: iterable of int
-        """
-        return iter(())
-
-    def fetch_log(self, logid):
-        """Fetch and parse one log
-
-        :param int logid: The log's id
-        :return: The parsed log or None
-        """
-        None
-
-class ListFetcher(Fetcher):
+class ListFetcher:
     """Fetcher for a list of log ids for logs to get from logs.tf"""
     def __init__(self, logids=None, **kwargs):
         """Create a ``ListFetcher``
@@ -110,7 +89,6 @@ class ListFetcher(Fetcher):
                                      status_forcelist=(requests.codes.too_many,))
         self.s.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
         self.logids = logids if logids is not None else iter(())
-        super().__init__(**kwargs)
 
     def get_logids(self):
         return self.logids
@@ -176,7 +154,7 @@ class BulkFetcher(ListFetcher):
         return fetch_players_logids(self.s, players=self.players, since=self.since,
                                     count=self.count, offset=self.offset)
 
-class FileFetcher(Fetcher):
+class FileFetcher:
     """Fetcher for logs from local files"""
     def __init__(self, logs=None, **kwargs):
         """Create a ``FileFetcher``
@@ -186,7 +164,6 @@ class FileFetcher(Fetcher):
         """
 
         self.logs = logs
-        super().__init__(**kwargs)
 
     def get_logids(self):
         return self.logs.keys()
@@ -195,7 +172,7 @@ class FileFetcher(Fetcher):
         with open(self.logs[logid]) as logfile:
             return json.load(logfile)
 
-class CloneLogsFetcher(Fetcher):
+class CloneLogsFetcher:
     """Fetcher for SQLite databases created with clone_logs"""
     def __init__(self, db=None, **kwargs):
         """Create a ``CloneLogsFetcher``
@@ -210,8 +187,6 @@ class CloneLogsFetcher(Fetcher):
         # Add some indices for better performance
         for table in ('chat', 'heal_spread', 'player', 'player_weapon', 'round'):
             self.c.execute("CREATE INDEX IF NOT EXISTS {0}_pkey ON {0} (log_id)".format(table))
-
-        super().__init__(**kwargs)
 
     def date_colspec(self, column='date'):
         return "cast(strftime('%s', {}, 'utc') AS INT)".format(column)
