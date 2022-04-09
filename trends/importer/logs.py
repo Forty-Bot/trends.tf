@@ -670,7 +670,7 @@ def create_logs_parser(sub):
     f.add_argument("-l", "--log", action=LogAction, nargs=2, metavar=("LOGID", "LOG"),
                    dest='logs',
                    help="Import a log with a given id. May be specified multiple times")
-    b = log_sub.add_parser("bulk", help="Bulk import from log_sub.tf")
+    b = log_sub.add_parser("bulk", help="Bulk import from logs.tf")
     b.set_defaults(fetcher=BulkFetcher)
     b.add_argument("-p", "--player", action='append', type=SteamID, metavar="STEAMID",
                    dest='players',
