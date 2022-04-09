@@ -126,7 +126,7 @@ class ReverseFetcher(ListFetcher):
             if not log_list['success']:
                 raise APIError(log_list['error'])
 
-            return range(log_list['logs'][0]['id'] + 1, 0, -1)
+            return range(log_list['logs'][0]['id'], 0, -1)
         except (OSError, urllib3.exceptions.HTTPError):
             logging.exception("Could not fetch log list")
         except (ValueError, KeyError):
