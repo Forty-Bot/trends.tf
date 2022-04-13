@@ -210,7 +210,7 @@ CREATE OR REPLACE VIEW player_stats AS SELECT
 	(SELECT array_agg(class)
 	 FROM unnest(classids) AS classid
 	 JOIN class USING (classid)) AS classes,
-	(SELECT array_agg(duration * 1.0 / array_sum(class_durations))
+	(SELECT array_agg(duration * 1.0 / nullif(array_sum(class_durations), 0.0))
 	 FROM unnest(class_durations) AS duration) AS class_pct
 FROM player_stats_backing;
 
