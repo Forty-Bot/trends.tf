@@ -29,6 +29,7 @@ def get_player(endpoint, values):
                    (round_wins + round_losses + round_ties) AS round_winrate
            FROM (
                 SELECT
+                    count(*) AS logs,
                     sum(wins) AS round_wins,
                     sum(losses) AS round_losses,
                     sum(ties) AS round_ties,
@@ -38,7 +39,7 @@ def get_player(endpoint, values):
                 FROM player_stats
                 WHERE steamid64 = %(steamid)s
            ) AS overview
-           CROSS JOIN player
+           JOIN player ON (logs != 0)
            JOIN name USING (nameid)
            WHERE steamid64 = %(steamid)s;""", values)
 
