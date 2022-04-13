@@ -363,7 +363,7 @@
 		{% set teamsym = team['team'] | lower %}
 		{% set log_rounds = rounds | selectattr('logid', 'eq', team['logid']) | list %}
 		<tr id="{{ team['logid'] }}_{{ team['teamid'] }}" class="hider">
-			{% set team_key = [500] * 5 %}
+			{% set team_key = [500] * (logids | length) %}
 			{% for logid in logids %}
 				{% if logid == team['logid'] %}
 					{% do team_key.__setitem__(loop.index0, team['teamid']) %}
