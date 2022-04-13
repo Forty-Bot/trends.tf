@@ -18,9 +18,8 @@ def db_connect(url, name=None, cursor_factory=None):
 
     psycopg2.extensions.register_adapter(SteamID, psycopg2.extensions.AsIs)
     psycopg2.extensions.set_wait_callback(psycopg2.extras.wait_select)
-    c = psycopg2.connect(url, cursor_factory=cursor_factory or psycopg2.extras.DictCursor,
-                         application_name=name or " ".join(sys.argv))
-    return c
+    return psycopg2.connect(url, cursor_factory=cursor_factory or psycopg2.extras.DictCursor,
+                            application_name=name or " ".join(sys.argv))
 
 def db_init(c):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
