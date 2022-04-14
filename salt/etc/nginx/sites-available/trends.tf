@@ -56,6 +56,7 @@ server {
 	location ^~ /static/ {
 		root       {{ site_packages }}/trends/site/;
 		expires    365d;
+		add_header Cache-Control "immutable";
 		access_log off;
 	}
 
