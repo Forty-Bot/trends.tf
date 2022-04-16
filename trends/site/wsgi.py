@@ -112,12 +112,19 @@ def html_handler(error):
         return json_handler(error)
     return flask.render_template("error.html", error=error), error.code
 
+@player.after_request
+def set_last_modified(resp):
+    if 'last_modified' in flask.g:
+        resp.last_modified = flask.g.last_modified
+    return resp
+
 def create_app():
     app = flask.Flask(__name__)
     app.config.from_object(DefaultConfig)
     app.config.from_object(EnvConfig())
 
     app.before_request(set_user)
+    app.after_request(set_last_modified)
     app.teardown_appcontext(put_db)
     app.url_defaults(StaticHashDefaults(app))
     app.url_map.converters['intlist'] = IntListConverter

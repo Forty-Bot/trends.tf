@@ -11,11 +11,17 @@ import sys
 import flask
 import psycopg2
 import pylibmc
-import werkzeug.exceptions
+import werkzeug.exceptions, werkzeug.http
 
 from ..util import clamp
 from ..sql import db_connect
 from .sentry import TracingCursor
+
+def last_modified(since):
+    flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
+    if not werkzeug.http.is_resource_modified(flask.request.environ,
+                                              last_modified=flask.g.last_modified):
+        return "", 304
 
 def global_context(name):
     def decorator(f):
