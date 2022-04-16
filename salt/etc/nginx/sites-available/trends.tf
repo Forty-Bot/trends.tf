@@ -50,7 +50,8 @@ server {
 		uwsgi_cache_key $request_uri;
 		uwsgi_cache_lock on;
 		uwsgi_cache_use_stale updating;
-		uwsgi_cache_valid 200 5m;
+		uwsgi_cache_revalidate on;
+		uwsgi_cache_valid 30s;
 	}
 
 	location ^~ /static/ {

@@ -102,7 +102,10 @@ def leaderboard():
                            LEFT JOIN name USING (nameid);"""
                            .format(filter_clauses, cube_clauses, order_clause),
                         { **filters, 'limit': limit, 'offset': offset })
-    return flask.render_template("leaderboard.html", leaderboard=leaderboard.fetchall())
+    resp = flask.make_response(flask.render_template("leaderboard.html",
+                               leaderboard=leaderboard.fetchall()))
+    resp.cache_control.max_age = 3600
+    return resp
 
 @root.route('/logs')
 def logs():
