@@ -663,7 +663,7 @@ def create_logs_parser(sub):
             setattr(namespace, self.dest, items)
 
     logs = sub.add_parser("logs", help="Import logs")
-    logs.set_defaults(importer=import_logs)
+    logs.set_defaults(importer=import_logs_cli)
     log_sub = logs.add_subparsers()
     f = log_sub.add_parser("file", help="Import from the local filesystem")
     f.set_defaults(fetcher=FileFetcher)
