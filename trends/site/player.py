@@ -11,6 +11,9 @@ player = flask.Blueprint('player', __name__)
 @player.url_value_preprocessor
 def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
+
+@player.before_request
+def get_overview():
     mc = get_mc()
     key = "overview_{}".format(values['steamid'])
     if player_overview := mc.get(key):
@@ -41,7 +44,7 @@ def get_player(endpoint, values):
            ) AS overview
            JOIN player ON (logs != 0)
            JOIN name USING (nameid)
-           WHERE steamid64 = %(steamid)s;""", values)
+           WHERE steamid64 = %(steamid)s;""", { 'steamid': flask.g.steamid })
 
     for row in cur:
         flask.g.player = row
