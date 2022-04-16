@@ -25,8 +25,8 @@ def get_overview():
         flask.abort(404)
 
     mc = get_mc()
-    key = "overview_{}".format(values['steamid'])
-    if player_overview := mc.get(key):
+    key = "overview_{}".format(flask.g.steamid)
+    if player_overview := mc.get(key) and player_overview['last_active'] == last_active:
         flask.g.player = player_overview
         return
 
@@ -57,7 +57,7 @@ def get_overview():
 
     for row in cur:
         flask.g.player = row
-        mc.set(key, row, time=300)
+        mc.set(key, row)
         break
     else:
         flask.abort(404)
