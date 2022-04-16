@@ -49,10 +49,16 @@ class NoopClient:
 
 @global_context('mc_conn')
 def get_mc():
-    try:
-        return pylibmc.Client(flask.current_app.config['MEMCACHED_SERVERS'].split(','), binary=True)
-    except pylibmc.Error as error:
-        flask.current_app.logger.exception("Could not connect to memcached")
+    servers = flask.current_app.config['MEMCACHED_SERVERS']
+    if servers:
+        try:
+            mc = pylibmc.Client(servers.split(','), binary=True)
+            # pylibmc doesn't actually connect until we make a request. Force a connection failure
+            # up front so we can log it and use a fallback client
+            mc.get('connection_test')
+            return mc
+        except pylibmc.ConnectionError as error:
+            flask.current_app.logger.exception("Could not connect to memcached")
     return NoopClient()
 
 @global_context('filters')
