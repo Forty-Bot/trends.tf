@@ -31,6 +31,10 @@ setuptools.setup(
         'sentry-sdk[flask]',
     ],
     extras_require = {
+        'tests': [
+            'pytest',
+            'hypothesis',
+        ],
     },
     entry_points = {
         'console_scripts': [
