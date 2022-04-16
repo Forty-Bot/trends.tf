@@ -3,8 +3,9 @@
 
 import flask
 
-from .common import get_logs, get_players
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
+from .common import get_logs, get_players, logs_last_modified
+from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
+                  last_modified
 from ..steamid import SteamID
 
 root = flask.Blueprint('root', __name__)
@@ -12,17 +13,21 @@ root = flask.Blueprint('root', __name__)
 @root.route('/')
 def index():
     c = get_db()
-    logstat = c.cursor()
-    logstat.execute(
-        """SELECT
-               count(*) AS count,
-               max(time) AS newest,
-               min(time) AS oldest
-           FROM log;""")
-    players = c.cursor()
-    players.execute("SELECT count(*) AS players FROM player;")
-    return flask.render_template("index.html", logstat=logstat.fetchone(),
-                                 players=players.fetchone()[0])
+    minmax = c.cursor()
+    minmax.execute("""SELECT
+                          max(time) AS newest,
+                          min(time) AS oldest
+                      FROM log;""")
+    minmax = minmax.fetchone()
+    if resp := last_modified(minmax['newest']):
+        return resp
+
+    counts = c.cursor()
+    counts.execute("""SELECT count(*) FROM log
+                      UNION ALL
+                      SELECT count(*) FROM player""")
+    logs, players = (row[0] for row in counts)
+    return flask.render_template("index.html", minmax=minmax, logs=logs, players=players)
 
 @root.route('/favicon.ico')
 def favicon():
@@ -101,6 +106,8 @@ def leaderboard():
 
 @root.route('/logs')
 def logs():
+    if resp := logs_last_modified():
+        return resp
     return flask.render_template("logs.html", logs=get_logs().fetchall())
 
 @root.route('/log')
@@ -137,6 +144,9 @@ def log(logids):
     logids = tuple(log['logid'] for log in logs)
     if not logids:
         flask.abort(404)
+    if resp := last_modified(max(log['time'] for log in logs)):
+        return resp
+
     params = { 'logids': logids, 'llogids': list(logids) }
 
     rounds = db.cursor()

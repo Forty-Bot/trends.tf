@@ -3,7 +3,8 @@
 
 import flask
 
-from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, get_pagination
+from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, \
+                  get_pagination, last_modified
 from ..util import clamp
 
 player = flask.Blueprint('player', __name__)
@@ -14,13 +15,21 @@ def get_player(endpoint, values):
 
 @player.before_request
 def get_overview():
+    cur = get_db().cursor()
+    cur.execute("SELECT last_active FROM player WHERE steamid64 = %s;", (flask.g.steamid,))
+    for row in cur:
+        if resp := last_modified(last_active := row[0]):
+            return resp
+        break
+    else:
+        flask.abort(404)
+
     mc = get_mc()
     key = "overview_{}".format(values['steamid'])
     if player_overview := mc.get(key):
         flask.g.player = player_overview
         return
 
-    cur = get_db().cursor()
     cur.execute(
         """SELECT
                *,

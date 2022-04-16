@@ -11,12 +11,12 @@
 		</a></dd>
 		<dt>Logs</dt>
 		<dd><a href="{{ url_for('.logs') }}">
-			{{ "{:,}".format(logstat['count']) }}
+			{{ "{:,}".format(logs) }}
 		</a></dd>
 		<dt>Newest log</dt>
-		<dd class="date" timestamp="{{ logstat['newest'] }}"></dt>
+		<dd class="date" timestamp="{{ minmax['newest'] }}"></dt>
 		<dt>Oldest log</dt>
-		<dd class="date" timestamp="{{ logstat['oldest'] }}"></dt>
+		<dd class="date" timestamp="{{ minmax['oldest'] }}"></dt>
 	</dl>
 	<a href="https://github.com/Forty-Bot/trends.tf/issues/new">Suggestions</a>
 {% endblock %}

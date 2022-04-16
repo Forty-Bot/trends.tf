@@ -4,7 +4,7 @@
 import flask
 import werkzeug.exceptions
 
-from .common import get_logs, get_players
+from .common import get_logs, get_players, logs_last_modified
 from .util import get_db, get_pagination
 
 api = flask.Blueprint('api', __name__)
@@ -25,6 +25,8 @@ def do_cache(resp):
 
 @api.route('/logs')
 def logs():
+    if resp := logs_last_modified():
+        return resp
     return flask.jsonify(logs=[dict(log) for log in get_logs()])
 
 @api.route('/maps')

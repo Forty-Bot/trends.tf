@@ -3,7 +3,14 @@
 
 import flask
 
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
+from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
+                  last_modified
+
+def logs_last_modified():
+    db = get_db()
+    cur = db.cursor()
+    cur.execute("SELECT max(time) FROM log;")
+    return last_modified(cur.fetchone()[0])
 
 def get_logs():
     limit, offset = get_pagination()
