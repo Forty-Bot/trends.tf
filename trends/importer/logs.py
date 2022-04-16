@@ -695,8 +695,10 @@ def create_logs_parser(sub):
     logs.add_argument("-u", "--update-only", action='store_true',
                       help="Only update logs already in the database")
 
-def import_logs(args, c):
-    fetcher = args.fetcher(**vars(args))
+def import_logs_cli(args, c):
+    return import_logs(c, args.fetcher(**vars(args)), args.update_only)
+
+def import_logs(c, fetcher, update_only):
     cctx = zstandard.ZstdCompressor()
     cur = c.cursor()
 
@@ -783,7 +785,7 @@ def import_logs(args, c):
 
     count = 0
     start = datetime.now()
-    for logid in filter_logids(c, fetcher.get_logids(), update_only=args.update_only):
+    for logid in filter_logids(c, fetcher.get_logids(), update_only=update_only):
         log = fetcher.get_log(logid)
         if log is None:
             continue
