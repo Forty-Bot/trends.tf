@@ -34,6 +34,7 @@ setuptools.setup(
         'tests': [
             'pytest',
             'hypothesis',
+            'python-testing-crawler',
         ],
     },
     entry_points = {
