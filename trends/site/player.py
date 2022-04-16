@@ -26,7 +26,8 @@ def get_overview():
 
     mc = get_mc()
     key = "overview_{}".format(flask.g.steamid)
-    if player_overview := mc.get(key) and player_overview['last_active'] == last_active:
+    player_overview = mc.get(key)
+    if player_overview and player_overview['last_active'] == last_active:
         flask.g.player = player_overview
         return
 
