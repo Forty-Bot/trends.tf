@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
+from functools import wraps
 from collections import namedtuple
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -18,6 +19,7 @@ from .sentry import TracingCursor
 
 def global_context(name):
     def decorator(f):
+        @wraps(f)
         def decorated(*args, **kwargs):
             if name not in flask.g:
                 setattr(flask.g, name, f(*args, **kwargs))
