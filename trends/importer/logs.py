@@ -12,7 +12,7 @@ import zstandard
 
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
-from ..sql import table_columns
+from ..sql import table_columns, disable_tracing
 from .. import util
 
 def filter_logids(c, logids, update_only=False):
@@ -34,10 +34,11 @@ def filter_logids(c, logids, update_only=False):
             time = None
 
         cur = c.cursor()
-        cur.execute("""SELECT
-                           time < %s
-                       FROM public.log
-                       WHERE logid = %s""", (time, logid))
+        with disable_tracing():
+            cur.execute("""SELECT
+                               time < %s
+                           FROM public.log
+                           WHERE logid = %s""", (time, logid))
 
         for row in cur:
             if row[0]:
@@ -794,7 +795,8 @@ def import_logs(c, fetcher, update_only):
         if log is None:
             continue
 
-        with sentry_sdk.start_span(op='db.transaction', description=f"import {logid}"):
+        with sentry_sdk.start_span(op='db.transaction', description=f"import {logid}"), \
+             disable_tracing():
             cur.execute("BEGIN;")
             cur.execute("SAVEPOINT import;")
             try:
