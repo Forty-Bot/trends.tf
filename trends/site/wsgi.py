@@ -7,7 +7,9 @@ import gettext
 import hashlib
 import os, os.path
 
+import blinker
 import flask
+import sentry_sdk
 import werkzeug.exceptions
 import werkzeug.routing
 import werkzeug.utils
@@ -16,6 +18,22 @@ from .api import api, json_handler
 from .player import player
 from .root import root
 from .util import put_db
+
+@flask.before_render_template.connect_via(blinker.ANY)
+def trace_template_start(app, template, context):
+    span = sentry_sdk.start_span(op='render', description=template.name)
+    span.set_data('context', context)
+    flask.g.span = span
+    span.__enter__()
+
+@flask.template_rendered.connect_via(blinker.ANY)
+def trace_template_finish(app, template, context):
+    flask.g.pop('span').__exit__(None, None, None)
+
+@flask.got_request_exception.connect_via(blinker.ANY)
+def trace_template_error(app, exception):
+    if span := flask.g.pop('span', None):
+        span.__exit__(*sys.exc_info())
 
 class DefaultConfig:
     DATABASE = "postgresql:///trends"
