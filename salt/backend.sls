@@ -13,6 +13,7 @@
 
         [Service]
         Type=oneshot
+        EnvironmentFile=/etc/default/trends
         ExecStart={{ prefix }}/bin/trends_importer -vv logs bulk -c 1000 postgres:///trends
         User=daemon
 
@@ -99,6 +100,7 @@
 
         [Service]
         Type=oneshot
+        EnvironmentFile=/etc/default/trends
         ExecStart={{ prefix }}/bin/trends_importer -vv weapons remote postgres:///trends
         User=daemon
 
