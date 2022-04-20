@@ -19,12 +19,13 @@ except pkg_resources.DistributionNotFound:
 sentry_sdk.init(
     release=version,
     integrations=[FlaskIntegration()],
-    traces_sample_rate=0.15
+    traces_sample_rate=0.15,
+    send_default_pii=True,
 )
 
 @flask.before_render_template.connect_via(blinker.ANY)
 def trace_template_start(app, template, context):
-    span = sentry_sdk.Hub.current.start_span(op='render', description=template.name)
+    span = sentry_sdk.start_span(op='render', description=template.name)
     span.set_data('context', context)
     setattr(flask.g, 'span', span)
     span.__enter__()
@@ -50,6 +51,3 @@ class TracingCursor(psycopg2.extras.DictCursor):
     def callproc(self, procname, vars=None):
         with self._log(procname, vars, paramstyle=None):
             super().callproc(procname, vars)
-
-def set_user():
-    sentry_sdk.set_user({ 'ip_address': flask.request.remote_addr })

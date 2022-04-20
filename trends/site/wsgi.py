@@ -15,7 +15,7 @@ import werkzeug.utils
 from .api import api, json_handler
 from .player import player
 from .root import root
-from .sentry import set_user
+from . import sentry
 from .util import put_db
 
 class DefaultConfig:
@@ -123,7 +123,6 @@ def create_app():
     app.config.from_object(DefaultConfig)
     app.config.from_object(EnvConfig())
 
-    app.before_request(set_user)
     app.after_request(set_last_modified)
     app.teardown_appcontext(put_db)
     app.url_defaults(StaticHashDefaults(app))
