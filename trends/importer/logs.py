@@ -415,7 +415,6 @@ def delete_dup_logs(c):
                      AND r2.seq=r1.seq
                      AND r2.time=r1.time
                      AND r2.duration=r1.duration
-                     AND r2.winner=r1.winner
                      AND r2.firstcap=r1.firstcap
                      AND r2.red_score=r1.red_score
                      AND r2.blue_score=r1.blue_score
