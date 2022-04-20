@@ -15,7 +15,7 @@ import psycopg2.extras
 def trace_template_start(app, template, context):
     span = sentry_sdk.start_span(op='render', description=template.name)
     span.set_data('context', context)
-    setattr(flask.g, 'span', span)
+    flask.g.span = span
     span.__enter__()
 
 @flask.template_rendered.connect_via(blinker.ANY)
