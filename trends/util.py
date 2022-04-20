@@ -2,6 +2,10 @@
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
 import itertools
+import pkg_resources
+
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 classes = (
     'demoman',
@@ -34,3 +38,16 @@ def chunk(iterable, n):
         except StopIteration:
             return
         yield itertools.chain((first,), slice)
+
+def sentry_init():
+    try:
+        version = pkg_resources.require("trends.tf")[0].version
+    except pkg_resources.DistributionNotFound:
+        version = None
+
+    return sentry_sdk.init(
+        release=version,
+        integrations=[FlaskIntegration()],
+        traces_sample_rate=0.15,
+        send_default_pii=True,
+    )

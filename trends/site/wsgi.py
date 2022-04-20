@@ -15,7 +15,6 @@ import werkzeug.utils
 from .api import api, json_handler
 from .player import player
 from .root import root
-from . import sentry
 from .util import put_db
 
 class DefaultConfig:

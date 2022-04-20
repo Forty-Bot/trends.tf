@@ -11,18 +11,6 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 import pkg_resources
 import psycopg2.extras
 
-try:
-    version = pkg_resources.require("trends.tf")[0].version
-except pkg_resources.DistributionNotFound:
-    version = None
-
-sentry_sdk.init(
-    release=version,
-    integrations=[FlaskIntegration()],
-    traces_sample_rate=0.15,
-    send_default_pii=True,
-)
-
 @flask.before_render_template.connect_via(blinker.ANY)
 def trace_template_start(app, template, context):
     span = sentry_sdk.start_span(op='render', description=template.name)
