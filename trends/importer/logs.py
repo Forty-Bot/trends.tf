@@ -14,6 +14,7 @@ from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneL
 from ..steamid import SteamID
 from ..sql import table_columns, disable_tracing
 from .. import util
+from ..util import chunk
 
 def filter_logids(c, logids, update_only=False):
     """Filter log ids to exclude those already present in the database.
@@ -26,27 +27,22 @@ def filter_logids(c, logids, update_only=False):
     :raises sqlite3.DatabaseError: if there was a problem accessing the database
     """
 
-    for logid in logids:
-        try:
-            time = logid[1]
-            logid = logid[0]
-        except TypeError:
-            time = None
+    for logids in chunk(logids, 100):
+        logids = (logid if type(logid) is tuple else (logid, None) for logid in logids)
 
         cur = c.cursor()
-        with disable_tracing():
-            cur.execute("""SELECT
-                               time < %s
-                           FROM public.log
-                           WHERE logid = %s""", (time, logid))
+        psycopg2.extras.execute_values(cur,
+            """SELECT
+                new.logid,
+                log.logid AS old,
+                log.logid NOTNULL AS exists,
+                coalesce(log.time < new.time::BIGINT, TRUE) AS newer
+            FROM (VALUES %s) AS new(logid, time)
+            LEFT JOIN public.log USING (logid);""", logids, "(%s, %s)")
 
         for row in cur:
-            if row[0]:
-                yield logid
-            break
-        else:
-            if not update_only:
-                yield logid
+            if not update_only if not row['exists'] else row['newer']:
+                yield row['logid']
 
 def import_log(cctx, c, logid, log):
     """Import a log into the database.
