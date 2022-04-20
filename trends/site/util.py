@@ -15,7 +15,6 @@ import werkzeug.exceptions, werkzeug.http
 
 from ..util import clamp
 from ..sql import db_connect
-from .sentry import TracingCursor
 
 def last_modified(since):
     flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
@@ -37,7 +36,7 @@ def global_context(name):
 def get_db():
     try:
         c = db_connect(flask.current_app.config['DATABASE'],
-                       "{} {}".format(sys.argv[0], flask.request.path), TracingCursor)
+                       "{} {}".format(sys.argv[0], flask.request.path))
     except psycopg2.OperationalError as error:
         flask.current_app.logger.exception("Could not connect to database")
         raise werkzeug.exceptions.ServiceUnavailable() from error

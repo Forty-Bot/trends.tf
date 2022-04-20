@@ -5,10 +5,24 @@ import os
 import sys
 
 import psycopg2, psycopg2.extras
+from sentry_sdk import Hub, tracing_utils
 
 from .steamid import SteamID
 
-def db_connect(url, name=None, cursor_factory=None):
+class TracingCursor(psycopg2.extras.DictCursor):
+    def _log(self, query, vars, paramstyle=psycopg2.paramstyle):
+        return tracing_utils.record_sql_queries(Hub.current, self, query, vars,
+                                                paramstyle, False)
+
+    def execute(self, query, vars=None):
+        with self._log(query, vars):
+            super().execute(query, vars)
+
+    def callproc(self, procname, vars=None):
+        with self._log(procname, vars, paramstyle=None):
+            super().callproc(procname, vars)
+
+def db_connect(url, name=None):
     """Setup a database connection
 
     :param str url: Database to connect to
@@ -18,7 +32,7 @@ def db_connect(url, name=None, cursor_factory=None):
 
     psycopg2.extensions.register_adapter(SteamID, psycopg2.extensions.AsIs)
     psycopg2.extensions.set_wait_callback(psycopg2.extras.wait_select)
-    return psycopg2.connect(url, cursor_factory=cursor_factory or psycopg2.extras.DictCursor,
+    return psycopg2.connect(url, cursor_factory=TracingCursor,
                             application_name=name or " ".join(sys.argv))
 
 def db_init(c):
