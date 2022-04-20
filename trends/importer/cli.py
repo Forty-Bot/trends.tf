@@ -8,6 +8,7 @@ import sys
 import psycopg2
 
 from ..sql import db_connect, db_init
+from ..util import sentry_init
 from .ad import create_ad_parser
 from .json import create_json_parser
 from .logs import create_logs_parser
@@ -46,6 +47,7 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
     init_logging(args.verbosity)
+    sentry_init(traces_sample_rate=1.0)
 
     c = db_connect(args.database)
     try:
