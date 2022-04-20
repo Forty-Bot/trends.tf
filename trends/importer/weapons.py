@@ -181,8 +181,6 @@ def import_weapons(c, items):
         cur.execute("UPDATE weapon SET name = %s WHERE weapon = %s;", (name, weapon))
     cur.execute("COMMIT;")
 
-etag_path = "/var/tmp/items_game.etag"
-
 def create_weapons_parser(sub):
     weapons = sub.add_parser("weapons", help="Import weapons from items_game.txt")
     weapons_sub = weapons.add_subparsers()
