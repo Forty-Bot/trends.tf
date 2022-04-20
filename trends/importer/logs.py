@@ -7,6 +7,7 @@ import json
 import logging
 
 import psycopg2
+import sentry_sdk
 import zstandard
 
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
@@ -696,7 +697,8 @@ def create_logs_parser(sub):
                       help="Only update logs already in the database")
 
 def import_logs_cli(args, c):
-    return import_logs(c, args.fetcher(**vars(args)), args.update_only)
+    with sentry_sdk.start_transaction(op="import", name="logs"):
+        return import_logs(c, args.fetcher(**vars(args)), args.update_only)
 
 def import_logs(c, fetcher, update_only):
     cctx = zstandard.ZstdCompressor()
@@ -745,43 +747,45 @@ def import_logs(c, fetcher, update_only):
                    JOIN public.round_extra USING (logid, seq);""")
 
     def commit():
-        cur.execute("BEGIN;")
-        cur.execute("SET CONSTRAINTS ALL DEFERRED;");
-        delete_dup_logs(c)
-        delete_bogus_logs(cur)
-        # Done in reverse order as import_log
-        # Don't delete log or log_json so we know not to parse this log again
-        for table in temp_tables[:1:-1]:
-            cur.execute("""DELETE
-                           FROM {}
-                           WHERE logid IN (SELECT
-                                   logid
-                               FROM to_delete
-                           );""".format(table[0]))
-        cur.execute("SELECT count(*) FROM to_delete;")
-        logging.info("Removed %s bad log(s)", cur.fetchone()[0])
-        cur.execute("""DELETE FROM to_delete;""")
+        with sentry_sdk.start_span(op='db.transaction', description="commit"):
+            cur.execute("BEGIN;")
+            cur.execute("SET CONSTRAINTS ALL DEFERRED;");
+            delete_dup_logs(c)
+            delete_bogus_logs(cur)
+            # Done in reverse order as import_log
+            # Don't delete log or log_json so we know not to parse this log again
+            for table in temp_tables[:1:-1]:
+                cur.execute("""DELETE
+                               FROM {}
+                               WHERE logid IN (SELECT
+                                       logid
+                                   FROM to_delete
+                               );""".format(table[0]))
+            cur.execute("SELECT count(*) FROM to_delete;")
+            logging.info("Removed %s bad log(s)", cur.fetchone()[0])
+            cur.execute("""DELETE FROM to_delete;""")
 
-        delete_dup_rounds(cur)
-        update_stalemates(cur)
-        update_formats(cur)
-        update_wlt(cur)
-        update_player_classes(cur)
-        update_acc(cur)
-        for table in temp_tables:
-            set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
-                                   for col in table_columns(c, table[0]))
-            cur.execute("""INSERT INTO public.{}
-                           SELECT
-                               *
-                           FROM {}
-                           ORDER BY {}
-                           ON CONFLICT ({}) DO UPDATE
-                           SET {};""".format(table[0], table[0], table[1], table[1], set_clause))
+            delete_dup_rounds(cur)
+            update_stalemates(cur)
+            update_formats(cur)
+            update_wlt(cur)
+            update_player_classes(cur)
+            update_acc(cur)
+            for table in temp_tables:
+                set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
+                                       for col in table_columns(c, table[0]))
+                cur.execute("""INSERT INTO public.{}
+                               SELECT
+                                   *
+                               FROM {}
+                               ORDER BY {}
+                               ON CONFLICT ({}) DO UPDATE
+                               SET {};"""
+                            .format(table[0], table[0], table[1], table[1], set_clause))
 
-        for table in temp_tables[::-1]:
-            cur.execute("""DELETE FROM {};""".format(table[0]))
-        cur.execute("COMMIT;")
+            for table in temp_tables[::-1]:
+                cur.execute("""DELETE FROM {};""".format(table[0]))
+            cur.execute("COMMIT;")
 
     count = 0
     start = datetime.now()
@@ -790,20 +794,21 @@ def import_logs(c, fetcher, update_only):
         if log is None:
             continue
 
-        cur.execute("BEGIN;")
-        cur.execute("SAVEPOINT import;")
-        try:
-            import_log(cctx, c.cursor(), logid, log)
-        except (IndexError, KeyError, psycopg2.errors.NumericValueOutOfRange):
-            logging.exception("Could not parse log %s", logid)
-            cur.execute("ROLLBACK TO SAVEPOINT import;")
-            cur.execute("INSERT INTO to_delete VALUES (%s);", (logid,))
-        except psycopg2.Error:
-            logging.error("Could not import log %s", logid)
-            raise
-        else:
-            count += 1
-        cur.execute("COMMIT;")
+        with sentry_sdk.start_span(op='db.transaction', description=f"import {logid}"):
+            cur.execute("BEGIN;")
+            cur.execute("SAVEPOINT import;")
+            try:
+                import_log(cctx, c.cursor(), logid, log)
+            except (IndexError, KeyError, psycopg2.errors.NumericValueOutOfRange):
+                logging.exception("Could not parse log %s", logid)
+                cur.execute("ROLLBACK TO SAVEPOINT import;")
+                cur.execute("INSERT INTO to_delete VALUES (%s);", (logid,))
+            except psycopg2.Error:
+                logging.error("Could not import log %s", logid)
+                raise
+            else:
+                count += 1
+            cur.execute("COMMIT;")
 
         now = datetime.now()
         if (now - start).total_seconds() > 60 or count > 500:
