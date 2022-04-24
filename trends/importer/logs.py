@@ -412,7 +412,6 @@ def delete_dup_logs(c):
                      AND l2.time BETWEEN l1.time - 24 * 60 * 60 AND l1.time + 24 * 60 * 60)
                  JOIN combined_rounds AS r2 ON (
                      r2.logid=l2.logid
-                     AND r2.seq=r1.seq
                      AND r2.time=r1.time
                      AND r2.duration=r1.duration
                      AND r2.firstcap=r1.firstcap
