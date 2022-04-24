@@ -168,7 +168,6 @@ def log(logids):
                           red_ubers,
                           blue_ubers
                       FROM round
-                      JOIN round_extra USING (logid, seq)
                       WHERE logid IN %(logids)s;""", params)
 
     players = db.cursor()

@@ -119,19 +119,14 @@ def import_log(cctx, c, logid, log):
         round['blue_ubers'] = blue['ubers']
 
         c.execute("""INSERT INTO round (
-                         logid, seq, duration, winner
+                         logid, seq, duration, time, winner, firstcap, red_score, blue_score,
+                         red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
                      ) VALUES (
-                         %(logid)s, %(seq)s, %(length)s,
-                         (SELECT teamid FROM team WHERE team = %(winner)s)
-                     );""", round)
-        c.execute("""INSERT INTO round_extra (
-                         logid, seq, time, firstcap, red_score, blue_score, red_kills, blue_kills,
-                         red_dmg, blue_dmg, red_ubers, blue_ubers
-                     ) VALUES (
-                         %(logid)s, %(seq)s, %(time)s,
-                         (SELECT teamid FROM team WHERE team = %(firstcap)s), %(red_score)s,
-                         %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s, %(blue_dmg)s,
-                         %(red_ubers)s, %(blue_ubers)s
+                         %(logid)s, %(seq)s, %(length)s, %(time)s,
+                         (SELECT teamid FROM team WHERE team = %(winner)s),
+                         (SELECT teamid FROM team WHERE team = %(firstcap)s),
+                         %(red_score)s, %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s,
+                         %(blue_dmg)s, %(red_ubers)s, %(blue_ubers)s
                      );""", round)
 
     for steamid_str, player in log['players'].items():
@@ -406,7 +401,7 @@ def delete_dup_logs(c):
                      r1.logid AS logid,
                      max(r2.logid) AS of
                  FROM log AS l1
-                 JOIN round_full AS r1 ON (r1.logid=l1.logid)
+                 JOIN round AS r1 ON (r1.logid=l1.logid)
                  JOIN combined_logs AS l2 ON (
                      l2.logid > l1.logid
                      AND l2.time BETWEEN l1.time - 24 * 60 * 60 AND l1.time + 24 * 60 * 60)
@@ -454,14 +449,13 @@ def delete_dup_rounds(c):
     c.execute("""CREATE TABLE dupes AS SELECT
                      r1.logid,
                      r1.seq
-                 FROM round_full AS r1
-                 JOIN round_full AS r2 USING (
+                 FROM round AS r1
+                 JOIN round AS r2 USING (
                      logid, time, duration, winner, firstcap, red_score, blue_score, red_dmg,
                      blue_dmg, red_kills, blue_kills, red_ubers, blue_ubers
                  ) WHERE r1.seq > r2.seq;""")
 
-    for table in ('round_extra', 'round'):
-        c.execute("DELETE FROM {} WHERE (logid, seq) IN (SELECT * FROM dupes);".format(table))
+    c.execute("DELETE FROM round WHERE (logid, seq) IN (SELECT * FROM dupes);")
     c.execute("DROP TABLE dupes;")
 
 def update_stalemates(c):
@@ -704,8 +698,9 @@ def import_logs(c, fetcher, update_only):
     # They may also be used to know what to delete on failure
     # The second element of the tuple is what to order by when inserting (e.g. the primary key)
     temp_tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
-                   ('round_extra', 'logid, seq'), ('player_stats_backing', 'steamid64, logid'),
-                   ('player_stats_extra', 'steamid64, logid'), ('medic_stats', 'steamid64, logid'),
+                   ('player_stats_backing', 'steamid64, logid'),
+                   ('player_stats_extra', 'steamid64, logid'),
+                   ('medic_stats', 'steamid64, logid'),
                    ('heal_stats', 'logid, healer, healee'),
                    ('class_stats', 'steamid64, logid, classid'),
                    ('weapon_stats', 'steamid64, logid, classid, weaponid'),
@@ -732,14 +727,10 @@ def import_logs(c, fetcher, update_only):
                    SELECT * FROM log
                    UNION ALL
                    SELECT * FROM public.log;""");
-    cur.execute("""CREATE TEMP VIEW round_full AS
-                   SELECT * FROM round
-                   JOIN round_extra USING (logid, seq);""")
     cur.execute("""CREATE TEMP VIEW combined_rounds AS
-                   SELECT * FROM round_full
+                   SELECT * FROM round
                    UNION ALL
-                   SELECT * FROM public.round
-                   JOIN public.round_extra USING (logid, seq);""")
+                   SELECT * FROM public.round;""")
 
     def commit():
         with sentry_sdk.start_span(op='db.transaction', description="commit"):
