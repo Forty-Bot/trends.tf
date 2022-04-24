@@ -397,28 +397,38 @@ def delete_dup_logs(c):
     """
 
     cur = c.cursor()
+    cur.execute("""SELECT
+                       min(logid)
+                   FROM combined_logs
+                   WHERE time > (SELECT min(time) FROM log) - 24 * 60 * 60
+                   UNION ALL
+                   SELECT
+                       max(logid)
+                   FROM combined_logs
+                   WHERE time > (SELECT max(time) FROM log) + 24 * 60 * 60;""")
+    min, max = (row[0] for row in cur)
+
+    cur = c.cursor()
     cur.execute("""CREATE TEMP TABLE dupes AS SELECT
                      r1.logid AS logid,
                      max(r2.logid) AS of
-                 FROM log AS l1
-                 JOIN round AS r1 ON (r1.logid=l1.logid)
-                 JOIN combined_logs AS l2 ON (
-                     l2.logid > l1.logid
-                     AND l2.time BETWEEN l1.time - 24 * 60 * 60 AND l1.time + 24 * 60 * 60)
-                 JOIN combined_rounds AS r2 ON (
-                     r2.logid=l2.logid
-                     AND r2.time=r1.time
-                     AND r2.duration=r1.duration
-                     AND r2.firstcap=r1.firstcap
-                     AND r2.red_score=r1.red_score
-                     AND r2.blue_score=r1.blue_score
-                     AND r2.red_kills=r1.red_kills
-                     AND r2.blue_kills=r1.blue_kills
-                     AND r2.red_dmg=r1.red_dmg
-                     AND r2.blue_dmg=r1.blue_dmg
-                     AND r2.red_ubers=r1.red_ubers
-                     AND r2.blue_ubers=r1.blue_ubers
-                 ) GROUP BY r1.logid;""")
+                 FROM round AS r1
+                 JOIN combined_rounds AS r2 USING (
+                     time,
+                     duration,
+                     firstcap,
+                     red_score,
+                     blue_score,
+                     red_kills,
+                     blue_kills,
+                     red_dmg,
+                     blue_dmg,
+                     red_ubers,
+                     blue_ubers
+                 ) WHERE r2.logid > r1.logid
+                     AND (r2.logid > %(min)s OR %(min)s ISNULL)
+                     AND (r2.logid < %(max)s OR %(max)s ISNULL)
+                 GROUP BY r1.logid;""", { 'min': min, 'max': max})
 
     cur.execute("""UPDATE log
                  SET duplicate_of=dupes.of
