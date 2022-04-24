@@ -47,7 +47,7 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
     init_logging(args.verbosity)
-    sentry_init(traces_sample_rate=1.0)
+    sentry_init()
 
     c = db_connect(args.database)
     try:
