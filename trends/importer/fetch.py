@@ -18,7 +18,7 @@ class APIError(OSError):
     def __init__(self, msg):
         super().__init__("logs.tf API request failed: %s".format(msg))
 
-def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1000):
+def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=None):
     """Fetch some logids from logs.tf.
 
     Any network or parsing are caught and logged.
@@ -40,6 +40,8 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=1
     total = None
     # The lowest logid we've seen. We assume new logs will all have higher logids.
     last_logid = None
+    if limit is None:
+        limit = min(count, 1000) if count is not None else 1000;
 
     try:
         while total is None or offset < total:
