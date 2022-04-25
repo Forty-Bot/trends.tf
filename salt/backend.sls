@@ -14,7 +14,7 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv logs bulk -c 1000 postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv logs bulk -c 200 postgres:///trends
         User=daemon
 
 /etc/systemd/system/log_import.timer:
