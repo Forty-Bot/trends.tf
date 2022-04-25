@@ -145,6 +145,9 @@ class SteamID:
     def getSteam3RenderedID(self):
         return self.steam3()
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self})"
+
     def __str__(self):
         return str((self.universe << 56) | (self.type << 52) | (self.instance << 32) | self.accountid)
 
