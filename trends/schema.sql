@@ -23,6 +23,21 @@ CREATE OR REPLACE AGGREGATE total(anyelement) (
 	PARALLEL = SAFE
 );
 
+CREATE TABLE IF NOT EXISTS name (
+	nameid SERIAL PRIMARY KEY,
+	name TEXT NOT NULL UNIQUE
+);
+
+CREATE INDEX IF NOT EXISTS name_tgrm ON name USING GIN (name gin_trgm_ops);
+
+CREATE TABLE IF NOT EXISTS player (
+	steamid64 BIGINT PRIMARY KEY,
+	nameid INT NOT NULL REFERENCES name (nameid),
+	avatarhash TEXT,
+	-- May be NULL if the player has only spectated or uploaded
+	last_active BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS format (
 	formatid SERIAL PRIMARY KEY,
 	format TEXT NOT NULL UNIQUE,
@@ -57,6 +72,10 @@ CREATE TABLE IF NOT EXISTS log (
 	ad_scoring BOOLEAN, -- Whether attack/defense scoring is enabled
 	-- Some logs may be duplicates or subsets of another log
 	duplicate_of INT REFERENCES log (logid),
+	uploader BIGINT REFERENCES player (steamid64),
+	uploader_nameid INT REFERENCES name (nameid),
+	CHECK ((uploader ISNULL AND uploader_nameid ISNULL)
+		OR (uploader NOTNULL AND uploader_nameid NOTNULL)),
 	-- All duplicates must be earlier (and have smaller logids) than what they are duplicates of
 	-- This prevents cycles (though it does admit chains of finite length)
 	CHECK (logid < duplicate_of)
@@ -128,20 +147,6 @@ CREATE TABLE IF NOT EXISTS round (
 	red_ubers INT NOT NULL,
 	blue_ubers INT NOT NULL,
 	PRIMARY KEY (logid, seq)
-);
-
-CREATE TABLE IF NOT EXISTS name (
-	nameid SERIAL PRIMARY KEY,
-	name TEXT NOT NULL UNIQUE
-);
-
-CREATE INDEX IF NOT EXISTS name_tgrm ON name USING GIN (name gin_trgm_ops);
-
-CREATE TABLE IF NOT EXISTS player (
-	steamid64 BIGINT PRIMARY KEY,
-	nameid INT NOT NULL REFERENCES name (nameid),
-	avatarhash TEXT,
-	last_active BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS class (

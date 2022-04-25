@@ -61,6 +61,8 @@ def import_log(cctx, c, logid, log):
     info = log['info']
     info['logid'] = logid
     info['AD_scoring'] = info.get('AD_scoring', None)
+    info['uploader_name'] = info['uploader']['name']
+    info['uploader_steamid'] = str(SteamID(info['uploader']['id']))
 
     try:
         info['red_score'] = log['teams']['Red']['score']
@@ -71,12 +73,19 @@ def import_log(cctx, c, logid, log):
         info['blue_score'] = info['Blue']['score']
 
     c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", info)
+    c.execute("INSERT INTO name (name) VALUES (%(uploader_name)s) ON CONFLICT DO NOTHING;", info)
+    c.execute("""INSERT INTO player (steamid64, nameid) VALUES (
+                     %(uploader_steamid)s,
+                     (SELECT nameid FROM name WHERE name = %(uploader_name)s)
+                 ) ON CONFLICT (steamid64) DO NOTHING;""", info)
     c.execute("""INSERT INTO log (
-                     logid, time, duration, title, mapid, red_score, blue_score, ad_scoring
+                     logid, time, duration, title, mapid, red_score, blue_score, ad_scoring,
+                     uploader, uploader_nameid
                  ) VALUES (
                      %(logid)s, %(date)s, %(total_length)s, %(title)s,
-                     (SELECT mapid FROM map WHERE map = %(map)s), %(red_score)s, %(blue_score)s,
-                     %(AD_scoring)s
+                     (SELECT mapid FROM map WHERE map = %(map)s),
+                     %(red_score)s, %(blue_score)s, %(AD_scoring)s, %(uploader_steamid)s,
+                     (SELECT nameid FROM name WHERE name = %(uploader_name)s)
                  );""",
               info)
     c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)",
