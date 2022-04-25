@@ -69,6 +69,7 @@ def get_players(q):
            ) AS matches
            JOIN player USING (steamid64)
            JOIN name USING (nameid)
+           WHERE last_active NOTNULL
            ORDER BY rank DESC, last_active DESC
            LIMIT %(limit)s OFFSET %(offset)s;""",
         { 'q': "%{}%".format(q), 'limit': limit, 'offset': offset})

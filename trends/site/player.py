@@ -18,6 +18,10 @@ def get_overview():
     cur = get_db().cursor()
     cur.execute("SELECT last_active FROM player WHERE steamid64 = %s;", (flask.g.steamid,))
     for row in cur:
+        last_active = row[0]
+        if not last_active:
+            flask.abort(404)
+
         if resp := last_modified(last_active := row[0]):
             return resp
         break

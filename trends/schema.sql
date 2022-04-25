@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS player (
 	steamid64 BIGINT PRIMARY KEY,
 	nameid INT NOT NULL REFERENCES name (nameid),
 	avatarhash TEXT,
-	last_active BIGINT NOT NULL
+	last_active BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS class (
