@@ -93,6 +93,13 @@ def import_log(cctx, c, logid, log):
 
     # From here on in we want to keep our log and log_json rows
     c.execute("SAVEPOINT import;")
+
+    # Ignore logs from banned players
+    c.execute("SELECT banned FROM player WHERE steamid64 = %(uploader_steamid)s;", info);
+    for row in c:
+        if row[0]:
+            return
+
     rounds = None
     try:
         rounds = log['rounds']

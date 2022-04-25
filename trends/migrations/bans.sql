@@ -1,0 +1,5 @@
+BEGIN;
+ALTER TABLE player ADD banned BOOL NOT NULL DEFAULT FALSE;
+ALTER TABLE player ADD ban_reason TEXT;
+ALTER TABLE player ADD CHECK (ban_reason NOTNULL = banned);
+COMMIT;

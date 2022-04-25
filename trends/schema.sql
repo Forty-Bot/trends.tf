@@ -35,7 +35,11 @@ CREATE TABLE IF NOT EXISTS player (
 	nameid INT NOT NULL REFERENCES name (nameid),
 	avatarhash TEXT,
 	-- May be NULL if the player has only spectated or uploaded
-	last_active BIGINT
+	last_active BIGINT,
+	-- Whether the user is banned from uploading
+	banned BOOL NOT NULL DEFAULT FALSE,
+	ban_reason TEXT,
+	CHECK (ban_reason NOTNULL = banned)
 );
 
 CREATE TABLE IF NOT EXISTS format (
