@@ -12,7 +12,7 @@ import zstandard
 
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
-from ..sql import table_columns, disable_tracing
+from ..sql import disable_tracing, delete_logs, tables, table_columns
 from .. import util
 from ..util import chunk
 
@@ -707,20 +707,8 @@ def import_logs(c, fetcher, update_only):
     cur = c.cursor()
 
     # Create some temporary tables so deletes don't cost so much later
-    # These need to stay in topological order to avoid foreign key trouble
-    # They may also be used to know what to delete on failure
-    # The second element of the tuple is what to order by when inserting (e.g. the primary key)
-    temp_tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
-                   ('player_stats_backing', 'steamid64, logid'),
-                   ('player_stats_extra', 'steamid64, logid'),
-                   ('medic_stats', 'steamid64, logid'),
-                   ('heal_stats', 'logid, healer, healee'),
-                   ('class_stats', 'steamid64, logid, classid'),
-                   ('weapon_stats', 'steamid64, logid, classid, weaponid'),
-                   ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
-    # Initialize temporary tables
     cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
-    for table in temp_tables:
+    for table in tables:
         cur.execute("""CREATE TEMP TABLE {} (
                            LIKE {} INCLUDING ALL EXCLUDING INDEXES,
                            PRIMARY KEY ({})
@@ -751,18 +739,7 @@ def import_logs(c, fetcher, update_only):
             cur.execute("SET CONSTRAINTS ALL DEFERRED;");
             delete_dup_logs(c)
             delete_bogus_logs(cur)
-            # Done in reverse order as import_log
-            # Don't delete log or log_json so we know not to parse this log again
-            for table in temp_tables[:1:-1]:
-                cur.execute("""DELETE
-                               FROM {}
-                               WHERE logid IN (SELECT
-                                       logid
-                                   FROM to_delete
-                               );""".format(table[0]))
-            cur.execute("SELECT count(*) FROM to_delete;")
-            logging.info("Removed %s bad log(s)", cur.fetchone()[0])
-            cur.execute("""DELETE FROM to_delete;""")
+            delete_logs(cur)
 
             delete_dup_rounds(cur)
             update_stalemates(cur)
@@ -770,7 +747,7 @@ def import_logs(c, fetcher, update_only):
             update_wlt(cur)
             update_player_classes(cur)
             update_acc(cur)
-            for table in temp_tables:
+            for table in tables:
                 set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
                                        for col in table_columns(c, table[0]))
                 cur.execute("""INSERT INTO public.{}
@@ -782,7 +759,7 @@ def import_logs(c, fetcher, update_only):
                                SET {};"""
                             .format(table[0], table[0], table[1], table[1], set_clause))
 
-            for table in temp_tables[::-1]:
+            for table in tables[::-1]:
                 cur.execute("""DELETE FROM {};""".format(table[0]))
             cur.execute("COMMIT;")
 

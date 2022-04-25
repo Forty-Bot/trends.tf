@@ -2,6 +2,7 @@
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
 import contextlib
+import logging
 import os
 import sys
 
@@ -50,6 +51,32 @@ def db_connect(url, name=None):
 def db_init(c):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
         c.cursor().execute(schema.read())
+
+# These need to stay in topological order to avoid foreign key trouble
+# They may also be used to know what to delete on failure
+# The second element of the tuple is what to order by when inserting (e.g. the primary key)
+tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
+          ('player_stats_backing', 'steamid64, logid'),
+          ('player_stats_extra', 'steamid64, logid'),
+          ('medic_stats', 'steamid64, logid'),
+          ('heal_stats', 'logid, healer, healee'),
+          ('class_stats', 'steamid64, logid, classid'),
+          ('weapon_stats', 'steamid64, logid, classid, weaponid'),
+          ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
+
+def delete_logs(cur):
+    # Done in reverse order as import_log
+    # Don't delete log or log_json so we know not to parse this log again
+    for table in tables[:1:-1]:
+        cur.execute("""DELETE
+                       FROM {}
+                       WHERE logid IN (SELECT
+                               logid
+                           FROM to_delete
+                       );""".format(table[0]))
+    cur.execute("SELECT count(*) FROM to_delete;")
+    logging.info("Removed %s log(s)", cur.fetchone()[0])
+    cur.execute("""DELETE FROM to_delete;""")
 
 def table_columns(c, table):
     cur = c.cursor()
