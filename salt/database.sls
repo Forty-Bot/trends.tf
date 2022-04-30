@@ -189,3 +189,58 @@ salt://schema.sql:
     - runas: daemon
     - require:
       - trends
+
+restic:
+  pkg.installed:
+    - pkgs:
+      - restic
+      - zstd
+    - refresh: False
+
+/usr/local/bin/backup:
+  file.managed:
+    - mode: 755
+    - contents: |
+        #!/usr/bin/bash
+        set -euo pipefail
+        pg_dump --verbose -Fc -Z0 trends | zstd --rsyncable - | \
+          restic backup --stdin --stdin-filename trends.dump.zst
+        restic forget --keep-daily 7 --keep-weekly 4 --keep-monthly 12
+
+/etc/systemd/system/backup.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Back up database
+
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/default/restic
+        ExecStart=/usr/local/bin/backup
+        User=daemon
+        Slice=background.slice
+
+/etc/systemd/system/backup.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Daily back up
+
+        [Timer]
+        OnCalendar=daily
+
+        [Install]
+        WantedBy=timers.target
+
+backup_service:
+  module.run:
+    - name: service.systemctl_reload
+    - onchanges:
+      - /etc/systemd/system/backup.service
+      - /etc/systemd/system/backup.timer
+
+backup.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backup_service

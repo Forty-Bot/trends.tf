@@ -136,7 +136,22 @@ I would like to fix this at some point. Then, create a file `/etc/default/trends
 STEAMKEY=<steam API key>
 ----
 
-with your https://steamcommunity.com/dev/apikey[Steam API key]. This really should be read from
-pillar. Once this is complete, re-apply the top-level state.
+with your https://steamcommunity.com/dev/apikey[Steam API key]. If you are using sentry, you can
+also set `SENTRY_DSN` here. Set the permissions of this file to `600`. Once this is complete,
+re-apply the top-level state.
 
     $ salt-ssh <name> state.apply
+
+To support backups, first create a new application key with read/write access to the backup bucket.
+Create a file `/etc/default/restic` containing `B2_ACCOUNT_ID`, `B2_ACCOUNT_KEY`,
+`RESTIC_REPOSITORY`, and `RESTIC_PASSWORD`. Set its permissions to `600`.
+
+=== Restoring the database
+
+To restore a database, first create a database to restore into. Then (making sure that the variables
+outlined above are exported), run
+
+    $ restic dump latest trends.dump.zst | unzstd - | pg_restore --verbose -d <database>
+
+where `database` is the name of the new database. You can also specify a different snapshot instead
+of `latest` by using an ID from `restic snapshots`.
