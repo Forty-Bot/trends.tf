@@ -76,7 +76,7 @@
 
         [Service]
         Type=oneshot
-        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW CONCURRENTLY map_popularity' postgres:///trends
+        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW map_popularity' postgres:///trends
         User=daemon
 
 /etc/systemd/system/map_refresh.timer:
