@@ -4,11 +4,26 @@ Source code for https://trends.tf/[trends.tf]
 
 == Getting started
 
+Create a virtualenv and activate it
+
+    $ virtualenv venv
+    $ source venv/bin/activate
+
+Install trends.tf inside that virtualenv
+
+    $ ./setup.py develop
+
+Once you have made your changes, you can run some basic tests
+
+    $ pytest
+
+This takes around 10 seconds on my machine. To run a development server, you will first need to
+set up a database.
+
 === Setting up a database
 
-First, set up the database. Install postgresql and
-https://www.postgresql.org/docs/current/app-initdb.html[initialize the cluster], if that wasn't done
-automatically. You may also need to start the database by running
+First, install postgresql and https://www.postgresql.org/docs/current/app-initdb.html[initialize the
+cluster], if that wasn't done automatically. You may also need to start the database by running
 
     $ sudo systemctl start postgresql
 
@@ -28,17 +43,8 @@ You can exit the `psql` shell using the `\q` command.
 
 === Importing data
 
-Create a virtualenv and activate it
-
-    $ virtualenv venv
-    $ source venv/bin/activate
-
-Install trends.tf inside that virtualenv
-
-    $ ./setup.py develop
-
 There are several different ways to import new logs. To import the 1000 most recent logs from
-https://logs.tf/[logs.tf], 
+https://logs.tf/[logs.tf], run
 
     $ trends_importer -vv logs bulk -c 1000 postgresql:///trends
 
