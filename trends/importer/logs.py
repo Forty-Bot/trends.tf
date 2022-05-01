@@ -264,15 +264,26 @@ def import_log(c, logid, log):
 
                 try:
                     uber_types = player['ubertypes'];
-                    medic['medigun_ubers'] = uber_types.get('medigun', 0)
-                    medic['kritz_ubers'] = uber_types.get('kritzkrieg', 0)
-                    # Sometimes other_ubers is missing and needs to be inferred
-                    other_ubers = medic['ubers'] - medic['medigun_ubers'] - medic['kritz_ubers']
-                    medic['other_ubers'] = uber_types.get('unknown', other_ubers)
                 except KeyError:
                     medic['medigun_ubers'] = None
                     medic['kritz_ubers'] = None
+                    medic['quick_ubers'] = None
+                    medic['vacc_ubers'] = None
                     medic['other_ubers'] = None
+                else:
+                    medic['medigun_ubers'] = uber_types.get('medigun', 0)
+                    medic['kritz_ubers'] = uber_types.get('kritzkrieg', 0)
+                    medic['quick_ubers'] = uber_types.get('quickfix', 0)
+                    medic['vacc_ubers'] = uber_types.get('vaccinator', 0)
+
+                    known_ubers = medic['medigun_ubers'] + medic['kritz_ubers'] \
+                                + medic['quick_ubers'] + medic['vacc_ubers']
+                    # Sometimes ubers are counted twice for whatever reason...
+                    if known_ubers == uber_types.get('unknown', 0):
+                        medic['ubers'] -= known_ubers
+
+                    other_ubers = medic['ubers'] - medic['medigun_ubers'] - medic['kritz_ubers']
+                    medic['other_ubers'] = other_ubers
 
                 # All of these could be missing
                 for prop in ('avg_time_before_healing', 'avg_time_before_using',

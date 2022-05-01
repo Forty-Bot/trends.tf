@@ -305,8 +305,9 @@ class CloneLogsFetcher:
             ubertypes = {}
             if player['charges_uber']:
                 ubertypes['medigun'] = player['charges_uber']
-            if player['charges_kritzkrieg']:
-                ubertypes['kritzkrieg'] = player['charges_kritzkrieg']
+            for medigun in ('kritzkrieg', 'quickfix', 'vaccinator'):
+                if player[f'charges_{medigun}']:
+                    ubertypes[medigun] = player[f'charges_{medigun}']
             if any(ubertypes.values()):
                 ret['players'][steamid]['ubertypes'] = ubertypes
 
