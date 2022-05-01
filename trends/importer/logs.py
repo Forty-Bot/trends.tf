@@ -98,50 +98,7 @@ def import_log(c, logid, log):
         if row[0]:
             return
 
-    rounds = None
-    try:
-        rounds = log['rounds']
-    except KeyError:
-        # Old-style rounds
-        rounds = log['info']['rounds']
-
-    for (seq, round) in enumerate(rounds):
-        teams = round.get('team', round)
-        red = teams['Red']
-        blue = teams['Blue']
-
-        round['logid'] = logid
-        round['seq'] = seq
-        round['time'] = round.get('start_time')
-        # Some rounds have completely bogus times
-        if round['time'] is None or abs(round['time'] - info['date']) > 24 * 60 * 60:
-            round['time'] = info['date']
-
-        round['firstcap'] = round.get('firstcap')
-
-        round['red_score'] = red.get('score', info['red_score'])
-        round['blue_score'] = blue.get('score', info['blue_score'])
-        round['red_kills'] = red['kills']
-        round['blue_kills'] = blue['kills']
-        try:
-            round['red_dmg'] = red['dmg']
-            round['blue_dmg'] = blue['dmg']
-        except KeyError:
-            round['red_dmg'] = red['damage']
-            round['blue_dmg'] = blue['damage']
-        round['red_ubers'] = red['ubers']
-        round['blue_ubers'] = blue['ubers']
-
-        c.execute("""INSERT INTO round (
-                         logid, seq, duration, time, winner, firstcap, red_score, blue_score,
-                         red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
-                     ) VALUES (
-                         %(logid)s, %(seq)s, %(length)s, %(time)s,
-                         (SELECT teamid FROM team WHERE team = %(winner)s),
-                         (SELECT teamid FROM team WHERE team = %(firstcap)s),
-                         %(red_score)s, %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s,
-                         %(blue_dmg)s, %(red_ubers)s, %(blue_ubers)s
-                     );""", round)
+    doubled_ubers = True
 
     for steamid_str, player in log['players'].items():
         # Some players don't have teams (they do actually have teams but they weren't parsed
@@ -281,6 +238,7 @@ def import_log(c, logid, log):
                     # Sometimes ubers are counted twice for whatever reason...
                     if known_ubers == uber_types.get('unknown', 0):
                         medic['ubers'] -= known_ubers
+                        doubled_ubers = True
 
                     other_ubers = medic['ubers'] - medic['medigun_ubers'] - medic['kritz_ubers']
                     medic['other_ubers'] = other_ubers
@@ -400,6 +358,54 @@ def import_log(c, logid, log):
                 logging.warning("Either %s or %s is only present in healspread for log %s",
                                 healer, healee, logid)
                 c.execute("ROLLBACK TO SAVEPOINT before_heal_stats;")
+
+    rounds = None
+    try:
+        rounds = log['rounds']
+    except KeyError:
+        # Old-style rounds
+        rounds = log['info']['rounds']
+
+    for (seq, round) in enumerate(rounds):
+        teams = round.get('team', round)
+        red = teams['Red']
+        blue = teams['Blue']
+
+        round['logid'] = logid
+        round['seq'] = seq
+        round['time'] = round.get('start_time')
+        # Some rounds have completely bogus times
+        if round['time'] is None or abs(round['time'] - info['date']) > 24 * 60 * 60:
+            round['time'] = info['date']
+
+        round['firstcap'] = round.get('firstcap')
+
+        round['red_score'] = red.get('score', info['red_score'])
+        round['blue_score'] = blue.get('score', info['blue_score'])
+        round['red_kills'] = red['kills']
+        round['blue_kills'] = blue['kills']
+        try:
+            round['red_dmg'] = red['dmg']
+            round['blue_dmg'] = blue['dmg']
+        except KeyError:
+            round['red_dmg'] = red['damage']
+            round['blue_dmg'] = blue['damage']
+        round['red_ubers'] = red['ubers']
+        round['blue_ubers'] = blue['ubers']
+        if doubled_ubers:
+            round['red_ubers'] /= 2
+            round['blue_ubers'] /= 2
+
+        c.execute("""INSERT INTO round (
+                         logid, seq, duration, time, winner, firstcap, red_score, blue_score,
+                         red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
+                     ) VALUES (
+                         %(logid)s, %(seq)s, %(length)s, %(time)s,
+                         (SELECT teamid FROM team WHERE team = %(winner)s),
+                         (SELECT teamid FROM team WHERE team = %(firstcap)s),
+                         %(red_score)s, %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s,
+                         %(blue_dmg)s, %(red_ubers)s, %(blue_ubers)s
+                     );""", round)
 
 def delete_dup_logs(c):
     """Delete duplicate logs
