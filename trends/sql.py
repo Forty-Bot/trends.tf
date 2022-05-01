@@ -43,14 +43,56 @@ def db_connect(url, name=None):
     :rtype: sqlite.Connection
     """
 
+    psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     psycopg2.extensions.register_adapter(SteamID, psycopg2.extensions.AsIs)
     psycopg2.extensions.set_wait_callback(psycopg2.extras.wait_select)
     return psycopg2.connect(url, cursor_factory=TracingCursor,
                             application_name=name or " ".join(sys.argv))
 
 def db_init(c):
+    cur = c.cursor()
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
-        c.cursor().execute(schema.read())
+        cur.execute(schema.read())
+
+    # Create new partitions for log_json, if there is anything in the default partition
+    cur.execute("SELECT max(logid)/100000 FROM log_json_default")
+    max_part = cur.fetchone()[0]
+    if max_part is None:
+        return
+
+    for i in range(max_part + 1):
+        tbl = f"log_json_{i:#02}e5"
+        cur.execute("BEGIN;")
+        try:
+            cur.execute("SELECT %s::regclass;", (tbl,))
+        except psycopg2.Error:
+            cur.execute("ROLLBACK;")
+        else:
+            cur.execute("COMMIT;")
+            continue
+
+        cur.execute("BEGIN;")
+        lower = i * 1e5
+        upper = (i + 1) * 1e5
+        logging.info("Creating partition %s", tbl)
+
+        cur.execute(f"CREATE TABLE {tbl} (LIKE log_json);")
+        cur.execute(f"ALTER TABLE {tbl} ADD CHECK (logid >= %s AND logid < %s);", (lower, upper))
+        cur.execute(f"""INSERT INTO {tbl}
+                        SELECT *
+                        FROM log_json_default
+                        WHERE logid >= %s AND logid < %s
+                        ORDER BY logid;""", (lower, upper));
+        cur.execute(f"ANALYZE {tbl};")
+        cur.execute(f"DELETE FROM log_json_default WHERE logid IN (SELECT logid FROM {tbl});")
+        cur.execute("""ALTER TABLE log_json_default
+                       ADD CONSTRAINT new_minimum CHECK (logid >= %s);""", (upper,))
+        cur.execute("ALTER TABLE log_json_default DROP CONSTRAINT minimum;")
+        cur.execute("ALTER TABLE log_json_default RENAME CONSTRAINT new_minimum TO minimum;")
+        cur.execute(f"""ALTER TABLE log_json
+                        ATTACH PARTITION {tbl}
+                            FOR VALUES FROM (%s) TO (%s);""", (lower, upper))
+        cur.execute("COMMIT;")
 
 # These need to stay in topological order to avoid foreign key trouble
 # They may also be used to know what to delete on failure

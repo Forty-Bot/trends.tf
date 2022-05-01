@@ -8,7 +8,6 @@ import logging
 
 import psycopg2
 import sentry_sdk
-import zstandard
 
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
@@ -44,7 +43,7 @@ def filter_logids(c, logids, update_only=False):
             if not update_only if not row['exists'] else row['newer']:
                 yield row['logid']
 
-def import_log(cctx, c, logid, log):
+def import_log(c, logid, log):
     """Import a log into the database.
 
     :param sqlite3.Connection c: The database connection
@@ -88,8 +87,7 @@ def import_log(cctx, c, logid, log):
                      (SELECT nameid FROM name WHERE name = %(uploader_name)s)
                  );""",
               info)
-    c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)",
-              (logid, cctx.compress(json.dumps(log).encode())))
+    c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)", (logid, log))
 
     # From here on in we want to keep our log and log_json rows
     c.execute("SAVEPOINT import;")
@@ -710,7 +708,6 @@ def import_logs_cli(args, c):
         return import_logs(c, args.fetcher(**vars(args)), args.update_only)
 
 def import_logs(c, fetcher, update_only):
-    cctx = zstandard.ZstdCompressor()
     cur = c.cursor()
 
     # Create some temporary tables so deletes don't cost so much later
@@ -782,7 +779,7 @@ def import_logs(c, fetcher, update_only):
             cur.execute("BEGIN;")
             cur.execute("SAVEPOINT import;")
             try:
-                import_log(cctx, c.cursor(), logid, log)
+                import_log(c.cursor(), logid, log)
             except (IndexError, KeyError, psycopg2.errors.NumericValueOutOfRange):
                 logging.exception("Could not parse log %s", logid)
                 cur.execute("ROLLBACK TO SAVEPOINT import;")

@@ -47,7 +47,11 @@ def database(request):
                 if caplog.records:
                     pytest.fail("Error importing logs")
 
+        with db_connect(database.url()) as c:
+            cur = c.cursor()
             cur.execute("ANALYZE;")
+            # A second time to test partitioning log_json
+            db_init(c)
             cur.execute("REFRESH MATERIALIZED VIEW leaderboard_cube;")
             cur.execute("REFRESH MATERIALIZED VIEW map_popularity;")
 

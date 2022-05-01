@@ -125,8 +125,13 @@ WITH NO DATA;
 -- The original json, zstd compressed
 CREATE TABLE IF NOT EXISTS log_json (
 	logid INTEGER PRIMARY KEY REFERENCES log (logid),
-	data BYTEA NOT NULL
-);
+	data JSON NOT NULL
+) PARTITION BY RANGE (logid);
+
+CREATE TABLE IF NOT EXISTS log_json_default
+PARTITION OF log_json (
+	CONSTRAINT minimum CHECK (logid >= 0)
+) DEFAULT;
 
 CREATE TABLE IF NOT EXISTS team (
 	teamid SERIAL PRIMARY KEY,
