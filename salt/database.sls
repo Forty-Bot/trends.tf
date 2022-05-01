@@ -27,6 +27,14 @@ xfsprogs:
 {% set pg_version = 13 %}
 {% if grains.os_family == 'Debian' %}
 {% set pg_confdir = "/etc/postgresql/13/data" %}
+{% set citus_version = "10.2" %} # I have no idea why they do it like this
+{% set citus = "postgresql-{}-citus-{}".format(pg_version, citus_version) %}
+citus-repo:
+  pkgrepo.managed:
+    - name: deb https://repos.citusdata.com/community/debian/ {{ grains.oscodename }} main
+    - file: /etc/apt/sources.list.d/citusdata_community.list
+    - key_url: https://packagecloud.io/citusdata/community/gpgkey
+
 postgresql-common:
   pkg.installed:
     - refresh: False
@@ -41,14 +49,19 @@ postgresql-common:
       - postgresql-common
 {% else %}
 {% set pg_confdir = "/srv/postgres/data" %}
+{% set citus = "citus" %}
 {% endif %}
 
 postgresql:
   pkg.installed:
+    - pkgs:
+      - postgresql
+      - {{ citus }}
     - refresh: False
     - version: '{{ pg_version }}*'
     {% if grains.os_family == 'Debian' %}
     - require:
+      - citus-repo
       - /etc/postgresql-common/createcluster.d/override.conf
     {% endif %}
 
@@ -139,7 +152,7 @@ pg_includedir:
         default_statistics_target = 500
         # We have a lot of backlog, so reduce this to something which will run vacuum regularly
         autovacuum_vacuum_scale_factor = 0.005
-        shared_preload_libraries = 'pg_stat_statements'
+        shared_preload_libraries = 'citus, pg_stat_statements'
 
 /etc/systemd/system/postgresql.service.d/override.conf:
   file.managed:

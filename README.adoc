@@ -152,7 +152,9 @@ To support backups, first create a new application key with read/write access to
 Create a file `/etc/default/restic` containing `B2_ACCOUNT_ID`, `B2_ACCOUNT_KEY`,
 `RESTIC_REPOSITORY`, and `RESTIC_PASSWORD`. Set its permissions to `600`.
 
-=== Restoring the database
+== Maintenance tasks
+
+=== Restoring a backup
 
 To restore a database, first create a database to restore into. Then (making sure that the variables
 outlined above are exported), run
@@ -161,3 +163,21 @@ outlined above are exported), run
 
 where `database` is the name of the new database. You can also specify a different snapshot instead
 of `latest` by using an ID from `restic snapshots`.
+
+=== Compressing old logs' json
+
+Old logs' json can be compressed using citus's columnar storage. Once a partition is no longer being
+updated, it can be converted to columnar access. Rows will no longer be able to be updated or
+deleted, but this reduces the size of the table by around 1/2 (and the process is reversable).
+
+If you haven't done so already, enable citus (as postgres)
+
+    =# CREATE EXTENSION citus;
+
+To convert a partition, run
+
+    => -- https://github.com/citusdata/citus/issues/5918
+    => SET columnar.chunk_group_row_limit = 5000;
+    => SELECT alter_table_set_access_method('log_json_XXe5', 'columnar');
+
+replacing `XX` as appropriate. To convert back, use `heap` instead of `columnar`.
