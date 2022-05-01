@@ -240,7 +240,7 @@ restic:
         Description=Daily back up
 
         [Timer]
-        OnCalendar=daily
+        OnCalendar=8:00
 
         [Install]
         WantedBy=timers.target
