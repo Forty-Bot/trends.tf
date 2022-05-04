@@ -235,7 +235,7 @@ restic:
         Type=oneshot
         EnvironmentFile=/etc/default/restic
         ExecStart=/usr/local/bin/backup
-        User=daemon
+        User=postgres
         Slice=background.slice
 
 /etc/systemd/system/backup.timer:
