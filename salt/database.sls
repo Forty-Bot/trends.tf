@@ -154,7 +154,12 @@ pg_includedir:
         autovacuum_vacuum_scale_factor = 0.005
         shared_preload_libraries = 'citus, pg_stat_statements'
 
-/etc/systemd/system/postgresql.service.d/override.conf:
+{% if grains.os_family == 'Debian' %}
+{% set override_dir = "postgresql@.service.d" %}
+{% else %}
+{% set override_dir = "postgresql@.service.d" %}
+{% endif %}
+/etc/systemd/system/{{ override_dir }}/override.conf:
   file.managed:
     - makedirs: True
     - contents: |
@@ -169,7 +174,7 @@ pg_service:
   module.run:
     - name: service.systemctl_reload
     - onchanges:
-      - /etc/systemd/system/postgresql.service.d/override.conf
+      - /etc/systemd/system/{{ override_dir }}/override.conf
     - require:
       - postgresql
 
