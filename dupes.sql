@@ -4,17 +4,12 @@
 
 BEGIN;
 
-CREATE TEMP VIEW round_full AS
-SELECT *
-FROM round
-JOIN round_extra USING (logid, seq);
-
 CREATE TEMP TABLE dupes AS
 SELECT
 	r1.logid AS logid,
 	max(r2.logid) AS of
-FROM round_full AS r1
-JOIN round_full AS r2 USING (
+FROM round AS r1
+JOIN round AS r2 USING (
 	time, duration, firstcap, red_score, blue_score, red_kills, blue_kills, red_dmg, blue_dmg,
 	red_ubers, blue_ubers
 ) WHERE r2.logid > r1.logid
