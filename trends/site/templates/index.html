@@ -8,11 +8,11 @@
 		<dt>Players</dt>
 		<dd><a href="{{ url_for('.leaderboard') }}">
 			{{ "{:,}".format(players) }}
-		</a></dd>
+		</a></dt>
 		<dt>Logs</dt>
 		<dd><a href="{{ url_for('.logs') }}">
 			{{ "{:,}".format(logs) }}
-		</a></dd>
+		</a></dt>
 		<dt>Newest log</dt>
 		<dd class="date" timestamp="{{ minmax['newest'] }}"></dt>
 		<dt>Oldest log</dt>
