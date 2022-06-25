@@ -39,3 +39,21 @@ remove default packages:
         export VISUAL=vim
     - require:
       - vim
+
+{% set swapfile = "/var/swapfile" %}
+{% set swapsize = grains["mem_total"] * 2 %}
+
+# Based on https://serverfault.com/a/865797
+/var/swapfile:
+  cmd.run:
+    - name: |
+        swapon --show=NAME --noheadings | grep -q "^{{ swapfile }}$" && swapoff {{ swapfile }}
+        rm -f {{ swapfile }}
+        fallocate -l {{ swapsize }}M {{ swapfile }}
+        chmod 0600 {{ swapfile }}
+        mkswap {{ swapfile }}
+    - unless: bash -c '[[ $(($(stat -c %s {{ swapfile }}) / 1024**2)) = {{ swapsize }} ]]'
+  mount.swap:
+    - persist: true
+    - require:
+      - cmd: /var/swapfile
