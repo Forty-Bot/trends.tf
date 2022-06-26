@@ -11,12 +11,20 @@ import time
 import requests, requests.adapters
 import urllib3.util, urllib3.exceptions
 
-from ..util import classes, events
+from .. import util
 
 class APIError(OSError):
     """The logs.tf API returned a failure"""
     def __init__(self, msg):
         super().__init__("logs.tf API request failed: %s".format(msg))
+
+retries = urllib3.util.Retry(total=4, backoff_factor=0.1,
+                             status_forcelist=(requests.codes.too_many,))
+
+def create_session():
+        s = requests.Session()
+        s.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
+        return s
 
 def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=None):
     """Fetch some logids from logs.tf.
@@ -86,10 +94,7 @@ class ListFetcher:
         :type logids: iteratable of ints
         """
 
-        self.s = requests.Session()
-        retries = urllib3.util.Retry(total=4, backoff_factor=0.1,
-                                     status_forcelist=(requests.codes.too_many,))
-        self.s.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
+        self.s = create_session()
         self.logids = logids if logids is not None else iter(())
 
     def get_logids(self):
