@@ -26,8 +26,15 @@ def filter_logids(c, logids, update_only=False):
     :raises sqlite3.DatabaseError: if there was a problem accessing the database
     """
 
+    def adapt(logids):
+        for logid in logids:
+            try:
+                yield logid[0], logid[1]
+            except TypeError:
+                yield logid, None
+
     for logids in chunk(logids, 100):
-        logids = (logid if type(logid) is tuple else (logid, None) for logid in logids)
+        logids = adapt(logids)
 
         cur = c.cursor()
         psycopg2.extras.execute_values(cur,
