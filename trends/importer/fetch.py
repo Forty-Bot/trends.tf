@@ -66,7 +66,7 @@ def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=N
             total = log_list['total']
             for log in log_list['logs']:
                 offset += 1
-                if last_logid and log['id'] >= last_logid:
+                if last_logid is not None and log['id'] >= last_logid:
                     continue
                 elif log['date'] >= since:
                     last_logid = log['id']
