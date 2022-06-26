@@ -97,19 +97,19 @@ def db_init(c):
 # These need to stay in topological order to avoid foreign key trouble
 # They may also be used to know what to delete on failure
 # The second element of the tuple is what to order by when inserting (e.g. the primary key)
-tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
-          ('player_stats_backing', 'steamid64, logid'),
-          ('player_stats_extra', 'steamid64, logid'),
-          ('medic_stats', 'steamid64, logid'),
-          ('heal_stats', 'logid, healer, healee'),
-          ('class_stats', 'steamid64, logid, classid'),
-          ('weapon_stats', 'steamid64, logid, classid, weaponid'),
-          ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
+log_tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
+             ('player_stats_backing', 'steamid64, logid'),
+             ('player_stats_extra', 'steamid64, logid'),
+             ('medic_stats', 'steamid64, logid'),
+             ('heal_stats', 'logid, healer, healee'),
+             ('class_stats', 'steamid64, logid, classid'),
+             ('weapon_stats', 'steamid64, logid, classid, weaponid'),
+             ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
 
 def delete_logs(cur):
     # Done in reverse order as import_log
     # Don't delete log or log_json so we know not to parse this log again
-    for table in tables[:1:-1]:
+    for table in log_tables[:1:-1]:
         cur.execute("""DELETE
                        FROM {}
                        WHERE logid IN (SELECT

@@ -11,7 +11,7 @@ import sentry_sdk
 
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
-from ..sql import disable_tracing, delete_logs, publicize, tables, table_columns
+from ..sql import disable_tracing, delete_logs, log_tables, publicize, table_columns
 from .. import util
 from ..util import chunk
 
@@ -736,7 +736,7 @@ def import_logs(c, fetcher, update_only):
 
     # Create some temporary tables so deletes don't cost so much later
     cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
-    for table in tables:
+    for table in log_tables:
         cur.execute("""CREATE TEMP TABLE {} (
                            LIKE {} INCLUDING ALL EXCLUDING INDEXES,
                            PRIMARY KEY ({})
@@ -775,7 +775,7 @@ def import_logs(c, fetcher, update_only):
             update_wlt(cur)
             update_player_classes(cur)
             update_acc(cur)
-            publicize(c, tables)
+            publicize(c, log_tables)
             cur.execute("COMMIT;")
 
     count = 0
