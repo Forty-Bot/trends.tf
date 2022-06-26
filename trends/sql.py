@@ -120,6 +120,22 @@ def delete_logs(cur):
     logging.info("Removed %s log(s)", cur.fetchone()[0])
     cur.execute("""DELETE FROM to_delete;""")
 
+def publicize(c, tables):
+    cur = c.cursor()
+    for table in tables:
+        set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
+                               for col in table_columns(c, table[0]))
+        cur.execute("""INSERT INTO public.{}
+                       SELECT
+                           *
+                       FROM {}
+                       ORDER BY {}
+                       ON CONFLICT ({}) DO UPDATE
+                       SET {};"""
+                    .format(table[0], table[0], table[1], table[1], set_clause))
+    for table in tables[::-1]:
+        cur.execute("""DELETE FROM {};""".format(table[0]))
+
 def table_columns(c, table):
     cur = c.cursor()
     cur.execute("""SELECT

@@ -11,7 +11,7 @@ import sentry_sdk
 
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
-from ..sql import disable_tracing, delete_logs, tables, table_columns
+from ..sql import disable_tracing, delete_logs, publicize, tables, table_columns
 from .. import util
 from ..util import chunk
 
@@ -775,20 +775,7 @@ def import_logs(c, fetcher, update_only):
             update_wlt(cur)
             update_player_classes(cur)
             update_acc(cur)
-            for table in tables:
-                set_clause = ", ".join("{}=EXCLUDED.{}".format(col, col)
-                                       for col in table_columns(c, table[0]))
-                cur.execute("""INSERT INTO public.{}
-                               SELECT
-                                   *
-                               FROM {}
-                               ORDER BY {}
-                               ON CONFLICT ({}) DO UPDATE
-                               SET {};"""
-                            .format(table[0], table[0], table[1], table[1], set_clause))
-
-            for table in tables[::-1]:
-                cur.execute("""DELETE FROM {};""".format(table[0]))
+            publicize(c, tables)
             cur.execute("COMMIT;")
 
     count = 0
