@@ -777,6 +777,7 @@ def import_logs(c, fetcher, update_only):
             update_acc(cur)
             publicize(c, log_tables)
             cur.execute("COMMIT;")
+            logging.info("Committed %s imported log(s)...", count)
 
     count = 0
     start = datetime.now()
@@ -805,11 +806,9 @@ def import_logs(c, fetcher, update_only):
         now = datetime.now()
         if (now - start).total_seconds() > 60 or count > 500:
             commit()
-            logging.info("Committed %s imported log(s)...", count)
             cur.execute("BEGIN;")
             count = 0
             # Committing may take a while, so start the timer when we can actually import stuff
             start = datetime.now()
 
-    logging.info("Committing %s imported log(s)...", count)
     commit()
