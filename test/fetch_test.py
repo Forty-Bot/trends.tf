@@ -40,8 +40,8 @@ def test_list():
 
     assert len(responses.calls) == 2
 
-@pytest.mark.skip(reason="Waiting on https://github.com/getsentry/responses/pull/536")
-@responses.activate(registry=responses.registries.OrderedRegistry)
+@pytest.mark.skip(reason="Waiting on https://github.com/getsentry/responses/pull/563")
+#@responses.activate(registry=responses.registries.OrderedRegistry)
 def test_retry():
     responses.add(response_429(1))
     responses.add(response_429(1))
