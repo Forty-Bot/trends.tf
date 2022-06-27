@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS log (
 	duplicate_of INT REFERENCES log (logid),
 	uploader BIGINT REFERENCES player (steamid64),
 	uploader_nameid INT REFERENCES name (nameid),
+	demoid INT REFERENCES demo (demoid),
 	CHECK ((uploader ISNULL AND uploader_nameid ISNULL)
 		OR (uploader NOTNULL AND uploader_nameid NOTNULL)),
 	-- All duplicates must be earlier (and have smaller logids) than what they are duplicates of

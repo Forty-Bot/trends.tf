@@ -219,9 +219,12 @@
 		<th>Red Score</th>
 		<th>Blue Score</th>
 		<th>Duration</th>
-		<th><abbr title="Some logs may be uploaded more than once">Duplicate of</abbr></th>
 		<th>Date</th>
+		<th>Demo</th>
+		<th><abbr title="Some logs may be uploaded more than once">Duplicate of</abbr></th>
+		{% if logs | count > 1 %}
 		<th></th>
+		{% endif %}
 	</thead>
 	<tbody class="hier">
 	{% for log in logs %}
@@ -243,6 +246,14 @@
 			{{ log['blue_score'] }}
 		</td>
 		<td>{{ log['duration'] | duration }}</td>
+		<td class="left date" timestamp="{{ log['time'] }}"></td>
+		<td>
+			{% if log['demoid'] %}
+			<a href="https://demos.tf/{{ log['demoid'] }}">
+				{{ log['demoid'] }}
+			</a>
+			{% endif %}
+		</td>
 		<td>
 			{% if log['duplicate_of'] %}
 			<a href="{{ url_for('.log', logids=log['duplicate_of']) }}">
@@ -250,15 +261,14 @@
 			</a>
 			{% endif %}
 		</td>
-		<td class="left date" timestamp="{{ log['time'] }}"></td>
+		{% if logs | count > 1 %}
 		<td class="left">
-			{% if logs | count > 1 %}
 			<a href="{{ url_for('.log',
 					    logids=(logids | reject('eq', log['logid']))) }}">
 				Remove log
 			</a>
-			{% endif %}
 		</td>
+		{% endif %}
 	</tr>
 		{% for round in rounds if round['logid'] == log['logid'] %}
 			{% if loop.previtem is defined %}

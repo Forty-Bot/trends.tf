@@ -99,6 +99,7 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                hsg.healing * 60.0 / log.duration AS hpm_given,
                hsr.healing * 60.0 / log.duration AS hpm_recieved,
                duplicate_of,
+               demoid,
                time
            FROM log
            JOIN player_stats AS ps USING (logid)

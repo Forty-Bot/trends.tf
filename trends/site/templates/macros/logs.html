@@ -26,6 +26,7 @@
 	<th><abbr title="Accuracy">Acc</abbr></th>
 	<th>Date</th>
 	{% if extra %}
+	<th>Demo</th>
 	<th><abbr title="Some logs are duplicates of other logs">Duplicate of</abbr></th>
 	{% endif %}
 </tr>
@@ -77,6 +78,13 @@
 			<td>{{ optformat("{:.0%}", log['acc']) }}</td>
 			<td class="left date" timestamp="{{ log['time'] }}"></td>
 			{% if extra %}
+			<td>
+				{% if log['demoid'] %}
+				<a href="https://demos.tf/{{ log['demoid'] }}">
+					{{ log['demoid'] }}
+				</a>
+				{% endif %}
+			</td>
 			<td>
 				{% if log['duplicate_of'] %}
 				<a href="{{ url_for('root.log', logids=log['duplicate_of']) }}">

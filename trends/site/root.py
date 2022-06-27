@@ -130,17 +130,19 @@ def log(logids):
     logs = db.cursor()
     logs.execute("""SELECT
                         logid,
-                        time,
+                        log.time,
                         title,
                         map,
                         format,
-                        duration,
-                        red_score,
-                        blue_score,
-                        duplicate_of
+                        log.duration,
+                        log.red_score,
+                        log.blue_score,
+                        duplicate_of,
+                        demoid
                     FROM log
                     LEFT JOIN format USING (formatid)
                     JOIN map USING (mapid)
+                    LEFT JOIN demo USING (demoid)
                     WHERE logid IN %s
                     ORDER BY array_position(%s, logid);""", (tuple(logids), logids))
     logs = logs.fetchall()
