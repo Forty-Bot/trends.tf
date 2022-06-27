@@ -12,6 +12,7 @@ from ..util import sentry_init
 from .ad import create_ad_parser
 from .json import create_json_parser
 from .logs import create_logs_parser
+from .demos import create_demos_parser
 from .players import create_players_parser
 from .uploader import create_uploader_parser
 from .weapons import create_weapons_parser
@@ -20,6 +21,7 @@ def create_parser():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers()
     create_logs_parser(sub)
+    create_demos_parser(sub)
     create_players_parser(sub)
     create_ad_parser(sub)
     create_json_parser(sub)

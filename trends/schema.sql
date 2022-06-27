@@ -57,12 +57,42 @@ INSERT INTO format (format, players) VALUES
 	('other', NULL)
 ON CONFLICT DO NOTHING;
 
+CREATE TABLE IF NOT EXISTS team (
+	teamid SERIAL PRIMARY KEY,
+	team TEXT NOT NULL UNIQUE
+);
+
+INSERT INTO team (team) VALUES ('Red'), ('Blue') ON CONFLICT DO NOTHING;
+
 CREATE TABLE IF NOT EXISTS map (
 	mapid SERIAL PRIMARY KEY,
 	map TEXT NOT NULL UNIQUE
 );
 
 CREATE INDEX IF NOT EXISTS map_names ON map USING gin (map gin_trgm_ops);
+
+CREATE TABLE IF NOT EXISTS demo (
+	demoid INTEGER PRIMARY KEY,
+	url TEXT NOT NULL,
+	server TEXT NOT NULL,
+	duration INT NOT NULL,
+	mapid INT NOT NULL REFERENCES map (mapid),
+	time BIGINT NOT NULL,
+	red_name TEXT NOT NULL,
+	blue_name TEXT NOT NULL,
+	red_score INT NOT NULL,
+	blue_score INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS demo_player_stats (
+	demoid INTEGER REFERENCES demo (demoid),
+	steamid64 BIGINT REFERENCES player (steamid64),
+	team INT NOT NULL REFERENCES team (teamid),
+	kills INT NOT NULL,
+	deaths INT NOT NULL,
+	assists INT NOT NULL,
+	PRIMARY KEY (demoid, steamid64)
+);
 
 CREATE TABLE IF NOT EXISTS log (
 	logid INTEGER PRIMARY KEY, -- SQLite won't infer a rowid alias unless the type is INTEGER
@@ -132,13 +162,6 @@ CREATE TABLE IF NOT EXISTS log_json_default
 PARTITION OF log_json (
 	CONSTRAINT minimum CHECK (logid >= 0)
 ) DEFAULT;
-
-CREATE TABLE IF NOT EXISTS team (
-	teamid SERIAL PRIMARY KEY,
-	team TEXT NOT NULL UNIQUE
-);
-
-INSERT INTO team (team) VALUES ('Red'), ('Blue') ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),

@@ -10,7 +10,7 @@ from hypothesis import given, strategies as st
 import pytest
 import responses, responses.registries
 
-from trends.importer.fetch import ListFetcher, BulkFetcher, ReverseFetcher
+from trends.importer.fetch import ListFetcher, BulkFetcher, ReverseFetcher, DemoBulkFetcher
 
 def response_200(logid):
     return responses.Response(method=responses.GET, url=f"https://logs.tf/api/v1/log/{logid}",
@@ -135,3 +135,47 @@ def test_bulk(args):
         if last_logid is not None:
             assert logid[0] < last_logid
         last_logid = logid[0]
+
+@st.composite
+def demo_args(draw):
+    demos = draw(st.lists(integers(32), min_size=10, max_size=200, unique=True))
+    demos = sorted(demos, reverse=True)
+    pagesize = draw(st.integers(1, 50))
+    growth = draw(st.integers(0, pagesize - 1))
+    count = draw(st.integers(1, 2 * len(demos) + 1))
+
+    return { k: v for k, v in locals().items() if k != 'draw' }
+
+@given(args=demo_args())
+@responses.activate
+def test_demo(args):
+    # Make a copy so we can still see the original parameters on failure
+    demos = args['demos'][:]
+    pagesize = args['pagesize']
+    growth = args['growth']
+    count = args['count']
+    fetcher = DemoBulkFetcher(count=count)
+
+    def get_demo(request):
+        page = int(request.params['page'])
+
+        resp_demos = demos[(page - 1) * pagesize:page * pagesize]
+        resp = [{ 'id': demo } for demo in resp_demos]
+
+        for _ in range(growth):
+            demos.insert(0, demos[0] + 1)
+
+        return 200, {'content_type': 'application/json'}, json.dumps(resp)
+
+    responses.add_callback(method=responses.GET,
+                           url=re.compile(r"https://api.demos.tf/demos.*"),
+                           callback=get_demo)
+
+    demoids = list(fetcher.get_logids())
+    assert demoids == args['demos'][:count]
+
+    last_demoid = None
+    for demoid in demoids:
+        if last_demoid is not None:
+            assert demoid < last_demoid
+        last_demoid = demoid

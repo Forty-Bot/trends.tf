@@ -367,4 +367,85 @@ class CloneLogsFetcher:
         ret['chat'] = [extract(msg, (('steam_id', 'steamid'), 'name', ('message', 'msg')))
                        for msg in chat]
 
+        killstreaks = self.c.execute("SELECT * FROM killstreak WHERE log_id = ? ORDER BY time ASC",
+                                     (logid,))
+        ret['killstreaks'] = [extract(killstreak, (('steam_id', 'steamid'), 'streak', 'time'))
+                              for killstreak in killstreaks]
+
         return ret
+
+class DemoFileFetcher:
+    def __init__(self, /, demos, **kwargs):
+        self.demos = {}
+        for demoname in demos:
+            with open(demoname) as demofile:
+                demo = json.load(demofile)
+                self.demos[demo['id']] = demo
+
+    def get_logids(self):
+        return self.demos.keys()
+
+    def get_log(self, demoid):
+        return self.demos[demoid]
+
+class DemoListFetcher(ListFetcher):
+    def get_log(self, demoid):
+        try:
+            url = "https://api.demos.tf/demos/{}".format(demoid)
+            resp = self.s.get(url)
+            resp.raise_for_status()
+            return resp.json()
+        except (OSError, urllib3.exceptions.HTTPError):
+            logging.exception("Could not fetch demo %s", logid)
+        except (ValueError, KeyError):
+            logging.exception("Could not parse demo %s", logid)
+
+class DemoBulkFetcher(DemoListFetcher):
+    def __init__(self, since=None, until=None, count=None, page=1, **kwargs):
+        self.s = create_session()
+        self.since = since
+        self.until = until
+        self.count = count
+        self.page = page
+        super().__init__(**kwargs)
+
+    def get_logids(self):
+        # Number of demoids yielded (up to a maximum of count)
+        yielded = 0
+        # The lowest demoid we've seen. We assume new demos will all have higher demoids.
+        last_demoid = None
+        # Our current page
+        page = self.page
+
+        try:
+            while True:
+                params = { 'page': page }
+                if self.since:
+                    params['after'] = self.since
+                if self.until:
+                    params['before'] = self.until
+                resp = self.s.get("https://api.demos.tf/demos", params=params)
+                resp.raise_for_status()
+                demo_list = resp.json()
+
+                page_demos = 0
+                for demo in demo_list:
+                    if last_demoid is not None and demo['id'] >= last_demoid:
+                        continue
+                    else:
+                        yield demo['id']
+                        last_demoid = demo['id']
+                        page_demos += 1
+                        yielded += 1
+                        if self.count is not None and yielded >= self.count:
+                            return
+
+                # No new demos this page; give up
+                if not page_demos:
+                    return
+
+                page += 1
+        except (OSError, urllib3.exceptions.HTTPError):
+            logging.exception("Could not fetch demo list")
+        except (ValueError, KeyError):
+            logging.exception("Could not parse demo list")
