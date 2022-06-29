@@ -81,17 +81,13 @@ CREATE TABLE IF NOT EXISTS demo (
 	red_name TEXT NOT NULL,
 	blue_name TEXT NOT NULL,
 	red_score INT NOT NULL,
-	blue_score INT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS demo_player_stats (
-	demoid INTEGER REFERENCES demo (demoid),
-	steamid64 BIGINT REFERENCES player (steamid64),
-	team INT NOT NULL REFERENCES team (teamid),
-	kills INT NOT NULL,
-	deaths INT NOT NULL,
-	assists INT NOT NULL,
-	PRIMARY KEY (demoid, steamid64)
+	blue_score INT NOT NULL,
+	-- There should be a foreign key here, but postgres doesn't support it
+	-- See https://commitfest.postgresql.org/17/1252/
+	players BIGINT[] NOT NULL CHECK (
+		array_position(players, NULL) ISNULL
+		AND array_ndims(players) = 1
+	)
 );
 
 CREATE TABLE IF NOT EXISTS log (

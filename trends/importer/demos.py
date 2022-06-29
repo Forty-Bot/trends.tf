@@ -27,51 +27,41 @@ def filter_demoids(c, demoids):
             yield from (row[0] for row in cur)
 
 def import_demo(c, demo):
-    c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", demo)
-    c.execute("""INSERT INTO demo (
-                     demoid, url, server, duration, mapid, time, red_name, blue_name, red_score,
-                     blue_score
-                 ) VALUES (
-                     %(id)s, %(url)s, %(server)s, %(duration)s,
-                     (SELECT mapid FROM map WHERE map = %(map)s), %(time)s, %(red)s, %(blue)s,
-                     %(redScore)s, %(blueScore)s
-                 )""", demo);
+    players = []
     for player in demo['players']:
         # Probably nothing useful here
         if player['team'] not in ('red', 'blue'):
             continue
 
         try:
-            player['steamid'] = SteamID(player['steamid'])
+            steamid = SteamID(player['steamid'])
         except ValueError:
             continue
 
-        player['demoid'] = demo['id']
-        player['time'] = demo['time']
         c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", player)
         c.execute("""INSERT INTO player (
                          steamid64,
                          nameid,
                          last_active
                      ) VALUES (
-                         %(steamid)s,
-                         (SELECT nameid FROM name WHERE name = %(name)s),
-                         %(time)s
+                         %s,
+                         (SELECT nameid FROM name WHERE name = %s),
+                         %s
                      ) ON CONFLICT (steamid64)
                      DO UPDATE SET
                          last_active = greatest(player.last_active, EXCLUDED.last_active);""",
-                  player)
-        c.execute("""INSERT INTO demo_player_stats (
-                         demoid, steamid64, team, kills, deaths, assists
-                     ) VALUES (
-                         %(demoid)s, %(steamid)s,
-                         (SELECT teamid FROM team WHERE %(team)s ILIKE team), %(kills)s, %(deaths)s,
-                         %(assists)s
-                     ) ON CONFLICT (demoid, steamid64)
-                     DO UPDATE SET
-                         kills = demo_player_stats.kills + excluded.kills,
-                         deaths = demo_player_stats.deaths + excluded.deaths,
-                         assists = demo_player_stats.assists + excluded.assists;""", player)
+                  (steamid, player['name'], demo['time']))
+
+    demo['players'] = players
+    c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", demo)
+    c.execute("""INSERT INTO demo (
+                     demoid, url, server, duration, mapid, time, red_name, blue_name, red_score,
+                     blue_score, players
+                 ) VALUES (
+                     %(id)s, %(url)s, %(server)s, %(duration)s,
+                     (SELECT mapid FROM map WHERE map = %(map)s), %(time)s, %(red)s, %(blue)s,
+                     %(redScore)s, %(blueScore)s, %(players)s
+                 )""", demo);
 
 def create_demos_parser(sub):
     demos = sub.add_parser("demos", help="Import demos")
@@ -89,6 +79,10 @@ def create_demos_parser(sub):
     b.add_argument("-u", "--until", type=datetime.fromisoformat,
                    default=None, metavar="DATE",
                    help="Only fetch demos created before DATE")
+    b.add_argument("-N", "--new", action='store_true',
+                   help="Only fetch demos created since the newest imported demo")
+    b.add_argument("-O", "--old", action='store_true',
+                   help="Only fetch demos created before the oldest imported demo")
     b.add_argument("-c", "--count", type=int, default=None,
                    help="Fetch up to COUNT demos, defaults to unlimited")
     b.add_argument("-p", "--page", type=int, default=1,
@@ -100,6 +94,14 @@ def create_demos_parser(sub):
 
 def import_demos_cli(args, c):
     with sentry_sdk.start_transaction(op="import", name="demos"):
+        if args.new:
+            with c.cursor() as cur:
+                cur.execute("SELECT max(time) - 6 * 60 * 60 FROM demo;");
+                args.since = cur.fetchone()[0]
+        if args.old:
+            with c.cursor() as cur:
+                cur.execute("SELECT min(time) + 6 * 60 * 60 FROM demo;");
+                args.until = cur.fetchone()[0]
         return import_demos(c, args.fetcher(**vars(args)))
 
 tables = (('demo', 'demoid'), ('demo_player_stats', 'demoid, steamid64'))
