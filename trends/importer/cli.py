@@ -10,9 +10,10 @@ import psycopg2
 from ..sql import db_connect, db_init
 from ..util import sentry_init
 from .ad import create_ad_parser
+from .demos import create_demos_parser
 from .json import create_json_parser
 from .logs import create_logs_parser
-from .demos import create_demos_parser
+from .link import create_link_parser
 from .players import create_players_parser
 from .uploader import create_uploader_parser
 from .weapons import create_weapons_parser
@@ -20,11 +21,12 @@ from .weapons import create_weapons_parser
 def create_parser():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers()
-    create_logs_parser(sub)
-    create_demos_parser(sub)
-    create_players_parser(sub)
     create_ad_parser(sub)
+    create_demos_parser(sub)
     create_json_parser(sub)
+    create_link_parser(sub)
+    create_logs_parser(sub)
+    create_players_parser(sub)
     create_uploader_parser(sub)
     create_weapons_parser(sub)
     parser.add_argument("database", default="postgresql:///trends", metavar="DATABASE",
