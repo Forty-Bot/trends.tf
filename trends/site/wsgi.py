@@ -6,6 +6,7 @@ from decimal import Decimal
 import gettext
 import hashlib
 import os, os.path
+import sys
 
 import blinker
 import flask
