@@ -116,6 +116,55 @@
         [Install]
         WantedBy=timers.target
 
+/etc/systemd/system/demo_import.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Import demos from demos.tf
+
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/default/trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv demos bulk -N postgres:///trends
+        User=daemon
+
+/etc/systemd/system/demo_import.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Import from demos.tf every 5 minutes
+
+        [Timer]
+        OnCalendar=*:0/5
+
+        [Install]
+        WantedBy=timers.target
+
+/etc/systemd/system/link.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Link logs and demos
+
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/default/trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv link postgres:///trends
+        User=daemon
+
+/etc/systemd/system/link.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Link logs and demos every 5 minutes
+
+        [Timer]
+        OnCalendar=*:4/5
+
+        [Install]
+        WantedBy=timers.target
+
+
 backend_services:
   module.run:
     - name: service.systemctl_reload
@@ -129,6 +178,10 @@ backend_services:
       - /etc/systemd/system/map_refresh.timer
       - /etc/systemd/system/weapon_import.service
       - /etc/systemd/system/weapon_import.timer
+      - /etc/systemd/system/demo_import.service
+      - /etc/systemd/system/demo_import.timer
+      - /etc/systemd/system/link.service
+      - /etc/systemd/system/link.timer
 
 log_import.timer:
   service.running:
@@ -155,6 +208,18 @@ map_refresh.timer:
       - backend_services
 
 weapon_import.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+demo_import.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+link.timer:
   service.running:
     - enable: True
     - require:
