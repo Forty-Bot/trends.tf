@@ -336,12 +336,13 @@ def log(logids):
                           JOIN player_stats USING (logid)
                           LEFT JOIN player_stats_extra USING (logid, steamid64)
                           LEFT JOIN (SELECT
+                                  logid,
                                   healee AS steamid64,
                                   sum(healing) AS healing
                               FROM heal_stats
                               WHERE logid IN %(logids)s
-                              GROUP BY healee
-                          ) hsr USING (steamid64)
+                              GROUP BY logid, healee
+                          ) AS hsr USING (logid, steamid64)
                           WHERE logid IN %(logids)s
                           GROUP BY logid, teamid
                           ORDER BY array_position(%(llogids)s, logid), teamid
