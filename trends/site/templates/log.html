@@ -42,11 +42,10 @@
 			<th>Weapon</th>
 			<th><abbr title="Kills">K</abbr></th>
 			<th></th>
-			<th></th>
-			<th><abbr title="Damage">DA</abbr></th>
-			<th></th>
 			<th><abbr title="Accuracy">Acc</abbr></th>
 			<th><abbr title="Damage per shot">DA/S</abbr></th>
+			<th colspan="{{ 1 + has['dt'] }}"></th>
+			<th><abbr title="Damage">DA</abbr></th>
 			<td colspan="{{ has.values() | sum + 3 }}"></td>
 		</tr>
 		{% endif %}
@@ -54,12 +53,12 @@
 		<td colspan="{{ logids | count + 1 }}"></th>
 		<td>{{ weapon['weapon'] }}</td>
 		<td>{{ weapon['kills'] }}</td>
-		<td colspan="2"></td>
-		<td>{{ weapon['dmg'] }}</td>
 		<td></td>
 		<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
 		<td>{{ optint(weapon['dps']) }}</td>
-		<td colspan="{{ has.values() | sum + 4 }}"></td>
+		<td colspan="{{ 1 + has['dt'] }}"></td>
+		<td>{{ weapon['dmg'] }}</td>
+		<td colspan="{{ has.values() | sum + 3 }}"></td>
 	</tr>
 	{% endfor %}
 {% endmacro %}
@@ -78,13 +77,11 @@
 		<td>{{ cls['kills'] }}</td>
 		<td>{{ cls['deaths'] }}</td>
 		<td>{{ cls['assists'] }}</td>
-		<td>{{ cls['dmg'] }}</td>
 		<td>{{ cls['dpm'] | int }}</td>
-		{% if has['dt'] %}
-			<td colspan="2"></td>
-		{% endif %}
-		{# +3 for heal/hpm/lks #}
-		<td colspan="{{ has.values() | sum - has['dt'] + 3 }}"></td>
+		<td colspan="{{ 1 + has['dt'] }}"></td>
+		<td>{{ cls['dmg'] }}</td>
+		{# +2 for heal/lks #}
+		<td colspan="{{ has.values() | sum + 2 }}"></td>
 		{{ duration_col(cls['duration']) }}
 	</tr>
 	{{ weapon_table(steamid64, cls['class'], cls.weapon_stats) if cls.weapon_stats }}
@@ -102,14 +99,16 @@
 	<th><abbr title="Kills">K</abbr></th>
 	<th><abbr title="Deaths">D</abbr></th>
 	<th><abbr title="Assists">A</abbr></th>
-	<th><abbr title="Damage">DA</abbr></th>
 	<th><abbr title="Damage per Minute">DA/M</abbr></th>
 	{% if has['dt'] %}
-		<th><abbr title="Damage Taken">DT</abbr></th>
 		<th><abbr title="Damage Taken per Minute">DT/M</abbr></th>
 	{% endif %}
-	<th><abbr title="Heals received">HR</abbr></th>
 	<th><abbr title="Heals recieved per Minute">HR/M</abbr></th>
+	<th><abbr title="Damage">DA</abbr></th>
+	{% if has['dt'] %}
+		<th><abbr title="Damage Taken">DT</abbr></th>
+	{% endif %}
+	<th><abbr title="Heals received">HR</abbr></th>
 	<th><abbr title="Longest Killstreak">LKS</abbr></th>
 	{% if has['airshots'] %}
 		<th><abbr title="Airshots">AS</abbr></th>
@@ -172,20 +171,20 @@
 	<td>{{ row['kills'] }}</td>
 	<td>{{ row['deaths'] }}</td>
 	<td>{{ row['assists'] }}</td>
-	<td>{{ row['dmg'] }}</td>
 	<td>{{ row['dpm'] | int }}</td>
 	{% if has['dt'] %}
-		<td>{{ row['dt'] }}</td>
 		<td>{{ optint(row['dtm']) }}</td>
 	{% endif %}
-	<td>{{ row['healing'] | int }}</td>
 	<td>{{ row['hpm'] | int }}</td>
-	<td>{{ row['lks'] }}</td>
+	<td>{{ row['dmg'] }}</td>
 	{% macro optcol(col) %}
 		{% if has[col] %}
 			<td>{{ optint(row[col]) }}</td>
 		{% endif %}
 	{% endmacro %}
+	{{ optcol('dt') }}
+	<td>{{ row['healing'] | int }}</td>
+	<td>{{ row['lks'] }}</td>
 	{{ optcol('airshots') }}
 	{{ optcol('medkits') }}
 	{{ optcol('medkits_hp') }}
@@ -416,9 +415,10 @@
 				<td>{{ round["{}_kills".format(teamsym)] }}</td>
 				<td></td>
 				<td></td>
-				<td>{{ round["{}_dmg".format(teamsym)] }}</td>
 				<td>{{ round["{}_dpm".format(teamsym)] | int }}</td>
-				<td colspan="{{ has.values() | sum + has['dt'] + 3 }}"></td>
+				<td colspan="{{ 1 + has['dt'] }}"></td>
+				<td>{{ round["{}_dmg".format(teamsym)] }}</td>
+				<td colspan="{{ has.values() | sum + 2 }}"></td>
 				<td>{{ round["{}_ubers".format(teamsym)] | int }}</td>
 				{{ duration_col(round['duration']) }}
 			</tr>
@@ -434,9 +434,9 @@
 		<thead class="sortable">
 			{{ player_headers() }}
 			<th>Class</th>
-			<th><abbr title="Healing">H</abbr></th>
-			<th><abbr title="Healing per minute">H/M</abbr></th>
 			<th><abbr title="Percent healing">H%</abbr></th>
+			<th><abbr title="Healing per minute">H/M</abbr></th>
+			<th><abbr title="Healing">H</abbr></th>
 			<th><abbr title="Übers">Ü</abbr></th>
 			<th><abbr title="Medigun übers">MÜ</abbr></th>
 			<th><abbr title="Kritz übers">KÜ</abbr></th>
@@ -454,9 +454,9 @@
 			{{ team_cols(medic) }}
 			{{ player_col(players[medic['steamid64']]) }}
 			<td class="left">{{ classicon('medic') }}</td>
-			<td>{{ optint(medic['healing']) }}</td>
-			<td>{{ optint(medic['hpm']) }}</td>
 			<td>100%</td>
+			<td>{{ optint(medic['hpm']) }}</td>
+			<td>{{ optint(medic['healing']) }}</td>
 			<td>{{ optint(medic['ubers']) }}</td>
 			<td>{{ optint(medic['medigun_ubers']) }}</td>
 			<td>{{ optint(medic['kritz_ubers']) }}</td>
@@ -486,10 +486,10 @@
 						{{ classicon(cls, pct) }}
 					{% endfor %}
 				</td>
-				<td>{{ healee['healing'] }}</td>
-				<td>{{ healee['hpm'] | int}}</td>
 				<td>{{ optformat("{:.0%}", healee['healing']
 							   / medic['healing']) }}</td>
+				<td>{{ healee['hpm'] | int}}</td>
+				<td>{{ healee['healing'] }}</td>
 				<td colspan="9"></td>
 				{{ duration_col(healee['duration']) }}
 			</tr>
