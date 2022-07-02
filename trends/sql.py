@@ -52,7 +52,12 @@ def db_connect(url, name=None):
 def db_init(c):
     cur = c.cursor()
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
-        cur.execute(schema.read())
+        try:
+            cur.execute(schema.read())
+        except psycopg2.InternalError as e:
+            if e.pgerror != 'tuple concurrently updated':
+                raise
+            cur.execute("ROLLBACK;")
 
     # Create new partitions for log_json, if there is anything in the default partition
     cur.execute("SELECT max(logid)/100000 FROM log_json_default")
