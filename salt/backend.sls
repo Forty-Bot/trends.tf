@@ -135,7 +135,7 @@
         Description=Import from demos.tf every 5 minutes
 
         [Timer]
-        OnCalendar=*:0/5
+        OnCalendar=*:2/5
 
         [Install]
         WantedBy=timers.target
@@ -163,7 +163,6 @@
 
         [Install]
         WantedBy=timers.target
-
 
 backend_services:
   module.run:
