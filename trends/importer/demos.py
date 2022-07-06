@@ -51,6 +51,7 @@ def import_demo(c, demo):
                      DO UPDATE SET
                          last_active = greatest(player.last_active, EXCLUDED.last_active);""",
                   (steamid, player['name'], demo['time']))
+        players.append(steamid)
 
     demo['players'] = players
     c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", demo)
