@@ -8,6 +8,7 @@ import logging
 
 import psycopg2
 import sentry_sdk
+import systemd_watchdog
 
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
@@ -733,6 +734,7 @@ def import_logs_cli(args, c):
 
 def import_logs(c, fetcher, update_only):
     cur = c.cursor()
+    wd = systemd_watchdog.watchdog()
 
     # Create some temporary tables so deletes don't cost so much later
     cur.execute("CREATE TEMP TABLE to_delete (logid INTEGER PRIMARY KEY);")
@@ -776,16 +778,20 @@ def import_logs(c, fetcher, update_only):
             update_player_classes(cur)
             update_acc(cur)
             publicize(c, log_tables)
+            wd.ping()
             cur.execute("COMMIT;")
             logging.info("Committed %s imported log(s)...", count)
 
     count = 0
     start = datetime.now()
+    wd.ready()
     for logid in filter_logids(c, fetcher.get_logids(), update_only=update_only):
+        wd.ping()
         log = fetcher.get_log(logid)
         if log is None:
             continue
 
+        wd.ping()
         with sentry_sdk.start_span(op='db.transaction', description=f"import {logid}"), \
              disable_tracing():
             cur.execute("BEGIN;")
@@ -810,5 +816,6 @@ def import_logs(c, fetcher, update_only):
             count = 0
             # Committing may take a while, so start the timer when we can actually import stuff
             start = datetime.now()
+        wd.ping()
 
     commit()

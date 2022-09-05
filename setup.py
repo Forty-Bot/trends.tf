@@ -29,6 +29,7 @@ setuptools.setup(
         'zstandard',
         'pylibmc',
         'sentry-sdk[flask]',
+        'systemd-watchdog',
     ],
     extras_require = {
         'tests': [

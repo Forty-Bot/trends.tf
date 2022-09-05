@@ -12,10 +12,11 @@
         Description=Import logs from logs.tf
 
         [Service]
-        Type=oneshot
+        Type=notify
         EnvironmentFile=/etc/default/trends
         ExecStart={{ prefix }}/bin/trends_importer -vv logs bulk -c 200 postgres:///trends
         User=daemon
+        WatchdogSec=60
 
 /etc/systemd/system/log_import.timer:
   file.managed:
