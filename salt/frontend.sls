@@ -307,6 +307,11 @@ nginx:
     - require:
       - nginx
 
+dhparam:
+  cmd.run:
+    - name: openssl dhparam 2048 > /etc/nginx/dhparam.pem
+    - creates: /etc/nginx/dhparam.pem
+
 /etc/systemd/system/nginx.service.d/override.conf:
   file.managed:
     - makedirs: True
@@ -331,6 +336,7 @@ nginx.service:
       - uwsgi_service
       - munin-graph.socket
       - munin-html.socket
+      - dhparam
 
 munin_node:
   pkg.installed:
