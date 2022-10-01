@@ -10,6 +10,11 @@ CREATE OR REPLACE FUNCTION array_sum(anyarray) RETURNS anyelement
 	AS 'SELECT sum(val) FROM unnest($1) AS val'
 	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
 
+-- The conjunctive counterpart to coalesce()
+CREATE OR REPLACE FUNCTION nullelse(anyelement, anycompatible) RETURNS anycompatible
+	AS 'SELECT CASE WHEN $1 NOTNULL THEN $2 END'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
 -- Compatibility functions for migration from SQLite
 
 CREATE OR REPLACE FUNCTION add(FLOAT, anyelement) RETURNS FLOAT

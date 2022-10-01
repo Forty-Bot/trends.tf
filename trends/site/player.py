@@ -438,11 +438,11 @@ def trends(steamid):
                    nullif(sum(log.duration) OVER win, 0) AS assists,
                sum(ps.dmg) OVER win * 60.0 / nullif(sum(log.duration) OVER win, 0) AS dpm,
                sum(ps.dt) OVER win * 60.0 /
-                   nullif(sum(CASE WHEN ps.dt NOTNULL THEN log.duration END) OVER win, 0) AS dtm,
+                   nullif(sum(nullelse(ps.dt, log.duration)) OVER win, 0) AS dtm,
                sum(hsg.healing) OVER win * 60.0 /
-                   nullif(sum(log.duration) OVER win, 0) AS hpm_given,
+                   nullif(sum(nullelse(hsg.healing, log.duration)) OVER win, 0) AS hpm_given,
                sum(hsr.healing) OVER win * 60.0 /
-                   nullif(sum(log.duration) OVER win, 0) AS hpm_recieved
+                   nullif(sum(nullelse(hsr.healing, log.duration)) OVER win, 0) AS hpm_recieved
            FROM log_nodups AS log
            JOIN player_stats AS ps USING (logid)
            LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
