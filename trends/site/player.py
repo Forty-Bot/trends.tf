@@ -122,22 +122,23 @@ def overview(steamid):
 
     classes = c.cursor()
     classes.execute(
-        """WITH classes AS MATERIALIZED (
-               SELECT
-                   classid,
-                   classid = primary_classid AS mostly,
-                   wins AS round_wins,
-                   losses AS round_losses,
-                   cs.duration,
-                   cs.dmg,
-                   cs.hits,
-                   cs.shots
-               FROM player_stats
-               JOIN class_stats cs USING (logid, steamid64)
-               JOIN log_nodups USING (logid)
-               WHERE steamid64 = %(steamid)s
-                   {}
-           ) SELECT
+        """CREATE TEMP TABLE classes AS SELECT
+               classid,
+               classid = primary_classid AS mostly,
+               wins AS round_wins,
+               losses AS round_losses,
+               cs.duration,
+               cs.dmg,
+               cs.hits,
+               cs.shots
+           FROM player_stats
+           JOIN class_stats cs USING (logid, steamid64)
+           JOIN log_nodups USING (logid)
+           WHERE steamid64 = %(steamid)s
+               {};""".format(filter_clauses), { 'steamid': steamid, **filters})
+    classes.execute("ANALYZE classes");
+    classes.execute(
+        """SELECT
                *,
                (wins + 0.5 * ties) / (wins + losses + ties) AS winrate
            FROM (
@@ -156,7 +157,7 @@ def overview(steamid):
                    {}
                GROUP BY classid
                ORDER BY classid
-           ) AS classes;""".format(filter_clauses, get_filter_clauses(filters, 'class')),
+           ) AS classes;""".format(get_filter_clauses(filters, 'class')),
         { 'steamid': steamid, **filters})
     classes = classes.fetchall()
 
