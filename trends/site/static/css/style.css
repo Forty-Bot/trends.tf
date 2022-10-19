@@ -219,6 +219,22 @@ a.sort {
 	display: none;
 }
 
+.sortable th.tree {
+	background-image: none;
+	cursor: auto;
+}
+
+.hider .tree {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+	background-repeat: no-repeat;
+	background-position: center right;
+	padding-right: 1em;
+}
+
+.hider.hiding .tree {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAHAPABAAAAAP///yH5BAUKAAEALAAAAAAVAAcAAAISjI+Aywva4nlQNlptevrmPlkFADs=);
+}
+
 .padding-row {
 	height: 1em;
 }

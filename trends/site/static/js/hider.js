@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
+/**
+ * update_hidden() - Update hidden rows after a click
+ * @hider - The row which was clicked
+ * @hide - Whether to unconditionally hide rows, or toggle them
+ * @recursive - Whether to recurse into child rows
+ */
 function update_hidden(hider, hide, recursive) {
+	if (hide) {
+		hider.classList.add('hiding');
+	} else {
+		hider.classList.toggle('hiding');
+	}
+
 	let elements = document.getElementsByClassName(hider.id);
 	for (let element of elements) {
 		let hidden = true;

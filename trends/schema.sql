@@ -5,6 +5,9 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS tsm_system_rows;
 
+-- Numeric sort
+CREATE COLLATION IF NOT EXISTS numeric (provider = icu, locale = 'en-u-kn-true');
+
 -- Compute the sum of an array
 CREATE OR REPLACE FUNCTION array_sum(anyarray) RETURNS anyelement
 	AS 'SELECT sum(val) FROM unnest($1) AS val'

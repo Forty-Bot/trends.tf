@@ -46,7 +46,8 @@
 	<ul class="nav">
 	{% for (endpoint, name) in (('.overview', "Overview"), ('.logs', "Logs"),
 	                            ('.peers', "Peers"), ('.totals', "Totals"),
-	                            ('.weapons', "Weapons"), ('.trends', "Trends")) %}
+				    ('.weapons', "Weapons"), ('.trends', "Trends"),
+				    ('.maps', "Maps")) %}
 		{% set url = url_for(endpoint, steamid=g.player['steamid64']) %}
 		<li class="nav"><a class="{{ "active" if url == request.path }}" href="{{ url }}">
 			{{ name }}

@@ -459,3 +459,77 @@ def trends(steamid):
     trends = list(dict(row) for row in cur)
     trends.reverse()
     return flask.render_template("player/trends.html", trends=trends, window=window)
+
+@player.route('/maps')
+def maps(steamid):
+    filters = get_filter_params()
+    filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns)
+    maps = get_db().cursor()
+    maps.execute(
+        """SELECT
+               grouping(parts[1], parts[2], parts[3:]) AS grouping,
+               parts[1] AS part1,
+               parts[2] AS part2,
+               (array_agg(map ORDER BY logs DESC))[1] AS map,
+               (sum(wins) + 0.5 * sum(ties)) /
+                   nullif(sum(wins + losses + ties), 0) AS winrate,
+               (sum(round_wins) + 0.5 * sum(round_losses)) /
+                   nullif(sum(round_wins + round_losses + round_ties), 0) AS round_winrate,
+               sum(kills) AS kills,
+               sum(deaths) AS deaths,
+               sum(assists) AS assists,
+               sum(dmg) AS dmg,
+               sum(dt) AS dt,
+               total(kills) * 30 * 60 / nullif(total(duration), 0) AS k30,
+               total(deaths) * 30 * 60 / nullif(total(duration), 0) AS d30,
+               total(assists) * 30 * 60 / nullif(total(duration), 0) AS a30,
+               total(dmg) * 60 / nullif(total(duration), 0) AS dpm,
+               total(dt) * 60 / nullif(total(duration), 0) AS dtm,
+               total(hits) / nullif(sum(shots), 0.0) AS acc,
+               sum(logs) AS logs,
+               total(duration) AS duration
+           FROM (WITH map_unprefixed AS (SELECT
+                   mapid,
+                   replace(map, 'workshop/', '') AS map
+               FROM map) SELECT
+                   map,
+                   (SELECT
+                        array_agg(part)
+                    FROM unnest(regexp_split_to_array(lower(map), '[^a-z0-9]+')) AS part
+                    WHERE part != '') AS parts,
+                   stats.*
+               FROM (SELECT
+                       mapid,
+                       count(*) AS logs,
+                       sum(wins) AS round_wins,
+                       sum(losses) AS round_losses,
+                       sum(ties) AS round_ties,
+                       sum((wins > losses)::INT) AS wins,
+                       sum((wins < losses)::INT) AS losses,
+                       sum((wins = losses)::INT) AS ties,
+                       total(duration) AS duration,
+                       total(kills) AS kills,
+                       total(deaths) AS deaths,
+                       total(assists) AS assists,
+                       total(dmg) AS dmg,
+                       total(dt) AS dt,
+                       total(hits) AS hits,
+                       total(shots) AS shots
+                   FROM log_nodups
+                   JOIN player_stats using (logid)
+                   WHERE steamid64 = %(steamid)s
+                       {}
+                   GROUP BY mapid
+               ) AS stats
+               JOIN map USING (mapid)
+           ) AS maps
+           GROUP BY ROLLUP (parts[1], parts[2], parts[3:])
+           HAVING parts[1] IS NOT NULL
+           ORDER BY parts[1] NULLS FIRST,
+               CASE
+                   WHEN grouping(parts[2]) = 0 THEN coalesce(parts[2], '')
+                   ELSE NULL
+               END NULLS FIRST,
+               parts[3:] COLLATE numeric NULLS FIRST;""".format(filter_clauses),
+        {'steamid': steamid, **filters})
+    return flask.render_template("player/maps.html", maps=maps.fetchall())
