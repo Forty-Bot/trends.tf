@@ -17,6 +17,9 @@ from ..util import clamp
 from ..sql import db_connect
 
 def last_modified(since):
+    if flask.current_app.env == 'development':
+        return None
+
     flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
     if not werkzeug.http.is_resource_modified(flask.request.environ,
                                               last_modified=flask.g.last_modified):
