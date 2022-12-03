@@ -54,7 +54,7 @@ a:hover, a:focus {
 ul.nav {
 	list-style-type: none;
 	background-color: var(--heading);
-	margin: 0;
+	margin: 25px 0 0 0 ;
 	padding: 0;
 	overflow: hidden;
 }
@@ -81,6 +81,7 @@ ul.nav li.nav a:hover:not(.active) {
 
 ul.affiliate {
 	list-style-type: none;
+	margin: 0 0 0 auto;
 	padding: 0;
 	overflow: hidden;
 }
@@ -142,13 +143,21 @@ td.left {
 
 .avatar {
 	display: flex;
-	align-items: center;
 }
 
 .avatar > img {
 	height: 100px;
 	width: 100px;
 	margin-right: 10px;
+}
+
+.avatar > .box {
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.avatar > .box > h1 {
+	margin: 0;
 }
 
 .row {
