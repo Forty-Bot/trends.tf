@@ -3,7 +3,7 @@
 {% from "macros/filter.html" import filter %}
 {% from "macros/format.html" import optformat, optint %}
 {% from "macros/logs.html" import log_table %}
-{% from "macros/pretty.html" import class_map %}
+{% from "macros/pretty.html" import class_map, format_map %}
 {% from "macros/wlt.html" import wlt %}
 {% extends "player/base.html" %}
 {% block title %}Overview - {{ super() }}{% endblock %}
@@ -48,6 +48,32 @@
 	</div>
 
 	<div class="float">
+	<h3>Formats</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Format</th>
+				<th><abbr title="Wins-Losses-Ties, without ties under 60s">
+					W-L-T
+				</abbr></th>
+				<th><abbr title="Winrate, ties count as 0.5 wins">Winrate</abbr></th>
+				<th>Time Played</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for fmt in formats %}
+			<tr>
+				<td class="left">{{ format_map[fmt['format']] }}</td>
+				<td>{{ wlt(fmt['wins'], fmt['losses'], fmt['ties']) }}</td>
+				<td>{{ optformat("{:.2%}", fmt['winrate']) }}</td>
+				<td>{{ fmt['time'] | duration }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+
+	<div class="float">
 	<h3>Aliases</h3>
 	<table>
 		<thead>
@@ -69,47 +95,12 @@
 		<p>Filtering aliases is not supported.</p>
 	{% endif %}
 	</div>
+	</div>
 
-	<div class="float">
-	<h3>Averages per 30 minutes</h3>
-	<table>
-		<thead>
-			<tr>
-				<th>Number&hellip;</th>
-				<th>Scout</th>
-				<th>Soldier</th>
-				<th>Pyro</th>
-				<th>Demo</th>
-				<th>Heavy</th>
-				<th>Engineer</th>
-				<th>Medic</th>
-				<th>Sniper</th>
-				<th>Spy</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for event in event_stats %}
-			<tr>
-				<td>&hellip;{{ {
-					'kill': "killed",
-					'assist': "assisted killing",
-					'death': "died to",
-					}[event['event']] }}</td>
-				<td>{{ optformat("{:.1f}", event['scout']) }}</td>
-				<td>{{ optformat("{:.1f}", event['soldier']) }}</td>
-				<td>{{ optformat("{:.1f}", event['pyro']) }}</td>
-				<td>{{ optformat("{:.1f}", event['demoman']) }}</td>
-				<td>{{ optformat("{:.1f}", event['heavyweapons']) }}</td>
-				<td>{{ optformat("{:.1f}", event['engineer']) }}</td>
-				<td>{{ optformat("{:.1f}", event['medic']) }}</td>
-				<td>{{ optformat("{:.1f}", event['sniper']) }}</td>
-				<td>{{ optformat("{:.1f}", event['spy']) }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	</div>
-	</div>
+	<p>
+		If you are looking for per-class averages, they have moved to the
+		<a href="{{ url_for(".totals", steamid=g.player['steamid64']) }}">totals page</a>.
+	</p>
 
 	<h2><a href="{{ url_for('.logs', steamid=g.player['steamid64']) }}">Recent Logs</a></h2>
 	{{ log_table(logs) }}

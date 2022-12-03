@@ -163,29 +163,28 @@ def overview(steamid):
         { 'steamid': steamid, **filters})
     classes = classes.fetchall()
 
-    duration = sum(cls['time'] or 0 for cls in classes)
-    event_stats = c.cursor()
-    event_stats.execute(
-            """SELECT
-                   event,
-                   total(demoman) * 30 * 60 / nullif(%(duration)s, 0) AS demoman,
-                   total(engineer) * 30 * 60 / nullif(%(duration)s, 0) AS engineer,
-                   total(heavyweapons) * 30 * 60 / nullif(%(duration)s, 0) AS heavyweapons,
-                   total(medic) * 30 * 60 / nullif(%(duration)s, 0) AS medic,
-                   total(pyro) * 30 * 60 / nullif(%(duration)s, 0) AS pyro,
-                   total(scout) * 30 * 60 / nullif(%(duration)s, 0) AS scout,
-                   total(sniper) * 30 * 60 / nullif(%(duration)s, 0) AS sniper,
-                   total(soldier) * 30 * 60 / nullif(%(duration)s, 0) AS soldier,
-                   total(spy) * 30 * 60 / nullif(%(duration)s, 0) AS spy
-               FROM event
-               LEFT JOIN event_stats USING (eventid)
-               LEFT JOIN log_nodups AS log USING (logid)
-               LEFT JOIN player_stats USING (logid, steamid64)
+    formats = c.cursor()
+    formats.execute(
+        """SELECT
+               format,
+               (wins + 0.5 * ties) /
+                   (wins + losses + ties) AS winrate,
+               data.*
+           FROM (SELECT
+                   formatid,
+                   sum((wins > losses)::INT) AS wins,
+                   sum((wins < losses)::INT) AS losses,
+                   sum((wins = losses)::INT) AS ties,
+                   total(duration) as time
+               FROM log_nodups
+               JOIN player_stats USING (logid)
                WHERE steamid64 = %(steamid)s
                    {}
-               GROUP BY event
-               ORDER BY event DESC;""".format(filter_clauses),
-               { 'steamid': steamid, 'duration': duration, **filters })
+               GROUP BY formatid
+           ) AS data
+           JOIN format using (formatid);""".format(filter_clauses),
+        { 'steamid': steamid, **filters })
+
     aliases = c.cursor()
     aliases.execute(
             """SELECT
@@ -203,7 +202,7 @@ def overview(steamid):
                JOIN name USING (nameid)""", (steamid,))
     logs = get_logs(c, steamid, filters, limit=25, duplicates=False)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
-                                 event_stats=event_stats, aliases=aliases)
+                                 formats=formats, aliases=aliases)
 
 @player.route('/logs')
 def logs(steamid):
