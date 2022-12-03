@@ -1,7 +1,8 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
-{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{# Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/class.html" import classes_map %}
 {% from "macros/filter.html" import filter %}
-{% from "macros/format.html" import optformat %}
+{% from "macros/format.html" import comma_col, optformat %}
 {% extends "player/base.html" %}
 {% block title %}Totals - {{ super() }}{% endblock %}
 {% block content %}
@@ -130,5 +131,39 @@
 	</table>
 	</div>
 	{% endif %}
+	<div class="float">
+	<h3>Per Class</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Classes</th>
+				<th><abbr title="Killed">K</abbr></th>
+				<th><abbr title="Died to">D</abbr></th>
+				<th><abbr title="Assisted killing">A</abbr></th>
+				{% if totals['duration'] %}
+				<th><abbr title="Killed per 30 minutes">K/30</abbr></th>
+				<th><abbr title="Died to per 30 minutes">D/30</abbr></th>
+				<th><abbr title="Assisted killing per 30 minutes">A/30</abbr></th>
+				{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for cls, name in classes_map.items() %}
+			<tr>
+				{% set events = class_totals[cls] %}
+				<td>{{ name }}</td>
+				{{ comma_col(events['kill']) }}
+				{{ comma_col(events['death']) }}
+				{{ comma_col(events['assist']) }}
+				{% if totals['duration'] %}
+				{{ comma_col(events['kill30'], 1) }}
+				{{ comma_col(events['death30'], 1) }}
+				{{ comma_col(events['assist30'], 1) }}
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
 	</div>
 {% endblock %}

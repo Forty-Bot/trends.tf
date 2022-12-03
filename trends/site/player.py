@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
+from collections import defaultdict
+
 import flask
 
 from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, \
                   get_pagination, last_modified
-from ..util import clamp
+from ..util import clamp, classes
 
 player = flask.Blueprint('player', __name__)
 
@@ -311,8 +313,11 @@ def peers(steamid):
 
 @player.route('/totals')
 def totals(steamid):
+    c = get_db()
     filters = get_filter_params()
-    totals = get_db().cursor()
+    filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns)
+
+    totals = c.cursor()
     totals.execute(
         """SELECT
                count(*) AS logs,
@@ -384,9 +389,47 @@ def totals(steamid):
                GROUP BY logid, steamid64
            ) AS hs USING (logid, steamid64)
            WHERE ps.steamid64 = %(steamid)s
-               {};""".format(get_filter_clauses(filters, *surrogate_filter_columns)),
+               {};""".format(filter_clauses),
         {'steamid': steamid, **filters})
-    return flask.render_template("player/totals.html", totals=totals.fetchone())
+    totals = totals.fetchone()
+
+    events = c.cursor()
+    events.execute(
+            """SELECT *
+               FROM event
+               LEFT JOIN (SELECT
+                       eventid,
+                       total(demoman) AS demoman,
+                       total(engineer) AS engineer,
+                       total(heavyweapons) AS heavyweapons,
+                       total(medic) AS medic,
+                       total(pyro) AS pyro,
+                       total(scout) AS scout,
+                       total(sniper) AS sniper,
+                       total(soldier) AS soldier,
+                       total(spy) AS spy
+                   FROM event
+                   LEFT JOIN event_stats USING (eventid)
+                   LEFT JOIN log_nodups AS log USING (logid)
+                   LEFT JOIN player_stats USING (logid, steamid64)
+                   WHERE steamid64 = %(steamid)s
+                       {}
+                   GROUP BY eventid) AS data USING (eventid);""".format(filter_clauses),
+               { 'steamid': steamid, **filters })
+
+    # Pivot from rows of events to rows of classes
+    # Not done in postgres because crosstab messes up quoting
+    class_totals = defaultdict(dict)
+    for event in events:
+        for cls in classes:
+            class_totals[cls][event['event']] = event[cls]
+            if totals['duration'] and event[cls] is not None:
+                per30 = event[cls] * 30 * 60 / totals['duration']
+            else:
+                per30 = None
+            class_totals[cls][f"{event['event']}30"] = per30
+
+    return flask.render_template("player/totals.html", totals=totals, class_totals=class_totals)
 
 @player.route('/weapons')
 def weapons(steamid):
