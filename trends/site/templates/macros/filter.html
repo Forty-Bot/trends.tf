@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
-{% from "macros/class.html" import class_map %}
 {% from "macros/form.html" import hidden_excluding %}
+{% from "macros/pretty.html" import class_map, format_map %}
 {% macro _create_options(default, options) %}
 {% for key, content in options.items() %}
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
@@ -28,13 +28,7 @@
 	<label>Format:
 		<select name="format">
 			<option></option>
-			{{ _create_options(g.filters['format'], {
-				'sixes': "Sixes",
-				'highlander': "Highlander",
-				'prolander': "Prolander",
-				'fours': "Fours",
-				'ultiduo': "Ultiduo",
-				'other': "Other"}) }}
+			{{ _create_options(g.filters['format'], format_map) }}
 		</select>
 	</label>
 	<label>Map:
