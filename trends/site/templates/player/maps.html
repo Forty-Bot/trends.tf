@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2022 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
-{% from "macros/format.html" import comma_col, duration_col, optformat, optint %}
+{% from "macros/format.html" import comma_col, duration_col, pct_col, optformat, optint %}
 {% from "macros/js.html" import local_js %}
 {% from "macros/wlt.html" import wlt%}
 {% extends "player/base.html" %}
@@ -88,14 +88,14 @@
 			<tr class="{{ part12 }} hidden hidable2">
 				{{ map_cols(map['map'], map['logs']) }}
 			{% endif %}
-				<td>{{ optformat("{:.2%}", map['winrate']) }}</td>
-				<td>{{ optformat("{:.2%}", map['round_winrate']) }}</td>
-				<td>{{ "{:,.1f}".format(map['k30']) }}</td>
-				<td>{{ "{:,.1f}".format(map['d30']) }}</td>
-				<td>{{ "{:,.1f}".format(map['a30']) }}</td>
+				{{ pct_col(map['winrate'], 2) }}
+				{{ pct_col(map['round_winrate'], 2) }}
+				{{ comma_col(map['k30'], 1) }}
+				{{ comma_col(map['d30'], 1) }}
+				{{ comma_col(map['a30'], 1) }}
 				<td>{{ optint(map['dpm']) }}</td>
 				<td>{{ optint(map['dtm']) }}</td>
-				<td>{{ optformat("{:.0%}", map['acc']) }}</td>
+				{{ pct_col(map['acc']) }}
 				{{ comma_col(map['kills']) }}
 				{{ comma_col(map['deaths']) }}
 				{{ comma_col(map['assists']) }}
