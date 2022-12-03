@@ -81,9 +81,9 @@ ul.nav li.nav a:hover:not(.active) {
 
 ul.affiliate {
 	list-style-type: none;
-	margin: 0 0 0 auto;
+	margin: 0;
+	margin-left: auto;
 	padding: 0;
-	overflow: hidden;
 }
 
 ul.affiliate li {
@@ -134,6 +134,7 @@ td.left {
 
 .box {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .float {
