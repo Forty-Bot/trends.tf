@@ -75,14 +75,20 @@ base_filter_columns = frozenset({'formatid', 'title', 'mapid', 'time', 'logid'})
 surrogate_filter_columns = base_filter_columns.union({'primary_classid'})
 
 def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", limit=100, offset=0):
-    filter_clauses = get_filter_clauses(filters, 'primary_classid', 'format', 'title', 'map',
+    filter_clauses = get_filter_clauses(filters, 'primary_classid', 'formatid', 'title', 'mapid',
                                         'time', 'logid')
     if not duplicates:
         filter_clauses += "\nAND duplicate_of ISNULL"
+    if 'hpm' not in order_clause:
+        filter_clauses += """
+            ORDER BY {} NULLS LAST
+            LIMIT %(limit)s OFFSET %(offset)s
+        """.format(order_clause)
+
     logs = c.cursor()
     logs.execute(
         """SELECT
-               log.logid,
+               ps.logid,
                title,
                map,
                classes,
@@ -91,26 +97,29 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                losses,
                ties,
                format,
-               log.duration,
+               ps.duration,
                ps.kills,
                ps.deaths,
                ps.assists,
-               ps.dmg * 60.0 / log.duration AS dpm,
-               ps.dt * 60.0 / log.duration AS dtm,
+               ps.dmg * 60.0 / ps.duration AS dpm,
+               ps.dt * 60.0 / ps.duration AS dtm,
                hits * 1.0 / nullif(shots, 0.0) AS acc,
-               hsg.healing * 60.0 / log.duration AS hpm_given,
-               hsr.healing * 60.0 / log.duration AS hpm_recieved,
+               hsg.healing * 60.0 / ps.duration AS hpm_given,
+               hsr.healing * 60.0 / ps.duration AS hpm_recieved,
                duplicate_of,
                demoid,
                time
-           FROM log
-           JOIN player_stats AS ps USING (logid)
+           FROM (SELECT *
+               FROM log
+               JOIN player_stats USING (logid)
+               WHERE steamid64 = %(steamid)s
+                   {}
+           ) as ps
            JOIN map USING (mapid)
            LEFT JOIN format USING (formatid)
            LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
            LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
            WHERE ps.steamid64 = %(steamid)s
-               {}
            ORDER BY {} NULLS LAST
            LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
         { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
