@@ -446,19 +446,7 @@ def delete_dup_logs(c):
                      r1.logid AS logid,
                      max(r2.logid) AS of
                  FROM round AS r1
-                 JOIN combined_rounds AS r2 USING (
-                     time,
-                     duration,
-                     firstcap,
-                     red_score,
-                     blue_score,
-                     red_kills,
-                     blue_kills,
-                     red_dmg,
-                     blue_dmg,
-                     red_ubers,
-                     blue_ubers
-                 ) WHERE r2.logid > r1.logid
+                 JOIN combined_rounds AS r2 USING (time, duration) WHERE r2.logid > r1.logid
                      AND (r2.logid > %(min)s OR %(min)s ISNULL)
                      AND (r2.logid < %(max)s OR %(max)s ISNULL)
                  GROUP BY r1.logid;""", { 'min': min, 'max': max})
