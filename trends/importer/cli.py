@@ -60,5 +60,7 @@ def main():
         db_init(c)
     except psycopg2.Error:
         logging.exception("Could not load schema")
+        with c.cursor() as cur:
+            cur.execute("ROLLBACK;")
 
     args.importer(args, c)
