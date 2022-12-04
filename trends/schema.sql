@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),
 	seq INT NOT NULL, -- Round number, starting at 0
 	duration INT NOT NULL,
-	time BIGINT,
+	time BIGINT NOT NULL,
 	winner INT REFERENCES team (teamid),
 	firstcap INT REFERENCES team (teamid),
 	red_score INT NOT NULL,
