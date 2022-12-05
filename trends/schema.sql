@@ -2,6 +2,7 @@
 -- SPDX-License-Identifier: AGPL-3.0-only
 -- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+CREATE EXTENSION IF NOT EXISTS intarray;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS tsm_system_rows;
 
@@ -110,6 +111,7 @@ CREATE TABLE IF NOT EXISTS log (
 	ad_scoring BOOLEAN, -- Whether attack/defense scoring is enabled
 	-- Some logs may be duplicates or subsets of another log
 	duplicate_of INT REFERENCES log (logid),
+	new_duplicate_of INT[] CHECK (new_duplicate_of = uniq(sort(new_duplicate_of))),
 	uploader BIGINT REFERENCES player (steamid64),
 	uploader_nameid INT REFERENCES name (nameid),
 	demoid INT REFERENCES demo (demoid),
@@ -117,7 +119,8 @@ CREATE TABLE IF NOT EXISTS log (
 		OR (uploader NOTNULL AND uploader_nameid NOTNULL)),
 	-- All duplicates must be earlier (and have smaller logids) than what they are duplicates of
 	-- This prevents cycles (though it does admit chains of finite length)
-	CHECK (logid < duplicate_of)
+	CHECK (logid < duplicate_of),
+	CHECK (logid > new_duplicate_of[#new_duplicate_of])
 );
 
 -- For the below view
@@ -134,7 +137,7 @@ CREATE OR REPLACE VIEW log_nodups AS SELECT
 	blue_score,
 	formatid
 FROM log
-WHERE duplicate_of ISNULL;
+WHERE new_duplicate_of ISNULL;
 
 -- For log search
 CREATE INDEX IF NOT EXISTS log_title ON log USING gin (title gin_trgm_ops);
