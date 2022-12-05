@@ -1,0 +1,12 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% macro show_dupes(dupes) %}
+{% if dupes %}
+	{% for dup in dupes %}
+	<a href="{{ url_for('root.log', logids=dup) }}">
+		{{ dup -}}
+	</a>
+	{%- if not loop.last %},{% endif %}
+	{% endfor %}
+{% endif %}
+{% endmacro %}
