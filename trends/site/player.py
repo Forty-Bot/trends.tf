@@ -106,7 +106,7 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                hits * 1.0 / nullif(shots, 0.0) AS acc,
                hsg.healing * 60.0 / ps.duration AS hpm_given,
                hsr.healing * 60.0 / ps.duration AS hpm_recieved,
-               new_duplicate_of AS duplicate_of,
+               duplicate_of,
                demoid,
                time
            FROM (SELECT *

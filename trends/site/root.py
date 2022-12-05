@@ -137,7 +137,7 @@ def log(logids):
                         log.duration,
                         log.red_score,
                         log.blue_score,
-                        new_duplicate_of AS duplicate_of,
+                        duplicate_of,
                         demoid
                     FROM log
                     LEFT JOIN format USING (formatid)

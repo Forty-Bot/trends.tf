@@ -452,7 +452,7 @@ def delete_dup_logs(c):
                  GROUP BY r2.logid;""", { 'min': min, 'max': max})
 
     cur.execute("""UPDATE log
-                 SET new_duplicate_of = coalesce(new_duplicate_of, ARRAY[]::INT[]) | dupes.of
+                 SET duplicate_of = coalesce(duplicate_of, ARRAY[]::INT[]) | dupes.of
                  FROM dupes
                  WHERE log.logid=dupes.logid;""")
     cur.execute("DROP TABLE dupes;")
