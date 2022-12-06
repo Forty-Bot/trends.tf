@@ -99,6 +99,8 @@ CREATE TABLE IF NOT EXISTS demo (
 	)
 );
 
+CREATE INDEX IF NOT EXISTS demo_time ON demo (time) INCLUDE (demoid);
+
 CREATE TABLE IF NOT EXISTS log (
 	logid INTEGER PRIMARY KEY, -- SQLite won't infer a rowid alias unless the type is INTEGER
 	time BIGINT NOT NULL, -- Upload time
