@@ -26,65 +26,6 @@ def create_session():
         s.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
         return s
 
-def fetch_players_logids(s, players=None, since=0, count=None, offset=0, limit=None):
-    """Fetch some logids from logs.tf.
-
-    Any network or parsing are caught and logged.
-
-    :param requests.Session s: Session to use
-    :param players: Steam ids that fetched log ids must include
-    :type players: iterable of SteamIDs
-    :param int since: Unix time of the earliest logs ids to fetch
-    :param int count: Number of log ids to fetch consider; may be reduced by since
-    :param int offset: Number of logs to skip
-    :param int limit: Largest page to fetch at once
-    :return: The fetched log ids
-    :rtype: iterable of ints
-    """
-
-    # Number of logids yielded (up to a maximum of count)
-    yielded = 0
-    # Total number of logids available to fetch
-    total = None
-    # The lowest logid we've seen. We assume new logs will all have higher logids.
-    last_logid = None
-    if limit is None:
-        limit = min(count, 1000) if count is not None else 1000;
-
-    try:
-        while total is None or offset < total:
-            params = { 'offset': offset, 'limit': limit }
-            if players:
-                params['player'] = ",".join(str(player) for player in players)
-
-            resp = s.get("https://logs.tf/api/v1/log", params=params)
-            resp.raise_for_status()
-            log_list = resp.json()
-            if not log_list['success']:
-                raise APIError(log_list['error'])
-
-            total = log_list['total']
-            for log in log_list['logs']:
-                offset += 1
-                if last_logid is not None and log['id'] >= last_logid:
-                    continue
-                elif log['date'] >= since:
-                    last_logid = log['id']
-                    yield log['id'], log['date']
-
-                    yielded += 1
-                    if count is not None and yielded >= count:
-                        return
-                else:
-                    # We are now into older logs. There could be some more logs with older logids
-                    # but newer dates, but these are not too common. Continue parsing the current
-                    # page, but don't fetch any more pages.
-                    offset = total
-    except (OSError, urllib3.exceptions.HTTPError):
-        logging.exception("Could not fetch log list")
-    except (ValueError, KeyError):
-        logging.exception("Could not parse log list")
-
 class ListFetcher:
     """Fetcher for a list of log ids for logs to get from logs.tf"""
     def __init__(self, logids=None, **kwargs):
@@ -158,8 +99,48 @@ class BulkFetcher(ListFetcher):
         super().__init__(**kwargs)
 
     def get_logids(self):
-        return fetch_players_logids(self.s, players=self.players, since=self.since,
-                                    count=self.count, offset=self.offset)
+        # Number of logids yielded (up to a maximum of count)
+        yielded = 0
+        # Total number of logids available to fetch
+        total = None
+        # The lowest logid we've seen. We assume new logs will all have higher logids.
+        last_logid = None
+        offset = self.offset
+        limit = min(self.count, 1000) if self.count is not None else 1000
+
+        try:
+            while total is None or offset < total:
+                params = { 'offset': offset, 'limit': limit }
+                if self.players:
+                    params['player'] = ",".join(str(player) for player in self.players)
+
+                resp = self.s.get("https://logs.tf/api/v1/log", params=params)
+                resp.raise_for_status()
+                log_list = resp.json()
+                if not log_list['success']:
+                    raise APIError(log_list['error'])
+
+                total = log_list['total']
+                for log in log_list['logs']:
+                    offset += 1
+                    if last_logid is not None and log['id'] >= last_logid:
+                        continue
+                    elif log['date'] >= self.since:
+                        last_logid = log['id']
+                        yield log['id'], log['date']
+
+                        yielded += 1
+                        if self.count is not None and yielded >= self.count:
+                            return
+                    else:
+                        # We are now into older logs. There could be some more logs with older
+                        # logids but newer dates, but these are not too common. Continue parsing the
+                        # current page, but don't fetch any more pages.
+                        offset = total
+        except (OSError, urllib3.exceptions.HTTPError):
+            logging.exception("Could not fetch log list")
+        except (ValueError, KeyError):
+            logging.exception("Could not parse log list")
 
 class FileFetcher:
     """Fetcher for logs from local files"""
