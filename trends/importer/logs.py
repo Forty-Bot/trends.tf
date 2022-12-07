@@ -766,7 +766,6 @@ def import_logs(c, fetcher, update_only):
             update_player_classes(cur)
             update_acc(cur)
             publicize(c, log_tables)
-            wd.ping()
             cur.execute("COMMIT;")
             logging.info("Committed %s imported log(s)...", count)
 
