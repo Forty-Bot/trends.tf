@@ -377,9 +377,9 @@ class DemoListFetcher(ListFetcher):
             resp.raise_for_status()
             return resp.json()
         except (OSError, urllib3.exceptions.HTTPError):
-            logging.exception("Could not fetch demo %s", logid)
+            logging.exception("Could not fetch demo %s", demoid)
         except (ValueError, KeyError):
-            logging.exception("Could not parse demo %s", logid)
+            logging.exception("Could not parse demo %s", demoid)
 
 class DemoBulkFetcher(DemoListFetcher):
     def __init__(self, since=None, until=None, count=None, page=1, **kwargs):
