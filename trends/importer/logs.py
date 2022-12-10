@@ -772,9 +772,9 @@ def import_logs(c, fetcher, update_only):
     count = 0
     start = datetime.now()
     wd.ready()
-    for logid in filter_logids(c, fetcher.get_logids(), update_only=update_only):
+    for logid in filter_logids(c, fetcher.get_ids(), update_only=update_only):
         wd.ping()
-        log = fetcher.get_log(logid)
+        log = fetcher.get_data(logid)
         if log is None:
             continue
 

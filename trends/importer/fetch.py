@@ -38,10 +38,10 @@ class ListFetcher:
         self.s = create_session()
         self.logids = logids if logids is not None else iter(())
 
-    def get_logids(self):
+    def get_ids(self):
         return self.logids
 
-    def get_log(self, logid):
+    def get_data(self, logid):
         try:
             url = "https://logs.tf/api/v1/log/{}".format(logid)
             resp = self.s.get(url)
@@ -66,7 +66,7 @@ class ReverseFetcher(ListFetcher):
 
         super().__init__(**kwargs)
 
-    def get_logids(self):
+    def get_ids(self):
         try:
             resp = self.s.get("https://logs.tf/api/v1/log")
             resp.raise_for_status()
@@ -98,7 +98,7 @@ class BulkFetcher(ListFetcher):
         self.offset = offset
         super().__init__(**kwargs)
 
-    def get_logids(self):
+    def get_ids(self):
         # Number of logids yielded (up to a maximum of count)
         yielded = 0
         # Total number of logids available to fetch
@@ -153,10 +153,10 @@ class FileFetcher:
 
         self.logs = logs
 
-    def get_logids(self):
+    def get_ids(self):
         return self.logs.keys()
 
-    def get_log(self, logid):
+    def get_data(self, logid):
         with open(self.logs[logid]) as logfile:
             return json.load(logfile)
 
@@ -179,10 +179,10 @@ class CloneLogsFetcher:
     def date_colspec(self, column='date'):
         return "cast(strftime('%s', {}, 'utc') AS INT)".format(column)
 
-    def get_logids(self):
+    def get_ids(self):
         return self.c.execute("SELECT id, {} FROM log".format(self.date_colspec()))
 
-    def get_log(self, logid):
+    def get_data(self, logid):
         class_keys = [('heavy', 'heavyweapons') if cls == 'heavy' else cls for cls in classes]
         def extract(row, keys, format_string='{}'):
             ret = {}
@@ -363,14 +363,14 @@ class DemoFileFetcher:
                 demo = json.load(demofile)
                 self.demos[demo['id']] = demo
 
-    def get_logids(self):
+    def get_ids(self):
         return self.demos.keys()
 
-    def get_log(self, demoid):
+    def get_data(self, demoid):
         return self.demos[demoid]
 
 class DemoListFetcher(ListFetcher):
-    def get_log(self, demoid):
+    def get_data(self, demoid):
         try:
             url = "https://api.demos.tf/demos/{}".format(demoid)
             resp = self.s.get(url)
@@ -390,7 +390,7 @@ class DemoBulkFetcher(DemoListFetcher):
         self.page = page
         super().__init__(**kwargs)
 
-    def get_logids(self):
+    def get_ids(self):
         # Number of demoids yielded (up to a maximum of count)
         yielded = 0
         # The lowest demoid we've seen. We assume new demos will all have higher demoids.

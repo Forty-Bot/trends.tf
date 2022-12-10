@@ -30,11 +30,11 @@ def test_list():
     responses.add(response_404(2))
     fetcher = ListFetcher(logids=iter((1, 2)))
 
-    logids = fetcher.get_logids()
+    logids = fetcher.get_ids()
     assert next(logids) == 1
-    assert fetcher.get_log(1)
+    assert fetcher.get_data(1)
     assert next(logids) == 2
-    assert fetcher.get_log(2) is None
+    assert fetcher.get_data(2) is None
     with pytest.raises(StopIteration):
         next(logids)
 
@@ -55,8 +55,8 @@ def test_retry():
     responses.add(response_429(2))
 
     fetcher = ListFetcher()
-    assert fetcher.get_log(1)
-    assert fetcher.get_log(2) is None
+    assert fetcher.get_data(1)
+    assert fetcher.get_data(2) is None
     assert len(responses.calls) == 10
 
 @responses.activate
@@ -64,7 +64,7 @@ def test_reverse():
     responses.add(method=responses.GET, url="https://logs.tf/api/v1/log",
                   json={'success': True, 'logs': [{'id': 10}]})
 
-    assert ReverseFetcher().get_logids() == range(10, 0, -1)
+    assert ReverseFetcher().get_ids() == range(10, 0, -1)
 
 def integers(bits):
     return st.integers(0, (1 << bits) - 1)
@@ -102,7 +102,7 @@ def test_bulk(args):
     offset = args['offset']
     since = args['since'].timestamp()
 
-    def get_log(request):
+    def get_data(request):
         offset = int(request.params['offset'])
         limit = int(request.params['limit'])
 
@@ -122,9 +122,9 @@ def test_bulk(args):
 
     responses.add_callback(method=responses.GET,
                            url=re.compile(r"https://logs.tf/api/v1/log.*"),
-                           callback=get_log)
+                           callback=get_data)
 
-    logids = list(fetcher.get_logids())
+    logids = list(fetcher.get_ids())
     assert len(logids) <= count
     if not since:
         assert logids == args['logs'][offset:offset+count]
@@ -171,7 +171,7 @@ def test_demo(args):
                            url=re.compile(r"https://api.demos.tf/demos.*"),
                            callback=get_demo)
 
-    demoids = list(fetcher.get_logids())
+    demoids = list(fetcher.get_ids())
     assert demoids == args['demos'][:count]
 
     last_demoid = None

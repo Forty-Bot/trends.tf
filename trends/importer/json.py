@@ -24,7 +24,7 @@ def pack_log(c):
                    LEFT JOIN log_json USING (logid)
                    WHERE data ISNULL;""")
     for logid in cur:
-        log = fetcher.get_log(logid[0])
+        log = fetcher.get_data(logid[0])
         if log is None:
             logging.warning(f"Skipping {logid}")
         yield logid[0], cctx.compress(json.dumps(log).encode())

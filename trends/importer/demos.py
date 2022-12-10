@@ -126,8 +126,8 @@ def import_demos(c, fetcher):
 
     count = 0
     start = datetime.now()
-    for demoid in filter_demoids(c, fetcher.get_logids()):
-        demo = fetcher.get_log(demoid)
+    for demoid in filter_demoids(c, fetcher.get_ids()):
+        demo = fetcher.get_data(demoid)
         if demo is None:
             continue
 
