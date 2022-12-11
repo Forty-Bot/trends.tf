@@ -19,6 +19,14 @@ CREATE OR REPLACE FUNCTION nullelse(anyelement, anycompatible) RETURNS anycompat
 	AS 'SELECT CASE WHEN $1 NOTNULL THEN $2 END'
 	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
 
+-- True IFF all values are equal
+CREATE OR REPLACE FUNCTION equal(variadic anyarray) RETURNS BOOL
+	AS 'SELECT every(comparison)
+	    FROM (SELECT coalesce(val = lag(val, 1, val) over (), FALSE) AS COMPARISON
+		  FROM unnest($1) AS vals(val)
+	    ) AS comparisons'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
 -- Compatibility functions for migration from SQLite
 
 CREATE OR REPLACE FUNCTION add(FLOAT, anyelement) RETURNS FLOAT
@@ -116,11 +124,11 @@ CREATE TABLE IF NOT EXISTS log (
 	uploader BIGINT REFERENCES player (steamid64),
 	uploader_nameid INT REFERENCES name (nameid),
 	demoid INT REFERENCES demo (demoid),
-	CHECK ((uploader ISNULL AND uploader_nameid ISNULL)
-		OR (uploader NOTNULL AND uploader_nameid NOTNULL)),
+	CHECK ((uploader ISNULL) = (uploader_nameid ISNULL)),
 	-- All duplicates must be newer (and have larger logids) than what they are duplicates of
 	-- This prevents cycles (though it does admit chains of finite length)
-	CHECK (logid > duplicate_of[#duplicate_of])
+	CHECK (logid > duplicate_of[#duplicate_of]),
+	CHECK (equal(league ISNULL, matchid ISNULL, team1_is_red ISNULL))
 );
 
 -- For the below view
@@ -225,7 +233,7 @@ CREATE TABLE IF NOT EXISTS player_stats_backing (
 	shots INT,
 	hits INT,
 	PRIMARY KEY (steamid64, logid),
-	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL)),
+	CHECK ((shots ISNULL) = (hits ISNULL)),
 	CHECK ((classids NOTNULL AND class_durations NOTNULL
 		AND array_length(classids, 1) = array_length(class_durations, 1))
 	       OR (classids ISNULL AND class_durations ISNULL))
@@ -272,7 +280,7 @@ CREATE TABLE IF NOT EXISTS player_stats_extra (
 	ic INT, -- Intel Captures
 	PRIMARY KEY (steamid64, logid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
-	CHECK ((dmg_real NOTNULL AND dt_real NOTNULL) OR (dmg_real ISNULL AND dt_real ISNULL))
+	CHECK ((dmg_real ISNULL) = (dt_real ISNULL))
 );
 
 CREATE TABLE IF NOT EXISTS medic_stats (
@@ -293,11 +301,9 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	deaths_before_uber INT, -- 95-99%
 	PRIMARY KEY (steamid64, logid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
-	CHECK ((medigun_ubers ISNULL AND kritz_ubers ISNULL AND other_ubers ISNULL) OR
-	       (medigun_ubers NOTNULL AND kritz_ubers NOTNULL AND other_ubers NOTNULL)),
+	CHECK (equal(medigun_ubers ISNULL, kritz_ubers ISNULL, other_ubers ISNULL)),
 	CHECK (medigun_ubers ISNULL OR ubers = medigun_ubers + kritz_ubers + other_ubers),
-	CHECK ((advantages_lost NOTNULL AND biggest_advantage_lost NOTNULL) OR
-	       (advantages_lost ISNULL AND biggest_advantage_lost ISNULL))
+	CHECK ((advantages_lost ISNULL) = (biggest_advantage_lost ISNULL))
 );
 
 -- For logs page
@@ -351,7 +357,7 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	hits INT,
 	PRIMARY KEY (steamid64, logid, classid),
 	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
-	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL))
+	CHECK ((shots ISNULL) = (hits ISNULL))
 );
 
 -- For logs page
@@ -406,8 +412,8 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	hits INT,
 	PRIMARY KEY (steamid64, logid, classid, weaponid),
 	FOREIGN KEY (logid, steamid64, classid) REFERENCES class_stats (logid, steamid64, classid),
-	CHECK ((shots NOTNULL AND hits NOTNULL) OR (shots ISNULL AND hits ISNULL)),
-	CHECK ((dmg NOTNULL AND avg_dmg NOTNULL) OR (dmg ISNULL AND avg_dmg ISNULL))
+	CHECK ((shots ISNULL) = (hits ISNULL)),
+	CHECK ((dmg ISNULL) = (avg_dmg ISNULL))
 );
 
 CREATE STATISTICS IF NOT EXISTS weapon_stats (ndistinct)
