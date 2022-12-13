@@ -397,7 +397,8 @@ def log(logids):
                                   'duration', duration,
                                   'classes', classes,
                                   'class_pcts', (SELECT
-                                                     array_agg(duration * 1.0 / cs.duration)
+                                                     array_agg(duration * 1.0
+                                                               / nullif(cs.duration, 0))
                                                  FROM unnest(class_durations) AS duration)
                               ) ORDER BY healing DESC) AS healees
                           FROM (SELECT
