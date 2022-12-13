@@ -105,22 +105,19 @@ def import_demos_cli(args, c):
                 args.until = cur.fetchone()[0]
         return import_demos(c, args.fetcher(**vars(args)))
 
-tables = (('demo', 'demoid'), ('demo_player_stats', 'demoid, steamid64'))
-
 def import_demos(c, fetcher):
     cur = c.cursor()
 
-    # Create some temporary tables for bulk inserts
-    for table in tables:
-        cur.execute("""CREATE TEMP TABLE {} (
-                           LIKE {} INCLUDING ALL EXCLUDING INDEXES,
-                           PRIMARY KEY ({})
-                       );""".format(table[0], table[0], table[1]))
+    # Create a temporary tables for bulk inserts
+    cur.execute("""CREATE TEMP TABLE demo (
+                       LIKE demo INCLUDING ALL EXCLUDING INDEXES,
+                       PRIMARY KEY (demoid)
+                   );""")
 
     def commit():
         with sentry_sdk.start_span(op='db.transaction', description="commit"):
             cur.execute("BEGIN;")
-            publicize(c, tables)
+            publicize(c, (('demo', 'demoid'),))
             cur.execute("COMMIT;")
             logging.info("Committed %s imported demo(s)...", count)
 
