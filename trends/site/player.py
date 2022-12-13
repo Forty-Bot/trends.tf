@@ -101,17 +101,20 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                ps.kills,
                ps.deaths,
                ps.assists,
-               ps.dmg * 60.0 / ps.duration AS dpm,
-               ps.dt * 60.0 / ps.duration AS dtm,
+               dpm,
+               dtm,
                hits * 1.0 / nullif(shots, 0.0) AS acc,
                hsg.healing * 60.0 / ps.duration AS hpm_given,
                hsr.healing * 60.0 / ps.duration AS hpm_recieved,
                duplicate_of,
                demoid,
                time
-           FROM (SELECT *
+           FROM (SELECT
+                   *,
+                   ps.dmg * 60.0 / log.duration AS dpm,
+                   ps.dt * 60.0 / log.duration AS dtm
                FROM log
-               JOIN player_stats USING (logid)
+               JOIN player_stats AS ps USING (logid)
                WHERE steamid64 = %(steamid)s
                    {}
            ) as ps
