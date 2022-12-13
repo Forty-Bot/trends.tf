@@ -140,16 +140,17 @@
 		<th><abbr title="Intelligences Captured">IC</abbr></th>
 	{% endif %}
 {% endmacro %}
+{% set team_map = { 'Red': 1, 'Blue': 2, None: 500 } %}
 {% macro team_cols(player, medic=None) %}
 	{% set teamids = [] %}
 	{% for logid in logids | map('string') %}
-		{% if not medic or medic['teamids'][logid] %}
-			{% do teamids.append(player['teamids'].get(logid, 500)) %}
+		{% if not medic or medic['teams'][logid] %}
+			{% do teamids.append(team_map[player['teams'].get(logid)]) %}
 		{% endif %}
 	{% endfor %}
 
 	{% for logid in logids | map('string') %}
-		{% if not medic or medic['teamids'][logid] %}
+		{% if not medic or medic['teams'][logid] %}
 			{% set team = player['teams'][logid] %}
 		{% endif %}
 		<td class="left {{ team | lower }}"
@@ -367,11 +368,12 @@
 		{% for team in totals %}
 		{% set teamsym = team['team'] | lower %}
 		{% set log_rounds = rounds | selectattr('logid', 'eq', team['logid']) | list %}
-		<tr id="{{ team['logid'] }}_{{ team['teamid'] }}" class="hider">
+		<tr id="{{ team['logid'] }}_{{ team_map[team['team']] }}" class="hider">
 			{% set team_key = [500] * (logids | length) %}
 			{% for logid in logids %}
 				{% if logid == team['logid'] %}
-					{% do team_key.__setitem__(loop.index0, team['teamid']) %}
+					{% do team_key.__setitem__(loop.index0,
+								   team_map[team['team']]) %}
 				{% endif %}
 			{% endfor %}
 
@@ -396,9 +398,9 @@
 		</tr>
 			{% for round in log_rounds %}
 			{% if loop.first %}
-				{{ padding("{}_{}".format(team['logid'], team['teamid'])) }}
+				{{ padding("{}_{}".format(team['logid'], team_map[team['team']])) }}
 			{% endif %}
-			<tr class="{{ team['logid'] }}_{{ team['teamid'] }} hidden hidable">
+			<tr class="{{ team['logid'] }}_{{ team_map[team['team']] }} hidden hidable">
 				{% for logid in logids %}
 					<td class="left"
 					{% if loop.first %}
@@ -419,7 +421,7 @@
 				{{ duration_col(round['duration']) }}
 			</tr>
 			{% if loop.last %}
-				{{ padding("{}_{}".format(team['logid'], team['teamid'])) }}
+				{{ padding("{}_{}".format(team['logid'], team_map[team['team']])) }}
 			{% endif %}
 			{% endfor %}
 		{% endfor %}

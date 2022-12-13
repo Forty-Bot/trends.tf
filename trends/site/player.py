@@ -285,8 +285,8 @@ def peers(steamid):
                    SELECT
                        p1.logid,
                        p2.steamid64,
-                       p1.teamid = p2.teamid AS with,
-                       p1.teamid != p2.teamid AS against,
+                       p1.team = p2.team AS with,
+                       p1.team != p2.team AS against,
                        (p1.wins > p1.losses)::INT AS win,
                        (p1.wins = p1.losses)::INT AS tie,
                        p1.dmg,
@@ -307,7 +307,7 @@ def peers(steamid):
                        AND hs2.logid = p1.logid
                    ) WHERE p1.steamid64 = %(steamid)s
                       AND p2.steamid64 != p1.steamid64
-                      AND p2.teamid NOTNULL
+                      AND p2.team NOTNULL
                       {}
                ) AS peers
                GROUP BY steamid64

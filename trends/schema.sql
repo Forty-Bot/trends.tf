@@ -74,12 +74,15 @@ INSERT INTO format (format, players) VALUES
 	('other', NULL)
 ON CONFLICT DO NOTHING;
 
-CREATE TABLE IF NOT EXISTS team (
-	teamid SERIAL PRIMARY KEY,
-	team TEXT NOT NULL UNIQUE
-);
+DO $$ BEGIN
+	CREATE TYPE TEAM AS ENUM ();
+EXCEPTION WHEN duplicate_object THEN
+	NULL;
+END $$;
 
-INSERT INTO team (team) VALUES ('Red'), ('Blue') ON CONFLICT DO NOTHING;
+ALTER TYPE TEAM ADD VALUE IF NOT EXISTS 'Red';
+ALTER TYPE TEAM ADD VALUE IF NOT EXISTS 'Blue';
+COMMIT;
 
 CREATE TABLE IF NOT EXISTS map (
 	mapid SERIAL PRIMARY KEY,
@@ -184,8 +187,8 @@ CREATE TABLE IF NOT EXISTS round (
 	seq INT NOT NULL, -- Round number, starting at 0
 	duration INT NOT NULL,
 	time BIGINT NOT NULL,
-	winner INT REFERENCES team (teamid),
-	firstcap INT REFERENCES team (teamid),
+	winner TEAM,
+	firstcap TEAM,
 	red_score INT NOT NULL,
 	blue_score INT NOT NULL,
 	red_kills INT NOT NULL,
@@ -218,7 +221,7 @@ CREATE TABLE IF NOT EXISTS player_stats_backing (
 	logid INT REFERENCES log (logid) NOT NULL,
 	steamid64 BIGINT REFERENCES player (steamid64) NOT NULL,
 	nameid INT NOT NULL REFERENCES name (nameid),
-	teamid INT NOT NULL REFERENCES team (teamid),
+	team TEAM NOT NULL,
 	kills INT NOT NULL,
 	assists INT NOT NULL,
 	deaths INT NOT NULL,
@@ -243,7 +246,7 @@ CREATE TABLE IF NOT EXISTS player_stats_backing (
 -- query. This avoids a bunch of costly random reads to player_stats.
 CREATE INDEX IF NOT EXISTS player_stats_peers
 	ON player_stats_backing (logid)
-	INCLUDE (steamid64, teamid);
+	INCLUDE (steamid64, team);
 
 -- Covering index for name FTS queries
 CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats_backing (nameid) INCLUDE (steamid64);

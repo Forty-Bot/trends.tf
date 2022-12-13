@@ -168,9 +168,9 @@ def import_log(c, logid, log):
                          last_active = greatest(player.last_active, EXCLUDED.last_active);""",
                   player)
         c.execute("""INSERT INTO player_stats_backing (
-                         logid, steamid64, teamid, nameid, kills, assists, deaths, dmg, dt
+                         logid, steamid64, team, nameid, kills, assists, deaths, dmg, dt
                      ) VALUES (
-                         %(logid)s, %(steamid)s, (SELECT teamid FROM team WHERE team = %(team)s),
+                         %(logid)s, %(steamid)s, %(team)s,
                          (SELECT nameid FROM name WHERE name = %(name)s), %(kills)s, %(assists)s,
                          %(deaths)s, %(dmg)s, %(dt)s
                      );""", player)
@@ -408,9 +408,7 @@ def import_log(c, logid, log):
                          logid, seq, duration, time, winner, firstcap, red_score, blue_score,
                          red_kills, blue_kills, red_dmg, blue_dmg, red_ubers, blue_ubers
                      ) VALUES (
-                         %(logid)s, %(seq)s, %(length)s, %(time)s,
-                         (SELECT teamid FROM team WHERE team = %(winner)s),
-                         (SELECT teamid FROM team WHERE team = %(firstcap)s),
+                         %(logid)s, %(seq)s, %(length)s, %(time)s, %(winner)s, %(firstcap)s,
                          %(red_score)s, %(blue_score)s, %(red_kills)s, %(blue_kills)s, %(red_dmg)s,
                          %(blue_dmg)s, %(red_ubers)s, %(blue_ubers)s
                      );""", round)
@@ -562,24 +560,24 @@ def update_formats(c):
 
 def update_wlt(c):
     c.execute("""UPDATE player_stats_backing AS ps
-                 SET wins = CASE new.teamid
-                         WHEN 1 THEN new.red_score
-                         WHEN 2 THEN new.blue_score
+                 SET wins = CASE new.team
+                         WHEN 'Red' THEN new.red_score
+                         WHEN 'Blue' THEN new.blue_score
                          ELSE 0
                      END,
-                     losses = CASE new.teamid
-                         WHEN 1 THEN new.blue_score
-                         WHEN 2 THEN new.red_score
+                     losses = CASE new.team
+                         WHEN 'Red' THEN new.blue_score
+                         WHEN 'Blue' THEN new.red_score
                          ELSE 0
                      END,
-                     ties = CASE WHEN new.teamid NOTNULL
+                     ties = CASE WHEN new.team NOTNULL
                          THEN new.ties
                          ELSE 0
                      END
                  FROM (SELECT
                          logid,
                          steamid64,
-                         teamid,
+                         team,
                          CASE WHEN ad_scoring
                              THEN log.red_score
                              ELSE coalesce(round.red_score, log.red_score)
@@ -596,8 +594,8 @@ def update_wlt(c):
                      JOIN log USING (logid)
                      LEFT JOIN (SELECT
                              logid,
-                             sum((round.winner = 1)::INT) AS red_score,
-                             sum((round.winner = 2)::INT) AS blue_score,
+                             sum((round.winner = 'Red')::INT) AS red_score,
+                             sum((round.winner = 'Blue')::INT) AS blue_score,
                              sum((round.winner ISNULL AND round.duration >= 60)::INT) AS ties
                          FROM round
                          GROUP BY logid

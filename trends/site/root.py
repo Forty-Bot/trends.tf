@@ -182,7 +182,6 @@ def log(logids):
                avatarhash
            FROM (SELECT
                    steamid64,
-                   json_object_agg(logid, teamid) AS teamids,
                    json_object_agg(logid, team) AS teams,
                    array_agg(DISTINCT name ORDER BY name) AS names,
                    sum(kills) AS kills,
@@ -207,7 +206,6 @@ def log(logids):
                JOIN player_stats AS ps USING (logid)
                LEFT JOIN player_stats_extra AS pse USING (logid, steamid64)
                LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
-               JOIN team USING (teamid)
                JOIN name USING (nameid)
                WHERE logid IN %(logids)s
                GROUP BY steamid64
@@ -294,7 +292,12 @@ def log(logids):
     # log but still played in another log. So instead we do it in python.
     def player_key(player):
         # 500 is probably greater than any teamid :)
-        teams = (player['teamids'].get(str(logid), 500) for logid in logids)
+        team_map = {
+                'Red': 1,
+                'Blue': 2,
+                None: 500
+        }
+        teams = (team_map[player['teams'].get(str(logid))] for logid in logids)
         names = player.get('names', ())
         if classes := player.get('class_stats'):
             classes = tuple(cls['classid'] for cls in classes)
@@ -308,50 +311,45 @@ def log(logids):
     # done separately to aid development
     totals = db.cursor()
     totals.execute("""SELECT
-                          *
-                      FROM (SELECT
+                          logid,
+                          team,
+                          log.duration,
+                          sum(kills) AS kills,
+                          sum(deaths) AS deaths,
+                          sum(assists) AS assists,
+                          sum(dmg) AS dmg,
+                          sum(dt) AS dt,
+                          total(hsr.healing) AS healing,
+                          sum(dmg) * 60.0 / log.duration AS dpm,
+                          sum(dt) * 60.0 / log.duration AS dtm,
+                          total(hsr.healing) * 60.0 / log.duration AS hpm,
+                          max(lks) AS lks,
+                          total(airshots) AS airshots,
+                          total(medkits) AS medkits,
+                          total(medkits_hp) AS medkits_hp,
+                          total(backstabs) AS backstabs,
+                          total(headshots) AS headshots,
+                          total(headshots_hit) AS headshots_hit,
+                          total(sentries) AS sentries,
+                          total(cpc) AS cpc,
+                          total(ic) AS ic
+                      FROM log
+                      JOIN player_stats USING (logid)
+                      LEFT JOIN player_stats_extra USING (logid, steamid64)
+                      LEFT JOIN (SELECT
                               logid,
-                              teamid,
-                              log.duration,
-                              sum(kills) AS kills,
-                              sum(deaths) AS deaths,
-                              sum(assists) AS assists,
-                              sum(dmg) AS dmg,
-                              sum(dt) AS dt,
-                              total(hsr.healing) AS healing,
-                              sum(dmg) * 60.0 / log.duration AS dpm,
-                              sum(dt) * 60.0 / log.duration AS dtm,
-                              total(hsr.healing) * 60.0 / log.duration AS hpm,
-                              max(lks) AS lks,
-                              total(airshots) AS airshots,
-                              total(medkits) AS medkits,
-                              total(medkits_hp) AS medkits_hp,
-                              total(backstabs) AS backstabs,
-                              total(headshots) AS headshots,
-                              total(headshots_hit) AS headshots_hit,
-                              total(sentries) AS sentries,
-                              total(cpc) AS cpc,
-                              total(ic) AS ic
-                          FROM log
-                          JOIN player_stats USING (logid)
-                          LEFT JOIN player_stats_extra USING (logid, steamid64)
-                          LEFT JOIN (SELECT
-                                  logid,
-                                  healee AS steamid64,
-                                  sum(healing) AS healing
-                              FROM heal_stats
-                              WHERE logid IN %(logids)s
-                              GROUP BY logid, healee
-                          ) AS hsr USING (logid, steamid64)
+                              healee AS steamid64,
+                              sum(healing) AS healing
+                          FROM heal_stats
                           WHERE logid IN %(logids)s
-                          GROUP BY logid, teamid
-                          ORDER BY array_position(%(llogids)s, logid), teamid
-                      ) AS totals
-                      JOIN team USING (teamid);""", params);
+                          GROUP BY logid, healee
+                      ) AS hsr USING (logid, steamid64)
+                      WHERE logid IN %(logids)s
+                      GROUP BY logid, team
+                      ORDER BY array_position(%(llogids)s, logid), team;""", params);
 
     medics = db.cursor()
     medics.execute("""SELECT
-                          teamids,
                           teams,
                           medic_stats.steamid64,
                           duration,
@@ -368,7 +366,6 @@ def log(logids):
                           healees,
                           healing * 60.0 / nullif(duration, 0) AS hpm
                       FROM (SELECT
-                             json_object_agg(logid, teamid) AS teamids,
                              json_object_agg(logid, team) AS teams,
                              steamid64,
                              sum(coalesce(cs.duration, log.duration)) AS duration,
@@ -383,7 +380,6 @@ def log(logids):
                              sum(deaths_before_uber) AS deaths_before_uber
                           FROM medic_stats
                           JOIN player_stats USING (logid, steamid64)
-                          JOIN team USING (teamid)
                           JOIN log USING (logid)
                           CROSS JOIN class
                           LEFT JOIN class_stats AS cs USING (logid, steamid64, classid)
@@ -497,7 +493,6 @@ def log(logids):
                         FROM chat
                         LEFT JOIN player_stats USING (logid, steamid64)
                         LEFT JOIN name USING (nameid)
-                        LEFT JOIN team USING (teamid)
                         WHERE logid IN %(logids)s
                     ) AS chat
                     JOIN log USING (logid)
