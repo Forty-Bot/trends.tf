@@ -17,7 +17,7 @@ import werkzeug.utils
 
 from .api import api, json_handler
 from .player import player
-from .root import root
+from .root import root, metrics_extension
 from .util import put_db
 
 @flask.before_render_template.connect_via(blinker.ANY)
@@ -165,5 +165,6 @@ def create_app():
     app.register_blueprint(root)
     app.register_blueprint(player, url_prefix='/player/<int:steamid>')
     app.register_blueprint(api, url_prefix='/api/v1')
+    metrics_extension.init_app(app)
 
     return app

@@ -25,6 +25,18 @@ add_header Referrer-Policy           "no-referrer-when-downgrade" always;
 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 {% endset %}
 
+{% set uwsgi %}
+# default uwsgi_params
+include                       uwsgi_params;
+
+# uwsgi settings
+uwsgi_pass                    unix:{{ uwsgi_socket }};
+uwsgi_param Host              $host;
+uwsgi_param X-Real-IP         $remote_addr;
+uwsgi_param X-Forwarded-For   $proxy_add_x_forwarded_for;
+uwsgi_param X-Forwarded-Proto $http_x_forwarded_proto;
+{% endset %}
+
 server {
 	listen                  443 ssl http2;
 	listen                  [::]:443 ssl http2;
@@ -35,15 +47,7 @@ server {
 	add_header Content-Security-Policy   "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
 	
 	location / {
-		# default uwsgi_params
-		include                       uwsgi_params;
-
-		# uwsgi settings
-		uwsgi_pass                    unix:{{ uwsgi_socket }};
-		uwsgi_param Host              $host;
-		uwsgi_param X-Real-IP         $remote_addr;
-		uwsgi_param X-Forwarded-For   $proxy_add_x_forwarded_for;
-		uwsgi_param X-Forwarded-Proto $http_x_forwarded_proto;
+		{{ uwsgi }}
 
 		# cache settings
 		uwsgi_cache cache;
@@ -52,6 +56,10 @@ server {
 		uwsgi_cache_use_stale updating;
 		uwsgi_cache_revalidate on;
 		uwsgi_cache_valid 30s;
+
+		location = /metrics {
+			deny all;
+		}
 	}
 
 	location ^~ /static/ {
@@ -122,6 +130,13 @@ server {
 	location = /nginx_status {
 		stub_status on;
 		access_log off;
+		allow 127.0.0.1;
+		deny all;
+	}
+
+	# Local metrics collection
+	location = /metrics {
+		{{ uwsgi }}
 		allow 127.0.0.1;
 		deny all;
 	}

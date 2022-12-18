@@ -2,6 +2,7 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import flask
+from mpmetrics.flask import PrometheusMetrics
 
 from .common import get_logs, get_players, logs_last_modified
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
@@ -503,3 +504,12 @@ def log(logids):
     return flask.render_template("log.html", logids=logids, logs=logs, rounds=rounds.fetchall(),
                                  players=players, totals=totals, medics=medics,
                                  events=events, chats=chats)
+
+metrics_extension = PrometheusMetrics.for_app_factory(group_by='endpoint', path=None)
+
+@root.route('/metrics')
+def metrics():
+    metrics = metrics_extension.generate_metrics()
+    resp = flask.make_response(metrics[0])
+    resp.content_type = metrics[1]
+    return resp

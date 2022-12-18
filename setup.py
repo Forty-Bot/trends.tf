@@ -22,14 +22,16 @@ setuptools.setup(
     ],
     setup_requires = ['setuptools_scm'],
     install_requires = [
-        'psycopg2',
-        'requests',
         'flask >= 2.0',
-        'python-dateutil',
-        'zstandard',
+        'mpmetrics',
+        'prometheus-flask-exporter',
+        'psycopg2',
         'pylibmc',
+        'python-dateutil',
+        'requests',
         'sentry-sdk[flask]',
         'systemd-watchdog',
+        'zstandard',
     ],
     extras_require = {
         'tests': [
