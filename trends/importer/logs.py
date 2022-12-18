@@ -441,13 +441,14 @@ def delete_dup_logs(c):
 
     cur = c.cursor()
     cur.execute("""CREATE TEMP TABLE dupes AS SELECT
-                     r2.logid AS logid,
-                     array_agg(DISTINCT r1.logid) AS of
+                     r1.logid AS logid,
+                     array_agg(DISTINCT r2.logid) AS of
                  FROM round AS r1
-                 JOIN combined_rounds AS r2 USING (time, duration) WHERE r2.logid > r1.logid
+                 JOIN combined_rounds AS r2 USING (time, duration)
+                 WHERE r1.logid > r2.logid
                      AND (r2.logid > %(min)s OR %(min)s ISNULL)
                      AND (r2.logid < %(max)s OR %(max)s ISNULL)
-                 GROUP BY r2.logid;""", { 'min': min, 'max': max})
+                 GROUP BY r1.logid;""", { 'min': min, 'max': max})
 
     cur.execute("""UPDATE log
                  SET duplicate_of = coalesce(duplicate_of, ARRAY[]::INT[]) | dupes.of
