@@ -152,6 +152,9 @@ To support backups, first create a new application key with read/write access to
 Create a file `/etc/default/restic` containing `B2_ACCOUNT_ID`, `B2_ACCOUNT_KEY`,
 `RESTIC_REPOSITORY`, and `RESTIC_PASSWORD`. Set its permissions to `600`.
 
+To support uploading to grafana, create a new application key with the metrics push role. Then,
+create a file `/etc/prometheus_pass` containing the key. Set its permissions to `600`.
+
 == Maintenance tasks
 
 === Restoring a backup

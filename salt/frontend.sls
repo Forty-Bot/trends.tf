@@ -367,3 +367,52 @@ munin-node.service:
       {% for suffix in memcached_suffixes %}
       - /etc/munin/plugins/memcached_{{ suffix }}
       {% endfor %}
+
+{% if grains.os_family == 'Debian' %}
+grafana-repo:
+  pkgrepo.managed:
+    - name: deb https://apt.grafana.com stable main
+    - file: /etc/apt/sources.list.d/grafana.list
+    - key_url: https://apt.grafana.com/gpg.key
+{% endif %}
+
+grafana-agent:
+  pkg.installed:
+    - refresh: False
+    {% if grains.os_family == 'Debian' %}
+    - require:
+      - grafana-repo
+    {% endif %}
+
+/etc/grafana-agent.yaml:
+  file.managed:
+    - contents: |
+        server:
+          log_level: warn
+
+        metrics:
+          global:
+            scrape_interval: 1m
+            remote_write:
+              - url: https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push
+                basic_auth:
+                  username: 281816
+                  password_file: /etc/prometheus_pass
+          wal_directory: /var/lib/grafana-agent
+          configs:
+            - name: flask
+              scrape_configs:
+                - job_name: flask
+                  static_configs:
+                    - targets: ['127.0.0.1']
+
+        integrations:
+          agent:
+            enabled: true
+
+grafana-agent.service:
+  service.running:
+    - enable: True
+    - require:
+      - grafana-agent
+      - /etc/grafana-agent.yaml
