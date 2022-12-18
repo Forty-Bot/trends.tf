@@ -75,6 +75,7 @@ base_filter_columns = frozenset({'formatid', 'title', 'mapid', 'time', 'logid'})
 surrogate_filter_columns = base_filter_columns.union({'primary_classid'})
 
 def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", limit=100, offset=0):
+    real_offset = offset
     filter_clauses = get_filter_clauses(filters, 'primary_classid', 'formatid', 'title', 'mapid',
                                         'time', 'logid')
     if not duplicates:
@@ -82,8 +83,9 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
     if 'hpm' not in order_clause:
         filter_clauses += """
             ORDER BY {} NULLS LAST
-            LIMIT %(limit)s OFFSET %(offset)s
+            LIMIT %(limit)s OFFSET %(real_offset)s
         """.format(order_clause)
+        offset = 0
 
     logs = c.cursor()
     logs.execute(
@@ -126,7 +128,13 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
            WHERE ps.steamid64 = %(steamid)s
            ORDER BY {} NULLS LAST
            LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
-        { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
+        {
+            **filters,
+            'steamid': steamid,
+            'limit': limit,
+            'offset': offset,
+            'real_offset': real_offset
+        })
     return logs
 
 @player.route('/')
