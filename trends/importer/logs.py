@@ -440,7 +440,7 @@ def delete_dup_logs(c):
     min, max = (row[0] for row in cur)
 
     cur = c.cursor()
-    cur.execute("""CREATE TEMP TABLE dupes AS SELECT
+    cur.execute("""CREATE TEMP TABLE dupes_time AS SELECT
                      r1.logid AS logid,
                      array_agg(DISTINCT r2.logid) AS of
                  FROM round AS r1
@@ -450,11 +450,32 @@ def delete_dup_logs(c):
                      AND (r2.logid < %(max)s OR %(max)s ISNULL)
                  GROUP BY r1.logid;""", { 'min': min, 'max': max})
 
+    cur.execute("""CREATE TEMP TABLE dupes_stats AS SELECT
+                     r1.logid AS logid,
+                     array_agg(DISTINCT r2.logid) AS of
+                 FROM round AS r1
+                 JOIN combined_rounds AS r2 USING (
+                     duration,
+                     red_dmg,
+                     blue_dmg,
+                     red_kills,
+                     blue_kills
+                 ) WHERE r1.logid > r2.logid
+                     AND duration > 60
+                     AND red_dmg != 0
+                     AND blue_dmg != 0
+                     AND red_kills != 0
+                     AND blue_kills != 0
+                     AND (r2.logid > %(min)s OR %(min)s ISNULL)
+                     AND (r2.logid < %(max)s OR %(max)s ISNULL)
+                 GROUP BY r1.logid;""", { 'min': min, 'max': max})
+
     cur.execute("""UPDATE log
-                 SET duplicate_of = coalesce(duplicate_of, ARRAY[]::INT[]) | dupes.of
-                 FROM dupes
-                 WHERE log.logid=dupes.logid;""")
-    cur.execute("DROP TABLE dupes;")
+                   SET duplicate_of = coalesce(duplicate_of, ARRAY[]::INT[]) | dupes.of
+                   FROM (SELECT * FROM dupes_time UNION ALL SELECT * FROM dupes_stats) AS dupes
+                   WHERE log.logid=dupes.logid;""")
+    cur.execute("DROP TABLE dupes_time;")
+    cur.execute("DROP TABLE dupes_stats;")
 
 def delete_bogus_logs(c):
     """Delete bogus logs
