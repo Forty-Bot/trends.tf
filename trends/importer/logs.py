@@ -431,12 +431,12 @@ def delete_dup_logs(c):
     cur.execute("""SELECT
                        min(logid)
                    FROM combined_logs
-                   WHERE time > (SELECT min(time) FROM log) - 24 * 60 * 60
+                   WHERE time > (SELECT min(time) FROM log) - 7 * 24 * 60 * 60
                    UNION ALL
                    SELECT
                        max(logid)
                    FROM combined_logs
-                   WHERE time > (SELECT max(time) FROM log) + 24 * 60 * 60;""")
+                   WHERE time > (SELECT max(time) FROM log) + 7 * 24 * 60 * 60;""")
     min, max = (row[0] for row in cur)
 
     cur = c.cursor()
