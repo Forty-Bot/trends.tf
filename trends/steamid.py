@@ -58,7 +58,7 @@ class SteamID:
         "MMSLobby": (AccountInstanceMask + 1) >> 3
     }
 
-    def __init__(self, input):
+    def __init__(self, input, enforce_validity=True):
         self.universe = SteamID.Universe["INVALID"]
         self.type = SteamID.Universe["INVALID"]
         self.instance = SteamID.Instance["ALL"]
@@ -106,6 +106,9 @@ class SteamID:
             self.instance = (input >> 32) & 0xFFffF
             self.type = (input >> 52) & 0xF
             self.universe = (input >> 56) & 0xFF
+
+        if enforce_validity and not self.isValid():
+            raise ValueError("Invalid ID: {}".format(input))
 
     @staticmethod
     def fromIndividualAccountID(accountid):
