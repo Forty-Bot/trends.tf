@@ -2,6 +2,7 @@
 -- SPDX-License-Identifier: AGPL-3.0-only
 -- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS intarray;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS tsm_system_rows;
@@ -26,6 +27,16 @@ CREATE OR REPLACE FUNCTION equal(variadic anyarray) RETURNS BOOL
 		  FROM unnest($1) AS vals(val)
 	    ) AS comparisons'
 	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
+CREATE OR REPLACE FUNCTION range_max2(anyrange, anyrange) RETURNS anyrange
+	AS 'SELECT CASE WHEN $1 < $2 THEN $2 ELSE $1 END'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
+CREATE OR REPLACE AGGREGATE range_max(anyrange) (
+	SFUNC = range_max2,
+	STYPE = anyrange,
+	PARALLEL = SAFE
+);
 
 -- Compatibility functions for migration from SQLite
 
@@ -57,6 +68,7 @@ CREATE TABLE IF NOT EXISTS player (
 	-- Whether the user is banned from uploading
 	banned BOOL NOT NULL DEFAULT FALSE,
 	ban_reason TEXT,
+	eu_playerid INT UNIQUE,
 	CHECK (ban_reason NOTNULL = banned)
 );
 
@@ -91,6 +103,212 @@ CREATE TABLE IF NOT EXISTS map (
 );
 
 CREATE INDEX IF NOT EXISTS map_names ON map USING gin (map gin_trgm_ops);
+
+DO $$ BEGIN
+	CREATE TYPE LEAGUE AS ENUM ();
+EXCEPTION WHEN duplicate_object THEN
+	NULL;
+END $$;
+
+ALTER TYPE LEAGUE ADD VALUE IF NOT EXISTS 'etf2l';
+ALTER TYPE LEAGUE ADD VALUE IF NOT EXISTS 'rgl';
+COMMIT;
+
+CREATE OR REPLACE FUNCTION league_div_optional(league LEAGUE) RETURNS BOOL
+	AS 'SELECT CASE league WHEN ''etf2l'' THEN TRUE ELSE FALSE END'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
+CREATE OR REPLACE FUNCTION league_time_optional(league LEAGUE) RETURNS BOOL
+	AS 'SELECT CASE league WHEN ''etf2l'' THEN TRUE ELSE FALSE END'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
+CREATE OR REPLACE FUNCTION league_round_optional(league LEAGUE) RETURNS BOOL
+	AS 'SELECT CASE league WHEN ''etf2l'' THEN TRUE ELSE FALSE END'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
+CREATE OR REPLACE FUNCTION league_team_per_comp(league LEAGUE) RETURNS BOOL
+	AS 'SELECT CASE league WHEN ''rgl'' THEN TRUE ELSE FALSE END'
+	LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE;
+
+CREATE TABLE IF NOT EXISTS competition (
+	league LEAGUE NOT NULL,
+	compid INT NOT NULL,
+	formatid INT NOT NULL REFERENCES format (formatid),
+	name TEXT NOT NULL,
+	PRIMARY KEY (league, compid)
+);
+
+CREATE TABLE IF NOT EXISTS div_name (
+	div_nameid SERIAL PRIMARY KEY,
+	division TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS division (
+	league LEAGUE NOT NULL,
+	compid INT NOT NULL,
+	divid INT NOT NULL,
+	div_nameid INT REFERENCES div_name (div_nameid),
+	tier INT, -- Lower is better, starting at 0
+	-- Not really the primary key, but necessary for the FK from team_comp
+	PRIMARY KEY (league, compid, divid),
+	FOREIGN KEY (league, compid) REFERENCES competition (league, compid)
+);
+
+-- For div_round, but also because we expect this in the first place
+CREATE UNIQUE INDEX IF NOT EXISTS division_divid_unique ON division (league, divid);
+
+CREATE TABLE IF NOT EXISTS team_name (
+	team_nameid SERIAL PRIMARY KEY,
+	team TEXT NOT NULL UNIQUE
+);
+
+CREATE INDEX IF NOT EXISTS team_names ON team_name USING gin (team gin_trgm_ops);
+
+CREATE TABLE IF NOT EXISTS league_team (
+	league LEAGUE NOT NULL,
+	-- This is a surrogate key for RGL; for other leagues it is their teamid
+	teamid SERIAL NOT NULL,
+	team_nameid INT REFERENCES team_name (team_nameid),
+	avatarhash TEXT,
+	-- When team_player (if not RGL) was last fetched
+	fetched BIGINT,
+	PRIMARY KEY (league, teamid),
+	CHECK (equal(league_team_per_comp(league), fetched ISNULL, team_nameid ISNULL)),
+	CHECK (NOT league_team_per_comp(league) OR avatarhash NOTNULL)
+);
+
+CREATE TABLE IF NOT EXISTS team_comp_backing (
+	league LEAGUE NOT NULL,
+	compid INT NOT NULL,
+	teamid INT NOT NULL,
+	divid INT,
+	-- This is RGL's teamid; the same team will have one teamid per competition
+	rgl_teamid INT UNIQUE,
+	team_nameid INT REFERENCES team_name (team_nameid),
+	avatarhash TEXT,
+	-- When team_player (RGL only) was last fetched
+	fetched BIGINT,
+	end_rank INT,
+	PRIMARY KEY (league, teamid, compid),
+	FOREIGN KEY (league, teamid) REFERENCES league_team (league, teamid),
+	FOREIGN KEY (league, compid) REFERENCES competition (league, compid),
+	FOREIGN KEY (league, compid, divid) REFERENCES division (league, compid, divid),
+	CHECK ((league = 'rgl') = (rgl_teamid NOTNULL)),
+	CHECK (equal(league_team_per_comp(league), team_nameid NOTNULL, fetched NOTNULL)),
+	CHECK (league_team_per_comp(league) OR avatarhash ISNULL),
+	CHECK (league_div_optional(league) OR (divid NOTNULL))
+);
+
+CREATE OR REPLACE VIEW team_comp AS SELECT
+	league,
+	compid,
+	teamid,
+	divid,
+	rgl_teamid,
+	team AS team_name,
+	coalesce(tc.avatarhash, lt.avatarhash) AS avatarhash,
+	coalesce(tc.fetched, lt.fetched) AS fetched
+FROM league_team AS lt
+JOIN team_comp_backing AS tc USING (league, teamid)
+JOIN team_name ON (team_name.team_nameid = coalesce(tc.team_nameid, lt.team_nameid));
+
+CREATE TABLE IF NOT EXISTS team_player (
+	league LEAGUE NOT NULL,
+	teamid INT NOT NULL,
+	-- Only for RGL to disambiguate joins/leagues from different team_comps
+	-- Other leagues have the same roster across competitions
+	compid INT,
+	playerid INT NOT NULL REFERENCES player (playerid),
+	rostered INT8RANGE NOT NULL
+		CHECK (lower_inc(rostered) AND NOT upper_inc(rostered) AND NOT lower_inf(rostered)),
+	-- This is (half of) the primary key
+	EXCLUDE USING gist (
+		league WITH =,
+		compid WITH =,
+		teamid WITH =,
+		rostered WITH &&,
+		playerid WITH =
+	) WHERE (compid NOTNULL),
+	-- And the other half
+	EXCLUDE USING gist (
+		league WITH =,
+		teamid WITH =,
+		rostered WITH &&,
+		playerid WITH =
+	) WHERE (compid ISNULL),
+	FOREIGN KEY (league, teamid) REFERENCES league_team (league, teamid),
+	FOREIGN KEY (league, teamid, compid) REFERENCES team_comp_backing (league, teamid, compid),
+	CHECK (league_team_per_comp(league) = (compid NOTNULL))
+);
+
+CREATE INDEX IF NOT EXISTS team_player_teams ON team_player (league, teamid, compid);
+
+CREATE TABLE IF NOT EXISTS round_name (
+	round_nameid SERIAL PRIMARY KEY,
+	round TEXT NOT NULL UNIQUE
+);
+
+-- Two tables, as we can't have foreign keys with NULL referenced values
+CREATE TABLE IF NOT EXISTS comp_round (
+	league LEAGUE NOT NULL CHECK (league_div_optional(league)),
+	compid INT NOT NULL,
+	-- To prevent conflicts with round.seq
+	round_seq INT NOT NULL,
+	round_nameid INT NOT NULL REFERENCES round_name (round_nameid),
+	PRIMARY KEY (league, compid, round_seq),
+	FOREIGN KEY (league, compid) REFERENCES competition (league, compid)
+);
+
+CREATE TABLE IF NOT EXISTS div_round (
+	league LEAGUE NOT NULL,
+	divid INT NOT NULL,
+	-- To prevent conflicts with round.seq
+	round_seq INT NOT NULL,
+	round_nameid INT NOT NULL REFERENCES round_name (round_nameid),
+	PRIMARY KEY (league, divid, round_seq),
+	FOREIGN KEY (league, divid) REFERENCES division (league, divid)
+);
+
+-- A completed league match
+CREATE TABLE IF NOT EXISTS match (
+	league LEAGUE NOT NULL,
+	matchid INT NOT NULL,
+	compid INT NOT NULL,
+	divid INT,
+	teamid1 INT NOT NULL,
+	teamid2 INT NOT NULL,
+	round_seq INT,
+	mapids INT[] NOT NULL CHECK (mapids = uniq(sort(mapids))),
+	score1 INT NOT NULL,
+	score2 INT NOT NULL,
+	forfeit BOOL NOT NULL,
+	scheduled BIGINT, -- Scheduled time for the match
+	submitted BIGINT, -- Time results were submitted
+	fetched BIGINT NOT NULL, -- Time we fetched the results
+	-- Don't reference comp_round when we have a divid
+	round_compid INT GENERATED ALWAYS AS (CASE WHEN divid ISNULL THEN compid END) STORED,
+	PRIMARY KEY (league, matchid),
+	FOREIGN KEY (league, compid, divid) REFERENCES division (league, compid, divid),
+	FOREIGN KEY (league, round_compid, round_seq)
+		REFERENCES comp_round (league, compid, round_seq),
+	FOREIGN KEY (league, divid, round_seq) REFERENCES div_round (league, divid, round_seq),
+	FOREIGN KEY (league, compid, teamid1) REFERENCES team_comp_backing (league, compid, teamid),
+	FOREIGN KEY (league, compid, teamid2) REFERENCES team_comp_backing (league, compid, teamid),
+	CHECK (teamid1 < teamid2),
+	CHECK (league_div_optional(league) OR (divid NOTNULL)),
+	CHECK (league_time_optional(league) OR (scheduled NOTNULL)),
+	CHECK (league_round_optional(league) OR (round_seq NOTNULL))
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS match_unique ON match (
+	league, divid, round_seq, teamid1, teamid2
+) WHERE divid NOTNULL;
+CREATE UNIQUE INDEX IF NOT EXISTS match_unique_nodiv ON match (
+	league, compid, round_seq, teamid1, teamid2
+) WHERE divid ISNULL;
+CREATE INDEX IF NOT EXISTS match_team1 ON match (teamid1);
+CREATE INDEX IF NOT EXISTS match_team2 ON match (teamid2);
+CREATE INDEX IF NOT EXISTS match_time ON match (scheduled);
 
 CREATE TABLE IF NOT EXISTS demo (
 	demoid INTEGER PRIMARY KEY,
@@ -128,10 +346,15 @@ CREATE TABLE IF NOT EXISTS log (
 	uploader INT REFERENCES player (playerid),
 	uploader_nameid INT REFERENCES name (nameid),
 	demoid INT REFERENCES demo (demoid),
+	league LEAGUE,
+	matchid INT,
+	team1_is_red BOOL,
+	FOREIGN KEY (league, matchid) REFERENCES match (league, matchid),
 	CHECK ((uploader ISNULL) = (uploader_nameid ISNULL)),
 	-- All duplicates must be newer (and have larger logids) than what they are duplicates of
 	-- This prevents cycles (though it does admit chains of finite length)
-	CHECK (logid > duplicate_of[#duplicate_of])
+	CHECK (logid > duplicate_of[#duplicate_of]),
+	CHECK (equal(league ISNULL, matchid ISNULL, team1_is_red ISNULL))
 );
 
 -- For the below view
@@ -146,7 +369,9 @@ CREATE OR REPLACE VIEW log_nodups AS SELECT
 	mapid,
 	red_score,
 	blue_score,
-	formatid
+	formatid,
+	league,
+	matchid
 FROM log
 WHERE duplicate_of ISNULL;
 
@@ -155,6 +380,8 @@ CREATE INDEX IF NOT EXISTS log_title ON log USING gin (title gin_trgm_ops);
 
 -- To filter by date
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
+
+CREATE INDEX IF NOT EXISTS log_match ON log (league, matchid);
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS map_popularity AS
 SELECT
@@ -372,6 +599,7 @@ FROM class_stats;
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	playerid,
+	league,
 	formatid,
 	classid,
 	mapid,
@@ -383,12 +611,12 @@ FROM log_nodups AS log
 JOIN player_stats_backing USING (logid)
 LEFT JOIN class_stats USING (logid, playerid)
 WHERE class_stats.duration * 1.5 >= log.duration
-GROUP BY CUBE (playerid, formatid, classid, mapid)
-ORDER BY mapid, classid, formatid, playerid
+GROUP BY CUBE (playerid, league, formatid, classid, mapid)
+ORDER BY mapid, classid, formatid, playerid, league
 WITH NO DATA;
 
 CREATE UNIQUE INDEX IF NOT EXISTS leaderboard_pkey
-	ON leaderboard_cube (mapid, classid, formatid, playerid);
+	ON leaderboard_cube (mapid, classid, formatid, playerid, league);
 
 CREATE INDEX IF NOT EXISTS leaderboard_classid ON leaderboard_cube (classid, formatid);
 

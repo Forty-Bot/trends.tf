@@ -141,6 +141,30 @@
         [Install]
         WantedBy=timers.target
 
+/etc/systemd/system/etf2l_import.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Import ETF2L matches
+
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/default/trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv etf2l bulk -N postgres:///trends
+        User=daemon
+
+/etc/systemd/system/etf2l_import.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Import ETF2L matches every 5 minutes
+
+        [Timer]
+        OnCalendar=*:1/5
+
+        [Install]
+        WantedBy=timers.target
+
 /etc/systemd/system/link.service:
   file.managed:
     - contents: |
@@ -180,6 +204,8 @@ backend_services:
       - /etc/systemd/system/weapon_import.timer
       - /etc/systemd/system/demo_import.service
       - /etc/systemd/system/demo_import.timer
+      - /etc/systemd/system/etf2l_import.service
+      - /etc/systemd/system/etf2l_import.timer
       - /etc/systemd/system/link.service
       - /etc/systemd/system/link.timer
 
@@ -214,6 +240,12 @@ weapon_import.timer:
       - backend_services
 
 demo_import.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+etf2l_import.timer:
   service.running:
     - enable: True
     - require:
