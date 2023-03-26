@@ -5,6 +5,7 @@ import collections
 import itertools
 import json
 import logging
+import os
 import sqlite3
 import time
 
@@ -430,3 +431,82 @@ class DemoBulkFetcher(DemoListFetcher):
             logging.exception("Could not fetch demo list")
         except (ValueError, KeyError):
             logging.exception("Could not parse demo list")
+
+class ETF2LFileFetcher:
+    def __init__(self, results, xferdir, **kewargs):
+        self.results = results
+        self.xferdir = xferdir
+
+    def get_results(self):
+        with open(self.results) as resultfile:
+            results = json.load(resultfile)
+        for result in results['results']:
+            result['updated'] = int(os.path.getmtime(self.results))
+            yield result
+
+    def get_xfers(self, teamid, since=0):
+        try:
+            page = max_pages = 1
+            while page <= max_pages:
+                path = f"{self.xferdir}/transfers_{teamid}_{page}.json"
+                with open(path) as xferfile:
+                    xfers = json.load(xferfile)
+                updated = int(os.path.getmtime(path))
+                max_pages = xfers['page']['total_pages']
+
+                if not xfers['transfers']:
+                    break
+                for xfer in xfers['transfers']:
+                    xfer['updated'] = updated
+                    yield xfer
+                page += 1
+        except FileNotFoundError:
+            pass
+
+class ETF2LBulkFetcher:
+    def __init__(self, since=0, count=None, page=1, **kwargs):
+        self.s = create_session()
+        self.since = since
+        self.count = count
+        self.page = page
+
+    def _get_data(self, url, data_key, count=None, since=0, page=1):
+        # Number of datums yielded (up to a maximum of count)
+        yielded = 0
+        # The id we've seen. We assume new demos will all have higher demoids.
+        last_id = None
+
+        try:
+            while True:
+                fetched = int(time.time())
+                resp = self.s.get(f"{url}/{page}.json", params={
+                    'per_page': 100,
+                    'since': since,
+                })
+                resp.raise_for_status()
+
+                resp = resp.json()
+                for datum in resp[data_key] or ():
+                    datum['fetched'] = fetched
+                    yield datum
+                    yielded += 1
+                    if count is not None and yielded >= count:
+                        return
+
+                # No new data this page; give up
+                if page >= resp['page']['total_pages']:
+                    return
+
+                page += 1
+        except (OSError, urllib3.exceptions.HTTPError):
+            logging.exception("Could not fetch from %s", url)
+        except (ValueError, KeyError):
+            logging.exception("Could not parse %s", url)
+
+    def get_results(self):
+        return self._get_data("https://api.etf2l.org/results", 'results', self.count,
+                              self.since, self.page)
+
+    def get_xfers(self, teamid, since=0):
+        return self._get_data(f"https://api.etf2l.org/team/{teamid}/transfers", 'transfers',
+                              since=since)
