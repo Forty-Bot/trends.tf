@@ -61,7 +61,8 @@ def import_demo(c, demo):
                  ) VALUES (
                      %(id)s, %(url)s, %(server)s, %(duration)s,
                      (SELECT mapid FROM map WHERE map = %(map)s), %(time)s, %(red)s, %(blue)s,
-                     %(redScore)s, %(blueScore)s, %(players)s
+                     %(redScore)s, %(blueScore)s,
+                     (SELECT array_agg(playerid) FROM player WHERE steamid64 = ANY(%(players)s))
                  )""", demo);
 
 def create_demos_parser(sub):

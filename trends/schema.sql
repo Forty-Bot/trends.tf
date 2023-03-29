@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS name (
 CREATE INDEX IF NOT EXISTS name_tgrm ON name USING GIN (name gin_trgm_ops);
 
 CREATE TABLE IF NOT EXISTS player (
-	steamid64 BIGINT PRIMARY KEY,
+	playerid SERIAL PRIMARY KEY,
+	steamid64 BIGINT NOT NULL UNIQUE,
 	nameid INT NOT NULL REFERENCES name (nameid),
 	avatarhash TEXT,
 	-- May be NULL if the player has only spectated or uploaded
@@ -104,7 +105,7 @@ CREATE TABLE IF NOT EXISTS demo (
 	blue_score INT NOT NULL,
 	-- There should be a foreign key here, but postgres doesn't support it
 	-- See https://commitfest.postgresql.org/17/1252/
-	players BIGINT[] NOT NULL CHECK (
+	players INT[] NOT NULL CHECK (
 		array_position(players, NULL) ISNULL
 		AND array_ndims(players) = 1
 	)
@@ -124,7 +125,7 @@ CREATE TABLE IF NOT EXISTS log (
 	ad_scoring BOOLEAN, -- Whether attack/defense scoring is enabled
 	-- Some logs may be duplicates or subsets of another log
 	duplicate_of INT[] CHECK (duplicate_of = uniq(sort(duplicate_of))),
-	uploader BIGINT REFERENCES player (steamid64),
+	uploader INT REFERENCES player (playerid),
 	uploader_nameid INT REFERENCES name (nameid),
 	demoid INT REFERENCES demo (demoid),
 	CHECK ((uploader ISNULL) = (uploader_nameid ISNULL)),
@@ -219,7 +220,7 @@ ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS player_stats_backing (
 	logid INT REFERENCES log (logid) NOT NULL,
-	steamid64 BIGINT REFERENCES player (steamid64) NOT NULL,
+	playerid INT REFERENCES player (playerid) NOT NULL,
 	nameid INT NOT NULL REFERENCES name (nameid),
 	team TEAM NOT NULL,
 	kills INT NOT NULL,
@@ -235,21 +236,21 @@ CREATE TABLE IF NOT EXISTS player_stats_backing (
 				     AND array_ndims(class_durations) = 1),
 	shots INT,
 	hits INT,
-	PRIMARY KEY (steamid64, logid),
+	PRIMARY KEY (playerid, logid),
 	CHECK ((shots ISNULL) = (hits ISNULL)),
 	CHECK ((classids NOTNULL AND class_durations NOTNULL
 		AND array_length(classids, 1) = array_length(class_durations, 1))
 	       OR (classids ISNULL AND class_durations ISNULL))
 );
 
--- This index includes steamid64 and team so that it can be used as a covering index for the peers
+-- This index includes playerid and team so that it can be used as a covering index for the peers
 -- query. This avoids a bunch of costly random reads to player_stats.
 CREATE INDEX IF NOT EXISTS player_stats_peers
 	ON player_stats_backing (logid)
-	INCLUDE (steamid64, team);
+	INCLUDE (playerid, team);
 
 -- Covering index for name FTS queries
-CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats_backing (nameid) INCLUDE (steamid64);
+CREATE INDEX IF NOT EXISTS player_stats_names ON player_stats_backing (nameid) INCLUDE (playerid);
 
 CREATE OR REPLACE VIEW player_stats AS SELECT
 	player_stats_backing.*,
@@ -265,7 +266,7 @@ FROM player_stats_backing;
 
 CREATE TABLE IF NOT EXISTS player_stats_extra (
 	logid INT NOT NULL,
-	steamid64 BIGINT NOT NULL,
+	playerid INT NOT NULL,
 	suicides INT,
 	dmg_real INT, -- Damage dealt just before/after a kill, cap, or uber
 	dt_real INT,
@@ -281,14 +282,14 @@ CREATE TABLE IF NOT EXISTS player_stats_extra (
 	healing INT,
 	cpc INT, -- Capture Point Captures
 	ic INT, -- Intel Captures
-	PRIMARY KEY (steamid64, logid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
+	PRIMARY KEY (playerid, logid),
+	FOREIGN KEY (logid, playerid) REFERENCES player_stats_backing (logid, playerid),
 	CHECK ((dmg_real ISNULL) = (dt_real ISNULL))
 );
 
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,
-	steamid64 BIGINT NOT NULL,
+	playerid INT NOT NULL,
 	ubers INT NOT NULL,
 	medigun_ubers INT,
 	kritz_ubers INT,
@@ -302,8 +303,8 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	avg_uber_duration REAL,
 	deaths_after_uber INT, -- within 20s
 	deaths_before_uber INT, -- 95-99%
-	PRIMARY KEY (steamid64, logid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
+	PRIMARY KEY (playerid, logid),
+	FOREIGN KEY (logid, playerid) REFERENCES player_stats_backing (logid, playerid),
 	CHECK (equal(medigun_ubers ISNULL, kritz_ubers ISNULL, other_ubers ISNULL)),
 	CHECK (medigun_ubers ISNULL OR ubers = medigun_ubers + kritz_ubers + other_ubers),
 	CHECK ((advantages_lost ISNULL) = (biggest_advantage_lost ISNULL))
@@ -314,13 +315,13 @@ CREATE INDEX IF NOT EXISTS medic_stats_logid ON medic_stats (logid);
 
 CREATE TABLE IF NOT EXISTS heal_stats (
 	logid INT NOT NULL,
-	healer BIGINT NOT NULL,
-	healee BIGINT NOT NULL,
+	healer INT NOT NULL,
+	healee INT NOT NULL,
 	healing INT NOT NULL,
 	PRIMARY KEY (logid, healer, healee),
 	-- Should reference medic_stats, but some very old logs only report one class per player
-	FOREIGN KEY (logid, healer) REFERENCES player_stats_backing (logid, steamid64),
-	FOREIGN KEY (logid, healee) REFERENCES player_stats_backing (logid, steamid64)
+	FOREIGN KEY (logid, healer) REFERENCES player_stats_backing (logid, playerid),
+	FOREIGN KEY (logid, healee) REFERENCES player_stats_backing (logid, playerid)
 );
 
 -- Index for looking up people healed in logs
@@ -335,21 +336,21 @@ FROM heal_stats;
 
 CREATE OR REPLACE VIEW heal_stats_given AS SELECT
 	logid,
-	healer AS steamid64,
+	healer AS playerid,
 	sum(healing) AS healing
 FROM heal_stats
 GROUP BY logid, healer;
 
 CREATE OR REPLACE VIEW heal_stats_received AS SELECT
 	logid,
-	healee AS steamid64,
+	healee AS playerid,
 	sum(healing) AS healing
 FROM heal_stats
 GROUP BY logid, healee;
 
 CREATE TABLE IF NOT EXISTS class_stats (
 	logid INT NOT NULL,
-	steamid64 BIGINT NOT NULL,
+	playerid INT NOT NULL,
 	classid INT NOT NULL REFERENCES class (classid),
 	kills INT NOT NULL,
 	assists INT NOT NULL,
@@ -358,8 +359,8 @@ CREATE TABLE IF NOT EXISTS class_stats (
 	duration INT NOT NULL,
 	shots INT,
 	hits INT,
-	PRIMARY KEY (steamid64, logid, classid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64),
+	PRIMARY KEY (playerid, logid, classid),
+	FOREIGN KEY (logid, playerid) REFERENCES player_stats_backing (logid, playerid),
 	CHECK ((shots ISNULL) = (hits ISNULL))
 );
 
@@ -367,11 +368,11 @@ CREATE TABLE IF NOT EXISTS class_stats (
 CREATE INDEX IF NOT EXISTS class_stats_logid ON class_stats (logid);
 
 CREATE STATISTICS IF NOT EXISTS class_stats (ndistinct)
-ON logid, steamid64
+ON logid, playerid
 FROM class_stats;
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
-	steamid64,
+	playerid,
 	formatid,
 	classid,
 	mapid,
@@ -381,14 +382,14 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	sum((wins < losses)::INT) AS losses
 FROM log_nodups AS log
 JOIN player_stats_backing USING (logid)
-LEFT JOIN class_stats USING (logid, steamid64)
+LEFT JOIN class_stats USING (logid, playerid)
 WHERE class_stats.duration * 1.5 >= log.duration
-GROUP BY CUBE (steamid64, formatid, classid, mapid)
-ORDER BY mapid, classid, formatid, steamid64
+GROUP BY CUBE (playerid, formatid, classid, mapid)
+ORDER BY mapid, classid, formatid, playerid
 WITH NO DATA;
 
 CREATE UNIQUE INDEX IF NOT EXISTS leaderboard_pkey
-	ON leaderboard_cube (mapid, classid, formatid, steamid64);
+	ON leaderboard_cube (mapid, classid, formatid, playerid);
 
 CREATE INDEX IF NOT EXISTS leaderboard_classid ON leaderboard_cube (classid, formatid);
 
@@ -405,7 +406,7 @@ FROM weapon;
 
 CREATE TABLE IF NOT EXISTS weapon_stats (
 	logid INT NOT NULL,
-	steamid64 BIGINT NOT NULL,
+	playerid INT NOT NULL,
 	classid INT NOT NULL,
 	weaponid INT NOT NULL REFERENCES weapon (weaponid),
 	kills INT NOT NULL,
@@ -413,14 +414,14 @@ CREATE TABLE IF NOT EXISTS weapon_stats (
 	avg_dmg REAL,
 	shots INT,
 	hits INT,
-	PRIMARY KEY (steamid64, logid, classid, weaponid),
-	FOREIGN KEY (logid, steamid64, classid) REFERENCES class_stats (logid, steamid64, classid),
+	PRIMARY KEY (playerid, logid, classid, weaponid),
+	FOREIGN KEY (logid, playerid, classid) REFERENCES class_stats (logid, playerid, classid),
 	CHECK ((shots ISNULL) = (hits ISNULL)),
 	CHECK ((dmg ISNULL) = (avg_dmg ISNULL))
 );
 
 CREATE STATISTICS IF NOT EXISTS weapon_stats (ndistinct)
-ON logid, steamid64, classid
+ON logid, playerid, classid
 FROM weapon_stats;
 
 -- For logs page
@@ -435,7 +436,7 @@ INSERT INTO event (event) VALUES ('kill'), ('death'), ('assist') ON CONFLICT DO 
 
 CREATE TABLE IF NOT EXISTS event_stats (
 	logid INT NOT NULL,
-	steamid64 BIGINT NOT NULL,
+	playerid INT NOT NULL,
 	eventid INT REFERENCES event (eventid),
 	demoman INT NOT NULL,
 	engineer INT NOT NULL,
@@ -446,8 +447,8 @@ CREATE TABLE IF NOT EXISTS event_stats (
 	sniper INT NOT NULL,
 	soldier INT NOT NULL,
 	spy INT NOT NULL,
-	PRIMARY KEY (steamid64, logid, eventid),
-	FOREIGN KEY (logid, steamid64) REFERENCES player_stats_backing (logid, steamid64)
+	PRIMARY KEY (playerid, logid, eventid),
+	FOREIGN KEY (logid, playerid) REFERENCES player_stats_backing (logid, playerid)
 );
 
 -- For logs page
@@ -455,12 +456,12 @@ CREATE INDEX IF NOT EXISTS event_logid ON event_stats (logid);
 
 CREATE TABLE IF NOT EXISTS chat (
 	logid INT NOT NULL REFERENCES log (logid),
-	steamid64 BIGINT REFERENCES player (steamid64), -- May be NULL for Console messages
+	playerid INT REFERENCES player (playerid), -- May be NULL for Console messages
 	seq INT NOT NULL, -- Message sequence, starting at 0; earlier messages have lower sequences
 	msg TEXT NOT NULL,
 	PRIMARY KEY (logid, seq)
 );
 
--- Reverse index for lookups by steamid64
+-- Reverse index for lookups by playerid
 -- Don't index NULLs since we don't generally want to look them up.
---CREATE INDEX IF NOT EXISTS chat_steamid64 ON chat (steamid64, logid) WHERE steamid64 NOTNULL;
+--CREATE INDEX IF NOT EXISTS chat_playerid ON chat (playerid, logid) WHERE playerid NOTNULL;

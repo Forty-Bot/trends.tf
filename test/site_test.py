@@ -117,7 +117,11 @@ def test_filter(client, logs, players, titles, maps, names, data):
 
 def test_search(client, connection):
     players = connection.cursor()
-    players.execute("SELECT steamid64, name FROM player_stats JOIN name USING (nameid) LIMIT 10")
+    players.execute("""SELECT steamid64, name
+                       FROM player_stats
+                       JOIN name USING (nameid)
+                       JOIN player USING (playerid)
+                       LIMIT 10""")
     players = players.fetchall()
 
     for path in ("/search", "/api/v1/players"):

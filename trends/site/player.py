@@ -18,13 +18,13 @@ def get_player(endpoint, values):
 @player.before_request
 def get_overview():
     cur = get_db().cursor()
-    cur.execute("SELECT last_active FROM player WHERE steamid64 = %s;", (flask.g.steamid,))
-    for row in cur:
-        last_active = row[0]
+    cur.execute("SELECT playerid, last_active FROM player WHERE steamid64 = %s;",
+                (flask.g.steamid,))
+    for flask.g.playerid, last_active in cur:
         if not last_active:
             flask.abort(404)
 
-        if resp := last_modified(last_active := row[0]):
+        if resp := last_modified(last_active):
             return resp
         break
     else:
@@ -56,11 +56,11 @@ def get_overview():
                     sum((wins < losses)::INT) AS losses,
                     sum((wins = losses)::INT) AS ties
                 FROM player_stats
-                WHERE steamid64 = %(steamid)s
+                WHERE playerid = %(playerid)s
            ) AS overview
            JOIN player ON (logs != 0)
            JOIN name USING (nameid)
-           WHERE steamid64 = %(steamid)s;""", { 'steamid': flask.g.steamid })
+           WHERE playerid = %(playerid)s;""", { 'playerid': flask.g.playerid })
 
     for row in cur:
         flask.g.player = row
@@ -74,7 +74,7 @@ base_filter_columns = frozenset({'formatid', 'title', 'mapid', 'time', 'logid'})
 # These columns filters should be used when pretty names for class, format, and map are not used
 surrogate_filter_columns = base_filter_columns.union({'primary_classid'})
 
-def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", limit=100, offset=0):
+def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", limit=100, offset=0):
     real_offset = offset
     filter_clauses = get_filter_clauses(filters, 'primary_classid', 'formatid', 'title', 'mapid',
                                         'time', 'logid')
@@ -118,19 +118,19 @@ def get_logs(c, steamid, filters, duplicates=True, order_clause="logid DESC", li
                    hits * 1.0 / nullif(shots, 0.0) AS acc
                FROM log
                JOIN player_stats AS ps USING (logid)
-               WHERE steamid64 = %(steamid)s
+               WHERE playerid = %(playerid)s
                    {}
            ) as ps
            JOIN map USING (mapid)
            LEFT JOIN format USING (formatid)
-           LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
-           LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
-           WHERE ps.steamid64 = %(steamid)s
+           LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
+           LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
+           WHERE ps.playerid = %(playerid)s
            ORDER BY {} NULLS LAST
            LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
         {
             **filters,
-            'steamid': steamid,
+            'playerid': flask.g.playerid,
             'limit': limit,
             'offset': offset,
             'real_offset': real_offset
@@ -155,10 +155,10 @@ def overview(steamid):
                cs.hits,
                cs.shots
            FROM player_stats
-           JOIN class_stats cs USING (logid, steamid64)
+           JOIN class_stats cs USING (logid, playerid)
            JOIN log_nodups USING (logid)
-           WHERE steamid64 = %(steamid)s
-               {};""".format(filter_clauses), { 'steamid': steamid, **filters})
+           WHERE playerid = %(playerid)s
+               {};""".format(filter_clauses), { 'playerid': flask.g.playerid, **filters})
     classes.execute("ANALYZE classes");
     classes.execute(
         """SELECT
@@ -181,7 +181,7 @@ def overview(steamid):
                GROUP BY classid
                ORDER BY classid
            ) AS classes;""".format(get_filter_clauses(filters, 'class')),
-        { 'steamid': steamid, **filters})
+        { 'playerid': flask.g.playerid, **filters})
     classes = classes.fetchall()
 
     formats = c.cursor()
@@ -199,12 +199,12 @@ def overview(steamid):
                    total(duration) as time
                FROM log_nodups
                JOIN player_stats USING (logid)
-               WHERE steamid64 = %(steamid)s
+               WHERE playerid = %(playerid)s
                    {}
                GROUP BY formatid
            ) AS data
            JOIN format using (formatid);""".format(filter_clauses),
-        { 'steamid': steamid, **filters })
+        { 'playerid': flask.g.playerid, **filters })
 
     aliases = c.cursor()
     aliases.execute(
@@ -215,13 +215,13 @@ def overview(steamid):
                        nameid,
                        count(*) AS count
                    FROM player_stats
-                   WHERE steamid64 = %s
+                   WHERE playerid = %s
                    GROUP BY nameid
                    ORDER BY count(*) DESC
                    LIMIT 10
                ) AS names
-               JOIN name USING (nameid)""", (steamid,))
-    logs = get_logs(c, steamid, filters, limit=25, duplicates=False)
+               JOIN name USING (nameid)""", (flask.g.playerid,))
+    logs = get_logs(c, flask.g.playerid, filters, limit=25, duplicates=False)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  formats=formats, aliases=aliases)
 
@@ -245,7 +245,7 @@ def logs(steamid):
         'acc': "acc",
         'date': "time",
 	}, 'logid')
-    logs = get_logs(get_db(), steamid, filters, order_clause=order_clause, limit=limit, offset=offset)
+    logs = get_logs(get_db(), flask.g.playerid, filters, order_clause=order_clause, limit=limit, offset=offset)
     return flask.render_template("player/logs.html", logs=logs.fetchall())
 
 @player.route('/peers')
@@ -274,7 +274,7 @@ def peers(steamid):
                name,
                avatarhash
            FROM (SELECT
-                   steamid64,
+                   playerid,
                    total("with"::INT) AS with,
                    total(against::INT) AS against,
                    (sum(CASE WHEN "with" THEN win END) +
@@ -296,7 +296,7 @@ def peers(steamid):
                FROM (
                    SELECT
                        p1.logid,
-                       p2.steamid64,
+                       p2.playerid,
                        p1.team = p2.team AS with,
                        p1.team != p2.team AS against,
                        (p1.wins > p1.losses)::INT AS win,
@@ -310,25 +310,25 @@ def peers(steamid):
                    JOIN player_stats AS p1 USING (logid)
                    JOIN player_stats AS p2 USING (logid)
                    LEFT JOIN heal_stats AS hs1 ON (
-                       hs1.healer = p1.steamid64
-                       AND hs1.healee = p2.steamid64
+                       hs1.healer = p1.playerid
+                       AND hs1.healee = p2.playerid
                        AND hs1.logid = p1.logid
                    ) LEFT JOIN heal_stats AS hs2 ON (
-                       hs2.healer = p2.steamid64
-                       AND hs2.healee = p1.steamid64
+                       hs2.healer = p2.playerid
+                       AND hs2.healee = p1.playerid
                        AND hs2.logid = p1.logid
-                   ) WHERE p1.steamid64 = %(steamid)s
-                      AND p2.steamid64 != p1.steamid64
+                   ) WHERE p1.playerid = %(playerid)s
+                      AND p2.playerid != p1.playerid
                       AND p2.team NOTNULL
                       {}
                ) AS peers
-               GROUP BY steamid64
+               GROUP BY playerid
                ORDER BY {} NULLS LAST
                LIMIT %(limit)s OFFSET %(offset)s
            ) AS peers
-           JOIN player USING (steamid64)
+           JOIN player USING (playerid)
            JOIN name USING (nameid);""".format(filter_clauses, order_clause),
-        { 'steamid': steamid, **filters, 'limit': limit, 'offset': offset })
+        { 'playerid': flask.g.playerid, **filters, 'limit': limit, 'offset': offset })
     return flask.render_template("player/peers.html", peers=peers.fetchall())
 
 @player.route('/totals')
@@ -398,19 +398,19 @@ def totals(steamid):
                total(deaths_after_uber) * 30 * 60 / nullif(total(log.duration), 0) AS dau30,
                total(deaths_before_uber) * 30 * 60 / nullif(total(log.duration), 0) AS abu30
            FROM player_stats AS ps
-           LEFT JOIN player_stats_extra AS pse USING (logid, steamid64)
+           LEFT JOIN player_stats_extra AS pse USING (logid, playerid)
            JOIN log_nodups AS log USING (logid)
-           LEFT JOIN medic_stats AS ms USING (logid, steamid64)
+           LEFT JOIN medic_stats AS ms USING (logid, playerid)
            LEFT JOIN (SELECT
                    logid,
-                   healer AS steamid64,
+                   healer AS playerid,
                    sum(healing) AS healing
                FROM heal_stats
-               GROUP BY logid, steamid64
-           ) AS hs USING (logid, steamid64)
-           WHERE ps.steamid64 = %(steamid)s
+               GROUP BY logid, playerid
+           ) AS hs USING (logid, playerid)
+           WHERE ps.playerid = %(playerid)s
                {};""".format(filter_clauses),
-        {'steamid': steamid, **filters})
+        {'playerid': flask.g.playerid, **filters})
     totals = totals.fetchone()
 
     events = c.cursor()
@@ -431,11 +431,11 @@ def totals(steamid):
                    FROM event
                    LEFT JOIN event_stats USING (eventid)
                    LEFT JOIN log_nodups AS log USING (logid)
-                   LEFT JOIN player_stats USING (logid, steamid64)
-                   WHERE steamid64 = %(steamid)s
+                   LEFT JOIN player_stats USING (logid, playerid)
+                   WHERE playerid = %(playerid)s
                        {}
                    GROUP BY eventid) AS data USING (eventid);""".format(filter_clauses),
-               { 'steamid': steamid, **filters })
+               { 'playerid': flask.g.playerid, **filters })
 
     # Pivot from rows of events to rows of classes
     # Not done in postgres because crosstab messes up quoting
@@ -472,13 +472,13 @@ def weapons(steamid):
                count(*) AS logs
            FROM weapon_stats AS ws
            JOIN weapon_pretty USING (weaponid)
-           JOIN class_stats AS cs USING (logid, steamid64, classid)
+           JOIN class_stats AS cs USING (logid, playerid, classid)
            JOIN log_nodups AS log USING (logid)
-           WHERE steamid64 = %(steamid)s
+           WHERE playerid = %(playerid)s
                {}
            GROUP BY weapon
            ORDER BY weapon ASC NULLS LAST;""".format(filter_clauses),
-        {'steamid': steamid, **filters})
+        {'playerid': flask.g.playerid, **filters})
     return flask.render_template("player/weapons.html", weapons=weapons)
 
 @player.route('/trends')
@@ -509,17 +509,17 @@ def trends(steamid):
                    nullif(sum(nullelse(hsr.healing, log.duration)) OVER win, 0) AS hpm_recieved
            FROM log_nodups AS log
            JOIN player_stats AS ps USING (logid)
-           LEFT JOIN heal_stats_given AS hsg USING (logid, steamid64)
-           LEFT JOIN heal_stats_received AS hsr USING (logid, steamid64)
-           WHERE ps.steamid64 = %(steamid)s
+           LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
+           LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
+           WHERE ps.playerid = %(playerid)s
                {}
            WINDOW win AS (
-               PARTITION BY ps.steamid64
+               PARTITION BY ps.playerid
                ORDER BY log.logid
                GROUPS BETWEEN %(window)s - 1 PRECEDING AND CURRENT ROW
            ) ORDER BY log.logid DESC
            LIMIT 10000;""".format(get_filter_clauses(filters, *surrogate_filter_columns)),
-           {'steamid': steamid, 'window': window, **filters})
+           {'playerid': flask.g.playerid, 'window': window, **filters})
     trends = list(dict(row) for row in cur)
     trends.reverse()
     return flask.render_template("player/trends.html", trends=trends, window=window)
@@ -581,7 +581,7 @@ def maps(steamid):
                        total(shots) AS shots
                    FROM log_nodups
                    JOIN player_stats using (logid)
-                   WHERE steamid64 = %(steamid)s
+                   WHERE playerid = %(playerid)s
                        {}
                    GROUP BY mapid
                ) AS stats
@@ -595,5 +595,5 @@ def maps(steamid):
                    ELSE NULL
                END NULLS FIRST,
                parts[3:] COLLATE numeric NULLS FIRST;""".format(filter_clauses),
-        {'steamid': steamid, **filters})
+        {'playerid': flask.g.playerid, **filters})
     return flask.render_template("player/maps.html", maps=maps.fetchall())

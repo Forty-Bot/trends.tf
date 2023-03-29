@@ -98,13 +98,13 @@ def db_init(c):
 # They may also be used to know what to delete on failure
 # The second element of the tuple is what to order by when inserting (e.g. the primary key)
 log_tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
-             ('player_stats_backing', 'steamid64, logid'),
-             ('player_stats_extra', 'steamid64, logid'),
-             ('medic_stats', 'steamid64, logid'),
+             ('player_stats_backing', 'playerid, logid'),
+             ('player_stats_extra', 'playerid, logid'),
+             ('medic_stats', 'playerid, logid'),
              ('heal_stats', 'logid, healer, healee'),
-             ('class_stats', 'steamid64, logid, classid'),
-             ('weapon_stats', 'steamid64, logid, classid, weaponid'),
-             ('event_stats', 'steamid64, logid, eventid'), ('chat', 'logid, seq'))
+             ('class_stats', 'playerid, logid, classid'),
+             ('weapon_stats', 'playerid, logid, classid, weaponid'),
+             ('event_stats', 'playerid, logid, eventid'), ('chat', 'logid, seq'))
 
 def delete_logs(cur):
     # Done in reverse order as import_log

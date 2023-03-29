@@ -53,11 +53,11 @@ def get_players(q):
                avatarhash,
                aliases
            FROM (SELECT
-                   steamid64,
+                   playerid,
                    array_agg(DISTINCT name) AS aliases,
                    max(rank) AS rank
                FROM (SELECT
-                       steamid64,
+                       playerid,
                        name,
                        similarity(name, %(q)s) AS rank
                    FROM name
@@ -65,9 +65,9 @@ def get_players(q):
                    WHERE name ILIKE %(q)s
                    ORDER BY rank DESC
                ) AS matches
-               GROUP BY steamid64
+               GROUP BY playerid
            ) AS matches
-           JOIN player USING (steamid64)
+           JOIN player USING (playerid)
            JOIN name USING (nameid)
            WHERE last_active NOTNULL
            ORDER BY rank DESC, last_active DESC

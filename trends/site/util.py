@@ -81,7 +81,7 @@ def get_filter_params():
     if val := tuple(args.getlist('steamid64', type=int)[:5]):
         players = get_db().cursor()
         players.execute("""SELECT
-                               steamid64,
+                               playerid,
                                avatarhash,
                                name
                            FROM player
@@ -164,11 +164,11 @@ def get_filter_clauses(params, *valid_columns, player_prefix='', log_prefix=''):
     if 'logid' in valid_columns:
         for i, player in enumerate(params['players']):
             key = "player_{}".format(i)
-            params[key] = player['steamid64']
+            params[key] = player['playerid']
             clauses.append("""AND {}logid IN (
                                   SELECT logid
                                   FROM player_stats
-                                  WHERE steamid64 = %({})s
+                                  WHERE playerid = %({})s
                            )""".format(log_prefix, key))
 
     return "\n".join(clauses)

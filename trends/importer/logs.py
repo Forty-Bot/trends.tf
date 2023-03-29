@@ -85,13 +85,15 @@ def import_log(c, logid, log):
                      %(uploader_steamid)s,
                      (SELECT nameid FROM name WHERE name = %(uploader_name)s)
                  ) ON CONFLICT (steamid64) DO NOTHING;""", info)
+    c.execute("SELECT playerid FROM player WHERE steamid64 = %(uploader_steamid)s;", info)
+    info['uploader_playerid'] = c.fetchone()[0]
     c.execute("""INSERT INTO log (
                      logid, time, duration, title, mapid, red_score, blue_score, ad_scoring,
                      uploader, uploader_nameid
                  ) VALUES (
                      %(logid)s, %(date)s, %(total_length)s, %(title)s,
                      (SELECT mapid FROM map WHERE map = %(map)s),
-                     %(red_score)s, %(blue_score)s, %(AD_scoring)s, %(uploader_steamid)s,
+                     %(red_score)s, %(blue_score)s, %(AD_scoring)s, %(uploader_playerid)s,
                      (SELECT nameid FROM name WHERE name = %(uploader_name)s)
                  );""",
               info)
@@ -101,7 +103,7 @@ def import_log(c, logid, log):
     c.execute("SAVEPOINT import;")
 
     # Ignore logs from banned players
-    c.execute("SELECT banned FROM player WHERE steamid64 = %(uploader_steamid)s;", info);
+    c.execute("SELECT banned FROM player WHERE playerid = %(uploader_playerid)s;", info);
     for row in c:
         if row[0]:
             return
@@ -167,10 +169,12 @@ def import_log(c, logid, log):
                      DO UPDATE SET
                          last_active = greatest(player.last_active, EXCLUDED.last_active);""",
                   player)
+        c.execute("SELECT playerid FROM player WHERE steamid64 = %(steamid)s;", player)
+        player['playerid'] = c.fetchone()[0]
         c.execute("""INSERT INTO player_stats_backing (
-                         logid, steamid64, team, nameid, kills, assists, deaths, dmg, dt
+                         logid, playerid, team, nameid, kills, assists, deaths, dmg, dt
                      ) VALUES (
-                         %(logid)s, %(steamid)s, %(team)s,
+                         %(logid)s, %(playerid)s, %(team)s,
                          (SELECT nameid FROM name WHERE name = %(name)s), %(kills)s, %(assists)s,
                          %(deaths)s, %(dmg)s, %(dt)s
                      );""", player)
@@ -178,11 +182,11 @@ def import_log(c, logid, log):
                                         'medkits', 'medkits_hp', 'backstabs', 'headshots',
                                         'headshots_hit', 'sentries', 'heal', 'cpc', 'ic'))):
             c.execute("""INSERT INTO player_stats_extra (
-                             logid, steamid64, suicides, dmg_real, dt_real, hr, lks, airshots,
+                             logid, playerid, suicides, dmg_real, dt_real, hr, lks, airshots,
                              medkits, medkits_hp, backstabs, headshots, headshots_hit, sentries,
                              healing, cpc, ic
                          ) VALUES (
-                             %(logid)s, %(steamid)s, %(suicides)s, %(dmg_real)s, %(dt_real)s,
+                             %(logid)s, %(playerid)s, %(suicides)s, %(dmg_real)s, %(dt_real)s,
                              %(hr)s, %(lks)s, %(as)s, %(medkits)s, %(medkits_hp)s, %(backstabs)s,
                              %(headshots)s, %(headshots_hit)s, %(sentries)s, %(heal)s, %(cpc)s,
                              %(ic)s
@@ -198,7 +202,7 @@ def import_log(c, logid, log):
                 continue
 
             events['logid'] = logid
-            events['steamid'] = steamid
+            events['playerid'] = player['playerid']
             events['event'] = event
             for cls in util.classes:
                 events[cls] = events.get(cls, 0)
@@ -206,10 +210,10 @@ def import_log(c, logid, log):
             # There are also 'unknown' events, but we skip them; they can be determined by the
             # difference between the sum of this event and the event in player_stats
             c.execute("""INSERT INTO event_stats (
-                             logid, steamid64, eventid, demoman, engineer, heavyweapons, medic,
+                             logid, playerid, eventid, demoman, engineer, heavyweapons, medic,
                              pyro, scout, sniper, soldier, spy
                          ) VALUES (
-                             %(logid)s, %(steamid)s,
+                             %(logid)s, %(playerid)s,
                              (SELECT eventid FROM event WHERE event = %(event)s), %(demoman)s,
                              %(engineer)s, %(heavyweapons)s, %(medic)s, %(pyro)s, %(scout)s,
                              %(sniper)s, %(soldier)s, %(spy)s
@@ -223,7 +227,7 @@ def import_log(c, logid, log):
             if cls['type'] == 'medic':
                 medic = player.get('medicstats', {})
                 medic['logid'] = logid
-                medic['steamid'] = steamid
+                medic['playerid'] = player['playerid']
                 medic['ubers'] = player['ubers']
                 medic['drops'] = player['drops']
 
@@ -259,13 +263,13 @@ def import_log(c, logid, log):
                     medic[prop] = medic.get(prop)
 
                 c.execute("""INSERT INTO medic_stats (
-                                 logid, steamid64, ubers, medigun_ubers, kritz_ubers,
+                                 logid, playerid, ubers, medigun_ubers, kritz_ubers,
                                  other_ubers, drops, advantages_lost, biggest_advantage_lost,
                                  avg_time_before_healing, avg_time_before_using,
                                  avg_time_to_build, avg_uber_duration, deaths_after_uber,
                                  deaths_before_uber
                              ) VALUES (
-                                 %(logid)s, %(steamid)s, %(ubers)s, %(medigun_ubers)s,
+                                 %(logid)s, %(playerid)s, %(ubers)s, %(medigun_ubers)s,
                                  %(kritz_ubers)s, %(other_ubers)s, %(drops)s, %(advantages_lost)s,
                                  %(biggest_advantage_lost)s, %(avg_time_before_healing)s,
                                  %(avg_time_before_using)s, %(avg_time_to_build)s,
@@ -274,7 +278,7 @@ def import_log(c, logid, log):
                             );""", medic)
 
             cls['logid'] = logid
-            cls['steamid'] = steamid
+            cls['playerid'] = player['playerid']
 
             # Some logs accidentally have a timestamp instead of a duration. Try and fix this up as
             # best we can... This may also fix some logs where players have slightly more time
@@ -282,9 +286,9 @@ def import_log(c, logid, log):
             cls['total_time'] = min(cls['total_time'], info['total_length'])
 
             c.execute("""INSERT INTO class_stats (
-                             logid, steamid64, classid, kills, assists, deaths, dmg, duration
+                             logid, playerid, classid, kills, assists, deaths, dmg, duration
                          ) VALUES (
-                             %(logid)s, %(steamid)s,
+                             %(logid)s, %(playerid)s,
                              (SELECT classid FROM class WHERE class = %(type)s), %(kills)s,
                              %(assists)s, %(deaths)s, %(dmg)s, %(total_time)s
                          );""", cls);
@@ -302,7 +306,7 @@ def import_log(c, logid, log):
                     weapon = { 'kills': weapon }
 
                 weapon['logid'] = logid
-                weapon['steamid'] = steamid
+                weapon['playerid'] = player['playerid']
                 weapon['class'] = cls['type']
                 weapon['name'] = weapon_name
 
@@ -316,10 +320,10 @@ def import_log(c, logid, log):
                 c.execute("INSERT INTO weapon (weapon) VALUES (%(name)s) ON CONFLICT DO NOTHING;",
                           weapon)
                 c.execute("""INSERT INTO weapon_stats (
-                                 logid, steamid64, classid, weaponid, kills, dmg, avg_dmg, shots,
+                                 logid, playerid, classid, weaponid, kills, dmg, avg_dmg, shots,
                                  hits
                              ) VALUES (
-                                 %(logid)s, %(steamid)s,
+                                 %(logid)s, %(playerid)s,
                                  (SELECT classid FROM class WHERE class = %(class)s),
                                  (SELECT weaponid FROM weapon WHERE weapon = %(name)s), %(kills)s,
                                  %(dmg)s, %(avg_dmg)s, %(shots)s, %(hits)s
@@ -335,10 +339,11 @@ def import_log(c, logid, log):
         if steamid:
             c.execute("""INSERT INTO player (steamid64, nameid) VALUES (
                              %s, (SELECT nameid FROM name WHERE name = %s)
-                         ) ON CONFLICT (steamid64) DO NOTHING;""",
-                      (steamid, msg['name']))
-        c.execute("INSERT INTO chat (logid, steamid64, seq, msg) VALUES (%s, %s, %s, %s);",
-                  (logid, steamid, seq, msg['msg']))
+                         ) ON CONFLICT (steamid64) DO NOTHING;""", (steamid, msg['name']))
+        c.execute("""INSERT INTO chat (logid, playerid, seq, msg)
+                     VALUES (
+                         %s, (SELECT playerid FROM player WHERE steamid64 = %s), %s, %s
+                     );""", (logid, steamid, seq, msg['msg']))
 
     for (healer, healees) in log['healspread'].items():
         try:
@@ -358,11 +363,13 @@ def import_log(c, logid, log):
                 # healing being logged more than once, and aren't distinct instances of healing.
                 c.execute("SAVEPOINT before_heal_stats;")
                 c.execute("""INSERT INTO heal_stats (logid, healer, healee, healing)
-                             VALUES (%s, %s, %s, %s)
-                             ON CONFLICT DO NOTHING;""",
+                             VALUES (
+                                 %s, (SELECT playerid FROM player WHERE steamid64 = %s),
+                                 (SELECT playerid FROM player WHERE steamid64 = %s), %s
+                             ) ON CONFLICT DO NOTHING;""",
                           (logid, healer, healee, healing))
             # Sometimes a player only shows up in rounds and healspread...
-            except psycopg2.errors.ForeignKeyViolation:
+            except (psycopg2.errors.ForeignKeyViolation, psycopg2.errors.NotNullViolation):
                 logging.warning("Either %s or %s is only present in healspread for log %s",
                                 healer, healee, logid)
                 c.execute("ROLLBACK TO SAVEPOINT before_heal_stats;")
@@ -560,7 +567,7 @@ def update_formats(c):
                          FROM log
                          JOIN (SELECT
                                  logid,
-                                 count(DISTINCT steamid64) AS total_players,
+                                 count(DISTINCT playerid) AS total_players,
                                  total(duration) as total_duration
                              FROM class_stats
                              GROUP BY logid
@@ -598,7 +605,7 @@ def update_wlt(c):
                      END
                  FROM (SELECT
                          logid,
-                         steamid64,
+                         playerid,
                          team,
                          CASE WHEN ad_scoring
                              THEN log.red_score
@@ -624,7 +631,7 @@ def update_wlt(c):
                      ) AS round USING (logid)
                  ) AS new
                  WHERE ps.logid = new.logid
-                     AND ps.steamid64 = new.steamid64""")
+                     AND ps.playerid = new.playerid""")
 
 def update_player_classes(cur, bounds=None):
     cur.execute("""UPDATE player_stats_backing AS ps SET
@@ -632,16 +639,16 @@ def update_player_classes(cur, bounds=None):
                        class_durations = new.durations
                    FROM (SELECT
                            logid,
-                           steamid64,
+                           playerid,
                            array_agg(classid ORDER BY duration DESC) AS classids,
                            array_agg(duration ORDER BY duration DESC) AS durations
                        FROM class_stats
                        {}
-                       GROUP BY logid, steamid64
-                       ORDER BY steamid64, logid
+                       GROUP BY logid, playerid
+                       ORDER BY playerid, logid
                    ) AS new
                    WHERE ps.logid = new.logid
-                       AND ps.steamid64 = new.steamid64;"""
+                       AND ps.playerid = new.playerid;"""
                    .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
                 bounds)
 
@@ -651,17 +658,17 @@ def update_acc(cur, bounds=None):
                         shots = new.shots
                     FROM (SELECT
                             logid,
-                            steamid64,
+                            playerid,
                             classid,
                             sum(hits) AS hits,
                             sum(shots) AS shots
                         FROM weapon_stats
                         {}
-                        GROUP BY logid, steamid64, classid
-                        ORDER BY steamid64, logid, classid
+                        GROUP BY logid, playerid, classid
+                        ORDER BY playerid, logid, classid
                     ) AS new
                     WHERE cs.logid = new.logid
-                        AND cs.steamid64 = new.steamid64
+                        AND cs.playerid = new.playerid
                         AND cs.classid = new.classid"""
                  .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
               bounds)
@@ -671,16 +678,16 @@ def update_acc(cur, bounds=None):
                         shots = new.shots
                     FROM (SELECT
                             logid,
-                            steamid64,
+                            playerid,
                             sum(hits) AS hits,
                             sum(shots) AS shots
                         FROM weapon_stats
                         {}
-                        GROUP BY logid, steamid64
-                        ORDER BY steamid64, logid
+                        GROUP BY logid, playerid
+                        ORDER BY playerid, logid
                     ) AS new
                     WHERE ps.logid = new.logid
-                        AND ps.steamid64 = new.steamid64"""
+                        AND ps.playerid = new.playerid"""
                  .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
               bounds)
 
@@ -754,9 +761,9 @@ def import_logs(c, fetcher, update_only):
     # This doesn't include foreign keys, so include some which we want to handle in import_log
     cur.execute("""ALTER TABLE heal_stats
                    ADD FOREIGN KEY (logid, healer)
-                       REFERENCES player_stats_backing (logid, steamid64),
+                       REFERENCES player_stats_backing (logid, playerid),
 	               ADD FOREIGN KEY (logid, healee)
-                       REFERENCES player_stats_backing (logid, steamid64);""")
+                       REFERENCES player_stats_backing (logid, playerid);""")
     # We need this index to calculate formats efficiently
     cur.execute("CREATE INDEX class_stats_logid ON class_stats (logid);")
     # And this index to limit dupes

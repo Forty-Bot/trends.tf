@@ -24,7 +24,7 @@ def link_logs(args, c):
                        FROM log
                        JOIN (SELECT
                                logid,
-                               array_agg(steamid64) AS players
+                               array_agg(playerid) AS players
                            FROM player_stats
                            WHERE logid > %s
                            GROUP BY logid
