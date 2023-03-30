@@ -131,8 +131,7 @@ CREATE TABLE IF NOT EXISTS log (
 	CHECK ((uploader ISNULL) = (uploader_nameid ISNULL)),
 	-- All duplicates must be newer (and have larger logids) than what they are duplicates of
 	-- This prevents cycles (though it does admit chains of finite length)
-	CHECK (logid > duplicate_of[#duplicate_of]),
-	CHECK (equal(league ISNULL, matchid ISNULL, team1_is_red ISNULL))
+	CHECK (logid > duplicate_of[#duplicate_of])
 );
 
 -- For the below view
