@@ -18,7 +18,7 @@ build: $(PACKAGE)
 
 .PHONY: deploy deploy/%
 deploy/%:
-	git push --force ssh://$(PROD)$(PROD_PREFIX) $*
+	git push --force ssh://$(PROD)$(PROD_PREFIX) $*:master
 	ssh $(PROD) '$(PROD_PREFIX)/venv/bin/pip $(if $(V),,-q) install -Ue $(PROD_PREFIX) && \
 		sudo systemctl reload uwsgi'
 
