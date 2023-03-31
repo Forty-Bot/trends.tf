@@ -49,8 +49,7 @@ def db_connect(url, name=None):
     return psycopg2.connect(url, cursor_factory=TracingCursor,
                             application_name=name or " ".join(sys.argv))
 
-def db_init(c):
-    cur = c.cursor()
+def _db_init(cur):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
         cur.execute(schema.read())
 
@@ -93,6 +92,14 @@ def db_init(c):
                         ATTACH PARTITION {tbl}
                             FOR VALUES FROM (%s) TO (%s);""", (lower, upper))
         cur.execute("COMMIT;")
+
+def db_init(c):
+    cur = c.cursor()
+    cur.execute("SELECT pg_advisory_lock(0);")
+    try:
+        _db_init(cur)
+    finally:
+        cur.execute("SELECT pg_advisory_unlock(0);")
 
 # These need to stay in topological order to avoid foreign key trouble
 # They may also be used to know what to delete on failure
