@@ -34,6 +34,8 @@ def link_logs(args, c):
                               OR demo.players @> log_players.players)
                            AND demo.time BETWEEN log.time - 300 AND log.time + 300
                            AND demo.time > %s
+                           AND log_players.players NOTNULL
+                           AND demo.players NOTNULL
                            AND log.demoid ISNULL;""",
                     (min_logid, since))
         cur.execute("SELECT count(*) from linked;");
