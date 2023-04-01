@@ -144,6 +144,8 @@ def overview(steamid):
     filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns)
 
     classes = c.cursor()
+    classes.execute("BEGIN;")
+    classes.execute("LOCK log_nodups IN ACCESS SHARE MODE;")
     classes.execute(
         """CREATE TEMP TABLE classes AS SELECT
                classid,
@@ -159,6 +161,7 @@ def overview(steamid):
            JOIN log_nodups USING (logid)
            WHERE playerid = %(playerid)s
                {};""".format(filter_clauses), { 'playerid': flask.g.playerid, **filters})
+    classes.execute("COMMIT;")
     classes.execute("ANALYZE classes");
     classes.execute(
         """SELECT
