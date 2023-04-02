@@ -2,6 +2,7 @@
 # Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
 
 from contextlib import contextmanager
+from datetime import datetime
 import os
 import logging
 
@@ -10,6 +11,7 @@ from testing.postgresql import Postgresql
 
 import trends.importer.logs
 import trends.importer.etf2l
+import trends.importer.link_matches
 from trends.importer.fetch import ETF2LFileFetcher, FileFetcher
 from trends.sql import db_connect, db_init
 
@@ -34,6 +36,8 @@ def database(request):
             logfiles = { logid: f"{os.path.dirname(__file__)}/logs/log_{logid}.json"
                 for logid in (
                     30099,
+                    2408458,
+                    2408491,
                     2600722,
                     2818814,
                     2844704,
@@ -65,6 +69,11 @@ def database(request):
             db_init(c)
             cur.execute("REFRESH MATERIALIZED VIEW leaderboard_cube;")
             cur.execute("REFRESH MATERIALIZED VIEW map_popularity;")
+
+        with db_connect(database.url()) as c:
+            class args:
+                since = datetime.fromtimestamp(0)
+            trends.importer.link_matches.link_matches(args, c)
 
         yield database
 

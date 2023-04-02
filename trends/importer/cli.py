@@ -15,6 +15,7 @@ from .etf2l import create_etf2l_parser
 from .json import create_json_parser
 from .logs import create_logs_parser
 from .link_demos import create_link_demos_parser
+from .link_matches import create_link_matches_parser
 from .players import create_players_parser
 from .uploader import create_uploader_parser
 from .weapons import create_weapons_parser
@@ -27,6 +28,7 @@ def create_parser():
     create_etf2l_parser(sub)
     create_json_parser(sub)
     create_link_demos_parser(sub)
+    create_link_matches_parser(sub)
     create_logs_parser(sub)
     create_players_parser(sub)
     create_uploader_parser(sub)

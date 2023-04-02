@@ -583,6 +583,54 @@
       }
     },
     {
+      "r1": 6,
+      "division": {
+        "name": "Premiership",
+        "tier": 0,
+        "skill_contrib": 28,
+        "id": 2522
+      },
+      "competition": {
+        "name": "Season 34 Top Tiers: Powered by The Community",
+        "url": "https://api.etf2l.org/competition/643.json",
+        "id": 643,
+        "category": "6v6 Season",
+        "type": "6v6"
+      },
+      "r2": 0,
+      "clan2": {
+        "country": "France",
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/25485",
+        "name": "★★★½",
+        "id": 25485,
+        "steam": {
+          "group": null,
+          "avatar": "http://etf2l.org/images/avatars/60d501e439136.png"
+        }
+      },
+      "id": 77326,
+      "clan1": {
+        "id": 29691,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/5ecade753a9c2.jpg",
+          "group": null
+        },
+        "drop": 0,
+        "country": "European",
+        "name": "SVIFT",
+        "url": "https://api.etf2l.org/team/29691"
+      },
+      "defaultwin": 0,
+      "week": 7,
+      "maps": [
+        "cp_granary_pro_rc8",
+        "cp_snakewater_final1"
+      ],
+      "round": "Week 7",
+      "time": 1573072838
+    },
+    {
       "time": 1668284100,
       "clan1": {
         "name": "Better Coleslaw",

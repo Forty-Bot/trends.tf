@@ -189,6 +189,30 @@
         [Install]
         WantedBy=timers.target
 
+/etc/systemd/system/link_matches.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Link logs and matches
+
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/default/trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv link_matches postgres:///trends
+        User=daemon
+
+/etc/systemd/system/link_matches.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Link logs and matches every 5 minutes
+
+        [Timer]
+        OnCalendar=*:3/5
+
+        [Install]
+        WantedBy=timers.target
+
 backend_services:
   module.run:
     - name: service.systemctl_reload
@@ -208,6 +232,8 @@ backend_services:
       - /etc/systemd/system/etf2l_import.timer
       - /etc/systemd/system/link.service
       - /etc/systemd/system/link.timer
+      - /etc/systemd/system/link_matches.service
+      - /etc/systemd/system/link_matches.timer
 
 log_import.timer:
   service.running:
@@ -252,6 +278,12 @@ etf2l_import.timer:
       - backend_services
 
 link.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+link_matches.timer:
   service.running:
     - enable: True
     - require:

@@ -139,3 +139,11 @@ def test_search(client, connection):
             if len(player['name']) > 3:
                 resp = client.get(path, query_string={'q': player['name']})
                 assert str(player['steamid64']) in resp.get_data(as_text=True)
+
+def test_linked(connection):
+    cur = connection.cursor()
+    cur.execute("SELECT 1 FROM log WHERE league NOTNULL;")
+    for _ in cur:
+        break
+    else:
+        pytest.fail("No linked matches")
