@@ -1,1 +1,732 @@
-{"version": 3, "teams": {"Red": {"score": 1, "kills": 2, "deaths": 0, "dmg": 294, "charges": 0, "drops": 0, "firstcaps": 1, "caps": 3}, "Blue": {"score": 0, "kills": 0, "deaths": 0, "dmg": 227, "charges": 0, "drops": 0, "firstcaps": 0, "caps": 0}}, "length": 61, "players": {"[U:1:177948319]": {"team": "Red", "class_stats": [{"type": "soldier", "kills": 1, "assists": 0, "deaths": 0, "dmg": 61, "weapon": {"tf_projectile_rocket": {"kills": 1, "dmg": 61, "avg_dmg": 30.5, "shots": 0, "hits": 0}}, "total_time": 61}], "kills": 1, "deaths": 0, "assists": 0, "suicides": 0, "kapd": "0.0", "kpd": "0.0", "dmg": 61, "dmg_real": 19, "dt": 0, "dt_real": 0, "hr": 314, "lks": 1, "as": 0, "dapd": 0, "dapm": 60, "ubers": 0, "ubertypes": {}, "drops": 0, "medkits": 2, "medkits_hp": 18, "backstabs": 0, "headshots": 0, "headshots_hit": 0, "sentries": 0, "heal": 0, "cpc": 1, "ic": 0}, "[U:1:172819619]": {"team": "Blue", "class_stats": [{"type": "medic", "kills": 0, "assists": 0, "deaths": 1, "dmg": 0, "weapon": {}, "total_time": 61}], "kills": 0, "deaths": 1, "assists": 0, "suicides": 0, "kapd": "0.0", "kpd": "0.0", "dmg": 0, "dmg_real": 0, "dt": 161, "dt_real": 96, "hr": 0, "lks": 0, "as": 0, "dapd": 0, "dapm": 0, "ubers": 0, "ubertypes": {}, "drops": 0, "medkits": 0, "medkits_hp": 0, "backstabs": 0, "headshots": 0, "headshots_hit": 0, "sentries": 0, "heal": 0, "cpc": 0, "ic": 0, "medicstats": {"deaths_with_95_99_uber": 0}}, "[U:1:372132381]": {"team": "Blue", "class_stats": [{"type": "sniper", "kills": 0, "assists": 0, "deaths": 1, "dmg": 0, "weapon": {}, "total_time": 21}], "kills": 0, "deaths": 1, "assists": 0, "suicides": 1, "kapd": "0.0", "kpd": "0.0", "dmg": 0, "dmg_real": 0, "dt": 24, "dt_real": 0, "hr": 0, "lks": 0, "as": 0, "dapd": 0, "dapm": 0, "ubers": 0, "ubertypes": {}, "drops": 0, "medkits": 0, "medkits_hp": 0, "backstabs": 0, "headshots": 0, "headshots_hit": 0, "sentries": 0, "heal": 0, "cpc": 0, "ic": 0}, "[U:1:108048682]": {"team": "Blue", "class_stats": [{"type": "soldier", "kills": 0, "assists": 0, "deaths": 1, "dmg": 0, "weapon": {}, "total_time": 25}], "kills": 0, "deaths": 1, "assists": 0, "suicides": 1, "kapd": "0.0", "kpd": "0.0", "dmg": 0, "dmg_real": 0, "dt": 0, "dt_real": 0, "hr": 0, "lks": 0, "as": 0, "dapd": 0, "dapm": 0, "ubers": 0, "ubertypes": {}, "drops": 0, "medkits": 0, "medkits_hp": 0, "backstabs": 0, "headshots": 0, "headshots_hit": 0, "sentries": 0, "heal": 0, "cpc": 0, "ic": 0}, "[U:1:116958318]": {"team": "Red", "class_stats": [{"type": "soldier", "kills": 1, "assists": 0, "deaths": 0, "dmg": 207, "weapon": {"quake_rl": {"kills": 1, "dmg": 207, "avg_dmg": 69, "shots": 0, "hits": 0}}, "total_time": 61}], "kills": 1, "deaths": 0, "assists": 0, "suicides": 0, "kapd": "0.0", "kpd": "0.0", "dmg": 207, "dmg_real": 96, "dt": 55, "dt_real": 0, "hr": 315, "lks": 1, "as": 1, "dapd": 0, "dapm": 203, "ubers": 0, "ubertypes": {}, "drops": 0, "medkits": 2, "medkits_hp": 80, "backstabs": 0, "headshots": 0, "headshots_hit": 0, "sentries": 0, "heal": 240, "cpc": 1, "ic": 0}, "[U:1:129857795]": {"team": "Blue", "class_stats": [{"type": "demoman", "kills": 0, "assists": 0, "deaths": 1, "dmg": 227, "weapon": {"iron_bomber": {"kills": 0, "dmg": 172, "avg_dmg": 57.333333333333336, "shots": 0, "hits": 0}, "tf_projectile_pipe_remote": {"kills": 0, "dmg": 55, "avg_dmg": 55, "shots": 0, "hits": 0}}, "total_time": 61}], "kills": 0, "deaths": 1, "assists": 0, "suicides": 0, "kapd": "0.0", "kpd": "0.0", "dmg": 227, "dmg_real": 0, "dt": 109, "dt_real": 19, "hr": 0, "lks": 0, "as": 0, "dapd": 227, "dapm": 223, "ubers": 0, "ubertypes": {}, "drops": 0, "medkits": 2, "medkits_hp": 70, "backstabs": 0, "headshots": 0, "headshots_hit": 0, "sentries": 0, "heal": 0, "cpc": 0, "ic": 0}}, "names": {"[U:1:177948319]": "Terrorism is a frog with a mask", "[U:1:172819619]": "Pizzi", "[U:1:372132381]": "bless", "[U:1:108048682]": "KIM", "[U:1:116958318]": "McV ( 0-/-|-\\-0 )", "[U:1:129857795]": "kojimbo"}, "rounds": [{"start_time": 1593091451, "winner": "Red", "team": {"Blue": {"score": 0, "kills": 0, "dmg": 227, "ubers": 0}, "Red": {"score": 1, "kills": 2, "dmg": 294, "ubers": 0}}, "events": [{"type": "pointcap", "time": 37, "team": "Red", "point": 3}, {"type": "medic_death", "time": 49, "team": "Blue", "steamid": "[U:1:172819619]", "killer": "[U:1:116958318]"}, {"type": "pointcap", "time": 51, "team": "Red", "point": 2}, {"type": "pointcap", "time": 61, "team": "Red", "point": 1}, {"type": "round_win", "time": 61, "team": "Red"}], "players": {"[U:1:177948319]": {"team": "Red", "kills": 1, "dmg": 61}, "[U:1:128477967]": {"team": "Red", "kills": 0, "dmg": 26}, "[U:1:129857795]": {"team": "Blue", "kills": 0, "dmg": 227}, "[U:1:116958318]": {"team": "Red", "kills": 1, "dmg": 207}, "[U:1:117479679]": {"team": "Red", "kills": 0, "dmg": 0}, "[U:1:172819619]": {"team": "Blue", "kills": 0, "dmg": 0}, "[U:1:372132381]": {"team": "Blue", "kills": 0, "dmg": 0}, "[U:1:108048682]": {"team": "Blue", "kills": 0, "dmg": 0}, "[U:1:170189660]": {"team": "Red", "kills": 0, "dmg": 0}, "[U:1:190098632]": {"team": "Blue", "kills": 0, "dmg": 0}, "[U:1:83678807]": {"team": "Blue", "kills": 0, "dmg": 0}, "[U:1:180465285]": {"team": "Red", "kills": 0, "dmg": 0}}, "firstcap": "Red", "length": 61}], "healspread": {"[U:1:117479679]": {"[U:1:180465285]": 479, "[U:1:177948319]": 314, "[U:1:128477967]": 233, "[U:1:170189660]": 122, "[U:1:116958318]": 315}}, "classkills": {"[U:1:177948319]": {"demoman": 1}, "[U:1:116958318]": {"medic": 1}}, "classdeaths": {"[U:1:129857795]": {"soldier": 1}, "[U:1:172819619]": {"soldier": 1}}, "classkillassists": {"[U:1:177948319]": {"demoman": 1}, "[U:1:116958318]": {"medic": 1}}, "chat": [{"steamid": "Console", "name": "Console", "msg": "TF2Center Lobby #1086225 | 517593735"}, {"steamid": "Console", "name": "Console", "msg": "Leader: Terrorism is a frog with a mask (76561198138214047)"}, {"steamid": "Console", "name": "Console", "msg": "Map: cp_process_final"}, {"steamid": "Console", "name": "Console", "msg": "GameType: 6v6"}, {"steamid": "Console", "name": "Console", "msg": "Location: Europe"}, {"steamid": "Console", "name": "Console", "msg": "Advanced Lobby: false"}, {"steamid": "Console", "name": "Console", "msg": "Region lock: false"}, {"steamid": "Console", "name": "Console", "msg": "Allow offclassing: true"}, {"steamid": "Console", "name": "Console", "msg": "Balancing: false"}, {"steamid": "Console", "name": "Console", "msg": "Restriction: None"}, {"steamid": "Console", "name": "Console", "msg": "Mumble required: false"}, {"steamid": "Console", "name": "Console", "msg": "Launch date: Thu Jun 25 15:21:18 CEST 2020"}, {"steamid": "Console", "name": "Console", "msg": "Server: bolus.fakkelbrigade.eu:27015 - 5225 | 5948754"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "play more medic mge "}, {"steamid": "[U:1:177948319]", "name": "Terrorism is a frog with a mask", "msg": "lmao"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "go medic mge"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "on mid"}, {"steamid": "[U:1:177948319]", "name": "Terrorism is a frog with a mask", "msg": "kim im sorry"}, {"steamid": "[U:1:128477967]", "name": "ronde", "msg": "i wanna see this"}, {"steamid": "[U:1:108048682]", "name": "KIM", "msg": "why man"}, {"steamid": "[U:1:177948319]", "name": "Terrorism is a frog with a mask", "msg": "they were 2 nice airshots in my defence"}, {"steamid": "[U:1:177948319]", "name": "Terrorism is a frog with a mask", "msg": "i had to"}, {"steamid": "[U:1:170189660]", "name": "TeDePi", "msg": "fucking internet"}, {"steamid": "[U:1:108048682]", "name": "KIM", "msg": "u mean on this warmup?"}, {"steamid": "[U:1:190098632]", "name": "Demieus", "msg": "!rep our med"}, {"steamid": "Console", "name": "Console", "msg": "TF2Center: sub vote: BLUE MEDIC (1/4) [Pizzi]"}, {"steamid": "[U:1:108048682]", "name": "KIM", "msg": "!rep our med"}, {"steamid": "Console", "name": "Console", "msg": "TF2Center: sub vote: BLUE MEDIC (2/4) [Pizzi]"}, {"steamid": "[U:1:372132381]", "name": "bless", "msg": "!rep our med"}, {"steamid": "Console", "name": "Console", "msg": "TF2Center: sub vote: BLUE MEDIC (3/4) [Pizzi]"}, {"steamid": "[U:1:177948319]", "name": "Terrorism is a frog with a mask", "msg": "wtf"}, {"steamid": "[U:1:372132381]", "name": "bless", "msg": "!rep me"}, {"steamid": "[U:1:116958318]", "name": "McV ( 0-/-|-\\-0 )", "msg": "!rep their med"}, {"steamid": "Console", "name": "Console", "msg": "[TF2Center]: Reporting BLUE SCOUT (SELF): bless"}, {"steamid": "Console", "name": "Console", "msg": "[TF2Center]: Reporting BLUE MEDIC (MANUAL): Pizzi"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "why u rup"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "bot"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "s"}, {"steamid": "[U:1:190098632]", "name": "Demieus", "msg": "dont leave retard"}, {"steamid": "[U:1:180465285]", "name": "lazcore", "msg": "?"}, {"steamid": "Console", "name": "Console", "msg": "[TF2Center]: Sub on his way for Lobby#1086225 BLUE SCOUT: meth0d mixmerc"}, {"steamid": "[U:1:108048682]", "name": "KIM", "msg": "!rep me"}, {"steamid": "Console", "name": "Console", "msg": "[TF2Center]: Reporting BLUE SOLDIER_POCKET (SELF): KIM"}, {"steamid": "Console", "name": "Console", "msg": "[TF2Center]: Reporting BLUE DEMOMAN (SELF): kojimbo"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "wow"}, {"steamid": "[U:1:172819619]", "name": "Pizzi", "msg": "nice lobby guys cg"}, {"steamid": "[U:1:372132381]", "name": "bless", "msg": "smd"}], "info": {"map": "cp_process_final", "supplemental": true, "total_length": 61, "hasRealDamage": true, "hasWeaponDamage": true, "hasAccuracy": false, "hasHP": true, "hasHP_real": true, "hasHS": false, "hasHS_hit": false, "hasBS": false, "hasCP": true, "hasSB": false, "hasDT": true, "hasAS": true, "hasHR": true, "hasIntel": false, "AD_scoring": false, "notifications": [], "title": "TF2Center Lobby #1086225", "date": 1593091535, "uploader": {"id": "76561197964045534", "name": "TF2Center", "info": "TF2Center.com"}}, "killstreaks": [], "success": true}
+{
+  "version": 3,
+  "teams": {
+    "Red": {
+      "score": 1,
+      "kills": 2,
+      "deaths": 0,
+      "dmg": 294,
+      "charges": 0,
+      "drops": 0,
+      "firstcaps": 1,
+      "caps": 3
+    },
+    "Blue": {
+      "score": 0,
+      "kills": 0,
+      "deaths": 0,
+      "dmg": 227,
+      "charges": 0,
+      "drops": 0,
+      "firstcaps": 0,
+      "caps": 0
+    }
+  },
+  "length": 61,
+  "players": {
+    "[U:1:177948319]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 1,
+          "assists": 0,
+          "deaths": 0,
+          "dmg": 61,
+          "weapon": {
+            "tf_projectile_rocket": {
+              "kills": 1,
+              "dmg": 61,
+              "avg_dmg": 30.5,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": 61
+        }
+      ],
+      "kills": 1,
+      "deaths": 0,
+      "assists": 0,
+      "suicides": 0,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 61,
+      "dmg_real": 19,
+      "dt": 0,
+      "dt_real": 0,
+      "hr": 314,
+      "lks": 1,
+      "as": 0,
+      "dapd": 0,
+      "dapm": 60,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 2,
+      "medkits_hp": 18,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 1,
+      "ic": 0
+    },
+    "[U:1:172819619]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "medic",
+          "kills": 0,
+          "assists": 0,
+          "deaths": 1,
+          "dmg": 0,
+          "weapon": {},
+          "total_time": 61
+        }
+      ],
+      "kills": 0,
+      "deaths": 1,
+      "assists": 0,
+      "suicides": 0,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 0,
+      "dmg_real": 0,
+      "dt": 161,
+      "dt_real": 96,
+      "hr": 0,
+      "lks": 0,
+      "as": 0,
+      "dapd": 0,
+      "dapm": 0,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 0,
+      "medicstats": {
+        "deaths_with_95_99_uber": 0
+      }
+    },
+    "[U:1:372132381]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "sniper",
+          "kills": 0,
+          "assists": 0,
+          "deaths": 1,
+          "dmg": 0,
+          "weapon": {},
+          "total_time": 21
+        }
+      ],
+      "kills": 0,
+      "deaths": 1,
+      "assists": 0,
+      "suicides": 1,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 0,
+      "dmg_real": 0,
+      "dt": 24,
+      "dt_real": 0,
+      "hr": 0,
+      "lks": 0,
+      "as": 0,
+      "dapd": 0,
+      "dapm": 0,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 0
+    },
+    "[U:1:108048682]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 0,
+          "assists": 0,
+          "deaths": 1,
+          "dmg": 0,
+          "weapon": {},
+          "total_time": 25
+        }
+      ],
+      "kills": 0,
+      "deaths": 1,
+      "assists": 0,
+      "suicides": 1,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 0,
+      "dmg_real": 0,
+      "dt": 0,
+      "dt_real": 0,
+      "hr": 0,
+      "lks": 0,
+      "as": 0,
+      "dapd": 0,
+      "dapm": 0,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 0
+    },
+    "[U:1:116958318]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 1,
+          "assists": 0,
+          "deaths": 0,
+          "dmg": 207,
+          "weapon": {
+            "quake_rl": {
+              "kills": 1,
+              "dmg": 207,
+              "avg_dmg": 69,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": 61
+        }
+      ],
+      "kills": 1,
+      "deaths": 0,
+      "assists": 0,
+      "suicides": 0,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 207,
+      "dmg_real": 96,
+      "dt": 55,
+      "dt_real": 0,
+      "hr": 315,
+      "lks": 1,
+      "as": 1,
+      "dapd": 0,
+      "dapm": 203,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 2,
+      "medkits_hp": 80,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 240,
+      "cpc": 1,
+      "ic": 0
+    },
+    "[U:1:129857795]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "demoman",
+          "kills": 0,
+          "assists": 0,
+          "deaths": 1,
+          "dmg": 227,
+          "weapon": {
+            "iron_bomber": {
+              "kills": 0,
+              "dmg": 172,
+              "avg_dmg": 57.333333333333336,
+              "shots": 0,
+              "hits": 0
+            },
+            "tf_projectile_pipe_remote": {
+              "kills": 0,
+              "dmg": 55,
+              "avg_dmg": 55,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": 61
+        }
+      ],
+      "kills": 0,
+      "deaths": 1,
+      "assists": 0,
+      "suicides": 0,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 227,
+      "dmg_real": 0,
+      "dt": 109,
+      "dt_real": 19,
+      "hr": 0,
+      "lks": 0,
+      "as": 0,
+      "dapd": 227,
+      "dapm": 223,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 2,
+      "medkits_hp": 70,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 0
+    }
+  },
+  "names": {
+    "[U:1:177948319]": "Terrorism is a frog with a mask",
+    "[U:1:172819619]": "Pizzi",
+    "[U:1:372132381]": "bless",
+    "[U:1:108048682]": "KIM",
+    "[U:1:116958318]": "McV ( 0-/-|-\\-0 )",
+    "[U:1:129857795]": "kojimbo"
+  },
+  "rounds": [
+    {
+      "start_time": 1593091451,
+      "winner": "Red",
+      "team": {
+        "Blue": {
+          "score": 0,
+          "kills": 0,
+          "dmg": 227,
+          "ubers": 0
+        },
+        "Red": {
+          "score": 1,
+          "kills": 2,
+          "dmg": 294,
+          "ubers": 0
+        }
+      },
+      "events": [
+        {
+          "type": "pointcap",
+          "time": 37,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "medic_death",
+          "time": 49,
+          "team": "Blue",
+          "steamid": "[U:1:172819619]",
+          "killer": "[U:1:116958318]"
+        },
+        {
+          "type": "pointcap",
+          "time": 51,
+          "team": "Red",
+          "point": 2
+        },
+        {
+          "type": "pointcap",
+          "time": 61,
+          "team": "Red",
+          "point": 1
+        },
+        {
+          "type": "round_win",
+          "time": 61,
+          "team": "Red"
+        }
+      ],
+      "players": {
+        "[U:1:177948319]": {
+          "team": "Red",
+          "kills": 1,
+          "dmg": 61
+        },
+        "[U:1:128477967]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 26
+        },
+        "[U:1:129857795]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 227
+        },
+        "[U:1:116958318]": {
+          "team": "Red",
+          "kills": 1,
+          "dmg": 207
+        },
+        "[U:1:117479679]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:172819619]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:372132381]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:108048682]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:170189660]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:190098632]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:83678807]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:180465285]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 0
+        }
+      },
+      "firstcap": "Red",
+      "length": 61
+    }
+  ],
+  "healspread": {
+    "[U:1:117479679]": {
+      "[U:1:180465285]": 479,
+      "[U:1:177948319]": 314,
+      "[U:1:128477967]": 233,
+      "[U:1:170189660]": 122,
+      "[U:1:116958318]": 315
+    }
+  },
+  "classkills": {
+    "[U:1:177948319]": {
+      "demoman": 1
+    },
+    "[U:1:116958318]": {
+      "medic": 1
+    }
+  },
+  "classdeaths": {
+    "[U:1:129857795]": {
+      "soldier": 1
+    },
+    "[U:1:172819619]": {
+      "soldier": 1
+    }
+  },
+  "classkillassists": {
+    "[U:1:177948319]": {
+      "demoman": 1
+    },
+    "[U:1:116958318]": {
+      "medic": 1
+    }
+  },
+  "chat": [
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "TF2Center Lobby #1086225 | 517593735"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Leader: Terrorism is a frog with a mask (76561198138214047)"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Map: cp_process_final"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "GameType: 6v6"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Location: Europe"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Advanced Lobby: false"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Region lock: false"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Allow offclassing: true"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Balancing: false"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Restriction: None"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Mumble required: false"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Launch date: Thu Jun 25 15:21:18 CEST 2020"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Server: bolus.fakkelbrigade.eu:27015 - 5225 | 5948754"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "play more medic mge "
+    },
+    {
+      "steamid": "[U:1:177948319]",
+      "name": "Terrorism is a frog with a mask",
+      "msg": "lmao"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "go medic mge"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "on mid"
+    },
+    {
+      "steamid": "[U:1:177948319]",
+      "name": "Terrorism is a frog with a mask",
+      "msg": "kim im sorry"
+    },
+    {
+      "steamid": "[U:1:128477967]",
+      "name": "ronde",
+      "msg": "i wanna see this"
+    },
+    {
+      "steamid": "[U:1:108048682]",
+      "name": "KIM",
+      "msg": "why man"
+    },
+    {
+      "steamid": "[U:1:177948319]",
+      "name": "Terrorism is a frog with a mask",
+      "msg": "they were 2 nice airshots in my defence"
+    },
+    {
+      "steamid": "[U:1:177948319]",
+      "name": "Terrorism is a frog with a mask",
+      "msg": "i had to"
+    },
+    {
+      "steamid": "[U:1:170189660]",
+      "name": "TeDePi",
+      "msg": "fucking internet"
+    },
+    {
+      "steamid": "[U:1:108048682]",
+      "name": "KIM",
+      "msg": "u mean on this warmup?"
+    },
+    {
+      "steamid": "[U:1:190098632]",
+      "name": "Demieus",
+      "msg": "!rep our med"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "TF2Center: sub vote: BLUE MEDIC (1/4) [Pizzi]"
+    },
+    {
+      "steamid": "[U:1:108048682]",
+      "name": "KIM",
+      "msg": "!rep our med"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "TF2Center: sub vote: BLUE MEDIC (2/4) [Pizzi]"
+    },
+    {
+      "steamid": "[U:1:372132381]",
+      "name": "bless",
+      "msg": "!rep our med"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "TF2Center: sub vote: BLUE MEDIC (3/4) [Pizzi]"
+    },
+    {
+      "steamid": "[U:1:177948319]",
+      "name": "Terrorism is a frog with a mask",
+      "msg": "wtf"
+    },
+    {
+      "steamid": "[U:1:372132381]",
+      "name": "bless",
+      "msg": "!rep me"
+    },
+    {
+      "steamid": "[U:1:116958318]",
+      "name": "McV ( 0-/-|-\\-0 )",
+      "msg": "!rep their med"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "[TF2Center]: Reporting BLUE SCOUT (SELF): bless"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "[TF2Center]: Reporting BLUE MEDIC (MANUAL): Pizzi"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "why u rup"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "bot"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "s"
+    },
+    {
+      "steamid": "[U:1:190098632]",
+      "name": "Demieus",
+      "msg": "dont leave retard"
+    },
+    {
+      "steamid": "[U:1:180465285]",
+      "name": "lazcore",
+      "msg": "?"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "[TF2Center]: Sub on his way for Lobby#1086225 BLUE SCOUT: meth0d mixmerc"
+    },
+    {
+      "steamid": "[U:1:108048682]",
+      "name": "KIM",
+      "msg": "!rep me"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "[TF2Center]: Reporting BLUE SOLDIER_POCKET (SELF): KIM"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "[TF2Center]: Reporting BLUE DEMOMAN (SELF): kojimbo"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "wow"
+    },
+    {
+      "steamid": "[U:1:172819619]",
+      "name": "Pizzi",
+      "msg": "nice lobby guys cg"
+    },
+    {
+      "steamid": "[U:1:372132381]",
+      "name": "bless",
+      "msg": "smd"
+    }
+  ],
+  "info": {
+    "map": "cp_process_final",
+    "supplemental": true,
+    "total_length": 61,
+    "hasRealDamage": true,
+    "hasWeaponDamage": true,
+    "hasAccuracy": false,
+    "hasHP": true,
+    "hasHP_real": true,
+    "hasHS": false,
+    "hasHS_hit": false,
+    "hasBS": false,
+    "hasCP": true,
+    "hasSB": false,
+    "hasDT": true,
+    "hasAS": true,
+    "hasHR": true,
+    "hasIntel": false,
+    "AD_scoring": false,
+    "notifications": [],
+    "title": "TF2Center Lobby #1086225",
+    "date": 1593091535,
+    "uploader": {
+      "id": "76561197964045534",
+      "name": "TF2Center",
+      "info": "TF2Center.com"
+    }
+  },
+  "killstreaks": [],
+  "success": true
+}
