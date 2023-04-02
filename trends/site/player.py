@@ -226,9 +226,59 @@ def overview(steamid):
                    LIMIT 10
                ) AS names
                JOIN name USING (nameid)""", (flask.g.playerid,))
+
+    teams = c.cursor()
+    teams.execute(
+        """SELECT
+               league,
+               format,
+               competition.name AS comp,
+               division AS div,
+               team,
+               lower(rostered) AS from,
+               upper(rostered) AS to
+           FROM (SELECT
+                   tc.league,
+                   tc.compid,
+                   tc.teamid,
+                   divid,
+                   team_name AS team,
+                   rostered,
+                   rank() OVER (
+                       PARTITION BY tc.league, tc.teamid
+                       ORDER BY tc.league, tc.compid DESC
+                   ) AS r
+               FROM (SELECT
+                        league,
+                        teamid,
+                        compid,
+                        range_max(rostered) AS rostered
+                    FROM team_player
+                    WHERE playerid = %(playerid)s
+                        {}
+                    GROUP BY league, teamid, compid
+               ) AS tp
+               JOIN team_comp AS tc ON (
+                   tp.league = tc.league
+                   AND tp.teamid = tc.teamid
+                   AND (NOT league_team_per_comp(tc.league)
+                        OR tp.compid = tc.compid)
+           )) AS teams
+           JOIN competition USING (league, compid)
+           JOIN format USING (formatid)
+           LEFT JOIN division USING (league, divid)
+           LEFT JOIN div_name USING (div_nameid)
+           WHERE r = 1
+                   {}
+           ORDER BY upper(rostered) DESC NULLS FIRST, lower(rostered) ASC
+           LIMIT 10;""".format(get_filter_clauses(filters, 'rostered'),
+                               get_filter_clauses(filters, 'formatid')),
+        { 'playerid': flask.g.playerid, **filters })
+    teams = teams.fetchall()
+
     logs = get_logs(c, flask.g.playerid, filters, limit=25, duplicates=False)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
-                                 formats=formats, aliases=aliases)
+                                 formats=formats, aliases=aliases, teams=teams)
 
 @player.route('/logs')
 def logs(steamid):
