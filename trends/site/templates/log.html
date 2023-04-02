@@ -4,7 +4,7 @@
 {% from "macros/dupes.html" import show_dupes %}
 {% from "macros/format.html" import duration_col, optformat, optint %}
 {% from "macros/js.html" import local_js %}
-{% from "macros/pretty.html" import class_map %}
+{% from "macros/pretty.html" import class_map, league_map %}
 {% extends "base.html" %}
 {% set has = {
 	'dt': False,
@@ -214,14 +214,71 @@
 		       <a href="{{ url_for('.log', logids=logid) }}">{{ logid }}</a>
 	       {%- endfor %}
 	</h1>
+	{% if matches | count %}
+	<table><thead>
+		<th>League</th>
+		<th>Competition</th>
+		<th>Division</th>
+		<th>Round</th>
+		<th colspan="2">Teams</th>
+		<th colspan="2">Score</th>
+		<th>Maps</th>
+		<th colspan="2"></th>
+	</thead>
+	<tbody>
+	{% for match in matches.values() %}
+	{% set team1class = '' %}
+	{% set team2class = '' %}
+	{% if match['score1'] > match['score2'] %}
+		{% set team1class = 'win' %}
+	{% elif match['score1'] < match['score2'] %}
+		{% set team2class = 'win' %}
+	{% endif %}
+	<tr>
+		<td class="left">{{ league_map[match['league']] }}</td>
+		<td class="left">{{ match['comp'] }}</td>
+		<td class="left">{{ match['div'] }}</td>
+		<td class="left">{{ match['round'] }}</td>
+		<td class="left {{ team1class }}">{{ match['team1'] }}</td>
+		<td class="left {{ team2class }}">{{ match['team2'] }}</td>
+		<td class="{{ team1class }}">{{ match['score1'] }}</td>
+		<td class="{{ team2class }}">{{ match['score2'] }}</td>
+		<td class="left">{{ match["maps"] | join(", ") }}</td>
+		<td class="left">
+		{% if match['other_logs'] and
+		      (logs | count) + (match['other_logs'] | count) <= 10 %}
+			<a href="{{ url_for('.log',
+					    logids=(logids | list + match['other_logs'])) }}">
+				Add other logs
+			</a>
+		{% endif %}
+		</td>
+		<td class="left">
+		{% if (logs | count) - (match['current_logs'] | count) %}
+			<a href="{{ url_for('.log',
+					    logids=(logids | reject('in', match['current_logs']))) }}">
+				Remove match
+			</a>
+		{% endif %}
+		</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+	</table>
+	</br>
+	{% endif %}
 	<table><thead>
 		<th><abbr title="Demo">D</abbr></th>
 		<th><abbr title="Match">M</abbr></th>
 		<th>Title</th>
 		<th>Map</th>
 		<th>Format</th>
-		<th>Red Score</th>
-		<th>Blue Score</th>
+		{% if matches | count %}
+		<th>Red</th>
+		<th>Blue</th>
+		{% endif %}
+		<th><abbr title="Red Score">RS</abbr></th>
+		<th><abbr title="Blue Score">BS</abbr></th>
 		<th>Duration</th>
 		<th>Date</th>
 		<th><abbr title="Some logs may be uploaded more than once">Duplicate of</abbr></th>
@@ -235,6 +292,14 @@
 		{% set winner = 'red' %}
 	{% elif log['blue_score'] > log['red_score'] %}
 		{% set winner = 'blue' %}
+	{% endif %}
+	{% set match = matches[(log['league'], log['matchid'])] %}
+	{% if match and log['team1_is_red'] %}
+		{% set red = match['team1'] %}
+		{% set blue = match['team2'] %}
+	{% elif match %}
+		{% set red = match['team2'] %}
+		{% set blue = match['team1'] %}
 	{% endif %}
 	<tr id="{{ log['logid'] }}" class="hider">
 		<td>
@@ -262,6 +327,10 @@
 		</td>
 		<td class="left">{{ log['map'] }}</td>
 		<td class="left">{{ log['format'] | capitalize }}</td>
+		{% if matches | count %}
+		<td class="left {{ 'red' if winner == 'red' }}">{{ red }}</td>
+		<td class="left {{ 'blue' if winner == 'blue' }}">{{ blue }}</td>
+		{% endif %}
 		<td {% if winner == 'red' %}class="red"{% endif %}>
 			{{ log['red_score'] }}
 		</td>

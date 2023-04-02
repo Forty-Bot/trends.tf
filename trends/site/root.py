@@ -142,7 +142,8 @@ def log(logids):
                         duplicate_of,
                         demoid,
                         league,
-                        matchid
+                        matchid,
+                        team1_is_red
                     FROM log
                     LEFT JOIN format USING (formatid)
                     JOIN map USING (mapid)
@@ -157,6 +158,60 @@ def log(logids):
         return resp
 
     params = { 'logids': logids, 'llogids': list(logids) }
+
+    matches = db.cursor()
+    matches.execute("""SELECT
+                           match.league,
+                           matchid,
+                           competition.name AS comp,
+                           division AS div,
+                           round,
+                           tc1.team_name AS team1,
+                           tc2.team_name AS team2,
+                           score1,
+                           score2,
+                           (SELECT
+                                   array_agg(map)
+                               FROM map
+                               JOIN unnest(mapids) AS mapid USING(mapid)
+                           ) AS maps,
+                           current_logs,
+                           full_logs - current_logs AS other_logs
+                       FROM (SELECT
+                               league,
+                               matchid,
+                               array_agg(logid) AS current_logs
+                           FROM log
+                           WHERE logid IN %(logids)s
+                           GROUP BY league, matchid
+                       ) AS league
+                       JOIN match USING (league, matchid)
+                       LEFT JOIN div_round USING (league, divid, round_seq)
+                       LEFT JOIN comp_round USING (league, compid, round_seq)
+                       JOIN round_name ON (
+                           round_name.round_nameid = coalesce(div_round.round_nameid,
+                                                              comp_round.round_nameid)
+                       ) JOIN competition USING (league, compid)
+                       LEFT JOIN division USING (league, divid)
+                       LEFT JOIN div_name USING (div_nameid)
+                       LEFT JOIN (SELECT
+                               league,
+                               matchid,
+                               array_agg(logid) AS full_logs
+                           FROM log
+                           WHERE duplicate_of ISNULL
+                           GROUP BY league, matchid
+                       ) AS fl USING (league, matchid)
+                       JOIN team_comp AS tc1 ON (
+                           tc1.league = match.league
+                           AND tc1.compid = match.compid
+                           AND tc1.teamid = match.teamid1
+                       ) JOIN team_comp AS tc2 ON (
+                           tc2.league = match.league
+                           AND tc2.compid = match.compid
+                           AND tc2.teamid = match.teamid2
+                       );""", params)
+    matches = { (m['league'], m['matchid']): m for m in matches.fetchall() }
 
     rounds = db.cursor()
     rounds.execute("""SELECT
@@ -509,9 +564,9 @@ def log(logids):
                     GROUP BY logid, title
                     ORDER BY array_position(%(llogids)s, logid);""", params)
 
-    return flask.render_template("log.html", logids=logids, logs=logs, rounds=rounds.fetchall(),
-                                 players=players, totals=totals, medics=medics,
-                                 events=events, chats=chats)
+    return flask.render_template("log.html", logids=logids, logs=logs, matches=matches,
+                                 rounds=rounds.fetchall(), players=players, totals=totals,
+                                 medics=medics, events=events, chats=chats)
 
 metrics_extension = PrometheusMetrics.for_app_factory(group_by='endpoint', path=None)
 
