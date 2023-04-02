@@ -26,7 +26,7 @@
 	{{ navigation(logs) }}
 {% macro header() %}
 <tr>
-	<th></th>
+	<th colspan=2></th>
 	<th>Title</th>
 	<th>Map</th>
 	<th>Format</th>
@@ -43,6 +43,15 @@
 				<td class="left">
 					<input form="combine" type="checkbox" name="id"
 					 value="{{ log['logid'] }}">
+				</td>
+				<td class="left">
+					{% if log['demoid'] %}
+					<a href="https://demos.tf/{{ log['demoid'] }}">
+						<img class="avatar_small"
+						 src="{{ url_for('static', filename="img/demos.png") }}">
+						</img>
+					</a>
+					{% endif %}
 				</td>
 				<td class="left">
 					<a href="{{ url_for('.log', logids=log['logid']) }}">

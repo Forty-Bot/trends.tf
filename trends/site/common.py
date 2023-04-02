@@ -29,7 +29,8 @@ def get_logs():
                         title,
                         map,
                         format,
-                        duplicate_of
+                        duplicate_of,
+                        demoid
                     FROM log
                     JOIN map USING (mapid)
                     LEFT JOIN format USING (formatid)
