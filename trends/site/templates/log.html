@@ -215,6 +215,7 @@
 	       {%- endfor %}
 	</h1>
 	<table><thead>
+		<th><abbr title="Demo">D</abbr></th>
 		<th>Title</th>
 		<th>Map</th>
 		<th>Format</th>
@@ -222,7 +223,6 @@
 		<th>Blue Score</th>
 		<th>Duration</th>
 		<th>Date</th>
-		<th>Demo</th>
 		<th><abbr title="Some logs may be uploaded more than once">Duplicate of</abbr></th>
 		{% if logs | count > 1 %}
 		<th></th>
@@ -236,6 +236,15 @@
 		{% set winner = 'blue' %}
 	{% endif %}
 	<tr id="{{ log['logid'] }}" class="hider">
+		<td>
+			{% if log['demoid'] %}
+			<a href="https://demos.tf/{{ log['demoid'] }}">
+				<img class="avatar_small"
+				 src="{{ url_for('static', filename="img/demos.png") }}">
+				</img>
+			</a>
+			{% endif %}
+		</td>
 		<td class="left">
 			<a href="https://logs.tf/{{ log['logid'] }}">{{ log['title'] }}</a>
 		</td>
@@ -249,13 +258,6 @@
 		</td>
 		<td>{{ log['duration'] | duration }}</td>
 		<td class="left date" timestamp="{{ log['time'] }}"></td>
-		<td>
-			{% if log['demoid'] %}
-			<a href="https://demos.tf/{{ log['demoid'] }}">
-				{{ log['demoid'] }}
-			</a>
-			{% endif %}
-		</td>
 		<td class="left">{{ show_dupes(log['duplicate_of']) }}</td>
 		{% if logs | count > 1 %}
 		<td class="left">
@@ -287,9 +289,7 @@
 				{{ padding(round['logid']) }}
 			{% endif %}
 			<tr class="{{ round['logid'] }} hidden hidable">
-			<td></td>
-			<td></td>
-			<td></td>
+			<td colspan="4"></td>
 			<td {% if rwinner == 'red' %}class="red"{% endif %}>
 				{{ round['red_score'] }}
 			</td>
@@ -306,6 +306,7 @@
 	{% endfor %}
 	{% if logs | count > 1 %}
 	<tr>
+		<td></td>
 		<th>Totals</th>
 		<td></td>
 		<td></td>

@@ -8,6 +8,7 @@
 <tr>
 	{% if extra %}
 	<th></th>
+	<th><abbr title="Demo">D</abbr></th>
 	{% endif %}
 	<th>Title</th>
 	<th>Map</th>
@@ -27,7 +28,6 @@
 	<th><abbr title="Accuracy">Acc</abbr></th>
 	<th>Date</th>
 	{% if extra %}
-	<th>Demo</th>
 	<th><abbr title="Some logs are duplicates of other logs">Duplicate of</abbr></th>
 	{% endif %}
 </tr>
@@ -42,6 +42,15 @@
 			<td class="left">
 				<input form="combine" type="checkbox" name="id"
 				 value="{{ log['logid'] }}">
+			</td>
+			<td class="left">
+				{% if log['demoid'] %}
+				<a href="https://demos.tf/{{ log['demoid'] }}">
+					<img class="avatar_small"
+					 src="{{ url_for('static', filename="img/demos.png") }}">
+					</img>
+				</a>
+				{% endif %}
 			</td>
 			{% endif %}
 			<td class="left">
@@ -79,13 +88,6 @@
 			<td>{{ optformat("{:.0%}", log['acc']) }}</td>
 			<td class="left date" timestamp="{{ log['time'] }}"></td>
 			{% if extra %}
-			<td>
-				{% if log['demoid'] %}
-				<a href="https://demos.tf/{{ log['demoid'] }}">
-					{{ log['demoid'] }}
-				</a>
-				{% endif %}
-			</td>
 			<td class="left">{{ show_dupes(log['duplicate_of']) }}</td>
 			{% endif %}
 		</tr>
