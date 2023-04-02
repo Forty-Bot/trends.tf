@@ -10,6 +10,7 @@ import sys
 
 import flask
 import psycopg2
+from psycopg2.extras import NumericRange
 import pylibmc
 import werkzeug.exceptions, werkzeug.http
 
@@ -107,13 +108,24 @@ def get_filter_params():
         if date := args.get(name, None, datetime.fromisoformat):
             utcdate = date.replace(tzinfo=timezone).astimezone(tz.UTC)
             params[name] = date.date().isoformat()
-            params[name_ts] = utcdate.timestamp()
+            params[name_ts] = int(utcdate.timestamp())
         else:
             params[name] = None
             params[name_ts] = None
 
     set_date_params('date_from')
     set_date_params('date_to')
+
+    if params['date_from_ts'] and params['date_to_ts']:
+        if params['date_from_ts'] <= params['date_to_ts']:
+            params['date_range'] = \
+                NumericRange(params['date_from_ts'], params['date_to_ts'], bounds='[]')
+        else:
+            params['date_range'] = NumericRange(empty=True)
+    elif params['date_from_ts']:
+        params['date_range'] = NumericRange(lower=params['date_from_ts'], bounds='[)')
+    elif params['date_to_ts']:
+        params['date_range'] = NumericRange(upper=params['date_to_ts'], bounds='(]')
 
     return params
 
@@ -160,6 +172,9 @@ def get_filter_clauses(params, *valid_columns, player_prefix='', log_prefix=''):
 
     date_clause('date_from_ts', '>=')
     date_clause('date_to_ts', '<=')
+
+    if 'rostered' in valid_columns and 'date_range' in params:
+        clauses.append("AND {}rostered && %(date_range)s".format(player_prefix))
 
     if 'logid' in valid_columns:
         for i, player in enumerate(params['players']):
