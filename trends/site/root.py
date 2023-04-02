@@ -58,13 +58,15 @@ def search():
 def leaderboard():
     limit, offset = get_pagination()
     filters = get_filter_params()
-    filter_clauses = get_filter_clauses(filters, 'classid', 'formatid', 'mapid')
+    filter_clauses = get_filter_clauses(filters, 'classid', 'league', 'formatid', 'mapid')
 
     # Since we are using a cube, we need to explicitly select the NULL rows
     cube_clauses = []
     for (name, column) in (('class', 'classid'), ('format', 'formatid'), ('map', 'mapid')):
         if not filters[name]:
             cube_clauses.append("AND {} ISNULL".format(column))
+    if not filters['league']:
+        cube_clauses.append("AND league ISNULL")
     cube_clauses = '\n'.join(cube_clauses)
 
     order, order_clause = get_order({

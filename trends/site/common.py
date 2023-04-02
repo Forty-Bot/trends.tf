@@ -15,7 +15,8 @@ def logs_last_modified():
 def get_logs():
     limit, offset = get_pagination()
     filters = get_filter_params()
-    filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid')
+    filter_clauses = get_filter_clauses(filters, 'title', 'league', 'format', 'map', 'time',
+                                        'logid')
     order, order_clause = get_order({
         'logid': "logid",
         'duration': "duration",

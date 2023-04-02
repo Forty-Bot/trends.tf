@@ -70,14 +70,14 @@ def get_overview():
         flask.abort(404)
 
 # The base set of column filters for most queries in this file
-base_filter_columns = frozenset({'formatid', 'title', 'mapid', 'time', 'logid'})
+base_filter_columns = frozenset({'league', 'formatid', 'title', 'mapid', 'time', 'logid'})
 # These columns filters should be used when pretty names for class, format, and map are not used
 surrogate_filter_columns = base_filter_columns.union({'primary_classid'})
 
 def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", limit=100, offset=0):
     real_offset = offset
-    filter_clauses = get_filter_clauses(filters, 'primary_classid', 'formatid', 'title', 'mapid',
-                                        'time', 'logid')
+    filter_clauses = get_filter_clauses(filters, 'primary_classid', 'league', 'formatid', 'title',
+                                        'mapid', 'time', 'logid')
     if not duplicates:
         filter_clauses += "\nAND duplicate_of ISNULL"
     if 'hpm' not in order_clause:
@@ -271,7 +271,7 @@ def overview(steamid):
            WHERE r = 1
                    {}
            ORDER BY upper(rostered) DESC NULLS FIRST, lower(rostered) ASC
-           LIMIT 10;""".format(get_filter_clauses(filters, 'rostered'),
+           LIMIT 10;""".format(get_filter_clauses(filters, 'rostered', 'league'),
                                get_filter_clauses(filters, 'formatid')),
         { 'playerid': flask.g.playerid, **filters })
     teams = teams.fetchall()

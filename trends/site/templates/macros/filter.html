@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/form.html" import hidden_excluding %}
-{% from "macros/pretty.html" import class_map, format_map %}
+{% from "macros/pretty.html" import class_map, format_map, league_map %}
 {% macro _create_options(default, options) %}
 {% for key, content in options.items() %}
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
@@ -10,7 +10,7 @@
 {% macro filter(date=True, logs=False) %}
 <form>
 	{{ hidden_excluding('class', 'format', 'map', 'timezone', 'title', 'steamid64',
-			    'date_from', 'date_to') }}
+			    'date_from', 'date_to', 'league') }}
 	{% if logs %}
 	<label>Title:
 		<input type="text" name="title"
@@ -25,6 +25,12 @@
 		</select>
 	</label>
 	{% endif %}
+	<label>League:
+		<select name="league">
+			<option></option>
+			{{ _create_options(g.filters['league'], league_map) }}
+		</select>
+	</label>
 	<label>Format:
 		<select name="format">
 			<option></option>
