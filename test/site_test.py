@@ -77,6 +77,7 @@ def test_filter(client, logs, players, titles, maps, names, data):
         st.builds(lambda steamid, rule: rule.format(steamid), players, st.sampled_from((
             "/player/{}",
             "/player/{}/logs",
+            "/player/{}/maps",
             "/player/{}/peers",
             "/player/{}/trends",
             "/player/{}/totals",
