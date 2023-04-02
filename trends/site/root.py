@@ -140,7 +140,9 @@ def log(logids):
                         log.red_score,
                         log.blue_score,
                         duplicate_of,
-                        demoid
+                        demoid,
+                        league,
+                        matchid
                     FROM log
                     LEFT JOIN format USING (formatid)
                     JOIN map USING (mapid)

@@ -110,6 +110,8 @@ def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", l
                hsr.healing * 60.0 / ps.duration AS hpm_recieved,
                duplicate_of,
                demoid,
+               league,
+               matchid,
                time
            FROM (SELECT
                    *,

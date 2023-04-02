@@ -9,6 +9,7 @@
 	{% if extra %}
 	<th></th>
 	<th><abbr title="Demo">D</abbr></th>
+	<th><abbr title="Match">M</abbr></th>
 	{% endif %}
 	<th>Title</th>
 	<th>Map</th>
@@ -49,6 +50,17 @@
 					<img class="avatar_small"
 					 src="{{ url_for('static', filename="img/demos.png") }}">
 					</img>
+				</a>
+				{% endif %}
+			</td>
+			<td class="left">
+				{% if log['matchid'] %}
+				<a href="https://etf2l.org/matches/{{ log['matchid'] }}">
+				<img class="avatar_small" src="{{
+					url_for('static',
+						filename="img/{}.png".format(log['league']))
+				 }}">
+				</img>
 				</a>
 				{% endif %}
 			</td>

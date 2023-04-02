@@ -216,6 +216,7 @@
 	</h1>
 	<table><thead>
 		<th><abbr title="Demo">D</abbr></th>
+		<th><abbr title="Match">M</abbr></th>
 		<th>Title</th>
 		<th>Map</th>
 		<th>Format</th>
@@ -242,6 +243,17 @@
 				<img class="avatar_small"
 				 src="{{ url_for('static', filename="img/demos.png") }}">
 				</img>
+			</a>
+			{% endif %}
+		</td>
+		<td class="left">
+			{% if log['matchid'] %}
+			<a href="https://etf2l.org/matches/{{ log['matchid'] }}">
+			<img class="avatar_small" src="{{
+				url_for('static',
+					filename="img/{}.png".format(log['league']))
+			 }}">
+			</img>
 			</a>
 			{% endif %}
 		</td>
@@ -289,7 +301,7 @@
 				{{ padding(round['logid']) }}
 			{% endif %}
 			<tr class="{{ round['logid'] }} hidden hidable">
-			<td colspan="4"></td>
+			<td colspan="5"></td>
 			<td {% if rwinner == 'red' %}class="red"{% endif %}>
 				{{ round['red_score'] }}
 			</td>
@@ -306,6 +318,7 @@
 	{% endfor %}
 	{% if logs | count > 1 %}
 	<tr>
+		<td></td>
 		<td></td>
 		<th>Totals</th>
 		<td></td>

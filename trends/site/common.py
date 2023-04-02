@@ -30,7 +30,9 @@ def get_logs():
                         map,
                         format,
                         duplicate_of,
-                        demoid
+                        demoid,
+                        league,
+                        matchid
                     FROM log
                     JOIN map USING (mapid)
                     LEFT JOIN format USING (formatid)
