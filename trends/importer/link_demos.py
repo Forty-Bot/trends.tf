@@ -4,8 +4,8 @@
 from datetime import datetime, timedelta
 import logging
 
-def create_link_parser(sub):
-    link = sub.add_parser("link", help="Link logs and demos")
+def create_link_demos_parser(sub):
+    link = sub.add_parser("link_demos", help="Link logs and demos")
     link.set_defaults(importer=link_logs)
     link.add_argument("-s", "--since", type=datetime.fromisoformat,
                    default=datetime.now() - timedelta(hours=8), metavar="DATE",

@@ -174,7 +174,7 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv link postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv link_demos postgres:///trends
         User=daemon
 
 /etc/systemd/system/link.timer:
