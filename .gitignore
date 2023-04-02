@@ -6,8 +6,13 @@ build/
 dist/
 __pycache__/
 *.egg-info/
+.eggs/
 *.pyc
 *.pye
+.hypothesis
+
+# Editor stuff
+tags
 
 # Some local files of mine
 *.7z
