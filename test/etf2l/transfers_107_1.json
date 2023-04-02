@@ -1,0 +1,12 @@
+{
+  "transfers": null,
+  "page": {
+    "entries_per_page": 100,
+    "total_pages": 1,
+    "page": 1
+  },
+  "status": {
+    "code": 200,
+    "message": "OK"
+  }
+}

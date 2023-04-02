@@ -9,7 +9,8 @@ import pytest
 from testing.postgresql import Postgresql
 
 import trends.importer.logs
-from trends.importer.fetch import FileFetcher
+import trends.importer.etf2l
+from trends.importer.fetch import ETF2LFileFetcher, FileFetcher
 from trends.sql import db_connect, db_init
 
 @contextmanager
@@ -47,6 +48,15 @@ def database(request):
                     trends.importer.logs.import_logs(c, FileFetcher(logs=logfiles), False)
                 if caplog.records:
                     pytest.fail("Error importing logs")
+
+        with db_connect(database.url()) as c:
+            fetcher = ETF2LFileFetcher(results=f"{os.path.dirname(__file__)}/etf2l/results.json",
+                                       xferdir=f"{os.path.dirname(__file__)}/etf2l/")
+            with caplog_session(request) as caplog:
+                with caplog.at_level(logging.ERROR):
+                    trends.importer.etf2l.import_etf2l(c, fetcher)
+                if caplog.records:
+                    pytest.fail("Error importing ETF2L files")
 
         with db_connect(database.url()) as c:
             cur = c.cursor()

@@ -1,0 +1,358 @@
+{
+  "page": {
+    "entries_per_page": 100,
+    "previous_page_url": "https://api.etf2l.org/team/15028/transfers/2.json?per_page=100",
+    "page": 3,
+    "total_pages": 3
+  },
+  "transfers": [
+    {
+      "who": {
+        "country": "Slovenia",
+        "id": 58860,
+        "name": "bertis^",
+        "url": "https://api.etf2l.org/player/58860.json",
+        "steam": {
+          "id": "STEAM_0:1:18967519",
+          "id64": "76561197998200767",
+          "avatar": "https://avatars.akamai.steamstatic.com/be36fd239fa2b678af834ff729844c34012ab5eb_full.jpg",
+          "id3": "U:1:37935039"
+        }
+      },
+      "time": 1341421877,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/50668.json",
+        "steam": {
+          "id64": "76561198005001998",
+          "id3": "U:1:44736270",
+          "avatar": "https://avatars.akamai.steamstatic.com/b42963494937d367df5862e6c03e5f0e9adc0a27_full.jpg",
+          "id": "STEAM_0:0:22368135"
+        },
+        "name": "Shaiby",
+        "id": 50668,
+        "country": "Poland"
+      },
+      "type": "joined",
+      "time": 1341421453
+    },
+    {
+      "who": {
+        "country": "Poland",
+        "id": 49816,
+        "url": "https://api.etf2l.org/player/49816.json",
+        "steam": {
+          "id": "STEAM_0:1:23510596",
+          "avatar": "https://avatars.akamai.steamstatic.com/bc3d810aeda6cb0f985418fe1bd0c60e871c1c67_full.jpg",
+          "id3": "U:1:47021193",
+          "id64": "76561198007286921"
+        },
+        "name": "Radzik"
+      },
+      "time": 1340894465,
+      "type": "left"
+    },
+    {
+      "who": {
+        "id": 50668,
+        "country": "Poland",
+        "url": "https://api.etf2l.org/player/50668.json",
+        "steam": {
+          "id64": "76561198005001998",
+          "avatar": "https://avatars.akamai.steamstatic.com/b42963494937d367df5862e6c03e5f0e9adc0a27_full.jpg",
+          "id3": "U:1:44736270",
+          "id": "STEAM_0:0:22368135"
+        },
+        "name": "Shaiby"
+      },
+      "time": 1339960025,
+      "type": "left"
+    },
+    {
+      "time": 1339455012,
+      "type": "left",
+      "who": {
+        "country": "Poland",
+        "id": 48328,
+        "url": "https://api.etf2l.org/player/48328.json",
+        "steam": {
+          "id": "STEAM_0:0:16737118",
+          "id3": "U:1:33474236",
+          "avatar": "https://avatars.akamai.steamstatic.com/7147f1bc15b9b099915b7f7eefcc2d2fe50c064d_full.jpg",
+          "id64": "76561197993739964"
+        },
+        "name": "KabeK"
+      }
+    },
+    {
+      "who": {
+        "country": "Poland",
+        "id": 51518,
+        "name": "Kemor",
+        "steam": {
+          "id3": "U:1:67418563",
+          "avatar": "https://avatars.akamai.steamstatic.com/72adc880aa4c38656d01a76e07e5b725eb0c5fef_full.jpg",
+          "id64": "76561198027684291",
+          "id": "STEAM_0:1:33709281"
+        },
+        "url": "https://api.etf2l.org/player/51518.json"
+      },
+      "time": 1339270434,
+      "type": "left"
+    },
+    {
+      "type": "joined",
+      "time": 1338818486,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:33709281",
+          "avatar": "https://avatars.akamai.steamstatic.com/72adc880aa4c38656d01a76e07e5b725eb0c5fef_full.jpg",
+          "id3": "U:1:67418563",
+          "id64": "76561198027684291"
+        },
+        "url": "https://api.etf2l.org/player/51518.json",
+        "name": "Kemor",
+        "country": "Poland",
+        "id": 51518
+      }
+    },
+    {
+      "time": 1338406907,
+      "type": "joined",
+      "who": {
+        "id": 55709,
+        "country": "Poland",
+        "steam": {
+          "id64": "76561198018088847",
+          "avatar": "https://avatars.akamai.steamstatic.com/34525988887c731145eb2302b89be469257459ec_full.jpg",
+          "id3": "U:1:57823119",
+          "id": "STEAM_0:1:28911559"
+        },
+        "url": "https://api.etf2l.org/player/55709.json",
+        "name": "paparazi"
+      }
+    },
+    {
+      "who": {
+        "id": 51518,
+        "country": "Poland",
+        "steam": {
+          "id3": "U:1:67418563",
+          "avatar": "https://avatars.akamai.steamstatic.com/72adc880aa4c38656d01a76e07e5b725eb0c5fef_full.jpg",
+          "id64": "76561198027684291",
+          "id": "STEAM_0:1:33709281"
+        },
+        "url": "https://api.etf2l.org/player/51518.json",
+        "name": "Kemor"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/54603.json",
+        "steam": {
+          "id": "STEAM_0:1:39438647",
+          "id64": "76561198039143023",
+          "avatar": "https://avatars.akamai.steamstatic.com/f737484c1ccf7afd674b2a8147a6cb9600b82cd0_full.jpg",
+          "id3": "U:1:78877295"
+        },
+        "name": "Ciocia_Kasia",
+        "country": "Poland",
+        "id": 54603
+      },
+      "time": 1338018413,
+      "type": "left"
+    },
+    {
+      "who": {
+        "country": "Poland",
+        "id": 48328,
+        "name": "KabeK",
+        "url": "https://api.etf2l.org/player/48328.json",
+        "steam": {
+          "id": "STEAM_0:0:16737118",
+          "id64": "76561197993739964",
+          "avatar": "https://avatars.akamai.steamstatic.com/7147f1bc15b9b099915b7f7eefcc2d2fe50c064d_full.jpg",
+          "id3": "U:1:33474236"
+        }
+      },
+      "type": "joined",
+      "time": 1337258877
+    },
+    {
+      "type": "joined",
+      "time": 1335901375,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:23510596",
+          "id64": "76561198007286921",
+          "id3": "U:1:47021193",
+          "avatar": "https://avatars.akamai.steamstatic.com/bc3d810aeda6cb0f985418fe1bd0c60e871c1c67_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/49816.json",
+        "name": "Radzik",
+        "id": 49816,
+        "country": "Poland"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1335824751,
+      "who": {
+        "id": 203,
+        "country": "Poland",
+        "name": "Tomek",
+        "steam": {
+          "id": "STEAM_0:1:17214815",
+          "id3": "U:1:34429631",
+          "avatar": "https://avatars.akamai.steamstatic.com/8e508c2687175ba0eb38431b87d1e6ad93b500d8_full.jpg",
+          "id64": "76561197994695359"
+        },
+        "url": "https://api.etf2l.org/player/203.json"
+      }
+    },
+    {
+      "by": {
+        "country": "Poland",
+        "id": 51518,
+        "name": "Kemor",
+        "steam": {
+          "id": "STEAM_0:1:33709281",
+          "avatar": "https://avatars.akamai.steamstatic.com/72adc880aa4c38656d01a76e07e5b725eb0c5fef_full.jpg",
+          "id3": "U:1:67418563",
+          "id64": "76561198027684291"
+        },
+        "url": "https://api.etf2l.org/player/51518.json"
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/55428.json",
+        "steam": {
+          "id64": "76561198025176040",
+          "id3": "U:1:64910312",
+          "avatar": "https://avatars.akamai.steamstatic.com/1191c81a57194f64acfcda94f0fd0cb94e92eff7_full.jpg",
+          "id": "STEAM_0:0:32455156"
+        },
+        "name": "CHERRY",
+        "id": 55428,
+        "country": "Poland"
+      },
+      "type": "left",
+      "time": 1335000635
+    },
+    {
+      "type": "joined",
+      "time": 1334959757,
+      "who": {
+        "url": "https://api.etf2l.org/player/42266.json",
+        "steam": {
+          "id": "STEAM_0:0:27178213",
+          "id64": "76561198014622154",
+          "id3": "U:1:54356426",
+          "avatar": "https://avatars.akamai.steamstatic.com/8666580b4e960d717d83398c7efe975911611bd3_full.jpg"
+        },
+        "name": "Owik",
+        "id": 42266,
+        "country": "Poland"
+      }
+    },
+    {
+      "time": 1334330973,
+      "type": "joined",
+      "who": {
+        "id": 51115,
+        "country": "Poland",
+        "name": "WarN",
+        "steam": {
+          "id": "STEAM_0:0:18812724",
+          "id64": "76561197997891176",
+          "avatar": "https://avatars.akamai.steamstatic.com/5537e2882d914c7d5433af982605b6a189c267b2_full.jpg",
+          "id3": "U:1:37625448"
+        },
+        "url": "https://api.etf2l.org/player/51115.json"
+      }
+    },
+    {
+      "time": 1334264518,
+      "type": "joined",
+      "who": {
+        "country": "Poland",
+        "id": 50654,
+        "steam": {
+          "id": "STEAM_0:1:21109713",
+          "id3": "U:1:42219427",
+          "avatar": "https://avatars.akamai.steamstatic.com/a99e9146d50c3484e71b18d08d926175fae2a6a5_full.jpg",
+          "id64": "76561198002485155"
+        },
+        "url": "https://api.etf2l.org/player/50654.json",
+        "name": "Favonius"
+      }
+    },
+    {
+      "time": 1334257348,
+      "type": "joined",
+      "who": {
+        "name": "CHERRY",
+        "url": "https://api.etf2l.org/player/55428.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1191c81a57194f64acfcda94f0fd0cb94e92eff7_full.jpg",
+          "id3": "U:1:64910312",
+          "id64": "76561198025176040",
+          "id": "STEAM_0:0:32455156"
+        },
+        "id": 55428,
+        "country": "Poland"
+      }
+    },
+    {
+      "who": {
+        "name": "Ciocia_Kasia",
+        "steam": {
+          "id64": "76561198039143023",
+          "avatar": "https://avatars.akamai.steamstatic.com/f737484c1ccf7afd674b2a8147a6cb9600b82cd0_full.jpg",
+          "id3": "U:1:78877295",
+          "id": "STEAM_0:1:39438647"
+        },
+        "url": "https://api.etf2l.org/player/54603.json",
+        "id": 54603,
+        "country": "Poland"
+      },
+      "time": 1334251657,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "country": "Poland",
+        "id": 50668,
+        "name": "Shaiby",
+        "url": "https://api.etf2l.org/player/50668.json",
+        "steam": {
+          "id64": "76561198005001998",
+          "avatar": "https://avatars.akamai.steamstatic.com/b42963494937d367df5862e6c03e5f0e9adc0a27_full.jpg",
+          "id3": "U:1:44736270",
+          "id": "STEAM_0:0:22368135"
+        }
+      },
+      "type": "joined",
+      "time": 1334250456
+    },
+    {
+      "time": 1334060009,
+      "type": "joined",
+      "who": {
+        "id": 51518,
+        "country": "Poland",
+        "name": "Kemor",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/72adc880aa4c38656d01a76e07e5b725eb0c5fef_full.jpg",
+          "id3": "U:1:67418563",
+          "id64": "76561198027684291",
+          "id": "STEAM_0:1:33709281"
+        },
+        "url": "https://api.etf2l.org/player/51518.json"
+      }
+    }
+  ],
+  "status": {
+    "message": "OK",
+    "code": 200
+  }
+}

@@ -1,0 +1,1485 @@
+{
+  "status": {
+    "code": 200,
+    "message": "OK"
+  },
+  "transfers": [
+    {
+      "who": {
+        "id": 2223,
+        "country": "Latvia",
+        "steam": {
+          "id": "STEAM_0:0:18729209",
+          "id64": "76561197997724146",
+          "avatar": "https://avatars.akamai.steamstatic.com/18ca4c892d69c827965b6869cbbc743ab00d6324_full.jpg",
+          "id3": "U:1:37458418"
+        },
+        "url": "https://api.etf2l.org/player/2223.json",
+        "name": "[4games] nev"
+      },
+      "type": "left",
+      "time": 1252768254
+    },
+    {
+      "who": {
+        "id": 528,
+        "country": "Latvia",
+        "steam": {
+          "id64": "76561197996766838",
+          "avatar": "https://avatars.akamai.steamstatic.com/92c1e6a739215a3b9381815fdfaf11038583698d_full.jpg",
+          "id3": "U:1:36501110",
+          "id": "STEAM_0:0:18250555"
+        },
+        "url": "https://api.etf2l.org/player/528.json",
+        "name": "biv"
+      },
+      "time": 1252759986,
+      "type": "left"
+    },
+    {
+      "who": {
+        "country": "Latvia",
+        "id": 506,
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/506.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/16d684a18696db4f43543779ca2d482636396f33_full.jpg",
+          "id3": "U:1:20058146",
+          "id64": "76561197980323874",
+          "id": "STEAM_0:0:10029073"
+        }
+      },
+      "time": 1248174899,
+      "type": "left"
+    },
+    {
+      "who": {
+        "country": "Latvia",
+        "id": 886,
+        "name": "grnpc",
+        "url": "https://api.etf2l.org/player/886.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg",
+          "id3": "U:1:36803765",
+          "id64": "76561197997069493",
+          "id": "STEAM_0:1:18401882"
+        }
+      },
+      "time": 1240663029,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1237408633,
+      "who": {
+        "name": "Uldis",
+        "url": "https://api.etf2l.org/player/2704.json",
+        "steam": {
+          "id64": "76561197979626777",
+          "id3": "U:1:19361049",
+          "avatar": "https://avatars.akamai.steamstatic.com/3b31ef78d30f7009556ffe334451ac32726dc1ce_full.jpg",
+          "id": "STEAM_0:1:9680524"
+        },
+        "country": "Latvia",
+        "id": 2704
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876"
+        },
+        "name": "Exact",
+        "country": "Latvia",
+        "id": 483
+      }
+    },
+    {
+      "time": 1237408631,
+      "type": "left",
+      "who": {
+        "id": 1545,
+        "country": "Russia",
+        "name": "monetko",
+        "steam": {
+          "id": "STEAM_0:1:18549603",
+          "avatar": "https://avatars.akamai.steamstatic.com/2469e093eaa1dce0dee331f8367a25b3cb14014c_full.jpg",
+          "id3": "U:1:37099207",
+          "id64": "76561197997364935"
+        },
+        "url": "https://api.etf2l.org/player/1545.json"
+      },
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "name": "Exact",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876"
+        },
+        "url": "https://api.etf2l.org/player/483.json"
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact",
+        "id": 483,
+        "country": "Latvia"
+      },
+      "who": {
+        "country": "Latvia",
+        "id": 2627,
+        "name": "Digitally Imported",
+        "steam": {
+          "id": "STEAM_0:0:17247907",
+          "id64": "76561197994761542",
+          "avatar": "https://avatars.akamai.steamstatic.com/3ab73b53ca09c9ac4f67b72902eb8f2f917066c0_full.jpg",
+          "id3": "U:1:34495814"
+        },
+        "url": "https://api.etf2l.org/player/2627.json"
+      },
+      "time": 1237408627,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1236623579,
+      "who": {
+        "country": "Russia",
+        "id": 5510,
+        "steam": {
+          "id": "STEAM_0:0:11305575",
+          "avatar": "https://avatars.akamai.steamstatic.com/33263fcb81305379b11445cfee9f95220738d27c_full.jpg",
+          "id3": "U:1:22611150",
+          "id64": "76561197982876878"
+        },
+        "url": "https://api.etf2l.org/player/5510.json",
+        "name": "D1ego$"
+      }
+    },
+    {
+      "who": {
+        "name": "monetko",
+        "url": "https://api.etf2l.org/player/1545.json",
+        "steam": {
+          "id": "STEAM_0:1:18549603",
+          "id64": "76561197997364935",
+          "avatar": "https://avatars.akamai.steamstatic.com/2469e093eaa1dce0dee331f8367a25b3cb14014c_full.jpg",
+          "id3": "U:1:37099207"
+        },
+        "id": 1545,
+        "country": "Russia"
+      },
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876"
+        }
+      },
+      "time": 1234703592,
+      "type": "joined"
+    },
+    {
+      "time": 1232712912,
+      "type": "joined",
+      "who": {
+        "name": "D1ego$",
+        "steam": {
+          "id": "STEAM_0:0:11305575",
+          "id3": "U:1:22611150",
+          "avatar": "https://avatars.akamai.steamstatic.com/33263fcb81305379b11445cfee9f95220738d27c_full.jpg",
+          "id64": "76561197982876878"
+        },
+        "url": "https://api.etf2l.org/player/5510.json",
+        "country": "Russia",
+        "id": 5510
+      },
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact"
+      }
+    },
+    {
+      "time": 1232492120,
+      "type": "left",
+      "who": {
+        "id": 3324,
+        "country": "Latvia",
+        "url": "https://api.etf2l.org/player/3324.json",
+        "steam": {
+          "id": "STEAM_0:1:16979164",
+          "id64": "76561197994224057",
+          "id3": "U:1:33958329",
+          "avatar": "https://avatars.akamai.steamstatic.com/db500f40ec271c0576b1d7e7326090322ba8c0f1_full.jpg"
+        },
+        "name": "PedoBear"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1230737723,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:14996910",
+          "id3": "U:1:29993820",
+          "avatar": "https://avatars.akamai.steamstatic.com/927bedf16cf4b4272d4aaa664d6fe45804c89db3_full.jpg",
+          "id64": "76561197990259548"
+        },
+        "url": "https://api.etf2l.org/player/765.json",
+        "name": "blind",
+        "country": "Latvia",
+        "id": 765
+      }
+    },
+    {
+      "time": 1229712239,
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/528.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/92c1e6a739215a3b9381815fdfaf11038583698d_full.jpg",
+          "id3": "U:1:36501110",
+          "id64": "76561197996766838",
+          "id": "STEAM_0:0:18250555"
+        },
+        "name": "biv",
+        "id": 528,
+        "country": "Latvia"
+      },
+      "by": {
+        "name": "Exact",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "country": "Latvia",
+        "id": 483
+      }
+    },
+    {
+      "time": 1228138168,
+      "type": "joined",
+      "who": {
+        "id": 3324,
+        "country": "Latvia",
+        "steam": {
+          "id": "STEAM_0:1:16979164",
+          "id3": "U:1:33958329",
+          "avatar": "https://avatars.akamai.steamstatic.com/db500f40ec271c0576b1d7e7326090322ba8c0f1_full.jpg",
+          "id64": "76561197994224057"
+        },
+        "url": "https://api.etf2l.org/player/3324.json",
+        "name": "PedoBear"
+      },
+      "by": {
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact",
+        "country": "Latvia",
+        "id": 483
+      }
+    },
+    {
+      "type": "left",
+      "time": 1228047509,
+      "who": {
+        "name": "AnimaL",
+        "steam": {
+          "id": "STEAM_0:0:18224350",
+          "avatar": "https://avatars.akamai.steamstatic.com/a8a7023935583353d4bd452d7706cf6c63609456_full.jpg",
+          "id3": "U:1:36448700",
+          "id64": "76561197996714428"
+        },
+        "url": "https://api.etf2l.org/player/1536.json",
+        "id": 1536,
+        "country": "Latvia"
+      }
+    },
+    {
+      "time": 1225976552,
+      "type": "joined",
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "steam": {
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact"
+      },
+      "who": {
+        "country": "Latvia",
+        "id": 2223,
+        "name": "[4games] nev",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/18ca4c892d69c827965b6869cbbc743ab00d6324_full.jpg",
+          "id3": "U:1:37458418",
+          "id64": "76561197997724146",
+          "id": "STEAM_0:0:18729209"
+        },
+        "url": "https://api.etf2l.org/player/2223.json"
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact",
+        "country": "Latvia",
+        "id": 483
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/2704.json",
+        "steam": {
+          "id64": "76561197979626777",
+          "id3": "U:1:19361049",
+          "avatar": "https://avatars.akamai.steamstatic.com/3b31ef78d30f7009556ffe334451ac32726dc1ce_full.jpg",
+          "id": "STEAM_0:1:9680524"
+        },
+        "name": "Uldis",
+        "id": 2704,
+        "country": "Latvia"
+      },
+      "type": "joined",
+      "time": 1225660870
+    },
+    {
+      "who": {
+        "country": "Latvia",
+        "id": 2627,
+        "url": "https://api.etf2l.org/player/2627.json",
+        "steam": {
+          "id": "STEAM_0:0:17247907",
+          "id64": "76561197994761542",
+          "avatar": "https://avatars.akamai.steamstatic.com/3ab73b53ca09c9ac4f67b72902eb8f2f917066c0_full.jpg",
+          "id3": "U:1:34495814"
+        },
+        "name": "Digitally Imported"
+      },
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148"
+        }
+      },
+      "time": 1225660849,
+      "type": "joined"
+    },
+    {
+      "time": 1225656721,
+      "type": "left",
+      "by": {
+        "name": "Exact",
+        "steam": {
+          "id64": "76561197980323876",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "country": "Latvia",
+        "id": 483
+      },
+      "who": {
+        "name": "Fletch",
+        "steam": {
+          "id": "STEAM_0:0:17236195",
+          "avatar": "https://avatars.akamai.steamstatic.com/ae5350e9e7f7400f5ea3e06f9c2c7b0c3eedda32_full.jpg",
+          "id3": "U:1:34472390",
+          "id64": "76561197994738118"
+        },
+        "url": "https://api.etf2l.org/player/1026.json",
+        "country": "Russia",
+        "id": 1026
+      }
+    },
+    {
+      "who": {
+        "id": 1717,
+        "country": "Russia",
+        "steam": {
+          "id3": "U:1:34619392",
+          "avatar": "https://avatars.akamai.steamstatic.com/12ac27fbe44281d508a825a46bd11ece5f3c14ee_full.jpg",
+          "id64": "76561197994885120",
+          "id": "STEAM_0:0:17309696"
+        },
+        "url": "https://api.etf2l.org/player/1717.json",
+        "name": "viper"
+      },
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "name": "Exact",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876"
+        },
+        "url": "https://api.etf2l.org/player/483.json"
+      },
+      "type": "left",
+      "time": 1225656718
+    },
+    {
+      "type": "left",
+      "time": 1225656716,
+      "who": {
+        "id": 768,
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/768.json",
+        "steam": {
+          "id3": "U:1:32905650",
+          "avatar": "https://avatars.akamai.steamstatic.com/d398c1f8d7bf6b82bc45d91888afebffd62a66df_full.jpg",
+          "id64": "76561197993171378",
+          "id": "STEAM_0:0:16452825"
+        },
+        "name": "MtnZ"
+      },
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876"
+        },
+        "name": "Exact"
+      }
+    },
+    {
+      "time": 1225656713,
+      "type": "left",
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact"
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/1028.json",
+        "steam": {
+          "id": "STEAM_0:0:17110056",
+          "id64": "76561197994485840",
+          "avatar": "https://avatars.akamai.steamstatic.com/948d9974d44d628b4b614c5518ed43f89b45a39d_full.jpg",
+          "id3": "U:1:34220112"
+        },
+        "name": "Rollin",
+        "country": "Russia",
+        "id": 1028
+      }
+    },
+    {
+      "by": {
+        "name": "Exact",
+        "steam": {
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "id": 483,
+        "country": "Latvia"
+      },
+      "who": {
+        "name": "tal",
+        "url": "https://api.etf2l.org/player/1065.json",
+        "steam": {
+          "id": "STEAM_0:1:16477641",
+          "avatar": "https://avatars.akamai.steamstatic.com/f7a77fe781734d6e7f4dd655647cc2097597d881_full.jpg",
+          "id3": "U:1:32955283",
+          "id64": "76561197993221011"
+        },
+        "country": "Russia",
+        "id": 1065
+      },
+      "type": "left",
+      "time": 1225656710
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact",
+        "country": "Latvia",
+        "id": 483
+      },
+      "who": {
+        "name": "AnimaL",
+        "steam": {
+          "id": "STEAM_0:0:18224350",
+          "id64": "76561197996714428",
+          "id3": "U:1:36448700",
+          "avatar": "https://avatars.akamai.steamstatic.com/a8a7023935583353d4bd452d7706cf6c63609456_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1536.json",
+        "country": "Latvia",
+        "id": 1536
+      },
+      "time": 1225656682,
+      "type": "joined"
+    },
+    {
+      "time": 1225656597,
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/765.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/927bedf16cf4b4272d4aaa664d6fe45804c89db3_full.jpg",
+          "id3": "U:1:29993820",
+          "id64": "76561197990259548",
+          "id": "STEAM_0:0:14996910"
+        },
+        "name": "blind",
+        "country": "Latvia",
+        "id": 765
+      },
+      "by": {
+        "name": "Exact",
+        "steam": {
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "country": "Latvia",
+        "id": 483
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/1717.json",
+        "steam": {
+          "id": "STEAM_0:0:17309696",
+          "avatar": "https://avatars.akamai.steamstatic.com/12ac27fbe44281d508a825a46bd11ece5f3c14ee_full.jpg",
+          "id3": "U:1:34619392",
+          "id64": "76561197994885120"
+        },
+        "name": "viper",
+        "country": "Russia",
+        "id": 1717
+      },
+      "by": {
+        "country": "Russia",
+        "id": 1026,
+        "steam": {
+          "id": "STEAM_0:0:17236195",
+          "id64": "76561197994738118",
+          "id3": "U:1:34472390",
+          "avatar": "https://avatars.akamai.steamstatic.com/ae5350e9e7f7400f5ea3e06f9c2c7b0c3eedda32_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1026.json",
+        "name": "Fletch"
+      },
+      "time": 1224139645,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/1717.json",
+        "steam": {
+          "id3": "U:1:34619392",
+          "avatar": "https://avatars.akamai.steamstatic.com/12ac27fbe44281d508a825a46bd11ece5f3c14ee_full.jpg",
+          "id64": "76561197994885120",
+          "id": "STEAM_0:0:17309696"
+        },
+        "name": "viper",
+        "id": 1717,
+        "country": "Russia"
+      },
+      "time": 1224139129,
+      "type": "left"
+    },
+    {
+      "type": "joined",
+      "time": 1224104321,
+      "who": {
+        "country": "Russia",
+        "id": 1026,
+        "name": "Fletch",
+        "url": "https://api.etf2l.org/player/1026.json",
+        "steam": {
+          "id64": "76561197994738118",
+          "id3": "U:1:34472390",
+          "avatar": "https://avatars.akamai.steamstatic.com/ae5350e9e7f7400f5ea3e06f9c2c7b0c3eedda32_full.jpg",
+          "id": "STEAM_0:0:17236195"
+        }
+      }
+    },
+    {
+      "time": 1224104048,
+      "type": "left",
+      "who": {
+        "country": "Russia",
+        "id": 1026,
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/ae5350e9e7f7400f5ea3e06f9c2c7b0c3eedda32_full.jpg",
+          "id3": "U:1:34472390",
+          "id64": "76561197994738118",
+          "id": "STEAM_0:0:17236195"
+        },
+        "url": "https://api.etf2l.org/player/1026.json",
+        "name": "Fletch"
+      },
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1224103815,
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id": "STEAM_0:0:10029074"
+        }
+      },
+      "who": {
+        "country": "Russia",
+        "id": 1065,
+        "name": "tal",
+        "url": "https://api.etf2l.org/player/1065.json",
+        "steam": {
+          "id3": "U:1:32955283",
+          "avatar": "https://avatars.akamai.steamstatic.com/f7a77fe781734d6e7f4dd655647cc2097597d881_full.jpg",
+          "id64": "76561197993221011",
+          "id": "STEAM_0:1:16477641"
+        }
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact",
+        "id": 483,
+        "country": "Latvia"
+      },
+      "who": {
+        "name": "Rollin",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/948d9974d44d628b4b614c5518ed43f89b45a39d_full.jpg",
+          "id3": "U:1:34220112",
+          "id64": "76561197994485840",
+          "id": "STEAM_0:0:17110056"
+        },
+        "url": "https://api.etf2l.org/player/1028.json",
+        "id": 1028,
+        "country": "Russia"
+      },
+      "time": 1224103797,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id64": "76561197980323876",
+          "id3": "U:1:20058148",
+          "avatar": null
+        },
+        "country": "Latvia",
+        "id": 483
+      },
+      "who": {
+        "name": "MtnZ",
+        "url": "https://api.etf2l.org/player/768.json",
+        "steam": {
+          "id3": "U:1:32905650",
+          "avatar": "https://avatars.akamai.steamstatic.com/d398c1f8d7bf6b82bc45d91888afebffd62a66df_full.jpg",
+          "id64": "76561197993171378",
+          "id": "STEAM_0:0:16452825"
+        },
+        "country": "Russia",
+        "id": 768
+      },
+      "time": 1224103776,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id": "STEAM_0:0:10029074"
+        },
+        "country": "Latvia",
+        "id": 483
+      },
+      "who": {
+        "country": "Russia",
+        "id": 1717,
+        "steam": {
+          "id3": "U:1:34619392",
+          "avatar": "https://avatars.akamai.steamstatic.com/12ac27fbe44281d508a825a46bd11ece5f3c14ee_full.jpg",
+          "id64": "76561197994885120",
+          "id": "STEAM_0:0:17309696"
+        },
+        "url": "https://api.etf2l.org/player/1717.json",
+        "name": "viper"
+      },
+      "time": 1224103752,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact"
+      },
+      "who": {
+        "name": "Fletch",
+        "url": "https://api.etf2l.org/player/1026.json",
+        "steam": {
+          "id64": "76561197994738118",
+          "avatar": "https://avatars.akamai.steamstatic.com/ae5350e9e7f7400f5ea3e06f9c2c7b0c3eedda32_full.jpg",
+          "id3": "U:1:34472390",
+          "id": "STEAM_0:0:17236195"
+        },
+        "country": "Russia",
+        "id": 1026
+      },
+      "time": 1224103739,
+      "type": "joined"
+    },
+    {
+      "type": "left",
+      "time": 1224103304,
+      "who": {
+        "name": "yu",
+        "url": "https://api.etf2l.org/player/512.json",
+        "steam": {
+          "id": "STEAM_0:1:17925316",
+          "id64": "76561197996116361",
+          "id3": "U:1:35850633",
+          "avatar": "https://avatars.akamai.steamstatic.com/b3b63f28b3edc48a32dc324fc290d6e953630638_full.jpg"
+        },
+        "id": 512,
+        "country": "Latvia"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id64": "76561197980323876",
+          "id3": "U:1:20058148",
+          "avatar": null
+        },
+        "name": "Exact",
+        "country": "Latvia",
+        "id": 483
+      }
+    },
+    {
+      "time": 1224103289,
+      "type": "left",
+      "who": {
+        "id": 1885,
+        "country": "Russia",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/dd3dc4e1f3f94a6acc907e486a762138bd78fc1e_full.jpg",
+          "id3": "U:1:28620273",
+          "id64": "76561197988886001",
+          "id": "STEAM_0:1:14310136"
+        },
+        "url": "https://api.etf2l.org/player/1885.json",
+        "name": "meow"
+      },
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "steam": {
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact"
+      }
+    },
+    {
+      "time": 1224103287,
+      "type": "left",
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact"
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/2223.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/18ca4c892d69c827965b6869cbbc743ab00d6324_full.jpg",
+          "id3": "U:1:37458418",
+          "id64": "76561197997724146",
+          "id": "STEAM_0:0:18729209"
+        },
+        "name": "[4games] nev",
+        "id": 2223,
+        "country": "Latvia"
+      }
+    },
+    {
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        }
+      },
+      "who": {
+        "id": 3247,
+        "country": "UnitedStates",
+        "steam": {
+          "id": "STEAM_0:0:14497953",
+          "id64": "76561197989261634",
+          "avatar": "https://avatars.akamai.steamstatic.com/19aa3490d5dd3c939dccf5c6f9d4568ed4c50b4a_full.jpg",
+          "id3": "U:1:28995906"
+        },
+        "url": "https://api.etf2l.org/player/3247.json",
+        "name": "mazafaka"
+      },
+      "type": "left",
+      "time": 1224103284
+    },
+    {
+      "type": "left",
+      "time": 1224103281,
+      "who": {
+        "url": "https://api.etf2l.org/player/765.json",
+        "steam": {
+          "id": "STEAM_0:0:14996910",
+          "id64": "76561197990259548",
+          "id3": "U:1:29993820",
+          "avatar": "https://avatars.akamai.steamstatic.com/927bedf16cf4b4272d4aaa664d6fe45804c89db3_full.jpg"
+        },
+        "name": "blind",
+        "id": 765,
+        "country": "Latvia"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact",
+        "country": "Latvia",
+        "id": 483
+      }
+    },
+    {
+      "by": {
+        "name": "Exact",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "country": "Latvia",
+        "id": 483
+      },
+      "who": {
+        "name": "biv",
+        "steam": {
+          "id": "STEAM_0:0:18250555",
+          "id64": "76561197996766838",
+          "id3": "U:1:36501110",
+          "avatar": "https://avatars.akamai.steamstatic.com/92c1e6a739215a3b9381815fdfaf11038583698d_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/528.json",
+        "id": 528,
+        "country": "Latvia"
+      },
+      "time": 1224103278,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1224100052,
+      "who": {
+        "url": "https://api.etf2l.org/player/185.json",
+        "steam": {
+          "id": "STEAM_0:0:15656800",
+          "id3": "U:1:31313600",
+          "avatar": "https://avatars.akamai.steamstatic.com/44412c9626c583dcdd33ec6b414a754c206185dd_full.jpg",
+          "id64": "76561197991579328"
+        },
+        "name": "Mad_snow",
+        "country": "Russia",
+        "id": 185
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/1885.json",
+        "steam": {
+          "id": "STEAM_0:1:14310136",
+          "avatar": "https://avatars.akamai.steamstatic.com/dd3dc4e1f3f94a6acc907e486a762138bd78fc1e_full.jpg",
+          "id3": "U:1:28620273",
+          "id64": "76561197988886001"
+        },
+        "name": "meow",
+        "country": "Russia",
+        "id": 1885
+      },
+      "type": "joined",
+      "time": 1223325008
+    },
+    {
+      "time": 1223324902,
+      "type": "joined",
+      "who": {
+        "name": "mazafaka",
+        "url": "https://api.etf2l.org/player/3247.json",
+        "steam": {
+          "id": "STEAM_0:0:14497953",
+          "id3": "U:1:28995906",
+          "avatar": "https://avatars.akamai.steamstatic.com/19aa3490d5dd3c939dccf5c6f9d4568ed4c50b4a_full.jpg",
+          "id64": "76561197989261634"
+        },
+        "country": "UnitedStates",
+        "id": 3247
+      },
+      "by": {
+        "id": 483,
+        "country": "Latvia",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact"
+      }
+    },
+    {
+      "who": {
+        "country": "Russia",
+        "id": 1247,
+        "url": "https://api.etf2l.org/player/1247.json",
+        "steam": {
+          "id64": "76561197995872650",
+          "avatar": "https://avatars.akamai.steamstatic.com/7f38c37cf13b34e24a3cdb67882adb09ebef0bda_full.jpg",
+          "id3": "U:1:35606922",
+          "id": "STEAM_0:0:17803461"
+        },
+        "name": "Cruel Corpse"
+      },
+      "type": "left",
+      "time": 1223298245
+    },
+    {
+      "who": {
+        "name": "Mad_snow",
+        "url": "https://api.etf2l.org/player/185.json",
+        "steam": {
+          "id": "STEAM_0:0:15656800",
+          "id64": "76561197991579328",
+          "id3": "U:1:31313600",
+          "avatar": "https://avatars.akamai.steamstatic.com/44412c9626c583dcdd33ec6b414a754c206185dd_full.jpg"
+        },
+        "id": 185,
+        "country": "Russia"
+      },
+      "by": {
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact",
+        "id": 483,
+        "country": "Latvia"
+      },
+      "time": 1223295111,
+      "type": "joined"
+    },
+    {
+      "type": "left",
+      "time": 1223272321,
+      "who": {
+        "url": "https://api.etf2l.org/player/794.json",
+        "steam": {
+          "id64": "76561197997579569",
+          "avatar": "https://avatars.akamai.steamstatic.com/95498a54bc11276801c08ded6210123aba90cbb2_full.jpg",
+          "id3": "U:1:37313841",
+          "id": "STEAM_0:1:18656920"
+        },
+        "name": "Alex Frag",
+        "country": "Latvia",
+        "id": 794
+      }
+    },
+    {
+      "who": {
+        "id": 483,
+        "country": "Latvia",
+        "name": "Exact",
+        "steam": {
+          "id": "STEAM_0:0:10029074",
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148"
+        },
+        "url": "https://api.etf2l.org/player/483.json"
+      },
+      "type": "left",
+      "time": 1223066826
+    },
+    {
+      "type": "joined",
+      "time": 1223066363,
+      "who": {
+        "name": "Exact",
+        "steam": {
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "id": 483,
+        "country": "Latvia"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1222868104,
+      "who": {
+        "country": "Latvia",
+        "id": 483,
+        "name": "Exact",
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "id3": "U:1:20058148",
+          "avatar": null,
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        }
+      }
+    },
+    {
+      "time": 1222868104,
+      "type": "joined",
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "name": "Exact",
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json"
+      },
+      "who": {
+        "country": "Russia",
+        "id": 1247,
+        "steam": {
+          "id64": "76561197995872650",
+          "id3": "U:1:35606922",
+          "avatar": "https://avatars.akamai.steamstatic.com/7f38c37cf13b34e24a3cdb67882adb09ebef0bda_full.jpg",
+          "id": "STEAM_0:0:17803461"
+        },
+        "url": "https://api.etf2l.org/player/1247.json",
+        "name": "Cruel Corpse"
+      }
+    },
+    {
+      "by": {
+        "country": "Latvia",
+        "id": 483,
+        "steam": {
+          "id64": "76561197980323876",
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id": "STEAM_0:0:10029074"
+        },
+        "url": "https://api.etf2l.org/player/483.json",
+        "name": "Exact"
+      },
+      "who": {
+        "name": "chaotic",
+        "steam": {
+          "id64": "76561197997487222",
+          "id3": "U:1:37221494",
+          "avatar": "https://avatars.akamai.steamstatic.com/4db4bbce430485088d3d8fc081e8a6541e7477e7_full.jpg",
+          "id": "STEAM_0:0:18610747"
+        },
+        "url": "https://api.etf2l.org/player/803.json",
+        "country": "Latvia",
+        "id": 803
+      },
+      "type": "left",
+      "time": 1222867830
+    },
+    {
+      "type": "joined",
+      "time": 1222354773,
+      "who": {
+        "url": "https://api.etf2l.org/player/483.json",
+        "steam": {
+          "avatar": null,
+          "id3": "U:1:20058148",
+          "id64": "76561197980323876",
+          "id": "STEAM_0:0:10029074"
+        },
+        "name": "Exact",
+        "id": 483,
+        "country": "Latvia"
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/2223.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/18ca4c892d69c827965b6869cbbc743ab00d6324_full.jpg",
+          "id3": "U:1:37458418",
+          "id64": "76561197997724146",
+          "id": "STEAM_0:0:18729209"
+        },
+        "name": "[4games] nev",
+        "id": 2223,
+        "country": "Latvia"
+      },
+      "time": 1215525418,
+      "type": "joined"
+    },
+    {
+      "type": "joined",
+      "time": 1213768458,
+      "who": {
+        "country": "Latvia",
+        "id": 803,
+        "name": "chaotic",
+        "url": "https://api.etf2l.org/player/803.json",
+        "steam": {
+          "id": "STEAM_0:0:18610747",
+          "id64": "76561197997487222",
+          "id3": "U:1:37221494",
+          "avatar": "https://avatars.akamai.steamstatic.com/4db4bbce430485088d3d8fc081e8a6541e7477e7_full.jpg"
+        }
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1213649098,
+      "who": {
+        "url": "https://api.etf2l.org/player/794.json",
+        "steam": {
+          "id": "STEAM_0:1:18656920",
+          "id64": "76561197997579569",
+          "avatar": "https://avatars.akamai.steamstatic.com/95498a54bc11276801c08ded6210123aba90cbb2_full.jpg",
+          "id3": "U:1:37313841"
+        },
+        "name": "Alex Frag",
+        "id": 794,
+        "country": "Latvia"
+      }
+    },
+    {
+      "who": {
+        "name": "biv",
+        "url": "https://api.etf2l.org/player/528.json",
+        "steam": {
+          "id": "STEAM_0:0:18250555",
+          "id64": "76561197996766838",
+          "avatar": "https://avatars.akamai.steamstatic.com/92c1e6a739215a3b9381815fdfaf11038583698d_full.jpg",
+          "id3": "U:1:36501110"
+        },
+        "id": 528,
+        "country": "Latvia"
+      },
+      "by": {
+        "country": "Latvia",
+        "id": 886,
+        "url": "https://api.etf2l.org/player/886.json",
+        "steam": {
+          "id": "STEAM_0:1:18401882",
+          "id64": "76561197997069493",
+          "id3": "U:1:36803765",
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg"
+        },
+        "name": "grnpc"
+      },
+      "type": "joined",
+      "time": 1213647656
+    },
+    {
+      "who": {
+        "id": 229,
+        "country": "Germany",
+        "url": "https://api.etf2l.org/player/229.json",
+        "steam": {
+          "id64": "76561197973687529",
+          "avatar": "https://avatars.akamai.steamstatic.com/e3ef24d0bd383df4cf419092c6ca3042d8245d7f_full.jpg",
+          "id3": "U:1:13421801",
+          "id": "STEAM_0:1:6710900"
+        },
+        "name": "bpf"
+      },
+      "by": {
+        "id": 886,
+        "country": "Latvia",
+        "name": "grnpc",
+        "steam": {
+          "id3": "U:1:36803765",
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg",
+          "id64": "76561197997069493",
+          "id": "STEAM_0:1:18401882"
+        },
+        "url": "https://api.etf2l.org/player/886.json"
+      },
+      "type": "left",
+      "time": 1213592511
+    },
+    {
+      "type": "joined",
+      "time": 1213592511,
+      "who": {
+        "name": "grnpc",
+        "url": "https://api.etf2l.org/player/886.json",
+        "steam": {
+          "id": "STEAM_0:1:18401882",
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg",
+          "id3": "U:1:36803765",
+          "id64": "76561197997069493"
+        },
+        "id": 886,
+        "country": "Latvia"
+      }
+    },
+    {
+      "who": {
+        "country": "Germany",
+        "id": 229,
+        "name": "bpf",
+        "url": "https://api.etf2l.org/player/229.json",
+        "steam": {
+          "id": "STEAM_0:1:6710900",
+          "id64": "76561197973687529",
+          "id3": "U:1:13421801",
+          "avatar": "https://avatars.akamai.steamstatic.com/e3ef24d0bd383df4cf419092c6ca3042d8245d7f_full.jpg"
+        }
+      },
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:18401882",
+          "id64": "76561197997069493",
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg",
+          "id3": "U:1:36803765"
+        },
+        "url": "https://api.etf2l.org/player/886.json",
+        "name": "grnpc",
+        "id": 886,
+        "country": "Latvia"
+      },
+      "type": "joined",
+      "time": 1213592482
+    },
+    {
+      "type": "joined",
+      "time": 1213592371,
+      "by": {
+        "id": 886,
+        "country": "Latvia",
+        "steam": {
+          "id": "STEAM_0:1:18401882",
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg",
+          "id3": "U:1:36803765",
+          "id64": "76561197997069493"
+        },
+        "url": "https://api.etf2l.org/player/886.json",
+        "name": "grnpc"
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/512.json",
+        "steam": {
+          "id3": "U:1:35850633",
+          "avatar": "https://avatars.akamai.steamstatic.com/b3b63f28b3edc48a32dc324fc290d6e953630638_full.jpg",
+          "id64": "76561197996116361",
+          "id": "STEAM_0:1:17925316"
+        },
+        "name": "yu",
+        "country": "Latvia",
+        "id": 512
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id64": "76561197980323874",
+          "id3": "U:1:20058146",
+          "avatar": "https://avatars.akamai.steamstatic.com/16d684a18696db4f43543779ca2d482636396f33_full.jpg",
+          "id": "STEAM_0:0:10029073"
+        },
+        "url": "https://api.etf2l.org/player/506.json",
+        "name": "Exact",
+        "country": "Latvia",
+        "id": 506
+      },
+      "by": {
+        "id": 886,
+        "country": "Latvia",
+        "steam": {
+          "id64": "76561197997069493",
+          "id3": "U:1:36803765",
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg",
+          "id": "STEAM_0:1:18401882"
+        },
+        "url": "https://api.etf2l.org/player/886.json",
+        "name": "grnpc"
+      },
+      "type": "joined",
+      "time": 1213592359
+    },
+    {
+      "time": 1213592351,
+      "type": "joined",
+      "by": {
+        "url": "https://api.etf2l.org/player/886.json",
+        "steam": {
+          "id": "STEAM_0:1:18401882",
+          "id3": "U:1:36803765",
+          "avatar": "https://avatars.akamai.steamstatic.com/f212dfcdcb1a8e1ecaa9aabed90fb31a9738cec7_full.jpg",
+          "id64": "76561197997069493"
+        },
+        "name": "grnpc",
+        "country": "Latvia",
+        "id": 886
+      },
+      "who": {
+        "name": "blind",
+        "url": "https://api.etf2l.org/player/765.json",
+        "steam": {
+          "id3": "U:1:29993820",
+          "avatar": "https://avatars.akamai.steamstatic.com/927bedf16cf4b4272d4aaa664d6fe45804c89db3_full.jpg",
+          "id64": "76561197990259548",
+          "id": "STEAM_0:0:14996910"
+        },
+        "id": 765,
+        "country": "Latvia"
+      }
+    }
+  ],
+  "page": {
+    "entries_per_page": 100,
+    "page": 1,
+    "total_pages": 1
+  }
+}

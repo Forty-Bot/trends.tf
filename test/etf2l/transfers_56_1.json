@@ -1,0 +1,1621 @@
+{
+  "status": {
+    "message": "OK",
+    "code": 200
+  },
+  "page": {
+    "entries_per_page": 100,
+    "page": 1,
+    "total_pages": 1
+  },
+  "transfers": [
+    {
+      "type": "left",
+      "time": 1283371604,
+      "who": {
+        "name": "POOCAP",
+        "url": "https://api.etf2l.org/player/3348.json",
+        "steam": {
+          "id": "STEAM_0:1:944747",
+          "id64": "76561197962155223",
+          "avatar": "https://avatars.akamai.steamstatic.com/a0f5790c801297b194dbd63500f0aac81bdb6e74_full.jpg",
+          "id3": "U:1:1889495"
+        },
+        "id": 3348,
+        "country": "Sweden"
+      }
+    },
+    {
+      "time": 1282693183,
+      "type": "left",
+      "who": {
+        "id": 1357,
+        "country": "Finland",
+        "steam": {
+          "id": "STEAM_0:0:13708020",
+          "avatar": "https://avatars.akamai.steamstatic.com/f3a448d157b4f204f04c19a270c35de67bcbe51e_full.jpg",
+          "id3": "U:1:27416040",
+          "id64": "76561197987681768"
+        },
+        "url": "https://api.etf2l.org/player/1357.json",
+        "name": "zoob"
+      }
+    },
+    {
+      "time": 1282685348,
+      "type": "left",
+      "who": {
+        "url": "https://api.etf2l.org/player/888.json",
+        "steam": {
+          "id": "STEAM_0:0:893141",
+          "id3": "U:1:1786282",
+          "avatar": "https://avatars.akamai.steamstatic.com/f21e7931ffa25fa9491d44079382f5480e4c1c85_full.jpg",
+          "id64": "76561197962052010"
+        },
+        "name": "drleånn",
+        "id": 888,
+        "country": "Norway"
+      }
+    },
+    {
+      "time": 1281979072,
+      "type": "left",
+      "by": {
+        "name": "ulv",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id64": "76561197993084328"
+        },
+        "country": "Sweden",
+        "id": 474
+      },
+      "who": {
+        "country": "Sweden",
+        "id": 7289,
+        "name": "iQue",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/f050c17b155dfbe44817d4194d105a1a9d1ab1e0_full.jpg",
+          "id3": "U:1:35639402",
+          "id64": "76561197995905130",
+          "id": "STEAM_0:0:17819701"
+        },
+        "url": "https://api.etf2l.org/player/7289.json"
+      }
+    },
+    {
+      "who": {
+        "name": "mb",
+        "url": "https://api.etf2l.org/player/5394.json",
+        "steam": {
+          "id3": "U:1:2888024",
+          "avatar": "https://avatars.akamai.steamstatic.com/169c8b6f8afbae56646074336c4d508d8a9a2fa8_full.jpg",
+          "id64": "76561197963153752",
+          "id": "STEAM_0:0:1444012"
+        },
+        "id": 5394,
+        "country": "Sweden"
+      },
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      },
+      "type": "left",
+      "time": 1281979065
+    },
+    {
+      "time": 1281726589,
+      "type": "left",
+      "who": {
+        "id": 1375,
+        "country": "Sweden",
+        "name": "morf",
+        "url": "https://api.etf2l.org/player/1375.json",
+        "steam": {
+          "id": "STEAM_0:1:15952169",
+          "id64": "76561197992170067",
+          "avatar": "https://avatars.akamai.steamstatic.com/f51cf6a27f329180d34e9260258f46c683fd7581_full.jpg",
+          "id3": "U:1:31904339"
+        }
+      }
+    },
+    {
+      "who": {
+        "country": "Sweden",
+        "id": 1375,
+        "name": "morf",
+        "steam": {
+          "id": "STEAM_0:1:15952169",
+          "avatar": "https://avatars.akamai.steamstatic.com/f51cf6a27f329180d34e9260258f46c683fd7581_full.jpg",
+          "id3": "U:1:31904339",
+          "id64": "76561197992170067"
+        },
+        "url": "https://api.etf2l.org/player/1375.json"
+      },
+      "by": {
+        "name": "ulv",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id64": "76561197993084328",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "id": 474,
+        "country": "Sweden"
+      },
+      "type": "joined",
+      "time": 1278800494
+    },
+    {
+      "time": 1277592970,
+      "type": "joined",
+      "who": {
+        "id": 7289,
+        "country": "Sweden",
+        "name": "iQue",
+        "url": "https://api.etf2l.org/player/7289.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/f050c17b155dfbe44817d4194d105a1a9d1ab1e0_full.jpg",
+          "id3": "U:1:35639402",
+          "id64": "76561197995905130",
+          "id": "STEAM_0:0:17819701"
+        }
+      },
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "name": "ulv",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id": "STEAM_0:0:16409300"
+        }
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1277558362,
+      "who": {
+        "country": "Norway",
+        "id": 888,
+        "name": "drleånn",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/f21e7931ffa25fa9491d44079382f5480e4c1c85_full.jpg",
+          "id3": "U:1:1786282",
+          "id64": "76561197962052010",
+          "id": "STEAM_0:0:893141"
+        },
+        "url": "https://api.etf2l.org/player/888.json"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        },
+        "name": "ulv",
+        "country": "Sweden",
+        "id": 474
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1277509420,
+      "who": {
+        "url": "https://api.etf2l.org/player/1357.json",
+        "steam": {
+          "id": "STEAM_0:0:13708020",
+          "id64": "76561197987681768",
+          "avatar": "https://avatars.akamai.steamstatic.com/f3a448d157b4f204f04c19a270c35de67bcbe51e_full.jpg",
+          "id3": "U:1:27416040"
+        },
+        "name": "zoob",
+        "id": 1357,
+        "country": "Finland"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1276789073,
+      "who": {
+        "name": "mb",
+        "url": "https://api.etf2l.org/player/5394.json",
+        "steam": {
+          "id3": "U:1:2888024",
+          "avatar": "https://avatars.akamai.steamstatic.com/169c8b6f8afbae56646074336c4d508d8a9a2fa8_full.jpg",
+          "id64": "76561197963153752",
+          "id": "STEAM_0:0:1444012"
+        },
+        "country": "Sweden",
+        "id": 5394
+      }
+    },
+    {
+      "who": {
+        "id": 23392,
+        "country": "Sweden",
+        "url": "https://api.etf2l.org/player/23392.json",
+        "steam": {
+          "id": "STEAM_0:0:16354571",
+          "id3": "U:1:32709142",
+          "avatar": "https://avatars.akamai.steamstatic.com/eec6a8479e68f5348ddb3ae9e3f79a5881fa5ec7_full.jpg",
+          "id64": "76561197992974870"
+        },
+        "name": "kowalski"
+      },
+      "type": "joined",
+      "time": 1276026540
+    },
+    {
+      "time": 1275332690,
+      "type": "joined",
+      "who": {
+        "name": "ulv",
+        "steam": {
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "country": "Sweden",
+        "id": 474
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1275324761,
+      "who": {
+        "id": 2039,
+        "country": "Sweden",
+        "steam": {
+          "id64": "76561197967360815",
+          "avatar": "https://avatars.akamai.steamstatic.com/c7ce84fe8c2f1d680628fa93db46d1481ceeb3e7_full.jpg",
+          "id3": "U:1:7095087",
+          "id": "STEAM_0:1:3547543"
+        },
+        "url": "https://api.etf2l.org/player/2039.json",
+        "name": "Bananen"
+      }
+    },
+    {
+      "time": 1265033220,
+      "type": "left",
+      "who": {
+        "country": "Sweden",
+        "id": 56,
+        "name": "weqo",
+        "steam": {
+          "id64": "76561197980965413",
+          "avatar": "https://avatars.akamai.steamstatic.com/0a9e2b33f09ddc77f14015a6f718af1c94b416b9_full.jpg",
+          "id3": "U:1:20699685",
+          "id": "STEAM_0:1:10349842"
+        },
+        "url": "https://api.etf2l.org/player/56.json"
+      }
+    },
+    {
+      "who": {
+        "id": 1389,
+        "country": "Sweden",
+        "name": "Wiiking",
+        "steam": {
+          "id64": "76561197975166196",
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg",
+          "id3": "U:1:14900468",
+          "id": "STEAM_0:0:7450234"
+        },
+        "url": "https://api.etf2l.org/player/1389.json"
+      },
+      "type": "left",
+      "time": 1263247966
+    },
+    {
+      "type": "left",
+      "time": 1263247884,
+      "who": {
+        "url": "https://api.etf2l.org/player/493.json",
+        "steam": {
+          "id64": "76561197961843971",
+          "avatar": "https://avatars.akamai.steamstatic.com/be6f4690ab3012beb8cdd6230a3db004c3f3001a_full.jpg",
+          "id3": "U:1:1578243",
+          "id": "STEAM_0:1:789121"
+        },
+        "name": "Fanva",
+        "country": "Sweden",
+        "id": 493
+      }
+    },
+    {
+      "who": {
+        "id": 2039,
+        "country": "Sweden",
+        "name": "Bananen",
+        "steam": {
+          "id3": "U:1:7095087",
+          "avatar": "https://avatars.akamai.steamstatic.com/c7ce84fe8c2f1d680628fa93db46d1481ceeb3e7_full.jpg",
+          "id64": "76561197967360815",
+          "id": "STEAM_0:1:3547543"
+        },
+        "url": "https://api.etf2l.org/player/2039.json"
+      },
+      "type": "left",
+      "time": 1263242222
+    },
+    {
+      "type": "left",
+      "time": 1262795623,
+      "who": {
+        "steam": {
+          "id64": "76561197984376237",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id": "STEAM_0:1:12055254"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "name": "Blojan",
+        "country": "Sweden",
+        "id": 306
+      }
+    },
+    {
+      "time": 1262220984,
+      "type": "left",
+      "who": {
+        "url": "https://api.etf2l.org/player/1630.json",
+        "steam": {
+          "id": "STEAM_0:0:5048500",
+          "id64": "76561197970362728",
+          "id3": "U:1:10097000",
+          "avatar": "https://avatars.akamai.steamstatic.com/215f48d64f6b537a9d9fea869d9fd44ef6574f36_full.jpg"
+        },
+        "name": "codcrille",
+        "id": 1630,
+        "country": "Sweden"
+      }
+    },
+    {
+      "who": {
+        "id": 474,
+        "country": "Sweden",
+        "name": "ulv",
+        "steam": {
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id64": "76561197993084328",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json"
+      },
+      "type": "left",
+      "time": 1257238424
+    },
+    {
+      "who": {
+        "id": 493,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:1:789121",
+          "id64": "76561197961843971",
+          "avatar": "https://avatars.akamai.steamstatic.com/be6f4690ab3012beb8cdd6230a3db004c3f3001a_full.jpg",
+          "id3": "U:1:1578243"
+        },
+        "url": "https://api.etf2l.org/player/493.json",
+        "name": "Fanva"
+      },
+      "type": "joined",
+      "time": 1254766511
+    },
+    {
+      "type": "joined",
+      "time": 1253275843,
+      "who": {
+        "name": "weqo",
+        "url": "https://api.etf2l.org/player/56.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/0a9e2b33f09ddc77f14015a6f718af1c94b416b9_full.jpg",
+          "id3": "U:1:20699685",
+          "id64": "76561197980965413",
+          "id": "STEAM_0:1:10349842"
+        },
+        "country": "Sweden",
+        "id": 56
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:5048500",
+          "id3": "U:1:10097000",
+          "avatar": "https://avatars.akamai.steamstatic.com/215f48d64f6b537a9d9fea869d9fd44ef6574f36_full.jpg",
+          "id64": "76561197970362728"
+        },
+        "url": "https://api.etf2l.org/player/1630.json",
+        "name": "codcrille",
+        "id": 1630,
+        "country": "Sweden"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "id": "STEAM_0:0:380186",
+          "id64": "76561197961026100",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372"
+        },
+        "name": "san-",
+        "country": "Sweden",
+        "id": 164
+      },
+      "type": "joined",
+      "time": 1252018775
+    },
+    {
+      "time": 1248634186,
+      "type": "joined",
+      "who": {
+        "country": "Sweden",
+        "id": 1389,
+        "name": "Wiiking",
+        "steam": {
+          "id64": "76561197975166196",
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg",
+          "id3": "U:1:14900468",
+          "id": "STEAM_0:0:7450234"
+        },
+        "url": "https://api.etf2l.org/player/1389.json"
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:7450234",
+          "id64": "76561197975166196",
+          "id3": "U:1:14900468",
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1389.json",
+        "name": "Wiiking",
+        "id": 1389,
+        "country": "Sweden"
+      },
+      "type": "left",
+      "time": 1248013148
+    },
+    {
+      "time": 1246466065,
+      "type": "joined",
+      "who": {
+        "name": "ulv",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "id": 474,
+        "country": "Sweden"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1245347483,
+      "who": {
+        "url": "https://api.etf2l.org/player/2210.json",
+        "steam": {
+          "id64": "76561197961027199",
+          "avatar": "https://avatars.akamai.steamstatic.com/6e391bf1b47529cfa73eeaf616d0413689adcde4_full.jpg",
+          "id3": "U:1:761471",
+          "id": "STEAM_0:1:380735"
+        },
+        "name": "fdr",
+        "id": 2210,
+        "country": "Sweden"
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/4945.json",
+        "steam": {
+          "id64": "76561197982714070",
+          "id3": "U:1:22448342",
+          "avatar": "https://avatars.akamai.steamstatic.com/5c91281af7b19da910ada3fe2041266626af98af_full.jpg",
+          "id": "STEAM_0:0:11224171"
+        },
+        "name": "Jowy",
+        "country": "Sweden",
+        "id": 4945
+      },
+      "type": "left",
+      "time": 1245254447
+    },
+    {
+      "who": {
+        "id": 4945,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:0:11224171",
+          "id3": "U:1:22448342",
+          "avatar": "https://avatars.akamai.steamstatic.com/5c91281af7b19da910ada3fe2041266626af98af_full.jpg",
+          "id64": "76561197982714070"
+        },
+        "url": "https://api.etf2l.org/player/4945.json",
+        "name": "Jowy"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "id": "STEAM_0:0:380186",
+          "id3": "U:1:760372",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id64": "76561197961026100"
+        },
+        "name": "san-",
+        "country": "Sweden",
+        "id": 164
+      },
+      "type": "joined",
+      "time": 1243940500
+    },
+    {
+      "time": 1243688800,
+      "type": "joined",
+      "who": {
+        "country": "Sweden",
+        "id": 306,
+        "name": "Blojan",
+        "url": "https://api.etf2l.org/player/306.json",
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id64": "76561197984376237"
+        }
+      },
+      "by": {
+        "country": "Sweden",
+        "id": 164,
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372",
+          "id64": "76561197961026100",
+          "id": "STEAM_0:0:380186"
+        },
+        "url": "https://api.etf2l.org/player/164.json",
+        "name": "san-"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1243636506,
+      "who": {
+        "name": "Bananen",
+        "url": "https://api.etf2l.org/player/2039.json",
+        "steam": {
+          "id": "STEAM_0:1:3547543",
+          "id3": "U:1:7095087",
+          "avatar": "https://avatars.akamai.steamstatic.com/c7ce84fe8c2f1d680628fa93db46d1481ceeb3e7_full.jpg",
+          "id64": "76561197967360815"
+        },
+        "country": "Sweden",
+        "id": 2039
+      },
+      "by": {
+        "name": "san-",
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "id64": "76561197961026100",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372",
+          "id": "STEAM_0:0:380186"
+        },
+        "id": 164,
+        "country": "Sweden"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1243636493,
+      "who": {
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "id": "STEAM_0:0:380186",
+          "id3": "U:1:760372",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id64": "76561197961026100"
+        },
+        "name": "san-",
+        "id": 164,
+        "country": "Sweden"
+      }
+    },
+    {
+      "by": {
+        "name": "san-",
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "id64": "76561197961026100",
+          "id3": "U:1:760372",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id": "STEAM_0:0:380186"
+        },
+        "country": "Sweden",
+        "id": 164
+      },
+      "who": {
+        "country": "Sweden",
+        "id": 1389,
+        "name": "Wiiking",
+        "url": "https://api.etf2l.org/player/1389.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg",
+          "id3": "U:1:14900468",
+          "id64": "76561197975166196",
+          "id": "STEAM_0:0:7450234"
+        }
+      },
+      "type": "joined",
+      "time": 1243635967
+    },
+    {
+      "type": "joined",
+      "time": 1243635944,
+      "who": {
+        "steam": {
+          "id64": "76561197962155223",
+          "avatar": "https://avatars.akamai.steamstatic.com/a0f5790c801297b194dbd63500f0aac81bdb6e74_full.jpg",
+          "id3": "U:1:1889495",
+          "id": "STEAM_0:1:944747"
+        },
+        "url": "https://api.etf2l.org/player/3348.json",
+        "name": "POOCAP",
+        "country": "Sweden",
+        "id": 3348
+      },
+      "by": {
+        "name": "san-",
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "id64": "76561197961026100",
+          "id3": "U:1:760372",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id": "STEAM_0:0:380186"
+        },
+        "country": "Sweden",
+        "id": 164
+      }
+    },
+    {
+      "who": {
+        "country": "Sweden",
+        "id": 2174,
+        "name": "sQVeh?",
+        "url": "https://api.etf2l.org/player/2174.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/fff5991ba196cd1ab1c9608ecf4c3af63bc07c04_full.jpg",
+          "id3": "U:1:32728795",
+          "id64": "76561197992994523",
+          "id": "STEAM_0:1:16364397"
+        }
+      },
+      "by": {
+        "country": "Sweden",
+        "id": 164,
+        "name": "san-",
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372",
+          "id64": "76561197961026100",
+          "id": "STEAM_0:0:380186"
+        }
+      },
+      "time": 1243635727,
+      "type": "joined"
+    },
+    {
+      "type": "left",
+      "time": 1237761174,
+      "who": {
+        "country": "Sweden",
+        "id": 474,
+        "steam": {
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id64": "76561197993084328",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      }
+    },
+    {
+      "who": {
+        "id": 6063,
+        "country": "Sweden",
+        "name": "Donk3y",
+        "steam": {
+          "id": "STEAM_0:0:7055273",
+          "id64": "76561197974376274",
+          "id3": "U:1:14110546",
+          "avatar": "https://avatars.akamai.steamstatic.com/d367ffc67da52703640351e12077b6e8d5e9d922_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/6063.json"
+      },
+      "by": {
+        "name": "ulv",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id64": "76561197993084328"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "id": 474,
+        "country": "Sweden"
+      },
+      "time": 1237761170,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1237761167,
+      "by": {
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv",
+        "id": 474,
+        "country": "Sweden"
+      },
+      "who": {
+        "steam": {
+          "id64": "76561197984376237",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id3": "U:1:24110509",
+          "id": "STEAM_0:1:12055254"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "name": "Blojan",
+        "country": "Sweden",
+        "id": 306
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1237760337,
+      "who": {
+        "url": "https://api.etf2l.org/player/6063.json",
+        "steam": {
+          "id": "STEAM_0:0:7055273",
+          "id3": "U:1:14110546",
+          "avatar": "https://avatars.akamai.steamstatic.com/d367ffc67da52703640351e12077b6e8d5e9d922_full.jpg",
+          "id64": "76561197974376274"
+        },
+        "name": "Donk3y",
+        "id": 6063,
+        "country": "Sweden"
+      },
+      "by": {
+        "id": 474,
+        "country": "Sweden",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg"
+        },
+        "name": "ulv"
+      }
+    },
+    {
+      "who": {
+        "country": "Sweden",
+        "id": 306,
+        "name": "Blojan",
+        "url": "https://api.etf2l.org/player/306.json",
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "id64": "76561197984376237",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id3": "U:1:24110509"
+        }
+      },
+      "by": {
+        "name": "ulv",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        },
+        "id": 474,
+        "country": "Sweden"
+      },
+      "type": "joined",
+      "time": 1237760315
+    },
+    {
+      "type": "joined",
+      "time": 1237165022,
+      "who": {
+        "id": 474,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id64": "76561197993084328"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      }
+    },
+    {
+      "time": 1232057455,
+      "type": "left",
+      "who": {
+        "name": "san-",
+        "steam": {
+          "id3": "U:1:760372",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id64": "76561197961026100",
+          "id": "STEAM_0:0:380186"
+        },
+        "url": "https://api.etf2l.org/player/164.json",
+        "country": "Sweden",
+        "id": 164
+      }
+    },
+    {
+      "time": 1232057452,
+      "type": "left",
+      "by": {
+        "steam": {
+          "id": "STEAM_0:0:380186",
+          "id3": "U:1:760372",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id64": "76561197961026100"
+        },
+        "url": "https://api.etf2l.org/player/164.json",
+        "name": "san-",
+        "country": "Sweden",
+        "id": 164
+      },
+      "who": {
+        "country": "Sweden",
+        "id": 2210,
+        "url": "https://api.etf2l.org/player/2210.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/6e391bf1b47529cfa73eeaf616d0413689adcde4_full.jpg",
+          "id3": "U:1:761471",
+          "id64": "76561197961027199",
+          "id": "STEAM_0:1:380735"
+        },
+        "name": "fdr"
+      }
+    },
+    {
+      "time": 1232057449,
+      "type": "left",
+      "by": {
+        "id": 164,
+        "country": "Sweden",
+        "steam": {
+          "id64": "76561197961026100",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372",
+          "id": "STEAM_0:0:380186"
+        },
+        "url": "https://api.etf2l.org/player/164.json",
+        "name": "san-"
+      },
+      "who": {
+        "name": "crone",
+        "url": "https://api.etf2l.org/player/2034.json",
+        "steam": {
+          "id3": "U:1:32702394",
+          "avatar": "https://avatars.akamai.steamstatic.com/adc9a9a2263c7c64c653fb57f44c9c1270d65b7f_full.jpg",
+          "id64": "76561197992968122",
+          "id": "STEAM_0:0:16351197"
+        },
+        "country": "Sweden",
+        "id": 2034
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "id64": "76561197984376237",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "name": "Blojan",
+        "id": 306,
+        "country": "Sweden"
+      },
+      "type": "left",
+      "time": 1231959582
+    },
+    {
+      "who": {
+        "country": "Sweden",
+        "id": 474,
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg"
+        },
+        "name": "ulv"
+      },
+      "type": "left",
+      "time": 1231880259
+    },
+    {
+      "type": "left",
+      "time": 1231782326,
+      "by": {
+        "id": 474,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      },
+      "who": {
+        "country": "Sweden",
+        "id": 2174,
+        "name": "sQVeh?",
+        "steam": {
+          "id": "STEAM_0:1:16364397",
+          "id64": "76561197992994523",
+          "id3": "U:1:32728795",
+          "avatar": "https://avatars.akamai.steamstatic.com/fff5991ba196cd1ab1c9608ecf4c3af63bc07c04_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/2174.json"
+      }
+    },
+    {
+      "who": {
+        "name": "Wiiking",
+        "steam": {
+          "id": "STEAM_0:0:7450234",
+          "id64": "76561197975166196",
+          "id3": "U:1:14900468",
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1389.json",
+        "id": 1389,
+        "country": "Sweden"
+      },
+      "by": {
+        "steam": {
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv",
+        "id": 474,
+        "country": "Sweden"
+      },
+      "type": "left",
+      "time": 1231782323
+    },
+    {
+      "who": {
+        "id": 493,
+        "country": "Sweden",
+        "name": "Fanva",
+        "steam": {
+          "id": "STEAM_0:1:789121",
+          "id64": "76561197961843971",
+          "avatar": "https://avatars.akamai.steamstatic.com/be6f4690ab3012beb8cdd6230a3db004c3f3001a_full.jpg",
+          "id3": "U:1:1578243"
+        },
+        "url": "https://api.etf2l.org/player/493.json"
+      },
+      "by": {
+        "id": 474,
+        "country": "Sweden",
+        "name": "ulv",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id64": "76561197993084328",
+          "id": "STEAM_0:0:16409300"
+        }
+      },
+      "type": "left",
+      "time": 1231782319
+    },
+    {
+      "type": "left",
+      "time": 1231782315,
+      "by": {
+        "name": "ulv",
+        "steam": {
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "id": 474,
+        "country": "Sweden"
+      },
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:3547543",
+          "id64": "76561197967360815",
+          "avatar": "https://avatars.akamai.steamstatic.com/c7ce84fe8c2f1d680628fa93db46d1481ceeb3e7_full.jpg",
+          "id3": "U:1:7095087"
+        },
+        "url": "https://api.etf2l.org/player/2039.json",
+        "name": "Bananen",
+        "country": "Sweden",
+        "id": 2039
+      }
+    },
+    {
+      "time": 1227192094,
+      "type": "joined",
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "steam": {
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      },
+      "who": {
+        "name": "Fanva",
+        "url": "https://api.etf2l.org/player/493.json",
+        "steam": {
+          "id3": "U:1:1578243",
+          "avatar": "https://avatars.akamai.steamstatic.com/be6f4690ab3012beb8cdd6230a3db004c3f3001a_full.jpg",
+          "id64": "76561197961843971",
+          "id": "STEAM_0:1:789121"
+        },
+        "id": 493,
+        "country": "Sweden"
+      }
+    },
+    {
+      "time": 1227191769,
+      "type": "joined",
+      "who": {
+        "name": "Wiiking",
+        "steam": {
+          "id": "STEAM_0:0:7450234",
+          "id64": "76561197975166196",
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg",
+          "id3": "U:1:14900468"
+        },
+        "url": "https://api.etf2l.org/player/1389.json",
+        "country": "Sweden",
+        "id": 1389
+      },
+      "by": {
+        "id": 474,
+        "country": "Sweden",
+        "steam": {
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      }
+    },
+    {
+      "time": 1225926322,
+      "type": "left",
+      "who": {
+        "steam": {
+          "id3": "U:1:14900468",
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg",
+          "id64": "76561197975166196",
+          "id": "STEAM_0:0:7450234"
+        },
+        "url": "https://api.etf2l.org/player/1389.json",
+        "name": "Wiiking",
+        "country": "Sweden",
+        "id": 1389
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1223471914,
+      "who": {
+        "id": 1389,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:0:7450234",
+          "id3": "U:1:14900468",
+          "avatar": "https://avatars.akamai.steamstatic.com/50e74d87b235b65992a6be1eae109c680714c66b_full.jpg",
+          "id64": "76561197975166196"
+        },
+        "url": "https://api.etf2l.org/player/1389.json",
+        "name": "Wiiking"
+      },
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "name": "ulv",
+        "steam": {
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json"
+      }
+    },
+    {
+      "time": 1217789702,
+      "type": "joined",
+      "by": {
+        "country": "Sweden",
+        "id": 164,
+        "steam": {
+          "id64": "76561197961026100",
+          "id3": "U:1:760372",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id": "STEAM_0:0:380186"
+        },
+        "url": "https://api.etf2l.org/player/164.json",
+        "name": "san-"
+      },
+      "who": {
+        "name": "fdr",
+        "url": "https://api.etf2l.org/player/2210.json",
+        "steam": {
+          "id": "STEAM_0:1:380735",
+          "avatar": "https://avatars.akamai.steamstatic.com/6e391bf1b47529cfa73eeaf616d0413689adcde4_full.jpg",
+          "id3": "U:1:761471",
+          "id64": "76561197961027199"
+        },
+        "country": "Sweden",
+        "id": 2210
+      }
+    },
+    {
+      "by": {
+        "id": 164,
+        "country": "Sweden",
+        "name": "san-",
+        "steam": {
+          "id64": "76561197961026100",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372",
+          "id": "STEAM_0:0:380186"
+        },
+        "url": "https://api.etf2l.org/player/164.json"
+      },
+      "who": {
+        "name": "dojjan",
+        "url": "https://api.etf2l.org/player/1838.json",
+        "steam": {
+          "id": "STEAM_0:1:16172506",
+          "id3": "U:1:32345013",
+          "avatar": "https://avatars.akamai.steamstatic.com/be10efc12b3ac73518e74ccdf06ebdf537c911a8_full.jpg",
+          "id64": "76561197992610741"
+        },
+        "country": "Sweden",
+        "id": 1838
+      },
+      "time": 1217629712,
+      "type": "left"
+    },
+    {
+      "type": "joined",
+      "time": 1215339671,
+      "who": {
+        "id": 2174,
+        "country": "Sweden",
+        "name": "sQVeh?",
+        "steam": {
+          "id64": "76561197992994523",
+          "avatar": "https://avatars.akamai.steamstatic.com/fff5991ba196cd1ab1c9608ecf4c3af63bc07c04_full.jpg",
+          "id3": "U:1:32728795",
+          "id": "STEAM_0:1:16364397"
+        },
+        "url": "https://api.etf2l.org/player/2174.json"
+      }
+    },
+    {
+      "time": 1214778011,
+      "type": "joined",
+      "who": {
+        "id": 2039,
+        "country": "Sweden",
+        "name": "Bananen",
+        "steam": {
+          "id": "STEAM_0:1:3547543",
+          "avatar": "https://avatars.akamai.steamstatic.com/c7ce84fe8c2f1d680628fa93db46d1481ceeb3e7_full.jpg",
+          "id3": "U:1:7095087",
+          "id64": "76561197967360815"
+        },
+        "url": "https://api.etf2l.org/player/2039.json"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1214738160,
+      "who": {
+        "name": "crone",
+        "url": "https://api.etf2l.org/player/2034.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/adc9a9a2263c7c64c653fb57f44c9c1270d65b7f_full.jpg",
+          "id3": "U:1:32702394",
+          "id64": "76561197992968122",
+          "id": "STEAM_0:0:16351197"
+        },
+        "country": "Sweden",
+        "id": 2034
+      },
+      "by": {
+        "id": 474,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      }
+    },
+    {
+      "who": {
+        "country": "Sweden",
+        "id": 306,
+        "name": "Blojan",
+        "url": "https://api.etf2l.org/player/306.json",
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id3": "U:1:24110509",
+          "id64": "76561197984376237"
+        }
+      },
+      "type": "joined",
+      "time": 1214736424
+    },
+    {
+      "type": "left",
+      "time": 1214736402,
+      "who": {
+        "id": 306,
+        "country": "Sweden",
+        "url": "https://api.etf2l.org/player/306.json",
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "id64": "76561197984376237",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg"
+        },
+        "name": "Blojan"
+      },
+      "by": {
+        "name": "ulv",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id64": "76561197993084328",
+          "id": "STEAM_0:0:16409300"
+        },
+        "country": "Sweden",
+        "id": 474
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id64": "76561197993084328",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv",
+        "country": "Sweden",
+        "id": 474
+      },
+      "who": {
+        "name": "Blojan",
+        "steam": {
+          "id64": "76561197984376237",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id3": "U:1:24110509",
+          "id": "STEAM_0:1:12055254"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "country": "Sweden",
+        "id": 306
+      },
+      "type": "joined",
+      "time": 1214736402
+    },
+    {
+      "who": {
+        "name": "Blojan",
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "id64": "76561197984376237",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "country": "Sweden",
+        "id": 306
+      },
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "steam": {
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id": "STEAM_0:0:16409300"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv"
+      },
+      "type": "joined",
+      "time": 1214736387
+    },
+    {
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "name": "ulv",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600",
+          "id": "STEAM_0:0:16409300"
+        }
+      },
+      "who": {
+        "name": "Blojan",
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id64": "76561197984376237"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "country": "Sweden",
+        "id": 306
+      },
+      "type": "left",
+      "time": 1214736387
+    },
+    {
+      "time": 1214736379,
+      "type": "left",
+      "who": {
+        "steam": {
+          "id64": "76561197984376237",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id": "STEAM_0:1:12055254"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "name": "Blojan",
+        "id": 306,
+        "country": "Sweden"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        },
+        "name": "ulv",
+        "country": "Sweden",
+        "id": 474
+      }
+    },
+    {
+      "time": 1214736356,
+      "type": "joined",
+      "who": {
+        "id": 306,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:1:12055254",
+          "id3": "U:1:24110509",
+          "avatar": "https://avatars.akamai.steamstatic.com/f2de8a1b41fb251b5f5cb7c251d63ba603e57f01_full.jpg",
+          "id64": "76561197984376237"
+        },
+        "url": "https://api.etf2l.org/player/306.json",
+        "name": "Blojan"
+      },
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "name": "ulv",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id64": "76561197993084328"
+        },
+        "url": "https://api.etf2l.org/player/474.json"
+      }
+    },
+    {
+      "by": {
+        "country": "Sweden",
+        "id": 474,
+        "name": "ulv",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        }
+      },
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:16172506",
+          "avatar": "https://avatars.akamai.steamstatic.com/be10efc12b3ac73518e74ccdf06ebdf537c911a8_full.jpg",
+          "id3": "U:1:32345013",
+          "id64": "76561197992610741"
+        },
+        "url": "https://api.etf2l.org/player/1838.json",
+        "name": "dojjan",
+        "country": "Sweden",
+        "id": 1838
+      },
+      "time": 1214731516,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "id": 474,
+        "country": "Sweden",
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id64": "76561197993084328",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id": "STEAM_0:0:16409300"
+        },
+        "name": "ulv"
+      },
+      "who": {
+        "steam": {
+          "id64": "76561197961026100",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372",
+          "id": "STEAM_0:0:380186"
+        },
+        "url": "https://api.etf2l.org/player/164.json",
+        "name": "san-",
+        "id": 164,
+        "country": "Sweden"
+      },
+      "time": 1214731510,
+      "type": "joined"
+    },
+    {
+      "time": 1214730716,
+      "type": "left",
+      "who": {
+        "id": 951,
+        "country": "England",
+        "url": "https://api.etf2l.org/player/951.json",
+        "steam": {
+          "id": "STEAM_0:0:8934750",
+          "id3": "U:1:17869500",
+          "avatar": "https://avatars.akamai.steamstatic.com/44e9285d0f3c0c548a4f62ec9ecb9b96803d3d34_full.jpg",
+          "id64": "76561197978135228"
+        },
+        "name": "7"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/474.json",
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id64": "76561197993084328",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id3": "U:1:32818600"
+        },
+        "name": "ulv",
+        "id": 474,
+        "country": "Sweden"
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:16409300",
+          "id3": "U:1:32818600",
+          "avatar": "https://avatars.akamai.steamstatic.com/8da1ff6d0828f1b9eaaba2b377241fb6546e29e0_full.jpg",
+          "id64": "76561197993084328"
+        },
+        "url": "https://api.etf2l.org/player/474.json",
+        "name": "ulv",
+        "country": "Sweden",
+        "id": 474
+      },
+      "time": 1214678251,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "country": "England",
+        "id": 951,
+        "steam": {
+          "id": "STEAM_0:0:8934750",
+          "avatar": "https://avatars.akamai.steamstatic.com/44e9285d0f3c0c548a4f62ec9ecb9b96803d3d34_full.jpg",
+          "id3": "U:1:17869500",
+          "id64": "76561197978135228"
+        },
+        "url": "https://api.etf2l.org/player/951.json",
+        "name": "7"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/164.json",
+        "steam": {
+          "id": "STEAM_0:0:380186",
+          "avatar": "https://avatars.akamai.steamstatic.com/7286f8a8bc0fce2ddecb15fbbf32ae9f79014e67_full.jpg",
+          "id3": "U:1:760372",
+          "id64": "76561197961026100"
+        },
+        "name": "san-",
+        "country": "Sweden",
+        "id": 164
+      },
+      "time": 1214080714,
+      "type": "joined"
+    }
+  ]
+}

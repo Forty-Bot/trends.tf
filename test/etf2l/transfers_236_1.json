@@ -1,0 +1,229 @@
+{
+  "transfers": [
+    {
+      "type": "left",
+      "time": 1257783837,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:4997017",
+          "id3": "U:1:9994034",
+          "avatar": "https://avatars.akamai.steamstatic.com/8814af1b09f5625ee2a03d978018d5cabcebe011_full.jpg",
+          "id64": "76561197970259762"
+        },
+        "url": "https://api.etf2l.org/player/2166.json",
+        "name": "Runner Otrich",
+        "country": "Austria",
+        "id": 2166
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id64": "76561197995491766",
+          "id3": "U:1:35226038",
+          "avatar": "https://avatars.akamai.steamstatic.com/db9f073c9733b5e08fa97630c408666dac71d514_full.jpg",
+          "id": "STEAM_0:0:17613019"
+        },
+        "url": "https://api.etf2l.org/player/2371.json",
+        "name": "Tidus",
+        "id": 2371,
+        "country": "Austria"
+      },
+      "type": "left",
+      "time": 1245269493
+    },
+    {
+      "who": {
+        "country": "Germany",
+        "id": 2182,
+        "name": "FrEaK `-.*&#39;",
+        "steam": {
+          "id64": "76561197989762068",
+          "id3": "U:1:29496340",
+          "avatar": "https://avatars.akamai.steamstatic.com/7f308ace4396e47e22f43dde4a070b53291e16f5_full.jpg",
+          "id": "STEAM_0:0:14748170"
+        },
+        "url": "https://api.etf2l.org/player/2182.json"
+      },
+      "time": 1219502839,
+      "type": "left"
+    },
+    {
+      "who": {
+        "name": "Spirit",
+        "url": "https://api.etf2l.org/player/2404.json",
+        "steam": {
+          "id": "STEAM_0:1:10969778",
+          "id64": "76561197982205285",
+          "avatar": "https://avatars.akamai.steamstatic.com/f421df851234512c8f9a29ee5b144a3bd395141b_full.jpg",
+          "id3": "U:1:21939557"
+        },
+        "country": "Russia",
+        "id": 2404
+      },
+      "by": {
+        "id": 2166,
+        "country": "Austria",
+        "name": "Runner Otrich",
+        "steam": {
+          "id3": "U:1:9994034",
+          "avatar": "https://avatars.akamai.steamstatic.com/8814af1b09f5625ee2a03d978018d5cabcebe011_full.jpg",
+          "id64": "76561197970259762",
+          "id": "STEAM_0:0:4997017"
+        },
+        "url": "https://api.etf2l.org/player/2166.json"
+      },
+      "type": "joined",
+      "time": 1216596503
+    },
+    {
+      "who": {
+        "id": 1902,
+        "country": "International",
+        "steam": {
+          "id": "STEAM_0:1:18854995",
+          "id64": "76561197997975719",
+          "id3": "U:1:37709991",
+          "avatar": "https://avatars.akamai.steamstatic.com/85685c926aa94da07135a17c149aa7cd25555dee_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1902.json",
+        "name": "Shepherd"
+      },
+      "by": {
+        "id": 2166,
+        "country": "Austria",
+        "name": "Runner Otrich",
+        "steam": {
+          "id": "STEAM_0:0:4997017",
+          "id3": "U:1:9994034",
+          "avatar": "https://avatars.akamai.steamstatic.com/8814af1b09f5625ee2a03d978018d5cabcebe011_full.jpg",
+          "id64": "76561197970259762"
+        },
+        "url": "https://api.etf2l.org/player/2166.json"
+      },
+      "type": "joined",
+      "time": 1216331174
+    },
+    {
+      "who": {
+        "id": 1902,
+        "country": "International",
+        "steam": {
+          "id": "STEAM_0:1:18854995",
+          "id3": "U:1:37709991",
+          "avatar": "https://avatars.akamai.steamstatic.com/85685c926aa94da07135a17c149aa7cd25555dee_full.jpg",
+          "id64": "76561197997975719"
+        },
+        "url": "https://api.etf2l.org/player/1902.json",
+        "name": "Shepherd"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/2166.json",
+        "steam": {
+          "id3": "U:1:9994034",
+          "avatar": "https://avatars.akamai.steamstatic.com/8814af1b09f5625ee2a03d978018d5cabcebe011_full.jpg",
+          "id64": "76561197970259762",
+          "id": "STEAM_0:0:4997017"
+        },
+        "name": "Runner Otrich",
+        "id": 2166,
+        "country": "Austria"
+      },
+      "type": "left",
+      "time": 1216327379
+    },
+    {
+      "by": {
+        "country": "Austria",
+        "id": 2166,
+        "name": "Runner Otrich",
+        "steam": {
+          "id": "STEAM_0:0:4997017",
+          "id64": "76561197970259762",
+          "id3": "U:1:9994034",
+          "avatar": "https://avatars.akamai.steamstatic.com/8814af1b09f5625ee2a03d978018d5cabcebe011_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/2166.json"
+      },
+      "who": {
+        "id": 2371,
+        "country": "Austria",
+        "steam": {
+          "id": "STEAM_0:0:17613019",
+          "id64": "76561197995491766",
+          "id3": "U:1:35226038",
+          "avatar": "https://avatars.akamai.steamstatic.com/db9f073c9733b5e08fa97630c408666dac71d514_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/2371.json",
+        "name": "Tidus"
+      },
+      "time": 1216319224,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "name": "Runner Otrich",
+        "url": "https://api.etf2l.org/player/2166.json",
+        "steam": {
+          "id64": "76561197970259762",
+          "avatar": "https://avatars.akamai.steamstatic.com/8814af1b09f5625ee2a03d978018d5cabcebe011_full.jpg",
+          "id3": "U:1:9994034",
+          "id": "STEAM_0:0:4997017"
+        },
+        "country": "Austria",
+        "id": 2166
+      },
+      "who": {
+        "country": "Germany",
+        "id": 1947,
+        "steam": {
+          "id64": "76561197995508333",
+          "id3": "U:1:35242605",
+          "avatar": "https://avatars.akamai.steamstatic.com/4dd0bfa6826e03ffed3fd35ef58105055e121f54_full.jpg",
+          "id": "STEAM_0:1:17621302"
+        },
+        "url": "https://api.etf2l.org/player/1947.json",
+        "name": "addn"
+      },
+      "type": "left",
+      "time": 1216316691
+    },
+    {
+      "time": 1216316687,
+      "type": "joined",
+      "by": {
+        "id": 2166,
+        "country": "Austria",
+        "url": "https://api.etf2l.org/player/2166.json",
+        "steam": {
+          "id": "STEAM_0:0:4997017",
+          "id64": "76561197970259762",
+          "avatar": "https://avatars.akamai.steamstatic.com/8814af1b09f5625ee2a03d978018d5cabcebe011_full.jpg",
+          "id3": "U:1:9994034"
+        },
+        "name": "Runner Otrich"
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/1947.json",
+        "steam": {
+          "id": "STEAM_0:1:17621302",
+          "avatar": "https://avatars.akamai.steamstatic.com/4dd0bfa6826e03ffed3fd35ef58105055e121f54_full.jpg",
+          "id3": "U:1:35242605",
+          "id64": "76561197995508333"
+        },
+        "name": "addn",
+        "id": 1947,
+        "country": "Germany"
+      }
+    }
+  ],
+  "page": {
+    "total_pages": 1,
+    "page": 1,
+    "entries_per_page": 100
+  },
+  "status": {
+    "message": "OK",
+    "code": 200
+  }
+}

@@ -1,0 +1,409 @@
+{
+  "page": {
+    "entries_per_page": 100,
+    "total_pages": 1,
+    "page": 1
+  },
+  "transfers": [
+    {
+      "type": "left",
+      "time": 1217592686,
+      "who": {
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "id": "STEAM_0:1:17222528",
+          "id64": "76561197994710785",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id3": "U:1:34445057"
+        },
+        "name": "Ra1zen",
+        "id": 694,
+        "country": "Belgium"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1217592680,
+      "by": {
+        "country": "Belgium",
+        "id": 694,
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "id3": "U:1:34445057",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id64": "76561197994710785",
+          "id": "STEAM_0:1:17222528"
+        },
+        "name": "Ra1zen"
+      },
+      "who": {
+        "country": "Belgium",
+        "id": 2105,
+        "steam": {
+          "id": "STEAM_0:0:4778159",
+          "id3": "U:1:9556318",
+          "avatar": "https://avatars.akamai.steamstatic.com/5ff8f884ce7cb5b83b5a9363f373ad67e0383476_full.jpg",
+          "id64": "76561197969822046"
+        },
+        "url": "https://api.etf2l.org/player/2105.json",
+        "name": "REDEMPTOR"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1217592678,
+      "by": {
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "id64": "76561197994710785",
+          "id3": "U:1:34445057",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id": "STEAM_0:1:17222528"
+        },
+        "name": "Ra1zen",
+        "id": 694,
+        "country": "Belgium"
+      },
+      "who": {
+        "id": 706,
+        "country": "France",
+        "url": "https://api.etf2l.org/player/706.json",
+        "steam": {
+          "id": "STEAM_0:0:17339102",
+          "id64": "76561197994943932",
+          "avatar": "https://avatars.akamai.steamstatic.com/e7b9964e71d9fc0bfb0cc0d0f55483fed46a98b6_full.jpg",
+          "id3": "U:1:34678204"
+        },
+        "name": "Lully"
+      }
+    },
+    {
+      "who": {
+        "country": "France",
+        "id": 1011,
+        "name": "Gatsu",
+        "steam": {
+          "id": "STEAM_0:0:19079369",
+          "avatar": "https://avatars.akamai.steamstatic.com/468e6c0a33c8a772c173bf772776ad97509365a6_full.jpg",
+          "id3": "U:1:38158738",
+          "id64": "76561197998424466"
+        },
+        "url": "https://api.etf2l.org/player/1011.json"
+      },
+      "by": {
+        "country": "Belgium",
+        "id": 694,
+        "name": "Ra1zen",
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "id64": "76561197994710785",
+          "id3": "U:1:34445057",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id": "STEAM_0:1:17222528"
+        }
+      },
+      "time": 1217592676,
+      "type": "left"
+    },
+    {
+      "time": 1217592673,
+      "type": "left",
+      "by": {
+        "country": "Belgium",
+        "id": 694,
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "id64": "76561197994710785",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id3": "U:1:34445057",
+          "id": "STEAM_0:1:17222528"
+        },
+        "name": "Ra1zen"
+      },
+      "who": {
+        "country": "France",
+        "id": 2206,
+        "url": "https://api.etf2l.org/player/2206.json",
+        "steam": {
+          "id": "STEAM_0:1:5137927",
+          "id3": "U:1:10275855",
+          "avatar": "https://avatars.akamai.steamstatic.com/13981f1f4dacdf347db61777dd4677798aa27218_full.jpg",
+          "id64": "76561197970541583"
+        },
+        "name": "tsung"
+      }
+    },
+    {
+      "who": {
+        "country": "France",
+        "id": 171,
+        "name": "bun",
+        "url": "https://api.etf2l.org/player/171.json",
+        "steam": {
+          "id64": "76561197992928314",
+          "avatar": "https://avatars.akamai.steamstatic.com/b051d6fd213d14d82ac93c7b7d801be62ffac593_full.jpg",
+          "id3": "U:1:32662586",
+          "id": "STEAM_0:0:16331293"
+        }
+      },
+      "time": 1217592211,
+      "type": "left"
+    },
+    {
+      "who": {
+        "id": 95,
+        "country": "Belgium",
+        "name": "Epothon",
+        "url": "https://api.etf2l.org/player/95.json",
+        "steam": {
+          "id64": "76561197960375435",
+          "avatar": "https://avatars.akamai.steamstatic.com/950f9f3147d4c8530a5072825d01c34ee3f1afa1_full.jpg",
+          "id3": "U:1:109707",
+          "id": "STEAM_0:1:54853"
+        }
+      },
+      "time": 1215883381,
+      "type": "left"
+    },
+    {
+      "who": {
+        "id": 2206,
+        "country": "France",
+        "steam": {
+          "id64": "76561197970541583",
+          "avatar": "https://avatars.akamai.steamstatic.com/13981f1f4dacdf347db61777dd4677798aa27218_full.jpg",
+          "id3": "U:1:10275855",
+          "id": "STEAM_0:1:5137927"
+        },
+        "url": "https://api.etf2l.org/player/2206.json",
+        "name": "tsung"
+      },
+      "type": "joined",
+      "time": 1215463479
+    },
+    {
+      "type": "joined",
+      "time": 1215031053,
+      "who": {
+        "steam": {
+          "id64": "76561197969822046",
+          "id3": "U:1:9556318",
+          "avatar": "https://avatars.akamai.steamstatic.com/5ff8f884ce7cb5b83b5a9363f373ad67e0383476_full.jpg",
+          "id": "STEAM_0:0:4778159"
+        },
+        "url": "https://api.etf2l.org/player/2105.json",
+        "name": "REDEMPTOR",
+        "country": "Belgium",
+        "id": 2105
+      }
+    },
+    {
+      "time": 1215031020,
+      "type": "joined",
+      "who": {
+        "country": "France",
+        "id": 1011,
+        "name": "Gatsu",
+        "url": "https://api.etf2l.org/player/1011.json",
+        "steam": {
+          "id3": "U:1:38158738",
+          "avatar": "https://avatars.akamai.steamstatic.com/468e6c0a33c8a772c173bf772776ad97509365a6_full.jpg",
+          "id64": "76561197998424466",
+          "id": "STEAM_0:0:19079369"
+        }
+      }
+    },
+    {
+      "who": {
+        "country": "Germany",
+        "id": 726,
+        "url": "https://api.etf2l.org/player/726.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/8420dfb8b8b4ada8f01e6e9b9d1132872ebf6775_full.jpg",
+          "id3": "U:1:9074977",
+          "id64": "76561197969340705",
+          "id": "STEAM_0:1:4537488"
+        },
+        "name": "Acid Blood"
+      },
+      "by": {
+        "name": "Ra1zen",
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id3": "U:1:34445057",
+          "id64": "76561197994710785",
+          "id": "STEAM_0:1:17222528"
+        },
+        "id": 694,
+        "country": "Belgium"
+      },
+      "type": "left",
+      "time": 1215030342
+    },
+    {
+      "time": 1215030330,
+      "type": "joined",
+      "by": {
+        "id": 694,
+        "country": "Belgium",
+        "steam": {
+          "id": "STEAM_0:1:17222528",
+          "id3": "U:1:34445057",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id64": "76561197994710785"
+        },
+        "url": "https://api.etf2l.org/player/694.json",
+        "name": "Ra1zen"
+      },
+      "who": {
+        "country": "Germany",
+        "id": 726,
+        "name": "Acid Blood",
+        "url": "https://api.etf2l.org/player/726.json",
+        "steam": {
+          "id": "STEAM_0:1:4537488",
+          "id64": "76561197969340705",
+          "avatar": "https://avatars.akamai.steamstatic.com/8420dfb8b8b4ada8f01e6e9b9d1132872ebf6775_full.jpg",
+          "id3": "U:1:9074977"
+        }
+      }
+    },
+    {
+      "who": {
+        "id": 171,
+        "country": "France",
+        "url": "https://api.etf2l.org/player/171.json",
+        "steam": {
+          "id": "STEAM_0:0:16331293",
+          "id3": "U:1:32662586",
+          "avatar": "https://avatars.akamai.steamstatic.com/b051d6fd213d14d82ac93c7b7d801be62ffac593_full.jpg",
+          "id64": "76561197992928314"
+        },
+        "name": "bun"
+      },
+      "type": "joined",
+      "time": 1214482363
+    },
+    {
+      "time": 1214173834,
+      "type": "left",
+      "by": {
+        "id": 694,
+        "country": "Belgium",
+        "name": "Ra1zen",
+        "steam": {
+          "id64": "76561197994710785",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id3": "U:1:34445057",
+          "id": "STEAM_0:1:17222528"
+        },
+        "url": "https://api.etf2l.org/player/694.json"
+      },
+      "who": {
+        "country": "UnitedKingdom",
+        "id": 511,
+        "url": "https://api.etf2l.org/player/511.json",
+        "steam": {
+          "id": "STEAM_0:1:230389",
+          "id3": "U:1:460779",
+          "avatar": "https://avatars.akamai.steamstatic.com/d7d4aa4197a8146f4b37967d2127ffc3214b4a1d_full.jpg",
+          "id64": "76561197960726507"
+        },
+        "name": "Abomination"
+      }
+    },
+    {
+      "time": 1214173834,
+      "type": "joined",
+      "who": {
+        "name": "Ra1zen",
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "id64": "76561197994710785",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id3": "U:1:34445057",
+          "id": "STEAM_0:1:17222528"
+        },
+        "id": 694,
+        "country": "Belgium"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1214173813,
+      "by": {
+        "country": "Belgium",
+        "id": 694,
+        "url": "https://api.etf2l.org/player/694.json",
+        "steam": {
+          "id3": "U:1:34445057",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id64": "76561197994710785",
+          "id": "STEAM_0:1:17222528"
+        },
+        "name": "Ra1zen"
+      },
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:54853",
+          "id3": "U:1:109707",
+          "avatar": "https://avatars.akamai.steamstatic.com/950f9f3147d4c8530a5072825d01c34ee3f1afa1_full.jpg",
+          "id64": "76561197960375435"
+        },
+        "url": "https://api.etf2l.org/player/95.json",
+        "name": "Epothon",
+        "country": "Belgium",
+        "id": 95
+      }
+    },
+    {
+      "time": 1214173779,
+      "type": "joined",
+      "who": {
+        "name": "Abomination",
+        "url": "https://api.etf2l.org/player/511.json",
+        "steam": {
+          "id64": "76561197960726507",
+          "avatar": "https://avatars.akamai.steamstatic.com/d7d4aa4197a8146f4b37967d2127ffc3214b4a1d_full.jpg",
+          "id3": "U:1:460779",
+          "id": "STEAM_0:1:230389"
+        },
+        "country": "UnitedKingdom",
+        "id": 511
+      },
+      "by": {
+        "name": "Ra1zen",
+        "steam": {
+          "id64": "76561197994710785",
+          "id3": "U:1:34445057",
+          "avatar": "https://avatars.akamai.steamstatic.com/8a151fc005ef54a1606d33c3fe2965fd94675654_full.jpg",
+          "id": "STEAM_0:1:17222528"
+        },
+        "url": "https://api.etf2l.org/player/694.json",
+        "country": "Belgium",
+        "id": 694
+      }
+    },
+    {
+      "who": {
+        "country": "France",
+        "id": 706,
+        "name": "Lully",
+        "steam": {
+          "id3": "U:1:34678204",
+          "avatar": "https://avatars.akamai.steamstatic.com/e7b9964e71d9fc0bfb0cc0d0f55483fed46a98b6_full.jpg",
+          "id64": "76561197994943932",
+          "id": "STEAM_0:0:17339102"
+        },
+        "url": "https://api.etf2l.org/player/706.json"
+      },
+      "time": 1213704913,
+      "type": "joined"
+    }
+  ],
+  "status": {
+    "message": "OK",
+    "code": 200
+  }
+}

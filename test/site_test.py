@@ -105,6 +105,7 @@ def test_filter(client, logs, players, titles, maps, names, data):
             'highlander',
             'other',
         )))),
+        ('league', data.draw(st.sampled_from(('', 'etf2l')))),
         ('map', data.draw(substrings(st.sampled_from([''] + maps)))),
         ('title', data.draw(substrings(st.sampled_from([''] + titles)))),
         ('timezone', data.draw(st.timezone_keys())),

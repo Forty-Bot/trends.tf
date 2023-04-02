@@ -1,0 +1,644 @@
+{
+  "results": [
+    {
+      "clan2": {
+        "drop": 0,
+        "avatar": null,
+        "country": "Belgium",
+        "name": "beTeam",
+        "url": "https://api.etf2l.org/team/178",
+        "id": 178,
+        "steam": {
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg",
+          "group": null
+        }
+      },
+      "r1": 2,
+      "division": {
+        "name": null,
+        "tier": null,
+        "id": null,
+        "skill_contrib": null
+      },
+      "competition": {
+        "type": "6v6",
+        "category": "6v6 Cup",
+        "id": 4,
+        "url": "https://api.etf2l.org/competition/4.json",
+        "name": "ETF2L 3rd Cup"
+      },
+      "r2": 0,
+      "week": 1,
+      "maps": [
+        "cp_pro_granary",
+        "cp_badlands"
+      ],
+      "round": "Round 1",
+      "time": 1213291800,
+      "id": 1,
+      "clan1": {
+        "id": 160,
+        "steam": {
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg",
+          "group": null
+        },
+        "drop": 0,
+        "avatar": null,
+        "country": "International",
+        "name": "I am",
+        "url": "https://api.etf2l.org/team/160"
+      },
+      "defaultwin": 0
+    },
+    {
+      "defaultwin": 0,
+      "clan1": {
+        "steam": {
+          "group": "myt1nktf2",
+          "avatar": "http://etf2l.org/images/avatars/5577123ea85c0.jpg"
+        },
+        "id": 10,
+        "name": "$myT1nk",
+        "url": "https://api.etf2l.org/team/10",
+        "drop": 0,
+        "country": "Germany"
+      },
+      "id": 2,
+      "round": "Round 1",
+      "maps": [
+        "cp_pro_granary",
+        "cp_badlands"
+      ],
+      "week": 1,
+      "time": 1213553100,
+      "division": {
+        "name": null,
+        "tier": null,
+        "skill_contrib": null,
+        "id": null
+      },
+      "r1": 2,
+      "r2": 0,
+      "competition": {
+        "category": "6v6 Cup",
+        "type": "6v6",
+        "id": 4,
+        "name": "ETF2L 3rd Cup",
+        "url": "https://api.etf2l.org/competition/4.json"
+      },
+      "clan2": {
+        "avatar": null,
+        "country": "Sweden",
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/107",
+        "name": 961,
+        "id": 107,
+        "steam": {
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg",
+          "group": null
+        }
+      }
+    },
+    {
+      "maps": [
+        "cp_pro_granary",
+        "cp_badlands"
+      ],
+      "week": 1,
+      "round": "Round 1",
+      "time": null,
+      "id": 10,
+      "defaultwin": 0,
+      "clan1": {
+        "url": "https://api.etf2l.org/team/224",
+        "name": "something Different",
+        "country": "European",
+        "avatar": null,
+        "drop": 0,
+        "steam": {
+          "group": null,
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg"
+        },
+        "id": 224
+      },
+      "clan2": {
+        "country": "Russia",
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/137",
+        "name": "chaotic community | silver",
+        "id": 137,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/55771233d27c5.jpg",
+          "group": null
+        }
+      },
+      "r1": 0,
+      "division": {
+        "name": null,
+        "tier": null,
+        "id": null,
+        "skill_contrib": null
+      },
+      "competition": {
+        "name": "ETF2L 3rd Cup",
+        "url": "https://api.etf2l.org/competition/4.json",
+        "category": "6v6 Cup",
+        "type": "6v6",
+        "id": 4
+      },
+      "r2": 2
+    },
+    {
+      "clan1": {
+        "drop": 0,
+        "country": "Latvia",
+        "name": "FOG",
+        "url": "https://api.etf2l.org/team/120",
+        "id": 120,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/557712368a241.jpg",
+          "group": null
+        }
+      },
+      "defaultwin": 0,
+      "id": 34,
+      "time": 1212948000,
+      "round": "Round 1",
+      "week": 1,
+      "maps": [
+        "cp_badlands",
+        "cp_pro_granary"
+      ],
+      "r2": 0,
+      "competition": {
+        "url": "https://api.etf2l.org/competition/4.json",
+        "name": "ETF2L 3rd Cup",
+        "id": 4,
+        "type": "6v6",
+        "category": "6v6 Cup"
+      },
+      "r1": 2,
+      "division": {
+        "name": null,
+        "skill_contrib": null,
+        "id": null,
+        "tier": null
+      },
+      "clan2": {
+        "country": "UnitedKingdom",
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/35",
+        "name": "clanda",
+        "id": 35,
+        "steam": {
+          "group": "clanda",
+          "avatar": "http://etf2l.org/images/avatars/5f82e33b3484a.png"
+        }
+      }
+    },
+    {
+      "time": 1213117200,
+      "maps": [
+        "cp_pro_granary",
+        "cp_badlands"
+      ],
+      "week": 1,
+      "round": "Round 1",
+      "id": 51,
+      "defaultwin": 0,
+      "clan1": {
+        "country": "Germany",
+        "avatar": null,
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/236",
+        "name": "Elitedorfkiller",
+        "id": 236,
+        "steam": {
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg",
+          "group": null
+        }
+      },
+      "clan2": {
+        "drop": 0,
+        "country": "European",
+        "name": "CiC Core",
+        "url": "https://api.etf2l.org/team/227",
+        "id": 227,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/5577122a4ea8f.jpg",
+          "group": null
+        }
+      },
+      "competition": {
+        "id": 4,
+        "type": "6v6",
+        "category": "6v6 Cup",
+        "url": "https://api.etf2l.org/competition/4.json",
+        "name": "ETF2L 3rd Cup"
+      },
+      "r2": 0,
+      "division": {
+        "name": null,
+        "tier": null,
+        "skill_contrib": null,
+        "id": null
+      },
+      "r1": 2
+    },
+    {
+      "r2": 0,
+      "competition": {
+        "type": "6v6",
+        "category": "6v6 Cup",
+        "id": 4,
+        "url": "https://api.etf2l.org/competition/4.json",
+        "name": "ETF2L 3rd Cup"
+      },
+      "division": {
+        "name": null,
+        "id": null,
+        "skill_contrib": null,
+        "tier": null
+      },
+      "r1": 2,
+      "clan2": {
+        "id": 250,
+        "steam": {
+          "group": null,
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg"
+        },
+        "drop": 0,
+        "country": "Germany",
+        "avatar": null,
+        "name": "Special Marine Soldiers",
+        "url": "https://api.etf2l.org/team/250"
+      },
+      "clan1": {
+        "id": 56,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/5577123c6a0e9.jpg",
+          "group": null
+        },
+        "country": "Sweden",
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/56",
+        "name": "hb0da"
+      },
+      "defaultwin": 0,
+      "id": 53,
+      "time": 1213031700,
+      "round": "Round 1",
+      "week": 1,
+      "maps": [
+        "cp_pro_granary",
+        "cp_badlands"
+      ]
+    },
+    {
+      "id": 812,
+      "defaultwin": 0,
+      "clan1": {
+        "url": "https://api.etf2l.org/team/298",
+        "name": "Austria",
+        "country": "Austria",
+        "drop": 0,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/63261e20553ae.png",
+          "group": null
+        },
+        "id": 298
+      },
+      "time": 1215709200,
+      "maps": [
+        "cp_well",
+        "cp_pro_granary"
+      ],
+      "week": 6,
+      "round": "Playoffs",
+      "competition": {
+        "name": "Nations Cup: Group Phase",
+        "url": "https://api.etf2l.org/competition/7.json",
+        "category": "Nations' Cup",
+        "type": "National 6v6 Team",
+        "id": 7
+      },
+      "r2": 0,
+      "r1": 6,
+      "division": {
+        "tier": 1,
+        "skill_contrib": 24,
+        "id": 17,
+        "name": "Division 1"
+      },
+      "clan2": {
+        "drop": 0,
+        "country": "Hungary",
+        "name": "Hungary",
+        "url": "https://api.etf2l.org/team/347",
+        "id": 347,
+        "steam": {
+          "group": null,
+          "avatar": "http://etf2l.org/images/avatars/60998c75c065b.jpg"
+        }
+      }
+    },
+    {
+      "id": 7976,
+      "defaultwin": 0,
+      "clan1": {
+        "url": "https://api.etf2l.org/team/5338",
+        "name": "Unaimed",
+        "country": "Sweden",
+        "drop": 0,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/5577121687f26.jpg",
+          "group": null
+        },
+        "id": 5338
+      },
+      "maps": [
+        "cp_gravelpit",
+        "cp_badlands"
+      ],
+      "week": 1,
+      "round": "Round 1",
+      "time": 1227198600,
+      "division": {
+        "name": null,
+        "skill_contrib": null,
+        "id": null,
+        "tier": null
+      },
+      "r1": 2,
+      "competition": {
+        "name": "ETF2L 4th Cup",
+        "url": "https://api.etf2l.org/competition/17.json",
+        "category": "6v6 Cup",
+        "type": "6v6",
+        "id": 17
+      },
+      "r2": 0,
+      "clan2": {
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/557712087876d.jpg",
+          "group": "argohun"
+        },
+        "id": 5596,
+        "name": "Argo",
+        "url": "https://api.etf2l.org/team/5596",
+        "drop": 0,
+        "country": "Hungary"
+      }
+    },
+    {
+      "round": "Round 1",
+      "maps": [
+        "cp_gravelpit",
+        "cp_badlands"
+      ],
+      "week": 1,
+      "time": 1226858400,
+      "defaultwin": 0,
+      "clan1": {
+        "id": 5545,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/5577120c3a547.jpg",
+          "group": "P3T3R"
+        },
+        "country": "Germany",
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/5545",
+        "name": "P3T3R"
+      },
+      "id": 7977,
+      "clan2": {
+        "url": "https://api.etf2l.org/team/99",
+        "name": "klan:adjektiv",
+        "avatar": null,
+        "country": "Sweden",
+        "drop": 0,
+        "steam": {
+          "group": null,
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg"
+        },
+        "id": 99
+      },
+      "r1": 2,
+      "division": {
+        "skill_contrib": null,
+        "id": null,
+        "tier": null,
+        "name": null
+      },
+      "r2": 0,
+      "competition": {
+        "id": 17,
+        "category": "6v6 Cup",
+        "type": "6v6",
+        "name": "ETF2L 4th Cup",
+        "url": "https://api.etf2l.org/competition/17.json"
+      }
+    },
+    {
+      "id": 14773,
+      "clan1": {
+        "url": "https://api.etf2l.org/team/6979",
+        "name": "The Devils Rejects",
+        "country": "European",
+        "drop": 0,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/557711698226e.jpg",
+          "group": "GPillusions"
+        },
+        "id": 6979
+      },
+      "defaultwin": 0,
+      "week": null,
+      "maps": [
+        "cp_badlands",
+        "cp_gullywash"
+      ],
+      "round": null,
+      "time": 1256058000,
+      "division": {
+        "tier": null,
+        "id": null,
+        "skill_contrib": null,
+        "name": null
+      },
+      "r1": 2,
+      "competition": {
+        "name": "6v6 Ladder 2010",
+        "url": "https://api.etf2l.org/competition/41.json",
+        "id": 41,
+        "category": "Ladder",
+        "type": "6v6"
+      },
+      "r2": 0,
+      "clan2": {
+        "id": 254,
+        "steam": {
+          "group": null,
+          "avatar": "https://api.etf2l.org/img/unknown_avatar_full.jpg"
+        },
+        "avatar": null,
+        "country": "European",
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/254",
+        "name": "Fabulous"
+      }
+    },
+    {
+      "clan2": {
+        "url": "https://api.etf2l.org/team/13831",
+        "name": "yaay",
+        "country": "International",
+        "drop": 0,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/55770d68b1495.jpg",
+          "group": "perilous-tf2"
+        },
+        "id": 13831
+      },
+      "competition": {
+        "category": "1 Day Cup",
+        "type": "6v6",
+        "id": 118,
+        "name": "One Night Cup: Saffron Unlocks",
+        "url": "https://api.etf2l.org/competition/118.json"
+      },
+      "r2": 3,
+      "division": {
+        "name": null,
+        "skill_contrib": null,
+        "id": null,
+        "tier": null
+      },
+      "r1": 0,
+      "time": null,
+      "week": 2,
+      "maps": [
+        "cp_granary"
+      ],
+      "round": "Round 2",
+      "id": 34005,
+      "clan1": {
+        "drop": 0,
+        "country": "Sweden",
+        "name": "Moder",
+        "url": "https://api.etf2l.org/team/14099",
+        "id": 14099,
+        "steam": {
+          "group": null,
+          "avatar": "http://etf2l.org/images/avatars/55770d503d9b4.jpg"
+        }
+      },
+      "defaultwin": 0
+    },
+    {
+      "id": 51650,
+      "clan1": {
+        "id": 19957,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/55770a836fb1d.jpg",
+          "group": "ihaveanannuity"
+        },
+        "drop": 0,
+        "country": "International",
+        "name": "877-DEAD-NOW",
+        "url": "https://api.etf2l.org/team/19957"
+      },
+      "defaultwin": 1,
+      "week": 2,
+      "maps": [
+        "ctf_turbine_pro_rc4"
+      ],
+      "round": "Semi-Final",
+      "time": null,
+      "division": {
+        "skill_contrib": null,
+        "id": null,
+        "tier": null,
+        "name": null
+      },
+      "r1": 3,
+      "competition": {
+        "category": "Fun Cup",
+        "type": "6v6",
+        "id": 263,
+        "name": "Turbine Cup powered by Tt eSPORTS - Lower Bracket",
+        "url": "https://api.etf2l.org/competition/263.json"
+      },
+      "r2": 0,
+      "clan2": {
+        "name": "877-DEAD-NOW",
+        "url": "https://api.etf2l.org/team/19957",
+        "drop": 0,
+        "country": "International",
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/55770a836fb1d.jpg",
+          "group": "ihaveanannuity"
+        },
+        "id": 19957
+      }
+    },
+    {
+      "time": 1668284100,
+      "clan1": {
+        "name": "Better Coleslaw",
+        "id": 34969,
+        "url": "https://api.etf2l.org/team/34969",
+        "country": "UnitedStates",
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/6331c4fbb8739.png",
+          "group": null
+        },
+        "drop": 0
+      },
+      "competition": {
+        "url": "https://api.etf2l.org/competition/831.json",
+        "category": "6v6 Season",
+        "name": "6v6 Autumn 2022: Top Tiers",
+        "id": 831,
+        "type": "6on6"
+      },
+      "r2": 6,
+      "maps": [
+        "variable",
+        "variable"
+      ],
+      "clan2": {
+        "drop": 0,
+        "country": "Poland",
+        "steam": {
+          "group": null,
+          "avatar": "http://etf2l.org/images/avatars/612681667fa08.png"
+        },
+        "id": 15028,
+        "name": "RustyGrandpapas",
+        "url": "https://api.etf2l.org/team/15028"
+      },
+      "round": "Week 4",
+      "week": 4,
+      "defaultwin": 0,
+      "id": 84221,
+      "division": {
+        "tier": 1,
+        "skill_contrib": 22,
+        "name": "Division 1",
+        "id": 2796
+      },
+      "r1": 0
+    }
+  ],
+  "page": {
+    "page": 1,
+    "entries_per_page": "11",
+    "next_page_url": "https://api.etf2l.org/results/2.json",
+    "total_pages": 18
+  },
+  "status": {
+    "code": 200,
+    "message": "OK"
+  }
+}

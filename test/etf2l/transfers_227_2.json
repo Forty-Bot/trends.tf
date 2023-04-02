@@ -1,0 +1,2054 @@
+{
+  "page": {
+    "page": 2,
+    "total_pages": 2,
+    "entries_per_page": 100,
+    "previous_page_url": "https://api.etf2l.org/team/227/transfers/1.json?per_page=100"
+  },
+  "transfers": [
+    {
+      "time": 1269209161,
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/3621.json",
+        "steam": {
+          "id": "STEAM_0:0:3371628",
+          "id3": "U:1:6743256",
+          "avatar": "https://avatars.akamai.steamstatic.com/e0ad51c9da9c4113ed11bf9dc245e9289ceb4f26_full.jpg",
+          "id64": "76561197967008984"
+        },
+        "name": "AnroliF",
+        "country": "France",
+        "id": 3621
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop"
+      }
+    },
+    {
+      "time": 1269184885,
+      "type": "left",
+      "who": {
+        "steam": {
+          "id3": "U:1:4416804",
+          "avatar": "https://avatars.akamai.steamstatic.com/be1b291b8825d5b8346882fec478bdef6212770c_full.jpg",
+          "id64": "76561197964682532",
+          "id": "STEAM_0:0:2208402"
+        },
+        "url": "https://api.etf2l.org/player/5340.json",
+        "name": "Bryn",
+        "country": "Ireland",
+        "id": 5340
+      },
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        }
+      }
+    },
+    {
+      "time": 1268767348,
+      "type": "joined",
+      "who": {
+        "name": "thaldarin",
+        "url": "https://api.etf2l.org/player/2255.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/eb82114189972909db01fda25aec010e4bccaf5b_full.jpg",
+          "id3": "U:1:4901175",
+          "id64": "76561197965166903",
+          "id": "STEAM_0:1:2450587"
+        },
+        "country": "BosniaHerzegovina",
+        "id": 2255
+      }
+    },
+    {
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id": "STEAM_0:1:11703199"
+        }
+      },
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:19969945",
+          "id3": "U:1:39939891",
+          "avatar": "https://avatars.akamai.steamstatic.com/1b55d32292c4366a062cb94b1206cffbd3ae0584_full.jpg",
+          "id64": "76561198000205619"
+        },
+        "url": "https://api.etf2l.org/player/4663.json",
+        "name": "badnews",
+        "id": 4663,
+        "country": "Poland"
+      },
+      "type": "left",
+      "time": 1266788330
+    },
+    {
+      "who": {
+        "name": "Beevster",
+        "steam": {
+          "id3": "U:1:82117",
+          "avatar": "https://avatars.akamai.steamstatic.com/53e6e306065437d660daa81aadc15363a21d4a01_full.jpg",
+          "id64": "76561197960347845",
+          "id": "STEAM_0:1:41058"
+        },
+        "url": "https://api.etf2l.org/player/124.json",
+        "country": "England",
+        "id": 124
+      },
+      "type": "left",
+      "time": 1265323371
+    },
+    {
+      "time": 1265048548,
+      "type": "joined",
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/be1b291b8825d5b8346882fec478bdef6212770c_full.jpg",
+          "id3": "U:1:4416804",
+          "id64": "76561197964682532",
+          "id": "STEAM_0:0:2208402"
+        },
+        "url": "https://api.etf2l.org/player/5340.json",
+        "name": "Bryn",
+        "country": "Ireland",
+        "id": 5340
+      },
+      "by": {
+        "name": "Kop",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "country": "England",
+        "id": 1131
+      }
+    },
+    {
+      "who": {
+        "name": "TopGear",
+        "url": "https://api.etf2l.org/player/1707.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+          "id3": "U:1:8760",
+          "id64": "76561197960274488",
+          "id": "STEAM_0:0:4380"
+        },
+        "country": "UnitedKingdom",
+        "id": 1707
+      },
+      "time": 1264876197,
+      "type": "left"
+    },
+    {
+      "time": 1264857818,
+      "type": "joined",
+      "who": {
+        "name": "eoN^",
+        "url": "https://api.etf2l.org/player/3710.json",
+        "steam": {
+          "id64": "76561197972689777",
+          "avatar": "https://avatars.akamai.steamstatic.com/d956bc4013e234d687e01e910297bd80cde68345_full.jpg",
+          "id3": "U:1:12424049",
+          "id": "STEAM_0:1:6212024"
+        },
+        "country": "Scotland",
+        "id": 3710
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399"
+        },
+        "url": "https://api.etf2l.org/player/1131.json"
+      }
+    },
+    {
+      "who": {
+        "country": "England",
+        "id": 14789,
+        "url": "https://api.etf2l.org/player/14789.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/2e3bbad9b69fada820c1c837f05388242166a978_full.jpg",
+          "id3": "U:1:222986",
+          "id64": "76561197960488714",
+          "id": "STEAM_0:0:111493"
+        },
+        "name": "AuguR"
+      },
+      "by": {
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop",
+        "country": "England",
+        "id": 1131
+      },
+      "time": 1263857071,
+      "type": "joined"
+    },
+    {
+      "type": "joined",
+      "time": 1263815662,
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop",
+        "country": "England",
+        "id": 1131
+      },
+      "who": {
+        "name": "Beevster",
+        "steam": {
+          "id3": "U:1:82117",
+          "avatar": "https://avatars.akamai.steamstatic.com/53e6e306065437d660daa81aadc15363a21d4a01_full.jpg",
+          "id64": "76561197960347845",
+          "id": "STEAM_0:1:41058"
+        },
+        "url": "https://api.etf2l.org/player/124.json",
+        "id": 124,
+        "country": "England"
+      }
+    },
+    {
+      "time": 1263766400,
+      "type": "left",
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:5451021",
+          "id3": "U:1:10902043",
+          "avatar": "https://avatars.akamai.steamstatic.com/7952f20fa449f917c2ccc6f2f82cacf8a9cff01c_full.jpg",
+          "id64": "76561197971167771"
+        },
+        "url": "https://api.etf2l.org/player/288.json",
+        "name": "wai",
+        "country": "Wales",
+        "id": 288
+      }
+    },
+    {
+      "who": {
+        "id": 124,
+        "country": "England",
+        "name": "Beevster",
+        "url": "https://api.etf2l.org/player/124.json",
+        "steam": {
+          "id64": "76561197960347845",
+          "avatar": "https://avatars.akamai.steamstatic.com/53e6e306065437d660daa81aadc15363a21d4a01_full.jpg",
+          "id3": "U:1:82117",
+          "id": "STEAM_0:1:41058"
+        }
+      },
+      "type": "left",
+      "time": 1261869550
+    },
+    {
+      "who": {
+        "name": "Bryn",
+        "url": "https://api.etf2l.org/player/5340.json",
+        "steam": {
+          "id": "STEAM_0:0:2208402",
+          "id64": "76561197964682532",
+          "id3": "U:1:4416804",
+          "avatar": "https://avatars.akamai.steamstatic.com/be1b291b8825d5b8346882fec478bdef6212770c_full.jpg"
+        },
+        "country": "Ireland",
+        "id": 5340
+      },
+      "time": 1260916327,
+      "type": "left"
+    },
+    {
+      "time": 1260835587,
+      "type": "joined",
+      "who": {
+        "country": "UnitedKingdom",
+        "id": 1707,
+        "name": "TopGear",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+          "id3": "U:1:8760",
+          "id64": "76561197960274488",
+          "id": "STEAM_0:0:4380"
+        },
+        "url": "https://api.etf2l.org/player/1707.json"
+      },
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop"
+      }
+    },
+    {
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        },
+        "name": "Kop"
+      },
+      "who": {
+        "country": "Poland",
+        "id": 4663,
+        "name": "badnews",
+        "steam": {
+          "id64": "76561198000205619",
+          "id3": "U:1:39939891",
+          "avatar": "https://avatars.akamai.steamstatic.com/1b55d32292c4366a062cb94b1206cffbd3ae0584_full.jpg",
+          "id": "STEAM_0:1:19969945"
+        },
+        "url": "https://api.etf2l.org/player/4663.json"
+      },
+      "type": "joined",
+      "time": 1260749582
+    },
+    {
+      "time": 1260749555,
+      "type": "joined",
+      "by": {
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "country": "England",
+        "id": 1131
+      },
+      "who": {
+        "id": 288,
+        "country": "Wales",
+        "name": "wai",
+        "steam": {
+          "id": "STEAM_0:1:5451021",
+          "id3": "U:1:10902043",
+          "avatar": "https://avatars.akamai.steamstatic.com/7952f20fa449f917c2ccc6f2f82cacf8a9cff01c_full.jpg",
+          "id64": "76561197971167771"
+        },
+        "url": "https://api.etf2l.org/player/288.json"
+      }
+    },
+    {
+      "time": 1260639100,
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:15764696",
+          "id3": "U:1:31529392",
+          "avatar": "https://avatars.akamai.steamstatic.com/584a8eb8e74d8dfa8d8f2bf3b517e43c022d5726_full.jpg",
+          "id64": "76561197991795120"
+        },
+        "url": "https://api.etf2l.org/player/1617.json",
+        "name": "Nymthae",
+        "id": 1617,
+        "country": "England"
+      },
+      "by": {
+        "name": "Kop",
+        "steam": {
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "country": "England",
+        "id": 1131
+      }
+    },
+    {
+      "who": {
+        "id": 124,
+        "country": "England",
+        "name": "Beevster",
+        "steam": {
+          "id": "STEAM_0:1:41058",
+          "id64": "76561197960347845",
+          "avatar": "https://avatars.akamai.steamstatic.com/53e6e306065437d660daa81aadc15363a21d4a01_full.jpg",
+          "id3": "U:1:82117"
+        },
+        "url": "https://api.etf2l.org/player/124.json"
+      },
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        }
+      },
+      "time": 1260315634,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "id": 856,
+        "country": "England",
+        "name": "Fish",
+        "steam": {
+          "id": "STEAM_0:0:194168",
+          "avatar": "https://avatars.akamai.steamstatic.com/3023e43df6a37e11e2792ef1e5456000bffc3394_full.jpg",
+          "id3": "U:1:388336",
+          "id64": "76561197960654064"
+        },
+        "url": "https://api.etf2l.org/player/856.json"
+      },
+      "type": "left",
+      "time": 1259791371
+    },
+    {
+      "type": "left",
+      "time": 1259161707,
+      "who": {
+        "country": "Netherlands",
+        "id": 1595,
+        "name": "Jonni",
+        "url": "https://api.etf2l.org/player/1595.json",
+        "steam": {
+          "id": "STEAM_0:0:17634341",
+          "id64": "76561197995534410",
+          "id3": "U:1:35268682",
+          "avatar": "https://avatars.akamai.steamstatic.com/d31b1aef35033205d096280570b99a5d3c06cea4_full.jpg"
+        }
+      },
+      "by": {
+        "name": "Kop",
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "id": 1131,
+        "country": "England"
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg"
+        },
+        "name": "Kop",
+        "country": "England",
+        "id": 1131
+      },
+      "who": {
+        "id": 3405,
+        "country": "Belgium",
+        "name": "Contra",
+        "url": "https://api.etf2l.org/player/3405.json",
+        "steam": {
+          "id64": "76561197995216378",
+          "avatar": "https://avatars.akamai.steamstatic.com/e8e0ae92fc5338895b27c50d0805346c6d98a8a5_full.jpg",
+          "id3": "U:1:34950650",
+          "id": "STEAM_0:0:17475325"
+        }
+      },
+      "type": "joined",
+      "time": 1258635846
+    },
+    {
+      "type": "left",
+      "time": 1258029292,
+      "who": {
+        "id": 3715,
+        "country": "Switzerland",
+        "url": "https://api.etf2l.org/player/3715.json",
+        "steam": {
+          "id64": "76561197983403465",
+          "avatar": "https://avatars.akamai.steamstatic.com/7f9ca6f49e6c5c332328ed404b8e6ad821753b2b_full.jpg",
+          "id3": "U:1:23137737",
+          "id": "STEAM_0:1:11568868"
+        },
+        "name": "hokka"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1257805649,
+      "who": {
+        "country": "France",
+        "id": 5712,
+        "steam": {
+          "id": "STEAM_0:0:17965237",
+          "avatar": "https://avatars.akamai.steamstatic.com/d4f0be0a493b6e42d0f59f15ea0f42111987c88e_full.jpg",
+          "id3": "U:1:35930474",
+          "id64": "76561197996196202"
+        },
+        "url": "https://api.etf2l.org/player/5712.json",
+        "name": "Stm !"
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/53e6e306065437d660daa81aadc15363a21d4a01_full.jpg",
+          "id3": "U:1:82117",
+          "id64": "76561197960347845",
+          "id": "STEAM_0:1:41058"
+        },
+        "url": "https://api.etf2l.org/player/124.json",
+        "name": "Beevster",
+        "country": "England",
+        "id": 124
+      },
+      "type": "left",
+      "time": 1257801068
+    },
+    {
+      "time": 1256395383,
+      "type": "joined",
+      "who": {
+        "name": "Stm !",
+        "steam": {
+          "id": "STEAM_0:0:17965237",
+          "id64": "76561197996196202",
+          "id3": "U:1:35930474",
+          "avatar": "https://avatars.akamai.steamstatic.com/d4f0be0a493b6e42d0f59f15ea0f42111987c88e_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/5712.json",
+        "country": "France",
+        "id": 5712
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:17634341",
+          "id64": "76561197995534410",
+          "id3": "U:1:35268682",
+          "avatar": "https://avatars.akamai.steamstatic.com/d31b1aef35033205d096280570b99a5d3c06cea4_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1595.json",
+        "name": "Jonni",
+        "id": 1595,
+        "country": "Netherlands"
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json"
+      },
+      "time": 1256214845,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "name": "hokka",
+        "url": "https://api.etf2l.org/player/3715.json",
+        "steam": {
+          "id64": "76561197983403465",
+          "id3": "U:1:23137737",
+          "avatar": "https://avatars.akamai.steamstatic.com/7f9ca6f49e6c5c332328ed404b8e6ad821753b2b_full.jpg",
+          "id": "STEAM_0:1:11568868"
+        },
+        "country": "Switzerland",
+        "id": 3715
+      },
+      "time": 1254431375,
+      "type": "joined"
+    },
+    {
+      "type": "left",
+      "time": 1253959282,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:12492211",
+          "id64": "76561197985250151",
+          "id3": "U:1:24984423",
+          "avatar": "https://avatars.akamai.steamstatic.com/80107390f7732ea0336be7219396af4004d5aab9_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/380.json",
+        "name": "gryzor",
+        "id": 380,
+        "country": "Sweden"
+      },
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1250093808,
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop",
+        "id": 1131,
+        "country": "England"
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/1132.json",
+        "steam": {
+          "id": "STEAM_0:1:15195211",
+          "id64": "76561197990656151",
+          "avatar": "https://avatars.akamai.steamstatic.com/51bbb00275026fdf57d79cb764c4dab343c3446c_full.jpg",
+          "id3": "U:1:30390423"
+        },
+        "name": "[CiC]MadGeorge",
+        "country": "European",
+        "id": 1132
+      }
+    },
+    {
+      "time": 1250093805,
+      "type": "left",
+      "who": {
+        "name": "yoshiarms",
+        "url": "https://api.etf2l.org/player/2027.json",
+        "steam": {
+          "id": "STEAM_0:1:328703",
+          "id3": "U:1:657407",
+          "avatar": "https://avatars.akamai.steamstatic.com/57ede8f4aa538ca7e1559569cd2a158e8271ffa6_full.jpg",
+          "id64": "76561197960923135"
+        },
+        "country": "England",
+        "id": 2027
+      },
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "name": "Kop",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json"
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/5375.json",
+        "steam": {
+          "id": "STEAM_0:1:4829984",
+          "avatar": "https://avatars.akamai.steamstatic.com/91185d0d8b80a3715dc9615a79735749fb3c1904_full.jpg",
+          "id3": "U:1:9659969",
+          "id64": "76561197969925697"
+        },
+        "name": "weissberv",
+        "country": "England",
+        "id": 5375
+      },
+      "by": {
+        "name": "Kop",
+        "steam": {
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "id": 1131,
+        "country": "England"
+      },
+      "time": 1250093248,
+      "type": "left"
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/1831.json",
+        "steam": {
+          "id": "STEAM_0:1:398567",
+          "id3": "U:1:797135",
+          "avatar": "https://avatars.akamai.steamstatic.com/c21651922d93d3baa36804db2d2917f4e20b7341_full.jpg",
+          "id64": "76561197961062863"
+        },
+        "name": "Ruzyho",
+        "id": 1831,
+        "country": "England"
+      },
+      "by": {
+        "name": "Kop",
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "id": 1131,
+        "country": "England"
+      },
+      "time": 1250093215,
+      "type": "left"
+    },
+    {
+      "by": {
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop",
+        "country": "England",
+        "id": 1131
+      },
+      "who": {
+        "id": 1226,
+        "country": "England",
+        "steam": {
+          "id3": "U:1:186211",
+          "avatar": "https://avatars.akamai.steamstatic.com/8837d0ddec5c791836c33715222c236132c7a734_full.jpg",
+          "id64": "76561197960451939",
+          "id": "STEAM_0:1:93105"
+        },
+        "url": "https://api.etf2l.org/player/1226.json",
+        "name": "Rainman"
+      },
+      "time": 1250093174,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1250093147,
+      "who": {
+        "country": "Finland",
+        "id": 4853,
+        "name": "OzO",
+        "steam": {
+          "id": "STEAM_0:0:34665",
+          "id64": "76561197960335058",
+          "id3": "U:1:69330",
+          "avatar": "https://avatars.akamai.steamstatic.com/466947398cd88a10d937d44cd574c6f1dd9273de_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/4853.json"
+      },
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127"
+        }
+      }
+    },
+    {
+      "by": {
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id": "STEAM_0:1:11703199"
+        },
+        "id": 1131,
+        "country": "England"
+      },
+      "who": {
+        "steam": {
+          "id64": "76561197960528456",
+          "avatar": "https://avatars.akamai.steamstatic.com/2112f55bbe09ceeefb13d3452f15c9b16f0d4bb9_full.jpg",
+          "id3": "U:1:262728",
+          "id": "STEAM_0:0:131364"
+        },
+        "url": "https://api.etf2l.org/player/3678.json",
+        "name": "Oliz",
+        "country": "Sweden",
+        "id": 3678
+      },
+      "type": "left",
+      "time": 1250093091
+    },
+    {
+      "type": "left",
+      "time": 1250093064,
+      "who": {
+        "id": 1139,
+        "country": "UnitedKingdom",
+        "name": "Nagash",
+        "url": "https://api.etf2l.org/player/1139.json",
+        "steam": {
+          "id": "STEAM_0:0:128948",
+          "id3": "U:1:257896",
+          "avatar": "https://avatars.akamai.steamstatic.com/3dd53863ac6192d9ee4b67059bf99a82f56310a6_full.jpg",
+          "id64": "76561197960523624"
+        }
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json"
+      }
+    },
+    {
+      "time": 1250093024,
+      "type": "left",
+      "who": {
+        "country": "England",
+        "id": 9971,
+        "url": "https://api.etf2l.org/player/9971.json",
+        "steam": {
+          "id": "STEAM_0:0:2165875",
+          "id64": "76561197964597478",
+          "id3": "U:1:4331750",
+          "avatar": "https://avatars.akamai.steamstatic.com/79d3fe5839617eb83a9661071ed021dd56ac8a5b_full.jpg"
+        },
+        "name": "emmz"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg"
+        },
+        "name": "Kop",
+        "country": "England",
+        "id": 1131
+      }
+    },
+    {
+      "type": "left",
+      "time": 1250092988,
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop",
+        "id": 1131,
+        "country": "England"
+      },
+      "who": {
+        "id": 1234,
+        "country": "England",
+        "name": "dethmonkee",
+        "url": "https://api.etf2l.org/player/1234.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/2b7f905f3f82ba22fced64f418487ced5f281015_full.jpg",
+          "id3": "U:1:8592639",
+          "id64": "76561197968858367",
+          "id": "STEAM_0:1:4296319"
+        }
+      }
+    },
+    {
+      "type": "left",
+      "time": 1250092949,
+      "who": {
+        "name": "Crunchy",
+        "steam": {
+          "id64": "76561197988901744",
+          "avatar": "https://avatars.akamai.steamstatic.com/f05078aef280b9317cafb9c8c69accaf68b28da3_full.jpg",
+          "id3": "U:1:28636016",
+          "id": "STEAM_0:0:14318008"
+        },
+        "url": "https://api.etf2l.org/player/3071.json",
+        "id": 3071,
+        "country": "Wales"
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127"
+        },
+        "name": "Kop"
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/1915.json",
+        "steam": {
+          "id64": "76561197995220219",
+          "avatar": "https://avatars.akamai.steamstatic.com/889ca3f7881028d4b6b47bc912101a5a2870b0d1_full.jpg",
+          "id3": "U:1:34954491",
+          "id": "STEAM_0:1:17477245"
+        },
+        "name": "Bamm.",
+        "country": "Sweden",
+        "id": 1915
+      },
+      "by": {
+        "name": "Kop",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "id": 1131,
+        "country": "England"
+      },
+      "type": "left",
+      "time": 1250092932
+    },
+    {
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/ee742c1b9df0cdb8f4ffc1bfa345ae6aa8b15ceb_full.jpg",
+          "id3": "U:1:224226",
+          "id64": "76561197960489954",
+          "id": "STEAM_0:0:112113"
+        },
+        "url": "https://api.etf2l.org/player/1834.json",
+        "name": "redned",
+        "id": 1834,
+        "country": "England"
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop"
+      },
+      "time": 1250092661,
+      "type": "left"
+    },
+    {
+      "time": 1245798773,
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/380.json",
+        "steam": {
+          "id": "STEAM_0:1:12492211",
+          "avatar": "https://avatars.akamai.steamstatic.com/80107390f7732ea0336be7219396af4004d5aab9_full.jpg",
+          "id3": "U:1:24984423",
+          "id64": "76561197985250151"
+        },
+        "name": "gryzor",
+        "id": 380,
+        "country": "Sweden"
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/51bbb00275026fdf57d79cb764c4dab343c3446c_full.jpg",
+          "id3": "U:1:30390423",
+          "id64": "76561197990656151",
+          "id": "STEAM_0:1:15195211"
+        },
+        "url": "https://api.etf2l.org/player/1132.json",
+        "name": "[CiC]MadGeorge",
+        "id": 1132,
+        "country": "European"
+      },
+      "time": 1244931371,
+      "type": "joined"
+    },
+    {
+      "type": "joined",
+      "time": 1244931083,
+      "who": {
+        "country": "England",
+        "id": 9971,
+        "url": "https://api.etf2l.org/player/9971.json",
+        "steam": {
+          "id": "STEAM_0:0:2165875",
+          "id64": "76561197964597478",
+          "id3": "U:1:4331750",
+          "avatar": "https://avatars.akamai.steamstatic.com/79d3fe5839617eb83a9661071ed021dd56ac8a5b_full.jpg"
+        },
+        "name": "emmz"
+      }
+    },
+    {
+      "who": {
+        "country": "Sweden",
+        "id": 1915,
+        "steam": {
+          "id": "STEAM_0:1:17477245",
+          "id64": "76561197995220219",
+          "avatar": "https://avatars.akamai.steamstatic.com/889ca3f7881028d4b6b47bc912101a5a2870b0d1_full.jpg",
+          "id3": "U:1:34954491"
+        },
+        "url": "https://api.etf2l.org/player/1915.json",
+        "name": "Bamm."
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        }
+      },
+      "time": 1243852867,
+      "type": "joined"
+    },
+    {
+      "time": 1242862615,
+      "type": "left",
+      "who": {
+        "id": 1915,
+        "country": "Sweden",
+        "steam": {
+          "id": "STEAM_0:1:17477245",
+          "id64": "76561197995220219",
+          "avatar": "https://avatars.akamai.steamstatic.com/889ca3f7881028d4b6b47bc912101a5a2870b0d1_full.jpg",
+          "id3": "U:1:34954491"
+        },
+        "url": "https://api.etf2l.org/player/1915.json",
+        "name": "Bamm."
+      }
+    },
+    {
+      "time": 1242597412,
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id64": "76561197970329841",
+          "id3": "U:1:10064113",
+          "avatar": "https://avatars.akamai.steamstatic.com/83251629c95211ad8f12b4e80ea9eeef5902a527_full.jpg",
+          "id": "STEAM_0:1:5032056"
+        },
+        "url": "https://api.etf2l.org/player/9329.json",
+        "name": "Serious Cat",
+        "id": 9329,
+        "country": "Netherlands"
+      }
+    },
+    {
+      "time": 1242154462,
+      "type": "joined",
+      "who": {
+        "name": "Crunchy",
+        "url": "https://api.etf2l.org/player/3071.json",
+        "steam": {
+          "id64": "76561197988901744",
+          "id3": "U:1:28636016",
+          "avatar": "https://avatars.akamai.steamstatic.com/f05078aef280b9317cafb9c8c69accaf68b28da3_full.jpg",
+          "id": "STEAM_0:0:14318008"
+        },
+        "country": "Wales",
+        "id": 3071
+      }
+    },
+    {
+      "time": 1240399166,
+      "type": "joined",
+      "by": {
+        "name": "Kop",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "id": 1131,
+        "country": "England"
+      },
+      "who": {
+        "country": "England",
+        "id": 124,
+        "url": "https://api.etf2l.org/player/124.json",
+        "steam": {
+          "id": "STEAM_0:1:41058",
+          "id64": "76561197960347845",
+          "id3": "U:1:82117",
+          "avatar": "https://avatars.akamai.steamstatic.com/53e6e306065437d660daa81aadc15363a21d4a01_full.jpg"
+        },
+        "name": "Beevster"
+      }
+    },
+    {
+      "who": {
+        "country": "Sweden",
+        "id": 1915,
+        "url": "https://api.etf2l.org/player/1915.json",
+        "steam": {
+          "id": "STEAM_0:1:17477245",
+          "id64": "76561197995220219",
+          "avatar": "https://avatars.akamai.steamstatic.com/889ca3f7881028d4b6b47bc912101a5a2870b0d1_full.jpg",
+          "id3": "U:1:34954491"
+        },
+        "name": "Bamm."
+      },
+      "time": 1238970324,
+      "type": "joined"
+    },
+    {
+      "type": "joined",
+      "time": 1237925049,
+      "who": {
+        "country": "England",
+        "id": 856,
+        "name": "Fish",
+        "steam": {
+          "id": "STEAM_0:0:194168",
+          "id64": "76561197960654064",
+          "avatar": "https://avatars.akamai.steamstatic.com/3023e43df6a37e11e2792ef1e5456000bffc3394_full.jpg",
+          "id3": "U:1:388336"
+        },
+        "url": "https://api.etf2l.org/player/856.json"
+      }
+    },
+    {
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        }
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/3219.json",
+        "steam": {
+          "id": "STEAM_0:0:124918",
+          "id64": "76561197960515564",
+          "avatar": "https://avatars.akamai.steamstatic.com/bb0f75c91f7fcc45f550e85aa765167e8ea4a1a4_full.jpg",
+          "id3": "U:1:249836"
+        },
+        "name": "Ventral",
+        "id": 3219,
+        "country": "England"
+      },
+      "time": 1237922486,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "country": "BosniaHerzegovina",
+        "id": 2255,
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/eb82114189972909db01fda25aec010e4bccaf5b_full.jpg",
+          "id3": "U:1:4901175",
+          "id64": "76561197965166903",
+          "id": "STEAM_0:1:2450587"
+        },
+        "url": "https://api.etf2l.org/player/2255.json",
+        "name": "thaldarin"
+      },
+      "time": 1237766635,
+      "type": "left"
+    },
+    {
+      "time": 1237765744,
+      "type": "left",
+      "who": {
+        "country": "England",
+        "id": 856,
+        "steam": {
+          "id": "STEAM_0:0:194168",
+          "id3": "U:1:388336",
+          "avatar": "https://avatars.akamai.steamstatic.com/3023e43df6a37e11e2792ef1e5456000bffc3394_full.jpg",
+          "id64": "76561197960654064"
+        },
+        "url": "https://api.etf2l.org/player/856.json",
+        "name": "Fish"
+      }
+    },
+    {
+      "time": 1236852521,
+      "type": "left",
+      "who": {
+        "name": "schizodefective",
+        "steam": {
+          "id64": "76561197968513330",
+          "id3": "U:1:8247602",
+          "avatar": "https://avatars.akamai.steamstatic.com/c54df4efa85da91c3eca0ba00a7df9c447b2fa96_full.jpg",
+          "id": "STEAM_0:0:4123801"
+        },
+        "url": "https://api.etf2l.org/player/1835.json",
+        "id": 1835,
+        "country": "England"
+      }
+    },
+    {
+      "time": 1235506126,
+      "type": "joined",
+      "who": {
+        "id": 3834,
+        "country": "Scotland",
+        "url": "https://api.etf2l.org/player/3834.json",
+        "steam": {
+          "id": "STEAM_0:1:647773",
+          "id3": "U:1:1295547",
+          "avatar": "https://avatars.akamai.steamstatic.com/b7a280ce4f80cd192047bfd9f50293900e00aa2b_full.jpg",
+          "id64": "76561197961561275"
+        },
+        "name": "frymaster"
+      }
+    },
+    {
+      "who": {
+        "id": 2255,
+        "country": "BosniaHerzegovina",
+        "name": "thaldarin",
+        "url": "https://api.etf2l.org/player/2255.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/eb82114189972909db01fda25aec010e4bccaf5b_full.jpg",
+          "id3": "U:1:4901175",
+          "id64": "76561197965166903",
+          "id": "STEAM_0:1:2450587"
+        }
+      },
+      "time": 1235130159,
+      "type": "joined"
+    },
+    {
+      "time": 1234825786,
+      "type": "left",
+      "who": {
+        "name": "thaldarin",
+        "url": "https://api.etf2l.org/player/2255.json",
+        "steam": {
+          "id64": "76561197965166903",
+          "avatar": "https://avatars.akamai.steamstatic.com/eb82114189972909db01fda25aec010e4bccaf5b_full.jpg",
+          "id3": "U:1:4901175",
+          "id": "STEAM_0:1:2450587"
+        },
+        "id": 2255,
+        "country": "BosniaHerzegovina"
+      }
+    },
+    {
+      "who": {
+        "name": "weissberv",
+        "steam": {
+          "id3": "U:1:9659969",
+          "avatar": "https://avatars.akamai.steamstatic.com/91185d0d8b80a3715dc9615a79735749fb3c1904_full.jpg",
+          "id64": "76561197969925697",
+          "id": "STEAM_0:1:4829984"
+        },
+        "url": "https://api.etf2l.org/player/5375.json",
+        "country": "England",
+        "id": 5375
+      },
+      "time": 1234305216,
+      "type": "joined"
+    },
+    {
+      "type": "left",
+      "time": 1234304796,
+      "by": {
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop",
+        "id": 1131,
+        "country": "England"
+      },
+      "who": {
+        "country": "UnitedKingdom",
+        "id": 6964,
+        "url": "https://api.etf2l.org/player/6964.json",
+        "steam": {
+          "id3": null,
+          "avatar": null,
+          "id64": "76561197960265728",
+          "id": "STEAM_0:0:0"
+        },
+        "name": "Weisslive"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1234304668,
+      "who": {
+        "id": 6964,
+        "country": "UnitedKingdom",
+        "steam": {
+          "id3": null,
+          "avatar": null,
+          "id64": "76561197960265728",
+          "id": "STEAM_0:0:0"
+        },
+        "url": "https://api.etf2l.org/player/6964.json",
+        "name": "Weisslive"
+      }
+    },
+    {
+      "who": {
+        "id": 5375,
+        "country": "England",
+        "url": "https://api.etf2l.org/player/5375.json",
+        "steam": {
+          "id": "STEAM_0:1:4829984",
+          "id64": "76561197969925697",
+          "id3": "U:1:9659969",
+          "avatar": "https://avatars.akamai.steamstatic.com/91185d0d8b80a3715dc9615a79735749fb3c1904_full.jpg"
+        },
+        "name": "weissberv"
+      },
+      "type": "left",
+      "time": 1234304231
+    },
+    {
+      "who": {
+        "country": "England",
+        "id": 5375,
+        "name": "weissberv",
+        "url": "https://api.etf2l.org/player/5375.json",
+        "steam": {
+          "id": "STEAM_0:1:4829984",
+          "id3": "U:1:9659969",
+          "avatar": "https://avatars.akamai.steamstatic.com/91185d0d8b80a3715dc9615a79735749fb3c1904_full.jpg",
+          "id64": "76561197969925697"
+        }
+      },
+      "time": 1234303887,
+      "type": "joined"
+    },
+    {
+      "time": 1233613482,
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:128948",
+          "avatar": "https://avatars.akamai.steamstatic.com/3dd53863ac6192d9ee4b67059bf99a82f56310a6_full.jpg",
+          "id3": "U:1:257896",
+          "id64": "76561197960523624"
+        },
+        "url": "https://api.etf2l.org/player/1139.json",
+        "name": "Nagash",
+        "id": 1139,
+        "country": "UnitedKingdom"
+      }
+    },
+    {
+      "time": 1232653300,
+      "type": "left",
+      "who": {
+        "id": 1139,
+        "country": "UnitedKingdom",
+        "name": "Nagash",
+        "steam": {
+          "id64": "76561197960523624",
+          "id3": "U:1:257896",
+          "avatar": "https://avatars.akamai.steamstatic.com/3dd53863ac6192d9ee4b67059bf99a82f56310a6_full.jpg",
+          "id": "STEAM_0:0:128948"
+        },
+        "url": "https://api.etf2l.org/player/1139.json"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1228677164,
+      "who": {
+        "country": "Ireland",
+        "id": 5340,
+        "name": "Bryn",
+        "steam": {
+          "id64": "76561197964682532",
+          "avatar": "https://avatars.akamai.steamstatic.com/be1b291b8825d5b8346882fec478bdef6212770c_full.jpg",
+          "id3": "U:1:4416804",
+          "id": "STEAM_0:0:2208402"
+        },
+        "url": "https://api.etf2l.org/player/5340.json"
+      }
+    },
+    {
+      "who": {
+        "country": "England",
+        "id": 856,
+        "steam": {
+          "id3": "U:1:388336",
+          "avatar": "https://avatars.akamai.steamstatic.com/3023e43df6a37e11e2792ef1e5456000bffc3394_full.jpg",
+          "id64": "76561197960654064",
+          "id": "STEAM_0:0:194168"
+        },
+        "url": "https://api.etf2l.org/player/856.json",
+        "name": "Fish"
+      },
+      "type": "joined",
+      "time": 1228137355
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/4853.json",
+        "steam": {
+          "id": "STEAM_0:0:34665",
+          "id64": "76561197960335058",
+          "avatar": "https://avatars.akamai.steamstatic.com/466947398cd88a10d937d44cd574c6f1dd9273de_full.jpg",
+          "id3": "U:1:69330"
+        },
+        "name": "OzO",
+        "id": 4853,
+        "country": "Finland"
+      },
+      "type": "joined",
+      "time": 1225739373
+    },
+    {
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "name": "Kop",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json"
+      },
+      "who": {
+        "id": 4401,
+        "country": "England",
+        "url": "https://api.etf2l.org/player/4401.json",
+        "steam": {
+          "id3": "U:1:122235",
+          "avatar": "https://avatars.akamai.steamstatic.com/f628878ca179a611933f07a128111c2747d3f785_full.jpg",
+          "id64": "76561197960387963",
+          "id": "STEAM_0:1:61117"
+        },
+        "name": "Rads"
+      },
+      "time": 1225721828,
+      "type": "left"
+    },
+    {
+      "time": 1225060271,
+      "type": "left",
+      "who": {
+        "id": 1852,
+        "country": "UnitedKingdom",
+        "url": "https://api.etf2l.org/player/1852.json",
+        "steam": {
+          "id": "STEAM_0:1:765146",
+          "id3": "U:1:1530293",
+          "avatar": "https://avatars.akamai.steamstatic.com/7ad40645e496892339e79ce782276a0879f4ff1d_full.jpg",
+          "id64": "76561197961796021"
+        },
+        "name": "coach-jamos"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1223723782,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:10044439",
+          "id3": "U:1:20088878",
+          "avatar": "https://avatars.akamai.steamstatic.com/bf2c38b268b4834417e32b963cd9033217ff8ca0_full.jpg",
+          "id64": "76561197980354606"
+        },
+        "url": "https://api.etf2l.org/player/4439.json",
+        "name": "Siege",
+        "country": "England",
+        "id": 4439
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1223495016,
+      "who": {
+        "id": 4401,
+        "country": "England",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/f628878ca179a611933f07a128111c2747d3f785_full.jpg",
+          "id3": "U:1:122235",
+          "id64": "76561197960387963",
+          "id": "STEAM_0:1:61117"
+        },
+        "url": "https://api.etf2l.org/player/4401.json",
+        "name": "Rads"
+      }
+    },
+    {
+      "time": 1223494650,
+      "type": "left",
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop"
+      },
+      "who": {
+        "id": 3977,
+        "country": "Norway",
+        "steam": {
+          "id64": "76561197992304342",
+          "id3": "U:1:32038614",
+          "avatar": "https://avatars.akamai.steamstatic.com/47b21d84d145759ed9a61a32f616a3d1aa2c9bcc_full.jpg",
+          "id": "STEAM_0:0:16019307"
+        },
+        "url": "https://api.etf2l.org/player/3977.json",
+        "name": "qnx"
+      }
+    },
+    {
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop"
+      },
+      "who": {
+        "id": 3977,
+        "country": "Norway",
+        "steam": {
+          "id": "STEAM_0:0:16019307",
+          "avatar": "https://avatars.akamai.steamstatic.com/47b21d84d145759ed9a61a32f616a3d1aa2c9bcc_full.jpg",
+          "id3": "U:1:32038614",
+          "id64": "76561197992304342"
+        },
+        "url": "https://api.etf2l.org/player/3977.json",
+        "name": "qnx"
+      },
+      "time": 1223494646,
+      "type": "joined"
+    },
+    {
+      "type": "left",
+      "time": 1223241912,
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/71d4df5e8d69a5e03677127a33459f41f0cc9692_full.jpg",
+          "id3": "U:1:7893756",
+          "id64": "76561197968159484",
+          "id": "STEAM_0:0:3946878"
+        },
+        "url": "https://api.etf2l.org/player/3897.json",
+        "name": "strut",
+        "country": "UnitedKingdom",
+        "id": 3897
+      }
+    },
+    {
+      "who": {
+        "country": "UnitedKingdom",
+        "id": 3897,
+        "name": "strut",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/71d4df5e8d69a5e03677127a33459f41f0cc9692_full.jpg",
+          "id3": "U:1:7893756",
+          "id64": "76561197968159484",
+          "id": "STEAM_0:0:3946878"
+        },
+        "url": "https://api.etf2l.org/player/3897.json"
+      },
+      "type": "joined",
+      "time": 1221314579
+    },
+    {
+      "time": 1221169037,
+      "type": "joined",
+      "who": {
+        "country": "Sweden",
+        "id": 3678,
+        "steam": {
+          "id": "STEAM_0:0:131364",
+          "avatar": "https://avatars.akamai.steamstatic.com/2112f55bbe09ceeefb13d3452f15c9b16f0d4bb9_full.jpg",
+          "id3": "U:1:262728",
+          "id64": "76561197960528456"
+        },
+        "url": "https://api.etf2l.org/player/3678.json",
+        "name": "Oliz"
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        },
+        "name": "Kop"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1220899543,
+      "who": {
+        "steam": {
+          "id3": "U:1:38277366",
+          "avatar": "https://avatars.akamai.steamstatic.com/c0ee83ef2a08475d5b1f3eab93c981a14b5706ed_full.jpg",
+          "id64": "76561197998543094",
+          "id": "STEAM_0:0:19138683"
+        },
+        "url": "https://api.etf2l.org/player/2249.json",
+        "name": "Trojan",
+        "id": 2249,
+        "country": "UnitedKingdom"
+      },
+      "by": {
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        },
+        "country": "England",
+        "id": 1131
+      }
+    },
+    {
+      "who": {
+        "id": 2255,
+        "country": "BosniaHerzegovina",
+        "name": "thaldarin",
+        "url": "https://api.etf2l.org/player/2255.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/eb82114189972909db01fda25aec010e4bccaf5b_full.jpg",
+          "id3": "U:1:4901175",
+          "id64": "76561197965166903",
+          "id": "STEAM_0:1:2450587"
+        }
+      },
+      "type": "joined",
+      "time": 1215643766
+    },
+    {
+      "type": "left",
+      "time": 1215618239,
+      "by": {
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg"
+        },
+        "name": "Kop",
+        "country": "England",
+        "id": 1131
+      },
+      "who": {
+        "id": 726,
+        "country": "Germany",
+        "url": "https://api.etf2l.org/player/726.json",
+        "steam": {
+          "id": "STEAM_0:1:4537488",
+          "id64": "76561197969340705",
+          "avatar": "https://avatars.akamai.steamstatic.com/8420dfb8b8b4ada8f01e6e9b9d1132872ebf6775_full.jpg",
+          "id3": "U:1:9074977"
+        },
+        "name": "Acid Blood"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1215618235,
+      "who": {
+        "url": "https://api.etf2l.org/player/726.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/8420dfb8b8b4ada8f01e6e9b9d1132872ebf6775_full.jpg",
+          "id3": "U:1:9074977",
+          "id64": "76561197969340705",
+          "id": "STEAM_0:1:4537488"
+        },
+        "name": "Acid Blood",
+        "id": 726,
+        "country": "Germany"
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "steam": {
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id": "STEAM_0:1:11703199"
+        },
+        "url": "https://api.etf2l.org/player/1131.json"
+      }
+    },
+    {
+      "time": 1215617988,
+      "type": "joined",
+      "who": {
+        "country": "England",
+        "id": 1226,
+        "steam": {
+          "id": "STEAM_0:1:93105",
+          "id64": "76561197960451939",
+          "id3": "U:1:186211",
+          "avatar": "https://avatars.akamai.steamstatic.com/8837d0ddec5c791836c33715222c236132c7a734_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/1226.json",
+        "name": "Rainman"
+      }
+    },
+    {
+      "time": 1215616853,
+      "type": "joined",
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127"
+        },
+        "name": "Kop"
+      },
+      "who": {
+        "name": "Trojan",
+        "url": "https://api.etf2l.org/player/2249.json",
+        "steam": {
+          "id": "STEAM_0:0:19138683",
+          "id3": "U:1:38277366",
+          "avatar": "https://avatars.akamai.steamstatic.com/c0ee83ef2a08475d5b1f3eab93c981a14b5706ed_full.jpg",
+          "id64": "76561197998543094"
+        },
+        "country": "UnitedKingdom",
+        "id": 2249
+      }
+    },
+    {
+      "time": 1215616827,
+      "type": "joined",
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399"
+        }
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/1139.json",
+        "steam": {
+          "id3": "U:1:257896",
+          "avatar": "https://avatars.akamai.steamstatic.com/3dd53863ac6192d9ee4b67059bf99a82f56310a6_full.jpg",
+          "id64": "76561197960523624",
+          "id": "STEAM_0:0:128948"
+        },
+        "name": "Nagash",
+        "id": 1139,
+        "country": "UnitedKingdom"
+      }
+    },
+    {
+      "who": {
+        "name": "dethmonkee",
+        "url": "https://api.etf2l.org/player/1234.json",
+        "steam": {
+          "id": "STEAM_0:1:4296319",
+          "id64": "76561197968858367",
+          "id3": "U:1:8592639",
+          "avatar": "https://avatars.akamai.steamstatic.com/2b7f905f3f82ba22fced64f418487ced5f281015_full.jpg"
+        },
+        "id": 1234,
+        "country": "England"
+      },
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        },
+        "name": "Kop"
+      },
+      "type": "joined",
+      "time": 1215616815
+    },
+    {
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop"
+      },
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:328703",
+          "avatar": "https://avatars.akamai.steamstatic.com/57ede8f4aa538ca7e1559569cd2a158e8271ffa6_full.jpg",
+          "id3": "U:1:657407",
+          "id64": "76561197960923135"
+        },
+        "url": "https://api.etf2l.org/player/2027.json",
+        "name": "yoshiarms",
+        "country": "England",
+        "id": 2027
+      },
+      "time": 1214695024,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "id64": "76561197983672127",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399"
+        },
+        "url": "https://api.etf2l.org/player/1131.json",
+        "name": "Kop",
+        "id": 1131,
+        "country": "England"
+      },
+      "time": 1214235647,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "country": "UnitedKingdom",
+        "id": 1852,
+        "name": "coach-jamos",
+        "steam": {
+          "id64": "76561197961796021",
+          "id3": "U:1:1530293",
+          "avatar": "https://avatars.akamai.steamstatic.com/7ad40645e496892339e79ce782276a0879f4ff1d_full.jpg",
+          "id": "STEAM_0:1:765146"
+        },
+        "url": "https://api.etf2l.org/player/1852.json"
+      },
+      "type": "joined",
+      "time": 1214230221
+    },
+    {
+      "who": {
+        "id": 1831,
+        "country": "England",
+        "steam": {
+          "id": "STEAM_0:1:398567",
+          "id64": "76561197961062863",
+          "avatar": "https://avatars.akamai.steamstatic.com/c21651922d93d3baa36804db2d2917f4e20b7341_full.jpg",
+          "id3": "U:1:797135"
+        },
+        "url": "https://api.etf2l.org/player/1831.json",
+        "name": "Ruzyho"
+      },
+      "time": 1214169698,
+      "type": "joined"
+    },
+    {
+      "who": {
+        "id": 1835,
+        "country": "England",
+        "name": "schizodefective",
+        "url": "https://api.etf2l.org/player/1835.json",
+        "steam": {
+          "id": "STEAM_0:0:4123801",
+          "id64": "76561197968513330",
+          "id3": "U:1:8247602",
+          "avatar": "https://avatars.akamai.steamstatic.com/c54df4efa85da91c3eca0ba00a7df9c447b2fa96_full.jpg"
+        }
+      },
+      "type": "joined",
+      "time": 1214169203
+    },
+    {
+      "type": "joined",
+      "time": 1214166191,
+      "who": {
+        "url": "https://api.etf2l.org/player/1834.json",
+        "steam": {
+          "id": "STEAM_0:0:112113",
+          "id64": "76561197960489954",
+          "avatar": "https://avatars.akamai.steamstatic.com/ee742c1b9df0cdb8f4ffc1bfa345ae6aa8b15ceb_full.jpg",
+          "id3": "U:1:224226"
+        },
+        "name": "redned",
+        "id": 1834,
+        "country": "England"
+      }
+    },
+    {
+      "by": {
+        "id": 1131,
+        "country": "England",
+        "name": "Kop",
+        "steam": {
+          "id": "STEAM_0:1:11703199",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id3": "U:1:23406399",
+          "id64": "76561197983672127"
+        },
+        "url": "https://api.etf2l.org/player/1131.json"
+      },
+      "who": {
+        "id": 511,
+        "country": "UnitedKingdom",
+        "url": "https://api.etf2l.org/player/511.json",
+        "steam": {
+          "id": "STEAM_0:1:230389",
+          "id64": "76561197960726507",
+          "id3": "U:1:460779",
+          "avatar": "https://avatars.akamai.steamstatic.com/d7d4aa4197a8146f4b37967d2127ffc3214b4a1d_full.jpg"
+        },
+        "name": "Abomination"
+      },
+      "time": 1213827418,
+      "type": "left"
+    },
+    {
+      "time": 1213827413,
+      "type": "joined",
+      "by": {
+        "country": "England",
+        "id": 1131,
+        "name": "Kop",
+        "url": "https://api.etf2l.org/player/1131.json",
+        "steam": {
+          "id3": "U:1:23406399",
+          "avatar": "https://avatars.akamai.steamstatic.com/1d550cdf43b875f393eac12014f9cf18d77f49e0_full.jpg",
+          "id64": "76561197983672127",
+          "id": "STEAM_0:1:11703199"
+        }
+      },
+      "who": {
+        "id": 511,
+        "country": "UnitedKingdom",
+        "steam": {
+          "id3": "U:1:460779",
+          "avatar": "https://avatars.akamai.steamstatic.com/d7d4aa4197a8146f4b37967d2127ffc3214b4a1d_full.jpg",
+          "id64": "76561197960726507",
+          "id": "STEAM_0:1:230389"
+        },
+        "url": "https://api.etf2l.org/player/511.json",
+        "name": "Abomination"
+      }
+    }
+  ],
+  "status": {
+    "message": "OK",
+    "code": 200
+  }
+}
