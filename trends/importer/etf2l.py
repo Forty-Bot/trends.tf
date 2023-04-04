@@ -150,7 +150,7 @@ def import_etf2l_cli(args, c):
             with c.cursor() as cur:
                 cur.execute(
                     """SELECT max(fetched) - 6 * 60 * 60
-                       FROM matches
+                       FROM match
                        WHERE league = 'etf2l';""");
                 args.since = cur.fetchone()[0]
         return import_etf2l(c, args.fetcher(**vars(args)))
