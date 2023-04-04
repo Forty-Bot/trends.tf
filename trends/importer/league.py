@@ -58,9 +58,10 @@ def import_team(c, t):
     t['rgl_teamid'] = t.get('rgl_teamid')
     c.execute(
         """INSERT INTO team_comp_backing (
-               league, teamid, compid, team_nameid, rgl_teamid, end_rank, avatarhash, fetched
+               league, teamid, compid, divid, team_nameid, rgl_teamid, end_rank, avatarhash,
+               fetched
            ) VALUES (
-               %(league)s, %(teamid)s, %(compid)s,
+               %(league)s, %(teamid)s, %(compid)s, %(divid)s,
                CASE WHEN league_team_per_COMP(%(league)s) THEN (
                    SELECT team_nameid FROM team_name WHERE team = %(name)s
                ) END, %(rgl_teamid)s, %(end_rank)s,
@@ -68,6 +69,7 @@ def import_team(c, t):
                CASE WHEN league_team_per_comp(%(league)s) THEN %(fetched)s END
            ) ON CONFLICT (league, teamid, compid)
            DO UPDATE SET
+                divid = EXCLUDED.divid,
                 team_nameid = EXCLUDED.team_nameid,
                 avatarhash = EXCLUDED.avatarhash,
                 end_rank = EXCLUDED.end_rank,
