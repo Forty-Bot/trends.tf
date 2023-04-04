@@ -466,7 +466,7 @@ class ETF2LFileFetcher:
 class ETF2LBulkFetcher:
     def __init__(self, since=0, count=None, page=1, **kwargs):
         self.s = create_session()
-        self.since = since
+        self.since = int(since.timestamp())
         self.count = count
         self.page = page
 
