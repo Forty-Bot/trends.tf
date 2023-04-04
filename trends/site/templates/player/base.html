@@ -26,7 +26,7 @@
 		<div class="avatar">
 			<img src="{{ g.player['avatarhash'] | avatar('full') }}">
 			<div class="box">
-				<h1><a href="http://steamcommunity.com/profiles/{{ g.player['steamid64'] }}">
+				<h1><a href="https://steamcommunity.com/profiles/{{ g.player['steamid64'] }}">
 					{{ g.player['name'] }}
 				</a></h1>
 				{{ stats() }}
@@ -45,7 +45,7 @@
 			{% if g.etf2lid != None %}
 			<li><a href="https://etf2l.org/forum/user/{{ g.etf2lid }}/">
 			{% else %}
-			<li><a href="http://etf2l.org/search/{{ g.player['steamid64'] }}/">
+			<li><a href="https://etf2l.org/search/{{ g.player['steamid64'] }}/">
 			{% endif %}
 				<img title="European Team Fortress 2 League"
 				 src="{{ url_for('static', filename="img/etf2l.png") }}">
