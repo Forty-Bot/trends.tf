@@ -18,9 +18,9 @@ def get_player(endpoint, values):
 @player.before_request
 def get_overview():
     cur = get_db().cursor()
-    cur.execute("SELECT playerid, last_active FROM player WHERE steamid64 = %s;",
+    cur.execute("SELECT playerid, eu_playerid, last_active FROM player WHERE steamid64 = %s;",
                 (flask.g.steamid,))
-    for flask.g.playerid, last_active in cur:
+    for flask.g.playerid, flask.g.etf2lid, last_active in cur:
         if not last_active:
             flask.abort(404)
 

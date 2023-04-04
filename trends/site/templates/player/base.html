@@ -42,7 +42,11 @@
 				<img title="UGC League"
 				 src="{{ url_for('static', filename="img/ugc.png") }}">
 			</a></li>
+			{% if g.etf2lid != None %}
+			<li><a href="https://etf2l.org/forum/user/{{ g.etf2lid }}/">
+			{% else %}
 			<li><a href="http://etf2l.org/search/{{ g.player['steamid64'] }}/">
+			{% endif %}
 				<img title="European Team Fortress 2 League"
 				 src="{{ url_for('static', filename="img/etf2l.png") }}">
 			</a></li>
