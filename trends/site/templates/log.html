@@ -390,8 +390,7 @@
 		<td></td>
 		<td></td>
 		<th>Totals</th>
-		<td></td>
-		<td></td>
+		<td colspan="{{ 4 if matches | count else 2 }}"></td>
 		<td>{{ logs | map(attribute='red_score') | sum }}</td>
 		<td>{{ logs | map(attribute='blue_score') | sum }}</td>
 		<td>{{ logs | map(attribute='duration') | sum | duration }}</td>
