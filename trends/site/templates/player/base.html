@@ -11,7 +11,7 @@
 		<td class="left"><abbr title="Wins-Losses-Ties, witdout ties under 60s">Round W-L-T</abbr></td>
 		<td class="left"><abbr title="Ties count as 0.5 wins">Round Winrate</abbr></td>
 	</tr></thead>
-	<tbody class="hier"><tr>
+	<tbody class="noshade"><tr>
 		<td>{{ wlt(g.player['wins'], g.player['losses'], g.player['ties']) }}</td>
 		<td>{{ "{:.2%}".format(g.player['winrate']) }}</td>
 		<td>{{ wlt(g.player['round_wins'], g.player['round_losses'],
