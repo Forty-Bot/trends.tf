@@ -23,3 +23,10 @@
 		{{ optformat("{:.{}%}", val, precision) }}
 	</td>
 {% endmacro %}
+{% macro date_col(date) %}
+{% if date != None %}
+	<td class="left date" timestamp="{{ date }}"></td>
+{% else %}
+	<td></td>
+{% endif %}
+{% endmacro %}
