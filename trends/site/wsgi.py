@@ -16,6 +16,7 @@ import werkzeug.routing
 import werkzeug.utils
 
 from .api import api, json_handler
+from .league import league
 from .player import player
 from .root import root, metrics_extension
 from .util import put_db
@@ -164,6 +165,7 @@ def create_app():
     app.register_error_handler(werkzeug.exceptions.HTTPException, html_handler)
     app.register_blueprint(root)
     app.register_blueprint(player, url_prefix='/player/<int:steamid>')
+    app.register_blueprint(league, url_prefix='/league/<league>')
     app.register_blueprint(api, url_prefix='/api/v1')
     metrics_extension.init_app(app)
 
