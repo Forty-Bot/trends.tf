@@ -310,6 +310,51 @@ CREATE INDEX IF NOT EXISTS match_team1 ON match (teamid1);
 CREATE INDEX IF NOT EXISTS match_team2 ON match (teamid2);
 CREATE INDEX IF NOT EXISTS match_time ON match (scheduled);
 
+CREATE OR REPLACE VIEW match_pretty AS SELECT
+	match.league,
+	matchid,
+	match.compid,
+	competition.name AS comp,
+	match.divid,
+	division AS div,
+	tier,
+	teamid1,
+	teamid2,
+	tc1.team_name AS team1,
+	tc2.team_name AS team2,
+	round_seq,
+	round,
+	mapids,
+	(SELECT
+			array_agg(map)
+		FROM map
+		JOIN unnest(mapids) AS mapid USING(mapid)
+	) AS maps,
+	score1,
+	score2,
+	forfeit,
+	scheduled,
+	submitted,
+	match.fetched
+FROM match
+LEFT JOIN div_round USING (league, divid, round_seq)
+LEFT JOIN comp_round USING (league, compid, round_seq)
+JOIN round_name ON (
+    round_name.round_nameid = coalesce(div_round.round_nameid,
+                                       comp_round.round_nameid)
+) JOIN competition USING (league, compid)
+LEFT JOIN division USING (league, divid)
+LEFT JOIN div_name USING (div_nameid)
+JOIN team_comp AS tc1 ON (
+    tc1.league = match.league
+    AND tc1.compid = match.compid
+    AND tc1.teamid = match.teamid1
+) JOIN team_comp AS tc2 ON (
+    tc2.league = match.league
+    AND tc2.compid = match.compid
+    AND tc2.teamid = match.teamid2
+);
+
 CREATE TABLE IF NOT EXISTS demo (
 	demoid INTEGER PRIMARY KEY,
 	url TEXT NOT NULL,

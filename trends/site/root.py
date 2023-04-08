@@ -162,20 +162,16 @@ def log(logids):
 
     matches = db.cursor()
     matches.execute("""SELECT
-                           match.league,
+                           league,
                            matchid,
-                           competition.name AS comp,
-                           division AS div,
+                           comp,
+                           div,
                            round,
-                           tc1.team_name AS team1,
-                           tc2.team_name AS team2,
+                           team1,
+                           team2,
                            score1,
                            score2,
-                           (SELECT
-                                   array_agg(map)
-                               FROM map
-                               JOIN unnest(mapids) AS mapid USING(mapid)
-                           ) AS maps,
+                           maps,
                            current_logs,
                            full_logs - current_logs AS other_logs
                        FROM (SELECT
@@ -186,15 +182,7 @@ def log(logids):
                            WHERE logid IN %(logids)s
                            GROUP BY league, matchid
                        ) AS league
-                       JOIN match USING (league, matchid)
-                       LEFT JOIN div_round USING (league, divid, round_seq)
-                       LEFT JOIN comp_round USING (league, compid, round_seq)
-                       JOIN round_name ON (
-                           round_name.round_nameid = coalesce(div_round.round_nameid,
-                                                              comp_round.round_nameid)
-                       ) JOIN competition USING (league, compid)
-                       LEFT JOIN division USING (league, divid)
-                       LEFT JOIN div_name USING (div_nameid)
+                       JOIN match_pretty USING (league, matchid)
                        LEFT JOIN (SELECT
                                league,
                                matchid,
@@ -202,16 +190,7 @@ def log(logids):
                            FROM log
                            WHERE duplicate_of ISNULL
                            GROUP BY league, matchid
-                       ) AS fl USING (league, matchid)
-                       JOIN team_comp AS tc1 ON (
-                           tc1.league = match.league
-                           AND tc1.compid = match.compid
-                           AND tc1.teamid = match.teamid1
-                       ) JOIN team_comp AS tc2 ON (
-                           tc2.league = match.league
-                           AND tc2.compid = match.compid
-                           AND tc2.teamid = match.teamid2
-                       );""", params)
+                       ) AS fl USING (league, matchid);""", params)
     matches = { (m['league'], m['matchid']): m for m in matches.fetchall() }
 
     rounds = db.cursor()
