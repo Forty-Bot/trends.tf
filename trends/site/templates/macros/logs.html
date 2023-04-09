@@ -2,7 +2,7 @@
 {# Copyright (C) 2020-2022 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/dupes.html" import show_dupes %}
 {% from "macros/format.html" import optformat, optint %}
-{% from "macros/icons.html" import classicon %}
+{% from "macros/icons.html" import classicon, demoicon %}
 {% from "macros/wlt.html" import wlt %}
 {% macro _log_header(extra) %}
 <tr>
@@ -44,15 +44,7 @@
 				<input form="combine" type="checkbox" name="id"
 				 value="{{ log['logid'] }}">
 			</td>
-			<td class="left">
-				{% if log['demoid'] %}
-				<a href="https://demos.tf/{{ log['demoid'] }}">
-					<img class="avatar_small"
-					 src="{{ url_for('static', filename="img/demos.png") }}">
-					</img>
-				</a>
-				{% endif %}
-			</td>
+			<td class="left">{{ demoicon(log['demoid']) }}</td>
 			<td class="left">
 				{% if log['matchid'] %}
 				<a href="https://etf2l.org/matches/{{ log['matchid'] }}">

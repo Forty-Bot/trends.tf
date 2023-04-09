@@ -11,3 +11,10 @@
 	{% endif %}
 	>
 {% endmacro %}
+{% macro demoicon(demoid) %}
+	{% if demoid != None %}
+	<a href="https://demos.tf/{{ demoid }}">
+		<img class="icon" src="{{ url_for('static', filename="img/demos.png") }}">
+	</a>
+{% endif %}
+{% endmacro %}
