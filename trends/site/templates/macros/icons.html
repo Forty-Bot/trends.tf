@@ -2,7 +2,7 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/pretty.html" import class_map %}
 {% macro classicon(cls, pct=None) %}
-	<img class="classicon"
+	<img class="icon"
 	 src="{{ url_for('static', filename="img/{}.png".format(cls)) }}"
 	 alt="{{ class_map[cls] }}"
 	{% if pct != None %}
