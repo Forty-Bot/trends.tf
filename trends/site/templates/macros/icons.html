@@ -18,3 +18,14 @@
 	</a>
 {% endif %}
 {% endmacro %}
+{% set _match_url_map = {
+	'etf2l': "https://etf2l.org/matches/{}",
+} %}
+{% macro matchicon(league, matchid) %}
+	{% if matchid != None %}
+	<a href="{{ _match_url_map[league].format(matchid) }}">
+		<img class="icon"
+		 src="{{ url_for('static', filename="img/{}.png".format(league)) }}">
+	</a>
+	{% endif %}
+{% endmacro %}

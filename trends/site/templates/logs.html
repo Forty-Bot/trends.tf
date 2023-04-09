@@ -2,7 +2,7 @@
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/dupes.html" import show_dupes %}
 {% from "macros/filter.html" import filter %}
-{% from "macros/icons.html" import demoicon %}
+{% from "macros/icons.html" import demoicon, matchicon %}
 {% from "macros/js.html" import local_js %}
 {% from "macros/pagination.html" import navigation %}
 {% from "macros/sort.html" import sort %}
@@ -48,17 +48,7 @@
 					 value="{{ log['logid'] }}">
 				</td>
 				<td class="left">{{ demoicon(log['demoid']) }}</td>
-				<td class="left">
-					{% if log['matchid'] %}
-					<a href="https://etf2l.org/matches/{{ log['matchid'] }}">
-					<img class="avatar_small" src="{{
-						url_for('static',
-							filename="img/{}.png".format(log['league']))
-					 }}">
-					</img>
-					</a>
-					{% endif %}
-				</td>
+				<td class="left">{{ matchicon(log['league'], log['matchid']) }}</td>
 				<td class="left">
 					<a href="{{ url_for('.log', logids=log['logid']) }}">
 						{{ log['title'] }}
