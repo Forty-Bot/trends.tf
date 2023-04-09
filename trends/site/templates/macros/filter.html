@@ -7,16 +7,24 @@
 	<option {{ "selected" if key == default }} value="{{ key }}">{{ content }}</option>
 {% endfor %}
 {% endmacro %}
-{% macro filter(date=True, logs=False) %}
+{% macro filter() %}
+{% if varargs %}
+	{% set params = varargs | list %}
+{% else %}
+	{% set params = ['class', 'format', 'map', 'steamid64', 'league', 'date'] %}
+{% endif %}
+{% if 'date' in params %}
+	{% set params = params + ['date_from', 'date_to', 'timezone'] %}
+{% endif %}
 <form>
-	{{ hidden_excluding('class', 'format', 'map', 'timezone', 'title', 'steamid64',
-			    'date_from', 'date_to', 'league') }}
-	{% if logs %}
+	{{ hidden_excluding(*params) }}
+	{% if 'title' in params %}
 	<label>Title:
 		<input type="text" name="title"
 		       value="{{ (g.filters['title'] or "") | trim("%") }}">
 	</label>
-	{% else %}
+	{% endif %}
+	{% if 'class' in params %}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
 		<select name="class">
@@ -25,23 +33,30 @@
 		</select>
 	</label>
 	{% endif %}
+	{% if 'league' in params %}
 	<label>League:
 		<select name="league">
 			<option></option>
 			{{ _create_options(g.filters['league'], league_map) }}
 		</select>
 	</label>
+	{% endif %}
+	{% if 'format' in params %}
 	<label>Format:
 		<select name="format">
 			<option></option>
 			{{ _create_options(g.filters['format'], format_map) }}
 		</select>
 	</label>
+	{% endif %}
+	{% if 'map' in params %}
 	<label>Map:
 		<input id="map_input" type="text" name="map" list="maps"
 		 value="{{ (g.filters['map'] or "") | trim("%") }}">
 		<datalist id="maps"></datalist>
 	</label>
+	{% endif %}
+	{% if 'steamid64' in params %}
 	<label>Players:
 		<select id="players_input" name="steamid64" multiple>
 			{% for player in g.filters['players'] %}
@@ -52,7 +67,8 @@
 			{% endfor %}
 		</select>
 	</label>
-	{% if date %}
+	{% endif %}
+	{% if 'date' in params %}
 	<input id="timezone" type="hidden" name="timezone">
 	<label>From:
 		<input type="date" name="date_from" value="{{ g.filters['date_from'] or "" }}">
