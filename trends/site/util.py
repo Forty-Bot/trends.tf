@@ -131,65 +131,70 @@ def get_filter_params():
 
     return params
 
-def get_filter_clauses(params, *valid_columns, player_prefix='', log_prefix=''):
+def get_filter_clauses(params, *valid_columns, **column_map):
     clauses = []
+    for col in valid_columns:
+        column_map[col] = col
 
     if params['league'] and 'league' in valid_columns:
-        clauses.append("AND {}league = %(league)s".format(log_prefix))
+        clauses.append(f"AND {column_map['league']} = %(league)s")
 
-    def simple_clause(name, column, prefix):
+    def simple_clause(name, column):
         if not params[name]:
             return
 
-        if name in valid_columns:
-            clauses.append("AND {0}{1} = %({1})s".format(prefix, name))
-        elif column in valid_columns:
-            clauses.append("AND {0}{1} = (SELECT {1} FROM {2} WHERE {2} = %({2})s)"
-                           .format(prefix, column, name))
+        if name in column_map:
+            clauses.append(f"AND {column_map[name]} = %({name})s")
+        elif column in column_map:
+            clauses.append(f"""AND {column_map[column]} = (
+                                   SELECT {column}
+                                   FROM {name}
+                                   WHERE {name} = %({name})s
+                               )""")
 
-    simple_clause('class', 'classid', player_prefix)
-    simple_clause('format', 'formatid', log_prefix)
+    simple_clause('class', 'classid')
+    simple_clause('format', 'formatid')
 
-    if 'primary_classid' in valid_columns and params['class']:
-        clauses.append("""AND {}primary_classid = (
-                              SELECT classid
-                              FROM class
-                              WHERE class = %(class)s
-                          )""".format(player_prefix))
+    if 'primary_classid' in column_map and params['class']:
+        clauses.append(f"""AND {column_map['primary_classid']} = (
+                               SELECT classid
+                               FROM class
+                               WHERE class = %(class)s
+                           )""")
 
     def like_clause(name):
-        if name in valid_columns and params[name]:
-            clauses.append("AND {0}{1} ILIKE %({1})s".format(log_prefix, name))
+        if name in column_map and params[name]:
+            clauses.append(f"AND {column_map[name]} ILIKE %({name})s")
 
     like_clause('title')
     like_clause('map')
 
-    if 'mapid' in valid_columns and params['map']:
-        clauses.append("""AND {}mapid IN (
-                              SELECT mapid
-                              FROM map
-                              WHERE map ILIKE %(map)s
-                          )""".format(log_prefix))
+    if 'mapid' in column_map and params['map']:
+        clauses.append(f"""AND {column_map['mapid']} IN (
+                               SELECT mapid
+                               FROM map
+                               WHERE map ILIKE %(map)s
+                           )""")
 
     def date_clause(name, op):
-        if 'time' in valid_columns and params[name]:
-            clauses.append("AND {}time {} %({})s::BIGINT".format(log_prefix, op, name))
+        if 'time' in column_map and params[name]:
+            clauses.append(f"AND {column_map['time']} {op} %({name})s::BIGINT")
 
     date_clause('date_from_ts', '>=')
     date_clause('date_to_ts', '<=')
 
-    if 'rostered' in valid_columns and 'date_range' in params:
-        clauses.append("AND {}rostered && %(date_range)s".format(player_prefix))
+    if 'date_range' in column_map and 'date_range' in params:
+        clauses.append(f"AND {column_map['date_range']} && %(date_range)s")
 
-    if 'logid' in valid_columns:
+    if 'logid' in column_map:
         for i, player in enumerate(params['players']):
             key = "player_{}".format(i)
             params[key] = player['playerid']
-            clauses.append("""AND {}logid IN (
-                                  SELECT logid
-                                  FROM player_stats
-                                  WHERE playerid = %({})s
-                           )""".format(log_prefix, key))
+            clauses.append(f"""AND {column_map['logid']} IN (
+                                   SELECT logid
+                                   FROM player_stats
+                                   WHERE playerid = %({key})s
+                            )""")
 
     return "\n".join(clauses)
 

@@ -271,7 +271,7 @@ def overview(steamid):
            WHERE r = 1
                    {}
            ORDER BY upper(rostered) DESC NULLS FIRST, lower(rostered) ASC
-           LIMIT 10;""".format(get_filter_clauses(filters, 'rostered', 'league'),
+           LIMIT 10;""".format(get_filter_clauses(filters, 'league', date_range='rostered'),
                                get_filter_clauses(filters, 'formatid')),
         { 'playerid': flask.g.playerid, **filters })
     teams = teams.fetchall()
@@ -307,8 +307,10 @@ def logs(steamid):
 def peers(steamid):
     limit, offset = get_pagination()
     filters = get_filter_params()
-    filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns,
-                                        player_prefix='p1.', log_prefix='log.')
+    filter_clauses = \
+        get_filter_clauses(filters, league='log.league', formatid='log.formatid',
+                           title='log.title', mapid='log.mapid', time='log.time', logid='log.logid',
+                           primary_classid='p1.primary_classid')
     order, order_clause = get_order({
         'logs': "count(*)",
         'with': '"with"',
