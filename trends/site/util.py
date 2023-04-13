@@ -83,6 +83,7 @@ def get_filter_params():
     if val := tuple(args.getlist('steamid64', type=int)[:5]):
         players = get_db().cursor()
         players.execute("""SELECT
+                               steamid64,
                                playerid,
                                avatarhash,
                                name
