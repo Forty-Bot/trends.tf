@@ -66,8 +66,8 @@ def duration_filter(timestamp):
 def avatar_filter(hash, size='full'):
     if not hash:
         return ''
-    url = "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/{}/{}{}.jpg"
-    return url.format(hash[:2], hash, {
+    url  = "https://avatars.steamstatic.com/{}{}.jpg"
+    return url.format(hash, {
             'small': '',
             'medium': '_medium',
             'full': '_full',
