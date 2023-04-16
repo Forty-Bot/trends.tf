@@ -2,7 +2,7 @@
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/dupes.html" import show_dupes %}
 {% from "macros/format.html" import duration_col, optformat, optint %}
-{% from "macros/icons.html" import classicon, demoicon, matchicon %}
+{% from "macros/icons.html" import classicon, demoicon, matchicon, playerlink %}
 {% from "macros/js.html" import local_js %}
 {% from "macros/pretty.html" import class_map, league_map %}
 {% extends "base.html" %}
@@ -164,10 +164,7 @@
 {% endmacro %}
 {% macro player_col(player) %}
 	<td class="left">
-		<img class="avatar_small" src="{{ player.avatarhash | avatar('small') }}">
-		<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
-			{{ ', '.join(player['names']) }}
-		</a>
+		{{ playerlink(player.steamid64, player.names | join(", "), player.avatarhash) }}
 	</td>
 {% endmacro %}
 {% macro stat_cols(row) %}
@@ -624,12 +621,7 @@
 			<td class="left">
 				{% set player = players[msg['steamid64']] %}
 				{% if player %}
-					<img class="avatar_small"
-					 src="{{ player['avatarhash'] | avatar('small') }}">
-					<a href="{{ url_for('player.overview',
-							    steamid=msg['steamid64']) }}">
-						{{ msg['name'] }}
-					</a>
+					{{ playerlink(msg.steamid64, msg.name, player.avatarhash) }}
 				{% else %}
 					{{ msg['name'] }}
 				{% endif %}

@@ -2,6 +2,7 @@
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
 {% from "macros/pagination.html" import navigation %}
+{% from "macros/icons.html" import playerlink %}
 {% from "macros/sort.html" import sort %}
 {% extends "base.html" %}
 {% block title %}Leaderboard - {{ super() }}{% endblock %}
@@ -33,10 +34,8 @@
 			<tr>
 				<td>{{ loop.index + g.page.offset }}</td>
 				<td class="left">
-					<img class="avatar_small" src="{{ player.avatarhash | avatar('small') }}">
-					<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
-						{{ player['name'] }}
-					</a>
+					{{ playerlink(player.steamid64, player.name,
+					              player.avatarhash) }}
 				</td>
 				<td>{{ player['logs'] }}</td>
 				<td>{{ "{:.2%}".format(player['winrate']) }}</td>

@@ -2,6 +2,7 @@
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
 {% from "macros/format.html" import optformat, optint %}
+{% from "macros/icons.html" import playerlink %}
 {% from "macros/pagination.html" import navigation %}
 {% from "macros/sort.html" import sort %}
 {% extends "player/base.html" %}
@@ -49,11 +50,7 @@
 			{% for peer in peers %}
 			<tr>
 				<td class="left">
-					<img class="avatar_small"
-					 src="{{ peer['avatarhash'] | avatar('small') }}">
-					<a href="{{ url_for('.overview', steamid=peer['steamid64']) }}">
-						{{ peer['name'] }}
-					</a>
+					{{ playerlink(peer.steamid64, peer.name, peer.avatarhash) }}
 				</td>
 				<td>{{ peer['with'] | int }}</td>
 				<td>{{ optformat("{:.2%}", peer['winrate_with']) }}</td>

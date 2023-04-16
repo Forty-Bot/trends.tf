@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/icons.html" import playerlink %}
 {% from "macros/pagination.html" import navigation %}
 {% extends "base.html" %}
 {% block title %}Search results for {{ q }}- {{ super() }}{% endblock %}
@@ -10,11 +11,8 @@
 	<ul>
 		{% for player in results %}
 		<li>
-			<img class="avatar_small"
-			 src="{{ player['avatarhash'] | avatar('small') }}">
-			<a href="{{ url_for('player.overview', steamid=player['steamid64']) }}">
-				{{ player['name'] }}
-			</a>({{ ", ".join(player['aliases']) }})
+			{{ playerlink(player.steamid64, player.name, player.avatarhash) -}}
+			({{ ", ".join(player.aliases) }})
 		</li>
 		{% endfor %}
 	</ul>

@@ -29,3 +29,9 @@
 	</a>
 	{% endif %}
 {% endmacro %}
+{% macro playerlink(steamid, name, avatarhash) %}
+<img class="avatar_small" src="{{ avatarhash | avatar('small') }}">
+<a href="{{ url_for('player.overview', steamid=steamid) }}">
+	{{ name }}
+</a>
+{% endmacro %}
