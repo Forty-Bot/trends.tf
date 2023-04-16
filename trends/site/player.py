@@ -233,8 +233,10 @@ def overview(steamid):
                league,
                format,
                competition.name AS comp,
+               competition.compid,
                division AS div,
                team,
+               teamid,
                lower(rostered) AS from,
                upper(rostered) AS to
            FROM (SELECT

@@ -117,9 +117,20 @@
 		<tbody>
 			{% for team in teams %}
 			<tr>
-				<td class="left">{{ league_map[team['league']] }}</td>
-				<td class="left">{{ team['team'] }}</td>
-				<td class="left">{{ team['comp'] }}</td>
+				<td class="left"><a href="{{ url_for('league.comps',
+				                                     league=team['league']) }}">
+					{{ league_map[team['league']] }}
+				</a></td>
+				<td class="left">
+				<a href="{{ url_for('league.team.overview', league=team['league'],
+				                    teamid=team['teamid']) }}">
+					{{ team['team'] }}
+				</a></td>
+				<td class="left">
+				<a href="{{ url_for('league.comp.overview', league=team['league'],
+				                    compid=team['compid']) }}">
+					{{ team['comp'] }}
+				</a></td>
 				<td class="left">{{ team['div'] if team['div'] != None }}</td>
 				<td class="left">{{ format_map[team['format']] }}</td>
 				{{ date_col(team['from']) }}
