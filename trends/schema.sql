@@ -242,6 +242,7 @@ CREATE TABLE IF NOT EXISTS team_player (
 );
 
 CREATE INDEX IF NOT EXISTS team_player_teams ON team_player (league, teamid, compid);
+CREATE INDEX IF NOT EXISTS team_player_playerid ON team_player (playerid);
 
 CREATE TABLE IF NOT EXISTS round_name (
 	round_nameid SERIAL PRIMARY KEY,
