@@ -370,7 +370,7 @@
 				{{ padding(round['logid']) }}
 			{% endif %}
 			<tr class="{{ round['logid'] }} hidden hidable">
-			<td colspan="5"></td>
+			<td colspan="{{ 7 if matches | count else 5 }}"></td>
 			<td {% if rwinner == 'red' %}class="red"{% endif %}>
 				{{ round['red_score'] }}
 			</td>
