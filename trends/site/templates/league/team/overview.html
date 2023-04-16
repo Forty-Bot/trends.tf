@@ -1,0 +1,104 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/format.html" import optformat %}
+{% from "macros/pretty.html" import format_map %}
+{% from "macros/wlt.html" import wlt %}
+{% extends "league/team/base.html" %}
+{% block title %}Overview - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Overview</h2>
+	<div class="box">
+	<div class="float">
+	<h3>Current Players</h3>
+	<table>
+	<thead>
+		<tr>
+			<th>Player</th>
+			<th>Joined</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for player in roster %}
+		<tr>
+			<td class="left">
+				<img class="avatar_small"
+				 src="{{ player.avatarhash | avatar('small') }}">
+				<a href="{{ url_for('player.overview',
+				                    steamid=player.steamid64) }}">
+					{{ player.name }}
+				</a>
+			</td>
+			<td class="left date" timestamp="{{ player.joined }}"></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+	</div>
+
+	<div class="float">
+	<h3>Recent Players</h3>
+	<table>
+	<thead>
+		<tr>
+			<th>Player</th>
+			<th><abbr title="Most-recent join date">Joined</th>
+			<th><abbr title="Most-recent leave date">Left</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for player in old_roster %}
+		<tr>
+			<td class="left">
+				<img class="avatar_small"
+				 src="{{ player.avatarhash | avatar('small') }}">
+				<a href="{{ url_for('player.overview',
+				                    steamid=player.steamid64) }}">
+					{{ player.name }}
+				</a>
+			</td>
+			<td class="left date" timestamp="{{ player.joined }}"></td>
+			<td class="left date" timestamp="{{ player.left }}"></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+	</div>
+
+	<div class="float">
+	<h3>Recent Competitions</h3>
+	<table>
+	<thead>
+		<tr>
+			<th>Competition</th>
+			<th>Division</th>
+			<th>Format</th>
+			<th><abbr title="Wins-Losses-Ties">W-L-T</abbr></th>
+			<th><abbr title="Winrate; Ties count as 0.5 wins">WR</abbr></th>
+			<th><abbr title="Round Wins">RW</abbr></th>
+			<th><abbr title="Round Losses">RL</abbr></th>
+			<th><abbr title="Round Winrate">RWR</abbr></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for comp in comps %}
+		<tr>
+			<td class="left">
+			<a href="{{ url_for('league.comp.overview', league=g.league,
+			                    compid=comp.compid) }}">
+				{{ comp.comp }}
+			</a></td>
+			<td class="left">{{ comp.div }}</td>
+			<td class="left">{{ format_map[comp.format] }}</td>
+			<td>{{ wlt(comp.wins, comp.losses, comp.ties) }}</td>
+			<td>{{ optformat("{:.0%}", comp.winrate) }}</td>
+			<td>{{ comp.rounds_won }}</td>
+			<td>{{ comp.rounds_lost }}</td>
+			<td>{{ optformat("{:.0%}", comp.round_winrate) }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+	</div>
+	</div>
+{% endblock %}

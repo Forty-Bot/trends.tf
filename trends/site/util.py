@@ -205,6 +205,10 @@ def get_filter_clauses(params, *valid_columns, **column_map):
                                    WHERE playerid = %({key})s
                             )""")
 
+    if 'playerid' in column_map and len(params['players']):
+        params['playerids'] = tuple(player['playerid'] for player in params['players'])
+        clauses.append(f"AND {column_map['playerid']} IN %(playerids)s")
+
     return "\n".join(clauses)
 
 dir_map = {'desc': "DESC", 'asc': "ASC"}

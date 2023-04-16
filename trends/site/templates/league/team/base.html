@@ -1,0 +1,40 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/nav.html" import navbar %}
+{% from "macros/pretty.html" import league_map %}
+{% from "macros/wlt.html" import wlt %}
+{% extends "base.html" %}
+{% block title %}{{ g.team.name }} - {{ league_map[g.league] }} - {{ super() }}{% endblock %}
+{% macro stats() %}
+<table>
+	<thead><tr>
+		<td class="left"><abbr title="Wins-Losses-Ties">W-L-T</abbr></td>
+		<td class="left"><abbr title="Ties count as 0.5 wins">Winrate</abbr></td>
+		<td class="left"><abbr title="Wins-Losses">Round W-L</abbr></td>
+		<td class="left"><abbr title="Ties count as 0.5 wins">Round Winrate</abbr></td>
+	</tr></thead>
+	<tbody class="noshade"><tr>
+		<td>{{ wlt(g.team_wlt.wins, g.team_wlt.losses, g.team_wlt.ties) }}</td>
+		<td>{{ "{:.0%}".format(g.team_wlt.winrate) }}</td>
+		<td>{{ "{:.0f}-{:.0f}".format(g.team_wlt.rounds_won, g.team_wlt.rounds_lost) }}</td>
+		<td>{{ "{:.1%}".format(g.team_wlt.round_winrate) }}</td>
+	</tr></tbody>
+</table>
+{% endmacro %}
+{% block content %}
+	{{ super() }}
+	{% set league_url_map = {
+		'etf2l': "https://etf2l.org/teams/{}/"
+	} %}
+	<div class="avatar">
+		<img src="{{ g.team['avatarhash'] | avatar('full', g.league) }}">
+		<div class="box">
+			<h1><a href="{{ league_url_map[g.league].format(g.teamid) }}">
+				{{ g.team.name }}
+			</a></h1>
+			{{ stats() }}
+		</div>
+	</div>
+
+	{{ navbar(('.overview', "Overview"), league=g.league, teamid=g.teamid) }}
+{% endblock %}
