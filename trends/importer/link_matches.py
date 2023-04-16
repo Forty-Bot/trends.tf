@@ -19,7 +19,6 @@ def link_matches(args, c):
             """CREATE TEMP TABLE log_teams AS SELECT
                    logid,
                    time,
-                   mapid,
                    red,
                    blue
                FROM log
@@ -40,7 +39,6 @@ def link_matches(args, c):
                WHERE league ISNULL AND time > %s;""", (since,))
         cur.execute("CREATE INDEX log_teams_time ON log_teams (time);")
         cur.execute("ANALYZE log_teams;")
-        cur.execute("SELECT * FROM log_teams;")
 
         cur.execute(
             """CREATE TEMP TABLE log_matches AS SELECT
@@ -53,7 +51,6 @@ def link_matches(args, c):
                        matchid,
                        match.compid,
                        scheduled AS time,
-                       mapids,
                        array_agg(playerid) AS players
                    FROM match
                    JOIN team_player AS tp ON (
@@ -61,7 +58,7 @@ def link_matches(args, c):
                        AND tp.teamid = match.teamid1
                        AND tp.rostered @> match.scheduled
                    ) WHERE scheduled > %s
-                   GROUP BY match.league, matchid, match.compid, match.scheduled, mapids
+                   GROUP BY match.league, matchid, match.compid, match.scheduled
                ) AS match1
                JOIN (SELECT
                        match.league,
@@ -81,8 +78,7 @@ def link_matches(args, c):
                    AND (#(match1.players & (log.red | log.blue)) >= format.players / 3
                         AND #(match2.players & (log.red | log.blue)) >= format.players / 3)
                    AND #((log.red | log.blue) - match1.players - match2.players) <=
-                         format.players / 3
-                   AND (match1.mapids @> ARRAY[log.mapid] OR match1.mapids ISNULL);""", (since,))
+                         format.players / 3;""", (since,))
 
         cur.execute("SELECT count(*) from log_matches;");
         count = cur.fetchone()[0]
