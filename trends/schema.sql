@@ -307,9 +307,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS match_unique_div ON match (
 CREATE UNIQUE INDEX IF NOT EXISTS match_unique_comp ON match (
 	league, compid, round_seq, teamid1, teamid2
 ) WHERE divid ISNULL;
-CREATE INDEX IF NOT EXISTS match_team1 ON match (teamid1);
-CREATE INDEX IF NOT EXISTS match_team2 ON match (teamid2);
+CREATE INDEX IF NOT EXISTS match_team1 ON match (league, teamid1);
+CREATE INDEX IF NOT EXISTS match_team2 ON match (league, teamid2);
 CREATE INDEX IF NOT EXISTS match_time ON match (scheduled);
+CREATE INDEX IF NOT EXISTS match_comp ON match (league, compid);
 
 CREATE OR REPLACE VIEW match_wlt AS SELECT
 	league,
