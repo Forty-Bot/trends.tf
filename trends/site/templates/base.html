@@ -29,6 +29,7 @@
 		<h3><a href="{{ url_for('root.index') }}">Trends.tf</a></h3>
 		<a href="{{ url_for('root.logs') }}">Logs</a>
 		<a href="{{ url_for('root.leaderboard') }}">Leaderboards</a>
+		<a href="{{ url_for('league.comps', league='etf2l') }}">ETF2L</a>
 		<form action="{{ url_for('root.search') }}" role="search">
 			<input type="search" name="q" placeholder="Player name or SteamID"
 			 minlength="3" value="{{ q }}">

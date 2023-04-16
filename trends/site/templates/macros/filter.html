@@ -18,12 +18,14 @@
 {% endif %}
 <form>
 	{{ hidden_excluding(*params) }}
-	{% if 'title' in params %}
-	<label>Title:
-		<input type="text" name="title"
-		       value="{{ (g.filters['title'] or "") | trim("%") }}">
+	{% for param in ('title', 'name') %}
+	{% if param in params %}
+		<label>{{ param | capitalize }}:
+			<input type="text" name="{{ param }}"
+		       value="{{ (g.filters[param] or "") | trim("%") }}">
 	</label>
 	{% endif %}
+	{% endfor %}
 	{% if 'class' in params %}
 	<label>
 		<abbr title="Games with at least &frac23; time on this class">Class</abbr>:
@@ -39,6 +41,12 @@
 			<option></option>
 			{{ _create_options(g.filters['league'], league_map) }}
 		</select>
+	</label>
+	{% endif %}
+	{% if 'comp' in params %}
+	<label><abbr title="Competition">Comp</abbr>:
+		<input type="text" name="comp" list="comps"
+		 value="{{ (g.filters['comp'] or "") | trim("%") }}">
 	</label>
 	{% endif %}
 	{% if 'format' in params %}

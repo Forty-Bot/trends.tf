@@ -80,6 +80,7 @@ def get_filter_params():
     params['class'] = args.get('class', type=str)
     params['format'] = args.get('format', type=str)
     params['league'] = args.get('league', type=str)
+    params['comp'] = args.get('comp', type=str)
     if val := tuple(args.getlist('steamid64', type=int)[:5]):
         players = get_db().cursor()
         players.execute("""SELECT
@@ -103,6 +104,7 @@ def get_filter_params():
 
     set_like_param('map')
     set_like_param('title')
+    set_like_param('name')
 
     timezone = args.get('timezone', tz.UTC, tz.gettz)
     def set_date_params(name):
@@ -154,6 +156,7 @@ def get_filter_clauses(params, *valid_columns, **column_map):
 
     simple_clause('class', 'classid')
     simple_clause('format', 'formatid')
+    simple_clause('comp', 'compid')
 
     if 'primary_classid' in column_map and params['class']:
         clauses.append(f"""AND {column_map['primary_classid']} = (
@@ -167,6 +170,7 @@ def get_filter_clauses(params, *valid_columns, **column_map):
             clauses.append(f"AND {column_map[name]} ILIKE %({name})s")
 
     like_clause('title')
+    like_clause('name')
     like_clause('map')
 
     if 'mapid' in column_map and params['map']:

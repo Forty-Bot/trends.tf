@@ -1,0 +1,73 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/format.html" import date_col %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/pretty.html" import format_map, league_map %}
+{% from "macros/sort.html" import sort %}
+{% extends "league/base.html" %}
+{% block title %}Competitions - {{ super() }}{% endblock %}
+{% block head %}
+	{{ super() }}
+	{{ local_js("js/hider.js") }}
+{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Competitions</h2>
+	{{ filter('name', 'format', 'date') }}
+	{{ sort({
+		'compid': "Competition ID",
+		'from': "From",
+		'to': "To",
+	   }) }}
+	{{ navigation(comps) }}
+{% macro header() %}
+<tr>
+	<th></th>
+	<th>Name</th>
+	<th>Format</th>
+	<th><abbr title="Date of oldest match">From</abbr></th>
+	<th><abbr title="Date of most-recent match">To</abbr></th>
+</tr>
+{% endmacro %}
+	<table>
+	<thead>{{ header() }}</thead>
+	<tbody class="hier">
+		{% for comp in comps %}
+		<tr id="{{ comp.compid }}"
+		 class="{{ "hider hiding" if comp.divs | count }}">
+			<td class="tree"></td>
+			<td class="left"><a href="{{ url_for('.comp.overview', league=g.league,
+							     compid=comp.compid) }}">
+				{{ comp.name }}
+			</a></td>
+			<td class="left">{{ format_map[comp.format] }}</td>
+			{{ date_col(comp.from) }}
+			{{ date_col(comp.to) }}
+		</tr>
+		{% if comp.divs | count %}
+		<tr class="{{ comp.compid }} padding-row hidden"></tr>
+		{% endif %}
+		{% for div in comp.divs %}
+		<tr class="hidable hidden {{ comp.compid }}">
+			<td></td>
+			<td class="left"><a href="{{ url_for('.comp.overview', league=g.league,
+				   			     compid=comp.compid,
+							     _anchor=(div.name |
+							              replace(' ', '_'))) }}">
+				{{ div.name }}
+			</a></td>
+			<td></td>
+			{{ date_col(div.from) }}
+			{{ date_col(div.to) }}
+		</tr>
+		{% endfor %}
+		{% if comp.divs | count %}
+		<tr class="{{ comp.compid }} padding-row hidden"></tr>
+		{% endif %}
+		{% endfor %}
+	</tbody>
+	<tfoot>{{ header() }}</tfoot>
+	</table>
+	{{ navigation(comps) }}
+{% endblock %}
