@@ -164,9 +164,12 @@ def log(logids):
     matches.execute("""SELECT
                            league,
                            matchid,
+                           compid,
                            comp,
                            div,
                            round,
+                           teamid1,
+                           teamid2,
                            team1,
                            team2,
                            score1,

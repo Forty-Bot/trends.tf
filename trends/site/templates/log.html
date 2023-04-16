@@ -232,15 +232,34 @@
 		{% set team2class = 'win' %}
 	{% endif %}
 	<tr>
-		<td class="left">{{ league_map[match['league']] }}</td>
-		<td class="left">{{ match['comp'] }}</td>
+		<td class="left">
+			<a href="{{ url_for('league.comps', league=match['league']) }}">
+				{{ league_map[match['league']] }}
+			</a>
+		</td>
+		<td class="left">
+			<a href="{{ url_for('league.comp.overview', league=match['league'],
+			                    compid=match['compid']) }}">
+				{{ match['comp'] }}
+			</a>
+		</td>
 		<td class="left">{{ match['div'] }}</td>
 		<td class="left">{{ match['round'] }}</td>
-		<td class="left {{ team1class }}">{{ match['team1'] }}</td>
-		<td class="left {{ team2class }}">{{ match['team2'] }}</td>
+		<td class="left">
+			<a href="{{ url_for('league.team.overview', league=match['league'],
+			                    teamid=match['teamid1']) }}">
+				{{ match['team1'] }}
+			</a>
+		</td>
+		<td class="left">
+			<a href="{{ url_for('league.team.overview', league=match['league'],
+				    teamid=match['teamid1']) }}">
+				{{ match['team2'] }}
+			</a>
+		</td>
 		<td class="{{ team1class }}">{{ match['score1'] }}</td>
 		<td class="{{ team2class }}">{{ match['score2'] }}</td>
-		<td class="left">{{ match["maps"] | join(", ") }}</td>
+		<td class="left">{{ match["maps"] | join(", ") if match['maps'] else "" }}</td>
 		<td class="left">
 		{% if match['other_logs'] and
 		      (logs | count) + (match['other_logs'] | count) <= 10 %}
