@@ -14,7 +14,7 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_parse
 
 from trends.site.wsgi import create_app
-from trends.util import classes
+from trends.util import classes, leagues
 
 @pytest.fixture(scope='session')
 def app(database):
@@ -83,7 +83,7 @@ def substrings(draw, strings, min_size=0):
     return s[start:end]
 
 @given(st.data())
-def test_filter(client, logs, players, titles, maps, names, data):
+def test_filter(client, logs, players, titles, maps, names, compids, teamids, comps, divids, data):
     players = st.sampled_from(players).map(str)
 
     path = data.draw(st.one_of(
@@ -105,6 +105,19 @@ def test_filter(client, logs, players, titles, maps, names, data):
             "/api/v1/players",
             "/api/v1/logs",
         )),
+        st.builds(lambda league, rule: rule.format(league), st.sampled_from(leagues),
+            st.sampled_from((
+            "/league/{}/comps",
+            "/league/{}/matches",
+        ))),
+        st.builds(lambda compid, rule: rule.format(*compid), st.sampled_from(compids),
+            st.sampled_from((
+            "/league/{}/comp/{}/matches",
+        ))),
+        st.builds(lambda teamid, rule: rule.format(*teamid), st.sampled_from(teamids),
+            st.sampled_from((
+            "/league/{}/team/{}/roster",
+        ))),
     ))
 
     params = MultiDict([
@@ -118,9 +131,12 @@ def test_filter(client, logs, players, titles, maps, names, data):
             'highlander',
             'other',
         )))),
-        ('league', data.draw(st.sampled_from(('', 'etf2l')))),
+        ('league', data.draw(st.sampled_from(('',) + leagues))),
+        ('comp', data.draw(st.sampled_from(comps))),
+        ('divid', data.draw(st.sampled_from(divids))),
         ('map', data.draw(substrings(st.sampled_from([''] + maps)))),
         ('title', data.draw(substrings(st.sampled_from([''] + titles)))),
+        ('name', data.draw(substrings(st.sampled_from([''] + comps)))),
         ('timezone', data.draw(st.timezone_keys())),
         ('date_to_ts', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),
         ('date_from_ts', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),

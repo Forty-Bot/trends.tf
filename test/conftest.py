@@ -111,3 +111,27 @@ def names(connection):
     cur = connection.cursor()
     cur.execute("SELECT name FROM name WHERE length(name) >= 3 LIMIT 1000;")
     return [row[0] for row in cur]
+
+@pytest.fixture(scope='session')
+def compids(connection):
+    cur = connection.cursor()
+    cur.execute("SELECT league, compid FROM competition LIMIT 1000;")
+    return cur.fetchall()
+
+@pytest.fixture(scope='session')
+def teamids(connection):
+    cur = connection.cursor()
+    cur.execute("SELECT league, teamid FROM league_team LIMIT 1000;")
+    return cur.fetchall()
+
+@pytest.fixture(scope='session')
+def comps(connection):
+    cur = connection.cursor()
+    cur.execute("SELECT name FROM competition LIMIT 1000;")
+    return [row[0] for row in cur]
+
+@pytest.fixture(scope='session')
+def divids(connection):
+    cur = connection.cursor()
+    cur.execute("SELECT divid FROM division LIMIT 1000;")
+    return [row[0] for row in cur]
