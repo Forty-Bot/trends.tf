@@ -118,6 +118,7 @@ def get_matches(compid, filters, limit=100, offset=0):
            ) SELECT
                matchid,
                comp,
+               compid,
                div,
                round,
                teamid1,

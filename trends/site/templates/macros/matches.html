@@ -46,7 +46,12 @@
 		</a>
 	</td>
 	{% if comp %}
-	<td class="left">{{ match.comp }}</td>
+		<td class="left">
+			<a href="{{ url_for('league.comp.overview', league=g.league,
+			                    compid=match.compid) }}">
+				{{ match.comp }}
+			</a>
+		</td>
 	{% endif %}
 	{% if div %}
 	<td class="left">{{ optformat("{}", match.div) }}</td>
