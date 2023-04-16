@@ -81,6 +81,7 @@ def get_filter_params():
     params['format'] = args.get('format', type=str)
     params['league'] = args.get('league', type=str)
     params['comp'] = args.get('comp', type=str)
+    params['divid'] = args.get('divid', type=int)
     if val := tuple(args.getlist('steamid64', type=int)[:5]):
         players = get_db().cursor()
         players.execute("""SELECT
@@ -138,8 +139,12 @@ def get_filter_clauses(params, *valid_columns, **column_map):
     for col in valid_columns:
         column_map[col] = col
 
-    if params['league'] and 'league' in valid_columns:
-        clauses.append(f"AND {column_map['league']} = %(league)s")
+    def id_clause(column):
+      if params[column] and column in column_map:
+          clauses.append(f"AND {column_map[column]} = %({column})s")
+
+    id_clause('league')
+    id_clause('divid')
 
     def simple_clause(name, column):
         if not params[name]:

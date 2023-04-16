@@ -49,6 +49,14 @@
 		 value="{{ (g.filters['comp'] or "") | trim("%") }}">
 	</label>
 	{% endif %}
+	{% if 'divid' in params %}
+	<label><abbr title="Division">Div</abbr>:
+		<select name="divid">
+			<option></option>
+			{{ _create_options(g.filters['divid'] | string, g.divs) }}
+		</select>
+	</label>
+	{% endif %}
 	{% if 'format' in params %}
 	<label>Format:
 		<select name="format">

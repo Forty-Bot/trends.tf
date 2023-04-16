@@ -417,7 +417,9 @@ CREATE OR REPLACE VIEW log_nodups AS SELECT
 	blue_score,
 	formatid,
 	league,
-	matchid
+	matchid,
+	team1_is_red,
+	demoid
 FROM log
 WHERE duplicate_of ISNULL;
 

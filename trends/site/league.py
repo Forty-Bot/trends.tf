@@ -3,6 +3,7 @@
 
 import flask
 
+from .common import get_matches
 from .comp import comp
 from .team import team
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
@@ -82,3 +83,14 @@ def comps(league):
        { 'limit': limit, 'offset': offset, **filters, 'league': league, })
 
     return flask.render_template("league/comps.html", comps=comps.fetchall())
+
+@league.route('/matches')
+def matches(league):
+    limit, offset = get_pagination()
+    filters = get_filter_params()
+
+    matches = get_matches(None, filters, limit, offset)
+    comps = get_db().cursor()
+    comps.execute("SELECT name FROM competition WHERE league=%s;", (league,))
+
+    return flask.render_template("league/matches.html", matches=matches.fetchall(), comps=comps)

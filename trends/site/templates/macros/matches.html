@@ -1,0 +1,93 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/format.html" import date_col, optformat %}
+{% from "macros/icons.html" import demoicon %}
+{% macro _team_link(team, teamid) %}
+<a href="{{ url_for('league.team.overview', league=g.league, teamid=teamid) }}">
+	{{ team }}
+</a>
+{% endmacro %}
+{% macro match_table(matches, comp=False, div=False) %}
+<table>
+<thead>
+	<tr>
+		<th></th>
+		<th><abbr title="Demo/Match">D/M</abbr></th>
+		{% if comp %}
+		<th>Competition</th>
+		{% endif %}
+		{% if div %}
+		<th>Division</th>
+		{% endif %}
+		<th>Round</th>
+		<th colspan="2">Teams</th>
+		<th colspan="2">Score</th>
+		<th>Maps</th>
+		<th>Date</th>
+	</tr>
+</thead>
+<tbody class="hier">
+{% for match in matches %}
+	<tr id="{{ match.matchid }}" class="{{ "hider hiding" if match.logs != None }}">
+	{% set team1class = '' %}
+	{% set team2class = '' %}
+	{% if match['score1'] > match['score2'] %}
+		{% set team1class = 'win' %}
+	{% elif match['score1'] < match['score2'] %}
+		{% set team2class = 'win' %}
+	{% endif %}
+	<td class="tree"></td>
+	<td class="left">
+		<a href="https://etf2l.org/matches/{{ match.matchid }}">
+		<img class="avatar_small" src="{{
+			url_for('static', filename="img/{}.png".format(g.league))
+		 }}">
+		</img>
+		</a>
+	</td>
+	{% if comp %}
+	<td class="left">{{ match.comp }}</td>
+	{% endif %}
+	{% if div %}
+	<td class="left">{{ optformat("{}", match.div) }}</td>
+	{% endif %}
+	<td class="left">
+		{% if match.logs != None %}
+		<a href="{{ url_for('root.log', logids=match.logs) }}">
+			{{ match.round }}
+		</a>
+		{% else %}
+		{{ match.round }}
+		{% endif %}
+	</td>
+	<td class="left">{{ _team_link(match.team1, match.teamid1) }}</td>
+	<td class="left">{{ _team_link(match.team2, match.teamid2) }}</td>
+	<td class="{{ team1class }}">{{ match.score1 }}</td>
+	<td class="{{ team2class }}">{{ match.score2 }}</td>
+	<td class="left">{{ match.maps | join(", ") if match.maps else "" }}</td>
+	{{ date_col(match.scheduled) }}
+</tr>
+{% if match.logs != None %}
+<tr class="{{ match.matchid }} padding-row hidden"></tr>
+{% for log in match.logs.values() %}
+	<tr class="{{ match.matchid }} hidable hidden">
+		<td></td>
+		<td class="left">{{ demoicon(log.demoid) }}</td>
+		<td colspan="2"></td>
+		<td class="left" colspan="2">
+			<a href="{{ url_for('root.log', logids=log.logid) }}">
+				{{ log['title'] }}
+			</a>
+		</td>
+		<td>{{ log.score1 }}</td>
+		<td>{{ log.score2 }}</td>
+		<td class="left">{{ log.map }}</td>
+		<td class="left date" timestamp="{{ log.time }}"></td>
+	</tr>
+{% endfor %}
+<tr class="{{ match.matchid }} padding-row hidden"></tr>
+{% endif %}
+{% endfor %}
+</tbody>
+</table>
+{% endmacro %}

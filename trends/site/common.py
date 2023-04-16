@@ -78,3 +78,78 @@ def get_players(q):
            LIMIT %(limit)s OFFSET %(offset)s;""",
         { 'q': "%{}%".format(q), 'limit': limit, 'offset': offset})
     return results
+
+def get_matches(compid, filters, limit=100, offset=0):
+    if compid is None:
+        filter_clauses = get_filter_clauses(filters, 'comp', 'divid', time='scheduled')
+    else:
+        filter_clauses = get_filter_clauses(filters, 'divid', time='scheduled')
+        filter_clauses += "\nAND compid = %(compid)s"
+    if filters['map']:
+        maps = """JOIN (SELECT
+                          mapid
+                      FROM (SELECT
+                              unnest(mapids) AS mapid
+                          FROM match_semifiltered
+                          GROUP BY mapid
+                      ) AS maps
+                      JOIN map USING (mapid)
+                      WHERE map ILIKE %(map)s
+                  ) AS maps ON (mapid = ANY(mapids))"""
+    else:
+        maps = ""
+    order, order_clause = get_order({
+        'round': "round_seq",
+        'date': "scheduled",
+        'matchid': "matchid",
+    }, 'matchid')
+
+    matches = get_db().cursor()
+    matches.execute(
+        """WITH match_semifiltered AS (SELECT *
+               FROM match_pretty
+               WHERE league = %(league)s
+                   {0}
+           ), match AS MATERIALIZED (SELECT *
+               FROM match_semifiltered
+               {1}
+               ORDER BY {2} NULLS LAST, compid DESC, tier ASC, matchid DESC
+               LIMIT %(limit)s OFFSET %(offset)s
+           ) SELECT
+               matchid,
+               comp,
+               div,
+               round,
+               teamid1,
+               teamid2,
+               team1,
+               team2,
+               score1,
+               score2,
+               maps,
+               scheduled,
+               logs
+           FROM match
+           LEFT JOIN LATERAL (SELECT
+                   league,
+                   matchid,
+                   json_object_agg(logid, json_build_object(
+                       'logid', logid,
+                       'time', time,
+                       'title', title,
+                       'map', map,
+                       'score1', CASE WHEN team1_is_red THEN red_score ELSE blue_score END,
+                       'score2', CASE WHEN team1_is_red THEN blue_score ELSE red_score END,
+                       'demoid', demoid
+                   ) ORDER BY time DESC) AS logs
+               FROM log_nodups
+               LEFT JOIN format USING (formatid)
+               JOIN map USING (mapid)
+               WHERE league=match.league AND matchid=match.matchid
+               GROUP BY league, matchid
+           ) AS log USING (league, matchid)
+           ORDER BY {2} NULLS LAST, compid DESC, tier ASC, matchid DESC;"""
+        .format(filter_clauses, maps, order_clause),
+        { **filters, 'league': flask.g.league, 'compid': compid, 'limit': limit,
+          'offset': offset })
+    return matches
