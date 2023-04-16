@@ -138,3 +138,38 @@ def overview(league, teamid):
 
     return flask.render_template("league/team/overview.html", roster=roster, old_roster=old_roster,
                                  comps=comps)
+
+@team.route('/roster')
+def roster(league, teamid):
+    limit, offset = get_pagination()
+    filters = get_filter_params()
+    filter_clauses = get_filter_clauses(filters, 'playerid', date_range='rostered')
+    order, order_clause = get_order({
+        'newer': "greatest(lower(rostered), upper(rostered))",
+        'older': "least(lower(rostered), upper(rostered))",
+        'from': "lower(rostered)",
+        'to': "upper(rostered)",
+    }, 'newer')
+
+    db = get_db()
+    roster = db.cursor()
+    roster.execute(
+        """SELECT
+               compid,
+               competition.name AS comp,
+               steamid64,
+               name.name,
+               avatarhash,
+               lower(rostered) AS from,
+               upper(rostered) AS to
+           FROM team_player
+           LEFT JOIN competition USING (league, compid)
+           JOIN player USING (playerid)
+           JOIN name USING (nameid)
+           WHERE league=%(league)s AND teamid=%(teamid)s
+               {}
+           ORDER BY {}
+           LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
+       { **filters, 'league': league, 'teamid': teamid, 'limit': limit, 'offset': offset })
+
+    return flask.render_template("league/team/roster.html", roster=roster.fetchall())

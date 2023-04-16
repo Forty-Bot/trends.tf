@@ -1,0 +1,53 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/format.html" import date_col %}
+{% from "macros/icons.html" import playerlink %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/sort.html" import sort %}
+{% extends "league/team/base.html" %}
+{% block title %}Roster - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Roster</h2>
+	{{ filter('steamid64', 'date') }}
+	{{ navigation(roster) }}
+	{{ sort({
+		'newer': "Newer",
+		'older': "Older",
+		'from': "From",
+		'to': "To",
+	}) }}
+	{% set has_comp = transfers | count and transfers[0].comp != None %}
+	<table>
+	<thead>
+		<tr>
+			{% if has_comp %}
+			<th>Competition</th>
+			{% endif %}
+			<th>Player</th>
+			<th>From</th>
+			<th>To</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for span in roster %}
+		<tr>
+			{% if has_comp %}
+			<td class="left">
+				<a href="{{ url_for('league.comp.overview', league=g.league,
+				                    compid=span.compid) }}">
+					{{ span.comp }}
+				</a>
+			</td>
+			{% endif %}
+			<td class="left">
+				{{ playerlink(span.steamid64, span.name, span.avatarhash) }}
+			</td>
+			{{ date_col(span.from) }}
+			{{ date_col(span.to) }}
+	{% endfor %}
+	</tbody>
+	</table>
+	{{ navigation(roster) }}
+{% endblock %}
