@@ -1,0 +1,12 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
+{% macro navbar() %}
+<ul class="nav">
+{% for (endpoint, name) in varargs %}
+	{% set url = url_for(endpoint, **kwargs) %}
+	<li class="nav"><a class="{{ "active" if url == request.path }}" href="{{ url }}">
+		{{ name }}
+	</a></li>
+{% endfor %}
+</ul>
+{% endmacro %}

@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/nav.html" import navbar %}
 {% from "macros/wlt.html" import wlt %}
 {% extends "base.html" %}
 {% block title %}{{ g.player['name'] }} - {{ super() }}{% endblock %}
@@ -58,15 +59,8 @@
 
 	</div>
 
-	<ul class="nav">
-	{% for (endpoint, name) in (('.overview', "Overview"), ('.logs', "Logs"),
-	                            ('.peers', "Peers"), ('.totals', "Totals"),
-				    ('.weapons', "Weapons"), ('.trends', "Trends"),
-				    ('.maps', "Maps")) %}
-		{% set url = url_for(endpoint, steamid=g.player['steamid64']) %}
-		<li class="nav"><a class="{{ "active" if url == request.path }}" href="{{ url }}">
-			{{ name }}
-		</a></li>
-	{% endfor %}
-	</ul>
+
+	{{ navbar(('.overview', "Overview"), ('.logs', "Logs"), ('.peers', "Peers"),
+	          ('.totals', "Totals"), ('.weapons', "Weapons"), ('.trends', "Trends"),
+		  ('.maps', "Maps"), steamid=g.player.steamid64) }}
 {% endblock %}
