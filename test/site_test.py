@@ -6,7 +6,7 @@ import random
 import hypothesis
 from hypothesis import assume, given, strategies as st
 import pytest
-from python_testing_crawler import Crawler, Rule, Request
+from python_testing_crawler import Allow, Crawler, Rule, Request
 from werkzeug.datastructures import MultiDict
 
 from trends.site.wsgi import create_app
@@ -44,6 +44,7 @@ def test_crawl(client):
         path_attrs=('href', 'src'),
         rules=(
             Rule('a', '/.*', 'GET', Request()),
+            Rule('a', '.*player.*', 'GET', Allow((404,))),
             Rule('link', '/.*', 'GET', Request()),
             Rule('img', '/.*', 'GET', Request()),
         ),
