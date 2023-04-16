@@ -1,13 +1,17 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
 
+import collections
 import random
 
+from flask.testing import EnvironBuilder
 import hypothesis
 from hypothesis import assume, given, strategies as st
 import pytest
 from python_testing_crawler import Allow, Crawler, Rule, Request
 from werkzeug.datastructures import MultiDict
+from werkzeug.exceptions import HTTPException
+from werkzeug.urls import url_parse
 
 from trends.site.wsgi import create_app
 from trends.util import classes
@@ -26,14 +30,22 @@ def app(database):
 def client(app):
     return app.test_client()
 
-class RandomSelector:
-    def __init__(self, scale):
+class RandomEndpointSelector:
+    def __init__(self, client, scale):
+        builder = EnvironBuilder(client.application, environ_base=client.environ_base)
+        self.mapper = client.application.url_map.bind_to_environ(builder.get_environ())
         self.scale = scale
-        self.remaining = scale
+        self.remaining = collections.defaultdict(lambda: scale)
 
     def __call__(self, node):
-        if random.randrange(0, self.scale) < self.remaining:
-            self.remaining -= 1
+        try:
+            path = url_parse(node.path).path
+            endpoint, arguments = self.mapper.match(path_info=path, method=node.method)
+        except HTTPException:
+            endpoint = ''
+
+        if random.randrange(0, self.scale) < self.remaining[endpoint]:
+            self.remaining[endpoint] -= 1
             return True
         return False
 
@@ -48,7 +60,7 @@ def test_crawl(client):
             Rule('link', '/.*', 'GET', Request()),
             Rule('img', '/.*', 'GET', Request()),
         ),
-        should_process_handlers=(RandomSelector(100),),
+        should_process_handlers=(RandomEndpointSelector(client, 20),),
     )
     crawler.crawl()
 
