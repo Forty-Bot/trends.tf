@@ -301,15 +301,95 @@ CREATE TABLE IF NOT EXISTS match (
 	CHECK (league_round_optional(league) OR (round_seq NOTNULL))
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS match_unique ON match (
+CREATE UNIQUE INDEX IF NOT EXISTS match_unique_div ON match (
 	league, divid, round_seq, teamid1, teamid2
 ) WHERE divid NOTNULL;
-CREATE UNIQUE INDEX IF NOT EXISTS match_unique_nodiv ON match (
+CREATE UNIQUE INDEX IF NOT EXISTS match_unique_comp ON match (
 	league, compid, round_seq, teamid1, teamid2
 ) WHERE divid ISNULL;
 CREATE INDEX IF NOT EXISTS match_team1 ON match (teamid1);
 CREATE INDEX IF NOT EXISTS match_team2 ON match (teamid2);
 CREATE INDEX IF NOT EXISTS match_time ON match (scheduled);
+
+CREATE OR REPLACE VIEW match_wlt AS SELECT
+	league,
+	matchid,
+	compid,
+	divid,
+	teamid1 AS teamid,
+	teamid2 AS opponent,
+	round_seq,
+	mapids,
+	score1 AS rounds_won,
+	score2 AS rounds_lost,
+	forfeit,
+	scheduled,
+	submitted,
+	fetched,
+	(score1 > score2)::INT AS win,
+	(score1 < score2)::INT AS loss,
+	(score1 = score2)::INT AS tie
+FROM match
+UNION ALL
+SELECT
+	league,
+	matchid,
+	compid,
+	divid,
+	teamid2 AS teamid,
+	teamid1 AS opponent,
+	round_seq,
+	mapids,
+	score1 AS rounds_won,
+	score2 AS rounds_lost,
+	forfeit,
+	scheduled,
+	submitted,
+	fetched,
+	(score2 > score1)::INT AS win,
+	(score2 < score1)::INT AS loss,
+	(score2 = score1)::INT AS tie
+FROM match;
+
+CREATE OR REPLACE VIEW match_wlt AS SELECT
+	league,
+	matchid,
+	compid,
+	divid,
+	teamid1 AS teamid,
+	teamid2 AS opponent,
+	round_seq,
+	mapids,
+	score1 AS rounds_won,
+	score2 AS rounds_lost,
+	forfeit,
+	scheduled,
+	submitted,
+	fetched,
+	(score1 > score2)::INT AS win,
+	(score1 < score2)::INT AS loss,
+	(score1 = score2)::INT AS tie
+FROM match
+UNION ALL
+SELECT
+	league,
+	matchid,
+	compid,
+	divid,
+	teamid2 AS teamid,
+	teamid1 AS opponent,
+	round_seq,
+	mapids,
+	score1 AS rounds_won,
+	score2 AS rounds_lost,
+	forfeit,
+	scheduled,
+	submitted,
+	fetched,
+	(score2 > score1)::INT AS win,
+	(score2 < score1)::INT AS loss,
+	(score2 = score1)::INT AS tie
+FROM match;
 
 CREATE OR REPLACE VIEW match_pretty AS SELECT
 	match.league,

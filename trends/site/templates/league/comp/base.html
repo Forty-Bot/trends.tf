@@ -1,0 +1,17 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/nav.html" import navbar %}
+{% from "macros/pretty.html" import league_map %}
+{% extends "base.html" %}
+{% block title %}{{ g.comp.name }} - {{ league_map[g.league] }} - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	{% set league_url_map = {
+		'etf2l': "https://etf2l.org/etf2l/archives/{}/"
+	} %}
+	<h1><a href="{{ league_url_map[g.league].format(g.compid) }}">
+		{{ league_map[g.league] }} {{ g.comp.name }}
+	</a></h1>
+
+	{{ navbar(('.overview', "Overview"), league=g.league, compid=g.compid) }}
+{% endblock %}

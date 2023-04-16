@@ -288,3 +288,11 @@ form {
 	display: inline !important;
 	padding: 8px !important;
 }
+
+h3 {
+	margin: .5em 0;
+}
+
+h4 {
+	margin: .5em 0;
+}

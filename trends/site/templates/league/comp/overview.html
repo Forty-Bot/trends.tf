@@ -1,0 +1,59 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/format.html" import date_col, optformat %}
+{% from "macros/matches.html" import match_table %}
+{% from "macros/pretty.html" import format_map, league_map %}
+{% from "macros/wlt.html" import wlt %}
+{% extends "league/comp/base.html" %}
+{% block head %}
+	{{ super() }}
+	{{ local_js("js/hider.js") }}
+{% endblock %}
+{% block title %}Overview - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Overview</h2>
+	<h3>Teams</h3>
+	<div class="box">
+	{% for div in divs %}
+	<div class="float">
+	{% if div.divid != None %}
+	<h4 id="{{ div.name | replace(' ', '_') }}">{{ div.name }}</h4>
+	{% endif %}
+	<table>
+	<thead>
+		<tr>
+			<th>Team</th>
+			<th><abbr title="Wins-Losses-Ties">W-L-T</abbr></th>
+			<th><abbr title="Winrate; Ties count as 0.5 wins">WR</abbr></th>
+			<th><abbr title="Round Wins">RW</abbr></th>
+			<th><abbr title="Round Losses">RL</abbr></th>
+			<th><abbr title="Round Winrate">RWR</abbr></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for team in div.teams %}
+		<tr>
+			<td class="left">
+				<img class="avatar_small"
+				     src="{{ team.avatarhash | avatar('small', g.league) }}">
+				<a href="{{ url_for('league.team.overview', league=g.league,
+					 	    teamid=team.teamid) }}">
+					{{ team.name }}
+				</a>
+			</td>
+			<td>{{ wlt(team.wins, team.losses, team.ties) }}</td>
+			<td>{{ optformat("{:.0%}", team.winrate) }}</td>
+			<td>{{ team.rounds_won }}</td>
+			<td>{{ team.rounds_lost }}</td>
+			<td>{{ optformat("{:.0%}", team.round_winrate) }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+	</table>
+	</div>
+	{% endfor %}
+	</div>
+	<h3>Recent Matches</h3>
+	{{ match_table(matches) }}
+{% endblock %}

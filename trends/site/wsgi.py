@@ -63,9 +63,15 @@ def duration_filter(timestamp):
     else:
         return "{:.0f}:{:02.0f}".format(mm, ss)
 
-def avatar_filter(hash, size='full'):
+def avatar_filter(hash, size='full', league=None):
     if not hash:
         return ''
+
+    if league == 'etf2l':
+        return "https://etf2l.org/wp-content/uploads/avatars/{}".format(hash)
+    elif league is not None:
+        raise ValueError("Invalid league")
+
     url  = "https://avatars.steamstatic.com/{}{}.jpg"
     return url.format(hash, {
             'small': '',
