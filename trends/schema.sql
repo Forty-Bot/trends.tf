@@ -351,46 +351,6 @@ SELECT
 	(score2 = score1)::INT AS tie
 FROM match;
 
-CREATE OR REPLACE VIEW match_wlt AS SELECT
-	league,
-	matchid,
-	compid,
-	divid,
-	teamid1 AS teamid,
-	teamid2 AS opponent,
-	round_seq,
-	mapids,
-	score1 AS rounds_won,
-	score2 AS rounds_lost,
-	forfeit,
-	scheduled,
-	submitted,
-	fetched,
-	(score1 > score2)::INT AS win,
-	(score1 < score2)::INT AS loss,
-	(score1 = score2)::INT AS tie
-FROM match
-UNION ALL
-SELECT
-	league,
-	matchid,
-	compid,
-	divid,
-	teamid2 AS teamid,
-	teamid1 AS opponent,
-	round_seq,
-	mapids,
-	score1 AS rounds_won,
-	score2 AS rounds_lost,
-	forfeit,
-	scheduled,
-	submitted,
-	fetched,
-	(score2 > score1)::INT AS win,
-	(score2 < score1)::INT AS loss,
-	(score2 = score1)::INT AS tie
-FROM match;
-
 CREATE OR REPLACE VIEW match_pretty AS SELECT
 	match.league,
 	matchid,

@@ -27,6 +27,15 @@ def get_comp():
     flask.g.comp = comp.fetchone()
     if flask.g.comp is None:
         flask.abort(404)
+
+    divs = db.cursor()
+    divs.execute(
+        """SELECT json_object_agg(divid, division ORDER BY tier ASC, division DESC)
+           FROM division
+           JOIN div_name USING (div_nameid)
+           WHERE league=%s AND compid=%s;""", (flask.g.league, flask.g.compid))
+    flask.g.divs = divs.fetchone()[0] or {}
+
 @comp.route('/')
 def overview(league, compid):
     db = get_db()
@@ -77,3 +86,12 @@ def overview(league, compid):
     matches = get_matches(compid, get_filter_params(), limit=25)
 
     return flask.render_template("league/comp/overview.html", divs=divs, matches=matches)
+
+@comp.route('/matches')
+def matches(league, compid):
+    limit, offset = get_pagination()
+    filters = get_filter_params()
+
+    matches = get_matches(compid, filters, limit, offset)
+
+    return flask.render_template("league/comp/matches.html", matches=matches.fetchall())
