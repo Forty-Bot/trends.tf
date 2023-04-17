@@ -23,6 +23,7 @@
 	--blue: #5B818F;
 	--green: #729E42;
 	--drab: #C5AF91;
+	--lightdrab: #F6DFBF;
 	--lighttext: #fff;
 }
 
@@ -270,6 +271,10 @@ a.sort {
 
 .tie {
 	background-color: var(--drab);
+}
+
+.forfeit {
+	background-color: var(--lightdrab);
 }
 
 input:disabled {

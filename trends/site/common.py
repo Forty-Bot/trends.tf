@@ -127,6 +127,7 @@ def get_matches(compid, filters, limit=100, offset=0):
                team2,
                score1,
                score2,
+               forfeit,
                maps,
                scheduled,
                logs

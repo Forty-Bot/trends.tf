@@ -28,7 +28,8 @@
 </thead>
 <tbody class="hier">
 {% for match in matches %}
-	<tr id="{{ match.matchid }}" class="{{ "hider hiding" if match.logs != None }}">
+	<tr id="{{ match.matchid }}"
+	 class="{{ "hider hiding" if match.logs != None }} {{ "forfeit" if match.forfeit }}">
 	{% set team1class = '' %}
 	{% set team2class = '' %}
 	{% if match['score1'] > match['score2'] %}
@@ -69,7 +70,13 @@
 	<td class="left">{{ _team_link(match.team2, match.teamid2) }}</td>
 	<td class="{{ team1class }}">{{ match.score1 }}</td>
 	<td class="{{ team2class }}">{{ match.score2 }}</td>
-	<td class="left">{{ match.maps | join(", ") if match.maps else "" }}</td>
+	<td class="left">
+	{% if match.forfeit %}
+		Forfeit
+	{% else %}
+		{{ match.maps | join(", ") if match.maps else "" }}
+	{% endif %}
+	</td>
 	{{ date_col(match.scheduled) }}
 </tr>
 {% if match.logs != None %}

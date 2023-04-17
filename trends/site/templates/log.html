@@ -231,7 +231,7 @@
 	{% elif match['score1'] < match['score2'] %}
 		{% set team2class = 'win' %}
 	{% endif %}
-	<tr>
+	<tr class="{{ 'forfeit' if match.forfeit }}">
 		<td class="left">
 			<a href="{{ url_for('league.comps', league=match['league']) }}">
 				{{ league_map[match['league']] }}
@@ -259,7 +259,13 @@
 		</td>
 		<td class="{{ team1class }}">{{ match['score1'] }}</td>
 		<td class="{{ team2class }}">{{ match['score2'] }}</td>
-		<td class="left">{{ match["maps"] | join(", ") if match['maps'] else "" }}</td>
+		<td class="left">
+		{% if match.forfeit %}
+			Forfeit
+		{% else %}
+			{{ match.maps | join(", ") if match.maps else "" }}
+		{% endif %}
+		</td>
 		<td class="left">
 		{% if match['other_logs'] and
 		      (logs | count) + (match['other_logs'] | count) <= 10 %}

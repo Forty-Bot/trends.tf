@@ -174,6 +174,7 @@ def log(logids):
                            team2,
                            score1,
                            score2,
+                           forfeit,
                            maps,
                            current_logs,
                            full_logs - current_logs AS other_logs
