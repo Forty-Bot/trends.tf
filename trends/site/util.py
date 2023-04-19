@@ -146,7 +146,7 @@ def get_filter_clauses(params, *valid_columns, **column_map):
     id_clause('league')
     id_clause('divid')
 
-    def simple_clause(name, column):
+    def simple_clause(name, column, table=None, table_col=None):
         if not params[name]:
             return
 
@@ -155,13 +155,13 @@ def get_filter_clauses(params, *valid_columns, **column_map):
         elif column in column_map:
             clauses.append(f"""AND {column_map[column]} = (
                                    SELECT {column}
-                                   FROM {name}
-                                   WHERE {name} = %({name})s
+                                   FROM {name if table is None else table}
+                                   WHERE {name if table_col is None else table_col} = %({name})s
                                )""")
 
     simple_clause('class', 'classid')
     simple_clause('format', 'formatid')
-    simple_clause('comp', 'compid')
+    simple_clause('comp', 'compid', 'competition', 'name')
 
     if 'primary_classid' in column_map and params['class']:
         clauses.append(f"""AND {column_map['primary_classid']} = (
