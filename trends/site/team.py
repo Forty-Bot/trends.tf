@@ -114,7 +114,7 @@ def overview(league, teamid):
                (wins + 0.5 * ties) / nullif(wins + losses + ties, 0) AS winrate,
                rounds_won,
                rounds_lost,
-               rounds_won / nullif(rounds_won + rounds_lost, 0) AS round_winrate
+               rounds_won::NUMERIC / nullif(rounds_won + rounds_lost, 0) AS round_winrate
            FROM team_comp
            JOIN competition USING (league, compid)
            JOIN division USING (league, compid, divid)
@@ -124,11 +124,11 @@ def overview(league, teamid):
                    league,
                    compid,
                    teamid,
-                   total(win) AS wins,
-                   total(loss) AS losses,
-                   total(tie) AS ties,
-                   total(rounds_won) AS rounds_won,
-                   total(rounds_lost) AS rounds_lost
+                   sum(win) AS wins,
+                   sum(loss) AS losses,
+                   sum(tie) AS ties,
+                   sum(rounds_won) AS rounds_won,
+                   sum(rounds_lost) AS rounds_lost
                FROM match_wlt
                GROUP BY league, compid, teamid
            ) AS match USING (league, compid, teamid)
