@@ -1,9 +1,14 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/format.html" import optformat %}
+{% from "macros/matches.html" import match_table %}
 {% from "macros/pretty.html" import format_map %}
 {% from "macros/wlt.html" import wlt %}
 {% extends "league/team/base.html" %}
+{% block head %}
+	{{ super() }}
+	{{ local_js("js/hider.js") }}
+{% endblock %}
 {% block title %}Overview - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
@@ -99,6 +104,11 @@
 		{% endfor %}
 	</tbody>
 	</table>
+	</div>
+
+	<div class="float">
+	<h3>Recent Matches</h3>
+	{{ match_table(matches, comp=True, div=True, team1=False) }}
 	</div>
 	</div>
 {% endblock %}

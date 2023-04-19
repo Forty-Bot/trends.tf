@@ -249,8 +249,10 @@ def overview(league, teamid):
            ORDER BY compid desc
            LIMIT 10;""", (league, teamid))
 
+    matches = get_matches(league, teamid, get_filter_params(), limit=25)
+
     return flask.render_template("league/team/overview.html", roster=roster, old_roster=old_roster,
-                                 comps=comps)
+                                 comps=comps, matches=matches)
 
 @team.route('/roster')
 def roster(league, teamid):
