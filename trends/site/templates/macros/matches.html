@@ -7,7 +7,7 @@
 	{{ team }}
 </a>
 {% endmacro %}
-{% macro match_table(matches, comp=False, div=False) %}
+{% macro match_table(matches, comp=False, div=False, team1=True) %}
 <table>
 <thead>
 	<tr>
@@ -20,8 +20,14 @@
 		<th>Division</th>
 		{% endif %}
 		<th>Round</th>
+		{% if team1 %}
 		<th colspan="2">Teams</th>
 		<th colspan="2">Score</th>
+		{% else %}
+		<th>Opponent</th>
+		<th><abbr title="Rounds won">W<abbr></th>
+		<th><abbr title="Rounds lost">L<abbr></th>
+		{% endif %}
 		<th>Maps</th>
 		<th>Date</th>
 	</tr>
@@ -32,10 +38,15 @@
 	 class="{{ "hider hiding" if match.logs != None }} {{ "forfeit" if match.forfeit }}">
 	{% set team1class = '' %}
 	{% set team2class = '' %}
-	{% if match['score1'] > match['score2'] %}
+	{% if match.score1 > match.score2 %}
 		{% set team1class = 'win' %}
-	{% elif match['score1'] < match['score2'] %}
-		{% set team2class = 'win' %}
+		{% set team2class = '' if team1 else 'loss' %}
+	{% elif match.score1 < match.score2 %}
+		{% set team1class = 'loss' %}
+		{% set team2class = '' if team1 else 'win' %}
+	{% elif not team1 %}
+		{% set team1class = 'tie' %}
+		{% set team2class = 'tie' %}
 	{% endif %}
 	<td class="tree"></td>
 	<td class="left">
@@ -66,10 +77,12 @@
 		{{ match.round }}
 		{% endif %}
 	</td>
+	{% if team1 %}
 	<td class="left">{{ _team_link(match.team1, match.teamid1) }}</td>
+	{% endif %}
 	<td class="left">{{ _team_link(match.team2, match.teamid2) }}</td>
 	<td class="{{ team1class }}">{{ match.score1 }}</td>
-	<td class="{{ team2class }}">{{ match.score2 }}</td>
+	<td class="{{ team2class if team1 else team1class }}">{{ match.score2 }}</td>
 	<td class="left">
 	{% if match.forfeit %}
 		Forfeit

@@ -329,7 +329,8 @@ CREATE OR REPLACE VIEW match_wlt AS SELECT
 	fetched,
 	(score1 > score2)::INT AS win,
 	(score1 < score2)::INT AS loss,
-	(score1 = score2)::INT AS tie
+	(score1 = score2)::INT AS tie,
+	1 AS our_team
 FROM match
 UNION ALL
 SELECT
@@ -349,7 +350,8 @@ SELECT
 	fetched,
 	(score2 > score1)::INT AS win,
 	(score2 < score1)::INT AS loss,
-	(score2 = score1)::INT AS tie
+	(score2 = score1)::INT AS tie,
+	2 AS our_team
 FROM match;
 
 CREATE OR REPLACE VIEW match_pretty AS SELECT

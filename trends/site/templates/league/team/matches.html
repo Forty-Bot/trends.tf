@@ -1,0 +1,30 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/matches.html" import match_table %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/sort.html" import sort %}
+{% extends "league/team/base.html" %}
+{% block head %}
+	{{ super() }}
+	{{ local_js("js/hider.js") }}
+{% endblock %}
+{% block title %}Matches - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Matches</h2>
+	<datalist id="comps">
+	{% for comp in comps %}
+		<option value="{{ comp[0] }}"></option>
+	{% endfor %}
+	</datalist>
+	{{ filter('comp', 'map', 'date') }}
+	{{ sort({
+		'matchid': "MatchID",
+		'round': "Round",
+		'date': "Date",
+	}) }}
+	{{ navigation(matches) }}
+	{{ match_table(matches, comp=True, div=True, team1=False) }}
+	{{ navigation(matches) }}
+{% endblock %}

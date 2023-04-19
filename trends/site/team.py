@@ -51,6 +51,119 @@ def get_comp():
            ) AS wlt;""", (flask.g.league, flask.g.teamid))
     flask.g.team_wlt = cur.fetchone()
 
+def get_matches(league, teamid, filters, limit=100, offset=0):
+    filter_clauses = get_filter_clauses(filters, comp='competition.name', time='scheduled')
+    if filters['map']:
+        maps = """JOIN (SELECT
+                          mapid
+                      FROM (SELECT
+                              unnest(mapids) AS mapid
+                          FROM match_semifiltered
+                          GROUP BY mapid
+                      ) AS maps
+                      JOIN map USING (mapid)
+                      WHERE map ILIKE %(map)s
+                  ) AS maps ON (mapid = ANY(mapids))"""
+    else:
+        maps = ""
+    order, order_clause = get_order({
+        'round': "round_seq",
+        'date': "scheduled",
+        'matchid': "matchid",
+    }, 'matchid')
+
+    matches = get_db().cursor()
+    matches.execute(
+        """WITH match_semifiltered AS (SELECT
+                   match.league,
+                   matchid,
+                   match.compid,
+                   competition.name AS comp,
+                   division as div,
+                   tier,
+                   opponent AS teamid,
+                   team_name,
+                   round_seq,
+                   round,
+                   mapids,
+                   (SELECT
+                           array_agg(map)
+                       FROM map
+                       JOIN unnest(mapids) AS mapid USING(mapid)
+                   ) AS maps,
+                   rounds_won AS won,
+                   rounds_lost AS lost,
+                   forfeit,
+                   scheduled,
+                   our_team
+               FROM match_wlt AS match
+               LEFT JOIN div_round USING (league, divid, round_seq)
+               LEFT JOIN comp_round USING (league, compid, round_seq)
+               JOIN round_name ON (
+                   round_name.round_nameid = coalesce(div_round.round_nameid,
+                                                      comp_round.round_nameid)
+               ) JOIN competition USING (league, compid)
+               LEFT JOIN division USING (league, divid)
+               LEFT JOIN div_name USING (div_nameid)
+               JOIN team_comp AS tc ON (
+                   tc.league = match.league
+                   AND tc.compid = match.compid
+                   AND tc.teamid = match.opponent
+               ) WHERE match.league = %(league)s AND match.teamid = %(teamid)s
+                   {0}
+           ), match AS MATERIALIZED (SELECT *
+               FROM match_semifiltered
+               {1}
+               ORDER BY {2} NULLS LAST, compid DESC, tier ASC, matchid DESC
+               LIMIT %(limit)s OFFSET %(offset)s
+           ) SELECT
+               matchid,
+               comp,
+               compid,
+               div,
+               round,
+               teamid AS teamid2,
+               team_name AS team2,
+               won AS score1,
+               lost AS score2,
+               forfeit,
+               maps,
+               scheduled,
+               logs
+           FROM match
+           LEFT JOIN LATERAL (SELECT
+                   league,
+                   matchid,
+                   json_object_agg(logid, json_build_object(
+                       'logid', logid,
+                       'time', time,
+                       'title', title,
+                       'map', map,
+                       'score1', CASE WHEN equal(team1_is_red, our_team = 1) THEN
+                           red_score
+                       ELSE
+                           blue_score
+                       END,
+                       'score2', CASE WHEN equal(NOT team1_is_red, our_team = 2) THEN
+                           blue_score
+                       ELSE
+                           red_score
+                       END,
+                       'demoid', demoid
+                   ) ORDER BY time DESC) AS logs
+               FROM log_nodups
+               LEFT JOIN format USING (formatid)
+               JOIN map USING (mapid)
+               WHERE league=match.league AND matchid=match.matchid
+               GROUP BY league, matchid
+           ) AS log USING (league, matchid)
+           ORDER BY {2} NULLS LAST, compid DESC, tier ASC, matchid DESC;"""
+        .format(filter_clauses, maps, order_clause),
+        { **filters, 'league': flask.g.league, 'teamid': teamid, 'limit': limit,
+          'offset': offset })
+
+    return matches
+
 @team.route('/')
 def overview(league, teamid):
     db = get_db()
@@ -173,3 +286,19 @@ def roster(league, teamid):
        { **filters, 'league': league, 'teamid': teamid, 'limit': limit, 'offset': offset })
 
     return flask.render_template("league/team/roster.html", roster=roster.fetchall())
+
+@team.route('/matches')
+def matches(league, teamid):
+    limit, offset = get_pagination()
+
+    comps = get_db().cursor()
+    comps.execute(
+        """SELECT name
+           FROM team_comp
+           JOIN competition USING (league, compid)
+           WHERE league = %s AND teamid = %s;
+        """, (league, teamid));
+
+    matches = get_matches(league, teamid, get_filter_params(), limit, offset)
+
+    return flask.render_template("league/team/matches.html", matches=matches.fetchall(), comps=comps)
