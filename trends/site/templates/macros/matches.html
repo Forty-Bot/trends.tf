@@ -91,6 +91,13 @@
 <tr class="{{ match.matchid }} padding-row hidden"></tr>
 {% for log in match.logs.values() %}
 	<tr class="{{ match.matchid }} hidable hidden">
+		{% if team1 %}
+		{% set team1class = 'win' if log.score1 > log.score2 else '' %}
+		{% set team2class = 'win' if log.score1 < log.score2 else '' %}
+		{% else %}
+		{% set team1class = wlt_class(log.score1, log.score2) %}
+		{% set team2class = team1class %}
+		{% endif %}
 		<td></td>
 		<td class="left">{{ demoicon(log.demoid) }}</td>
 		<td colspan="2"></td>
@@ -99,8 +106,8 @@
 				{{ log['title'] }}
 			</a>
 		</td>
-		<td>{{ log.score1 }}</td>
-		<td>{{ log.score2 }}</td>
+		<td class="{{ team1class }}">{{ log.score1 }}</td>
+		<td class="{{ team2class }}">{{ log.score2 }}</td>
 		<td class="left">{{ log.map }}</td>
 		<td class="left date" timestamp="{{ log.time }}"></td>
 	</tr>
