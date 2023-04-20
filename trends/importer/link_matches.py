@@ -45,7 +45,8 @@ def link_matches(args, c):
                    logid,
                    league,
                    matchid,
-                   (match1.players & log.red) >= (match2.players & log.blue) AS team1_is_red
+                   #(match1.players & log.red) + #(match2.players & log.blue) >
+                       #(match1.players & log.blue) + #(match2.players & log.red) AS team1_is_red
                FROM (SELECT
                        match.league,
                        matchid,
