@@ -162,6 +162,7 @@ def create_app():
 
     app.add_template_filter(any)
     app.add_template_filter(all)
+    app.add_template_filter(bool)
     app.add_template_filter(anynone)
     app.add_template_filter(opacit)
     app.add_template_filter(duration_filter, 'duration')

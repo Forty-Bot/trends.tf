@@ -23,6 +23,6 @@
 		'date': "Date",
 	}) }}
 	{{ navigation(matches) }}
-	{{ match_table(matches, div=g.divs | count) }}
+	{{ match_table(matches, div=g.divs | count | bool) }}
 	{{ navigation(matches) }}
 {% endblock %}

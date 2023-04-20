@@ -100,8 +100,8 @@
 		{% endif %}
 		<td></td>
 		<td class="left">{{ demoicon(log.demoid) }}</td>
-		<td colspan="2"></td>
-		<td class="left" colspan="2">
+		<td colspan="{{ comp + div + 1 }}"></td>
+		<td class="left" colspan="{{ 1 + team1 }}">
 			<a href="{{ url_for('root.log', logids=log.logid) }}">
 				{{ log['title'] }}
 			</a>
