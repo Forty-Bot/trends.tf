@@ -92,6 +92,13 @@ def anynone(iterable):
 def opacit(x):
     return x * (x * (2.4 * x - 3.6) + 2) + 0.2
 
+def wlt_class(wins, losses):
+    if wins > losses:
+        return 'win'
+    elif wins < losses:
+        return 'loss'
+    return 'tie'
+
 class StaticHashDefaults:
     def __init__(self, app):
         self.app = app
@@ -164,6 +171,7 @@ def create_app():
     app.jinja_options['lstrip_blocks'] = True
     app.jinja_env.policies["json.dumps_kwargs"] = { 'default': json_default }
     app.jinja_env.globals.update(zip=zip)
+    app.jinja_env.globals.update(wlt_class=wlt_class)
     app.jinja_env.add_extension('jinja2.ext.do')
     app.jinja_env.add_extension('jinja2.ext.i18n')
     app.jinja_env.install_null_translations(newstyle=True)

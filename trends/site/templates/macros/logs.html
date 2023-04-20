@@ -61,13 +61,7 @@
 			{% endfor %}
 			{% endif %}
 			</td>
-			{% if log['wins'] > log['losses'] %}
-				<td class="win">
-			{% elif log['wins'] < log['losses'] %}
-				<td class="loss">
-			{% else %}
-				<td class="tie">
-			{% endif %}
+			<td class="{{ wlt_class(log['wins'], log['losses']) }}">
 				{{ wlt(log['wins'], log['losses'], log['ties']) }}
 			</td>
 			<td class="left">{{ log['format'] }}</td>

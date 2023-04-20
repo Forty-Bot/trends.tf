@@ -36,17 +36,12 @@
 {% for match in matches %}
 	<tr id="{{ match.matchid }}"
 	 class="{{ "hider hiding" if match.logs != None }} {{ "forfeit" if match.forfeit }}">
-	{% set team1class = '' %}
-	{% set team2class = '' %}
-	{% if match.score1 > match.score2 %}
-		{% set team1class = 'win' %}
-		{% set team2class = '' if team1 else 'loss' %}
-	{% elif match.score1 < match.score2 %}
-		{% set team1class = 'loss' %}
-		{% set team2class = '' if team1 else 'win' %}
-	{% elif not team1 %}
-		{% set team1class = 'tie' %}
-		{% set team2class = 'tie' %}
+	{% if team1 %}
+	{% set team1class = 'win' if match.score1 > match.score2 else '' %}
+	{% set team2class = 'win' if match.score1 < match.score2 else '' %}
+	{% else %}
+	{% set team1class = wlt_class(match.score1, match.score2) %}
+	{% set team2class = team1class %}
 	{% endif %}
 	<td class="tree"></td>
 	<td class="left">
@@ -82,7 +77,7 @@
 	{% endif %}
 	<td class="left">{{ _team_link(match.team2, match.teamid2) }}</td>
 	<td class="{{ team1class }}">{{ match.score1 }}</td>
-	<td class="{{ team2class if team1 else team1class }}">{{ match.score2 }}</td>
+	<td class="{{ team2class }}">{{ match.score2 }}</td>
 	<td class="left">
 	{% if match.forfeit %}
 		Forfeit
