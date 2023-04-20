@@ -102,7 +102,7 @@ def get_matches(compid, filters, limit=100, offset=0):
         'round': "round_seq",
         'date': "scheduled",
         'matchid': "matchid",
-    }, 'matchid')
+    }, 'date')
 
     matches = get_db().cursor()
     matches.execute(
