@@ -108,7 +108,7 @@ thead {
 	top: 0;
 }
 
-tbody:not(.hier, .noshade) tr:nth-child(odd) {
+tbody:not(.hier):not(.noshade) tr:nth-child(odd) {
 	background-color: var(--darkbg);
 }
 
