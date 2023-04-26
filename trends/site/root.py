@@ -74,6 +74,16 @@ def leaderboard():
         'logs': "logs",
         'winrate': "winrate",
         'rating': "rating",
+        'k30': "k30",
+        'd30': "d30",
+        'a30': "a30",
+        'kd': "kd",
+        'kad': "kad",
+        'dpm': "dpm",
+        'dtm': "dtm",
+        'ddm': "ddm",
+        'dr': "dr",
+        'acc': "acc",
     }, 'rating')
 
     db = get_db()
@@ -85,7 +95,17 @@ def leaderboard():
                                duration,
                                logs,
                                winrate,
-                               rating
+                               rating,
+                               k30,
+                               d30,
+                               a30,
+                               kd,
+                               kad,
+                               dpm,
+                               dtm,
+                               ddm,
+                               dr,
+                               acc
                            FROM (SELECT
                                    playerid,
                                    sum(duration) AS duration,
@@ -93,7 +113,17 @@ def leaderboard():
                                    sum(0.5 * ties + wins) /
                                        sum(wins + losses + ties) AS winrate,
                                    (50 + sum(0.5 * ties + wins)) /
-                                       (100 + sum(wins + losses + ties)) AS rating
+                                       (100 + sum(wins + losses + ties)) AS rating,
+                                   sum(kills) * 30.0 * 60 / sum(duration) AS k30,
+                                   sum(deaths) * 30.0 * 60 / sum(duration) AS d30,
+                                   sum(assists) * 30.0 * 60 / sum(duration) AS a30,
+                                   sum(kills) * 1.0 / nullif(sum(deaths), 0) AS kd,
+                                   (sum(kills) + sum(assists)) * 1.0 / nullif(sum(deaths), 0) AS kad,
+                                   sum(dmg) * 60.0 / sum(duration) AS dpm,
+                                   sum(dt) * 60.0 / sum(duration) AS dtm,
+                                   (sum(dmg) - sum(dt)) * 60.0 / sum(duration) AS ddm,
+                                   sum(dmg) * 1.0 / nullif(sum(dt), 0) AS dr,
+                                   sum(hits) * 1.0 / nullif(sum(shots), 0) AS acc
                                FROM leaderboard_cube
                                WHERE playerid NOTNULL
                                    {}

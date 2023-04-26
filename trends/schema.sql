@@ -692,16 +692,21 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	playerid,
 	league,
 	formatid,
-	classid,
+	primary_classid AS classid,
 	mapid,
 	sum(log.duration) AS duration,
 	sum((wins > losses)::INT) AS wins,
 	sum((wins = losses)::INT) AS ties,
-	sum((wins < losses)::INT) AS losses
+	sum((wins < losses)::INT) AS losses,
+	sum(kills) AS kills,
+	sum(deaths) AS deaths,
+	sum(assists) AS assists,
+	sum(dmg) AS dmg,
+	sum(dt) AS dt,
+	sum(shots) AS shots,
+	sum(hits) AS hits
 FROM log_nodups AS log
-JOIN player_stats_backing USING (logid)
-LEFT JOIN class_stats USING (logid, playerid)
-WHERE class_stats.duration * 1.5 >= log.duration
+JOIN player_stats USING (logid)
 GROUP BY CUBE (playerid, league, formatid, classid, mapid)
 ORDER BY mapid, classid, formatid, playerid, league
 WITH NO DATA;
