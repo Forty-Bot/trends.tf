@@ -143,11 +143,6 @@
 	{% endif %}
 	</div>
 
-	<p>
-		If you are looking for per-class averages, they have moved to the
-		<a href="{{ url_for(".totals", steamid=g.player['steamid64']) }}">totals page</a>.
-	</p>
-
 	<h2><a href="{{ url_for('.logs', steamid=g.player['steamid64']) }}">Recent Logs</a></h2>
 	{{ log_table(logs) }}
 {% endblock %}
