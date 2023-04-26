@@ -2,7 +2,7 @@
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
 {% from "macros/format.html" import optint, optformat, comma_col, duration_col %}
-{% from "macros/icons.html" import playerlink %}
+{% from "macros/icons.html" import classicon, playerlink %}
 {% from "macros/pagination.html" import navigation %}
 {% from "macros/sort.html" import sort %}
 {% extends "league/comp/base.html" %}
@@ -35,6 +35,7 @@
 	<table>
 	<thead><tr>
 		<th>Player</th>
+		<th><abbr title="Classes with at least &frac23; playtime">Classes</abbr></th>
 		<th><abbr title="Kills per 30 minutes">K/30</abbr></th>
 		<th><abbr title="Deaths per 30 minutes">D/30</abbr></th>
 		<th><abbr title="Assists per 30 minutes">A/30</abbr></th>
@@ -58,6 +59,11 @@
 	<tr>
 		<td class="left">
 			{{ playerlink(player.steamid64, player.name, player.avatarhash) }}
+		</td>
+		<td class="left">
+			{% for cls, pct in player.classes.items() %}
+				{{ classicon(cls, pct) }}
+			{% endfor %}
 		</td>
 		<td>{{ optformat("{:.1f}", player.k30) }}</td>
 		<td>{{ optformat("{:.1f}", player.a30) }}</td>

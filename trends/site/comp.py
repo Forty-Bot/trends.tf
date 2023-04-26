@@ -128,6 +128,8 @@ def players(league, compid):
                steamid64,
                avatarhash,
                name,
+               (SELECT json_object_agg(class, d * 1.0 / duration ORDER BY d DESC)
+                FROM unnest(classes, durations) AS c(class, d)) AS classes,
                kills * 30.0 * 60 / duration AS k30,
                deaths * 30.0 * 60 / duration AS d30,
                assists * 30.0 * 60 / duration AS a30,
@@ -145,7 +147,7 @@ def players(league, compid):
                dmg,
                dt,
                duration
-           FROM (SELECT
+           FROM(SELECT
                    playerid,
                    sum(kills) AS kills,
                    sum(deaths) AS deaths,
@@ -154,13 +156,29 @@ def players(league, compid):
                    sum(dt) AS dt,
                    sum(hits) AS hits,
                    sum(shots) AS shots,
-                   sum(duration) AS duration
-               FROM match
-               JOIN log USING (league, matchid)
-               JOIN player_stats USING (logid)
-               JOIN map USING (mapid)
-               WHERE league = %(league)s AND compid = %(compid)s
-                   {}
+                   sum(duration) AS duration,
+                   array_agg(class ORDER BY duration DESC) AS classes,
+                   array_agg(duration ORDER BY duration DESC) AS durations
+               FROM (SELECT
+                       playerid,
+                       primary_classid AS classid,
+                       sum(kills) AS kills,
+                       sum(deaths) AS deaths,
+                       sum(assists) AS assists,
+                       sum(dmg) AS dmg,
+                       sum(dt) AS dt,
+                       sum(hits) AS hits,
+                       sum(shots) AS shots,
+                       sum(duration) AS duration
+                   FROM match
+                   JOIN log USING (league, matchid)
+                   JOIN player_stats USING (logid)
+                   JOIN map USING (mapid)
+                   WHERE league = %(league)s AND compid = %(compid)s
+                       {}
+                   GROUP BY playerid, primary_classid
+               ) AS player_stats
+               JOIN class USING (classid)
                GROUP BY playerid
            ) AS player_stats
            JOIN player USING (playerid)
