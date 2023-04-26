@@ -139,6 +139,60 @@ def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", l
         })
     return logs
 
+def get_teams(c, filters, order_clause="upper(rostered)", limit=10, offset=0):
+    inner_clauses = get_filter_clauses(filters, 'league', date_range='rostered')
+    outer_clauses = get_filter_clauses(filters, 'formatid')
+
+    teams = c.cursor()
+    teams.execute(
+        """SELECT
+               league,
+               format,
+               competition.name AS comp,
+               competition.compid,
+               division AS div,
+               team,
+               teamid,
+               lower(rostered) AS from,
+               upper(rostered) AS to
+           FROM (SELECT
+                   tc.league,
+                   tc.compid,
+                   tc.teamid,
+                   divid,
+                   team_name AS team,
+                   rostered,
+                   rank() OVER (
+                       PARTITION BY tc.league, tc.teamid
+                       ORDER BY tc.league, tc.compid DESC
+                   ) AS r
+               FROM (SELECT
+                        league,
+                        teamid,
+                        compid,
+                        range_max(rostered) AS rostered
+                    FROM team_player
+                    WHERE playerid = %(playerid)s
+                        {}
+                    GROUP BY league, teamid, compid
+               ) AS tp
+               JOIN team_comp AS tc ON (
+                   tp.league = tc.league
+                   AND tp.teamid = tc.teamid
+                   AND (NOT league_team_per_comp(tc.league)
+                        OR tp.compid = tc.compid)
+           )) AS teams
+           JOIN competition USING (league, compid)
+           JOIN format USING (formatid)
+           LEFT JOIN division USING (league, divid)
+           LEFT JOIN div_name USING (div_nameid)
+           WHERE r = 1
+                   {}
+           ORDER BY {} NULLS FIRST, lower(rostered) ASC
+           LIMIT %(limit)s OFFSET %(offset)s;""".format(inner_clauses, outer_clauses, order_clause),
+           { 'playerid': flask.g.playerid, 'limit': limit, 'offset': offset, **filters })
+    return teams.fetchall()
+
 @player.route('/')
 def overview(steamid):
     c = get_db()
@@ -227,58 +281,8 @@ def overview(steamid):
                ) AS names
                JOIN name USING (nameid)""", (flask.g.playerid,))
 
-    teams = c.cursor()
-    teams.execute(
-        """SELECT
-               league,
-               format,
-               competition.name AS comp,
-               competition.compid,
-               division AS div,
-               team,
-               teamid,
-               lower(rostered) AS from,
-               upper(rostered) AS to
-           FROM (SELECT
-                   tc.league,
-                   tc.compid,
-                   tc.teamid,
-                   divid,
-                   team_name AS team,
-                   rostered,
-                   rank() OVER (
-                       PARTITION BY tc.league, tc.teamid
-                       ORDER BY tc.league, tc.compid DESC
-                   ) AS r
-               FROM (SELECT
-                        league,
-                        teamid,
-                        compid,
-                        range_max(rostered) AS rostered
-                    FROM team_player
-                    WHERE playerid = %(playerid)s
-                        {}
-                    GROUP BY league, teamid, compid
-               ) AS tp
-               JOIN team_comp AS tc ON (
-                   tp.league = tc.league
-                   AND tp.teamid = tc.teamid
-                   AND (NOT league_team_per_comp(tc.league)
-                        OR tp.compid = tc.compid)
-           )) AS teams
-           JOIN competition USING (league, compid)
-           JOIN format USING (formatid)
-           LEFT JOIN division USING (league, divid)
-           LEFT JOIN div_name USING (div_nameid)
-           WHERE r = 1
-                   {}
-           ORDER BY upper(rostered) DESC NULLS FIRST, lower(rostered) ASC
-           LIMIT 10;""".format(get_filter_clauses(filters, 'league', date_range='rostered'),
-                               get_filter_clauses(filters, 'formatid')),
-        { 'playerid': flask.g.playerid, **filters })
-    teams = teams.fetchall()
-
     logs = get_logs(c, flask.g.playerid, filters, limit=25, duplicates=False)
+    teams = get_teams(c, filters)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  formats=formats, aliases=aliases, teams=teams)
 
@@ -304,6 +308,17 @@ def logs(steamid):
 	}, 'logid')
     logs = get_logs(get_db(), flask.g.playerid, filters, order_clause=order_clause, limit=limit, offset=offset)
     return flask.render_template("player/logs.html", logs=logs.fetchall())
+
+@player.route('/teams')
+def teams(steamid):
+    limit, offset = get_pagination()
+    filters = get_filter_params()
+    order, order_clause = get_order({
+        'to': "upper(rostered)",
+        'from': "lower(rostered)",
+	}, 'to')
+    teams = get_teams(get_db(), get_filter_params(), order_clause, limit=limit, offset=offset)
+    return flask.render_template("player/teams.html", teams=teams)
 
 @player.route('/peers')
 def peers(steamid):

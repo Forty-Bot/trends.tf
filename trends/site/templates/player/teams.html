@@ -1,0 +1,20 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020, 23 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/sort.html" import sort %}
+{% from "macros/teams.html" import team_table %}
+{% extends "player/base.html" %}
+{% block title %}Teams - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Teams</h2>
+	{{ filter('league', 'date', 'format') }}
+	{{ sort({
+		'to': "Rostered to",
+		'from': "Rostered from",
+	   }) }}
+	{{ navigation(teams) }}
+	{{ team_table(teams) }}
+	{{ navigation(teams) }}
+{% endblock %}

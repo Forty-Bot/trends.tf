@@ -1,9 +1,10 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/filter.html" import filter %}
-{% from "macros/format.html" import date_col, optformat, optint %}
+{% from "macros/format.html" import optformat, optint %}
 {% from "macros/logs.html" import log_table %}
 {% from "macros/pretty.html" import class_map, format_map, league_map %}
+{% from "macros/teams.html" import team_table %}
 {% from "macros/wlt.html" import wlt %}
 {% extends "player/base.html" %}
 {% block title %}Overview - {{ super() }}{% endblock %}
@@ -98,47 +99,7 @@
 	{% if teams | length %}
 	<div class="float">
 	<h3>Recent Teams</h3>
-	<table>
-		<thead>
-			<tr>
-				<th>League</th>
-				<th>Team</th>
-				<th>Most-recent Competition</th>
-				<th><abbr title="Division of most-recent competition">
-					Division
-				</abbr></th>
-				<th><abbr title="Format of most-recent competition">
-					Format
-				</abbr></th>
-				<th><abbr title="Most-recent join date">Rostered From</abbr></th>
-				<th><abbr title="Most-recent leave date">Rostered To</abbr></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for team in teams %}
-			<tr>
-				<td class="left"><a href="{{ url_for('league.comps',
-				                                     league=team['league']) }}">
-					{{ league_map[team['league']] }}
-				</a></td>
-				<td class="left">
-				<a href="{{ url_for('league.team.overview', league=team['league'],
-				                    teamid=team['teamid']) }}">
-					{{ team['team'] }}
-				</a></td>
-				<td class="left">
-				<a href="{{ url_for('league.comp.overview', league=team['league'],
-				                    compid=team['compid']) }}">
-					{{ team['comp'] }}
-				</a></td>
-				<td class="left">{{ team['div'] if team['div'] != None }}</td>
-				<td class="left">{{ format_map[team['format']] }}</td>
-				{{ date_col(team['from']) }}
-				{{ date_col(team['to']) }}
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{{ team_table(teams) }}
 	</div>
 	{% endif %}
 	</div>
