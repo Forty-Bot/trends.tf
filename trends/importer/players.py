@@ -77,6 +77,7 @@ def import_players(args, c):
                            FROM player_update
                            WHERE player_update.steamid64::BIGINT = player.steamid64;""")
             cur.execute("COMMIT;")
+            logging.info("ok")
         except requests.exceptions.HTTPError as e:
             # Bail on client errors, except for rate-limiting
             if e.response.status_code == requests.codes.too_many:
