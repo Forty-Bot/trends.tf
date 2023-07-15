@@ -35,14 +35,20 @@ def create_players_parser(sub):
     players.set_defaults(importer=import_players)
     player_sub = players.add_subparsers()
     full = player_sub.add_parser("full", help="Import all players in order")
-    full.set_defaults(get_steamids=get_steamids_full, wait=0)
+    full.set_defaults(get_steamids=get_steamids_full)
     random = player_sub.add_parser("random", help="Import 100 random players each request")
-    random.set_defaults(get_steamids=get_steamids_random, wait=1)
+    random.set_defaults(get_steamids=get_steamids_random)
     players.add_argument("-k", "--key", type=str, metavar="KEY", help="Steam API key")
     players.add_argument("-w", "--wait", type=int, metavar="DELAY",
                          help="Seconds to wait between API requests")
 
 def import_players(args, c):
+    if args.wait is None:
+        if args.get_steamids == get_steamids_full:
+            args.wait = 0
+        else:
+            args.wait = 1
+
     s = requests.Session()
     cur = c.cursor()
     for steamids in args.get_steamids(c):
