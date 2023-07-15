@@ -77,13 +77,16 @@ def import_players(args, c):
                            FROM player_update
                            WHERE player_update.steamid64::BIGINT = player.steamid64;""")
             cur.execute("COMMIT;")
-        except OSError as e:
+        except requests.exceptions.HTTPError as e:
             # Bail on client errors, except for rate-limiting
-            if isinstance(e, requests.exceptions.HTTPError) \
-               and e.response.status_code < 500 \
-               and e.response.status_code != requests.codes.too_many:
+            if e.response.status_code == requests.codes.too_many:
+                logging.warning("Being rate-limited (429 response)")
+            elif e.response.status_code < 500:
                 raise
-            # Otherwise just log and try again later
+            else:
+                # Otherwise just log and try again later
+                logging.exception("Could not fetch player info")
+        except OSError:
             logging.exception("Could not fetch player info")
         except (ValueError, KeyError):
             logging.exception("Could not parse player info")
