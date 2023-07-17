@@ -29,11 +29,20 @@ xfsprogs:
 {% set pg_confdir = "/etc/postgresql/13/data" %}
 {% set citus_version = "10.2" %} # I have no idea why they do it like this
 {% set citus = "postgresql-{}-citus-{}".format(pg_version, citus_version) %}
+/usr/share/keyrings/citus.pub:
+  file.managed:
+    - source: https://packagecloud.io/citusdata/community/gpgkey
+    - source_hash: 2a3e7e542e23194a8906d02044f99453e1ac21cc4cf404947d6e43969ce0fba5
+    - use_etag: True
+
 citus-repo:
   pkgrepo.managed:
-    - name: deb https://repos.citusdata.com/community/debian/ {{ grains.oscodename }} main
+    - name: >
+        deb [signed-by=/usr/share/keyrings/citus.pub]
+        https://repos.citusdata.com/community/debian/ {{ grains.oscodename }} main
     - file: /etc/apt/sources.list.d/citusdata_community.list
-    - key_url: https://packagecloud.io/citusdata/community/gpgkey
+    - require:
+      - /usr/share/keyrings/citus.pub
 
 postgresql-common:
   pkg.installed:
