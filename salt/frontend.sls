@@ -96,6 +96,7 @@ virtualenv:
     - refresh: False
     - pkgs:
 {% if grains.os_family == 'Debian' %}
+      - build-essential
       - libpq-dev
       - libmemcached-dev
       - python3-dev
@@ -117,6 +118,7 @@ base-devel:
   virtualenv.managed:
     - user: sean
     - group: sean
+    - python: /usr/bin/python3
     - require:
       - virtualenv
       - file: /srv/uwsgi/trends
