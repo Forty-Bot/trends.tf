@@ -10,6 +10,8 @@ xfsprogs:
 
 {% if grains.manufacturer == "DigitalOcean" %}
   {% set db_dev = "/dev/sda" %}
+{% elif grains.manufacturer == "Hetzner" %}
+  {% set db_dev = "/dev/sdb" %}
 {% endif %}
 
 {{ db_dev }}:
