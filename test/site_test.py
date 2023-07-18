@@ -3,6 +3,7 @@
 
 import collections
 import random
+import urllib.parse
 
 from flask.testing import EnvironBuilder
 import hypothesis
@@ -11,7 +12,6 @@ import pytest
 from python_testing_crawler import Allow, Crawler, Rule, Request
 from werkzeug.datastructures import MultiDict
 from werkzeug.exceptions import HTTPException
-from werkzeug.urls import url_parse
 
 from trends.site.wsgi import create_app
 from trends.util import classes, leagues
@@ -39,7 +39,7 @@ class RandomEndpointSelector:
 
     def __call__(self, node):
         try:
-            path = url_parse(node.path).path
+            path = urllib.parse.urlsplit(node.path).path
             endpoint, arguments = self.mapper.match(path_info=path, method=node.method)
         except HTTPException:
             endpoint = ''
