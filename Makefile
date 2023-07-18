@@ -4,6 +4,7 @@
 PYTHON := python3
 PROD := trends.tf
 PROD_PREFIX := /srv/uwsgi/trends
+PIP := $(PROD_PREFIX)/venv/bin/pip $(if $(V),,-q)
 
 .PHONY: FORCE
 FORCE:
@@ -19,7 +20,8 @@ build: $(PACKAGE)
 .PHONY: deploy deploy/%
 deploy/%:
 	git push --force ssh://$(PROD)$(PROD_PREFIX) $*:master
-	ssh $(PROD) '$(PROD_PREFIX)/venv/bin/pip $(if $(V),,-q) install -Ue $(PROD_PREFIX) && \
+	ssh $(PROD) '$(PIP) install -r $(PROD_PREFIX)/requirements.txt && \
+		$(PIP) install -e $(PROD_PREFIX) && \
 		sudo systemctl reload uwsgi'
 
 deploy: deploy/HEAD
