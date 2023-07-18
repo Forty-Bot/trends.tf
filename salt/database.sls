@@ -55,6 +55,7 @@ postgresql-common:
     - makedirs: True
     - contents: |
         create_main_cluster = false
+        initdb_options = '-E UTF8'
         waldir = '/var/lib/postgres/data/pg_wal'
     - require:
       - postgresql-common
