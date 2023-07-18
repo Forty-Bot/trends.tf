@@ -35,9 +35,11 @@ setuptools.setup(
     ],
     extras_require = {
         'tests': [
-            'pytest',
             'hypothesis',
+            'pytest',
             'python-testing-crawler',
+            'responses',
+            'testing.postgresql'
         ],
     },
     entry_points = {
