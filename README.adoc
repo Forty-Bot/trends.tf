@@ -185,3 +185,52 @@ To convert a partition, run
     => SELECT alter_table_set_access_method('log_json_XXe5', 'columnar');
 
 replacing `XX` as appropriate. To convert back, use `heap` instead of `columnar`.
+
+=== Upgrading PostgreSQL
+
+In the following notes, XX refers to the old postgres version, and YY refers to the new version. ZZ
+refers to the version of `citus`. First, install the new version of postgres:
+
+    # apt-get install postgresql-YY postgresql-YY-citus-ZZ
+
+Make sure this version of citus is also supported by the old postgres (`postgresql-XX-citus-ZZ`).
+Upgrade if you have to (`ALTER EXTENSION citus UPDATE`).
+
+Stop the old cluster.
+
+    # systemctl stop postgresql@XX-data
+
+Next, move the old cluster to a new location and create a new cluster.
+
+    # mv /srv/postgres /srv/postgresXX
+    # mv /var/lib/postgres /var/lib/postgresXX
+    # ln -sf /var/lib/postgresXX/data/pg_wal /srv/postgresXX/data/pg_wal
+    # mkdir -p /srv/postgres/data /var/lib/postgres/data/pg_wal
+    # chown -R postgres:postgres /srv/postgres /var/lib/postgres/data
+    $ pg_createcluster YY data -d /srv/postgres/data
+
+Edit `/etc/postgresql/XX/data/postgresql.conf` and update `data_directory`. Then, restart the old
+cluster
+
+    # systemctl start postgresql@XX-data
+
+Now, check to see if the upgrade is compatible:
+
+    $ /usr/lib/postgresql/YY/bin/pg_upgrade --check -d /etc/postgresql/XX/data/ \
+          -b /usr/lib/postgresql/XX/bin -D /srv/postgres/data -B /usr/lib/postgresql/YY/bin
+
+If it is, stop the old cluster
+
+    # systemctl stop postgresql@XX-data
+
+and run the above command without `--check`. After the upgrade, edit the configs and swap the
+ports. The new cluster will be using port 5433; change it to 5432.
+
+    # vim /etc/postgresql/{XX,YY}/data/postgresql.conf
+    # cp /etc/postgresql/{XX,YY}/data/conf.d/override.conf
+
+Now start the database, update extensions, and vacuum:
+
+    # systemctl stop postgresql@YY-data
+    $ psql -p 5433 -d trends -f update_extensions.sql
+    $ vacuumdb -p 5433 --all --analyze --verbose
