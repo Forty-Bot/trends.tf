@@ -18,7 +18,7 @@ from ..util import clamp
 from ..sql import db_connect
 
 def last_modified(since):
-    if flask.current_app.env == 'development':
+    if flask.current_app.debug:
         return None
 
     flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)

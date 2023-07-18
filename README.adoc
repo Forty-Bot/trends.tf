@@ -73,10 +73,11 @@ replacing `<steam API key>` with your actual key.
 
 To launch a development server, run
 
-    $ FLASK_ENV=development python -m trends.site
+    $ FLASK_DEBUG=1 development python -m trends.site
 
 If you are using a different database, you will need to set the `DATABASE` environmental variable to
-its connection string.
+its connection string. If you are using an older version of flask, you will need to set
+`FLASK_ENV=development` instead of `FLASK_DEBUG=1`.
 
 == Deploying trends.tf
 
