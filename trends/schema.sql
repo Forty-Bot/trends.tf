@@ -412,9 +412,10 @@ CREATE TABLE IF NOT EXISTS demo (
 	blue_score INT NOT NULL,
 	-- There should be a foreign key here, but postgres doesn't support it
 	-- See https://commitfest.postgresql.org/17/1252/
-	players INT[] NOT NULL CHECK (
+	players INT[] CHECK (
 		array_position(players, NULL) ISNULL
 		AND array_ndims(players) = 1
+		AND array_length(players, 0) != 0
 	)
 );
 
