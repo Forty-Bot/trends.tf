@@ -115,8 +115,8 @@ def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", l
                time
            FROM (SELECT
                    *,
-                   ps.dmg * 60.0 / log.duration AS dpm,
-                   ps.dt * 60.0 / log.duration AS dtm,
+                   ps.dmg * 60.0 / nullif(log.duration, 0) AS dpm,
+                   ps.dt * 60.0 / nullif(log.duration, 0) AS dtm,
                    hits * 1.0 / nullif(shots, 0.0) AS acc
                FROM log
                JOIN player_stats AS ps USING (logid)
@@ -379,7 +379,7 @@ def peers(steamid):
                        p1.dt,
                        hs1.healing AS healing_to,
                        hs2.healing AS healing_from,
-                       log.duration
+                       nullif(log.duration, 0) AS duration
                    FROM log_nodups AS log
                    JOIN player_stats AS p1 USING (logid)
                    JOIN player_stats AS p2 USING (logid)

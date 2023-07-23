@@ -562,7 +562,7 @@ def update_formats(c):
                      FROM (
                          SELECT
                              logid,
-                             total_duration / log.duration AS avg_players,
+                             total_duration / nullif(log.duration, 0) AS avg_players,
                              total_players
                          FROM log
                          JOIN (SELECT
