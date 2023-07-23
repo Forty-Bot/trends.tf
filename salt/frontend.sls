@@ -169,6 +169,9 @@ uwsgi_service:
 # Metrics
 munin:
   pkg.installed:
+    - pkgs:
+      - munin
+      - libcgi-fast-perl
     - refresh: False
 
 munin_conf:
