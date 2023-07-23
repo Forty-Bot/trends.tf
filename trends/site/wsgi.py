@@ -56,12 +56,13 @@ def json_default(obj):
                     .format(type(obj).__name__))
 
 def duration_filter(timestamp):
-    mm, ss = divmod(timestamp, 60)
+    negative = timestamp < 0
+    mm, ss = divmod(abs(timestamp), 60)
     hh, mm = divmod(mm, 60)
     if hh:
-        return "{:.0f}:{:02.0f}:{:02.0f}".format(hh, mm, ss)
+        return "{:.0f}:{:02.0f}:{:02.0f}".format(-hh if negative else hh, mm, ss)
     else:
-        return "{:.0f}:{:02.0f}".format(mm, ss)
+        return "{:.0f}:{:02.0f}".format(-mm if negative else mm, ss)
 
 def avatar_filter(hash, size='full', league=None):
     if not hash:
