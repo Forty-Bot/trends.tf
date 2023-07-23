@@ -1,0 +1,4046 @@
+{
+  "version": 3,
+  "teams": {
+    "Red": {
+      "score": 0,
+      "kills": 179,
+      "deaths": 0,
+      "dmg": 32925,
+      "charges": 0,
+      "drops": 0,
+      "firstcaps": 0,
+      "caps": 0
+    },
+    "Blue": {
+      "score": 1,
+      "kills": 205,
+      "deaths": 0,
+      "dmg": 35372,
+      "charges": 0,
+      "drops": 0,
+      "firstcaps": 0,
+      "caps": 0
+    }
+  },
+  "length": -2401,
+  "players": {
+    "[U:1:89112868]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 95,
+          "assists": 35,
+          "deaths": 94,
+          "dmg": 17182,
+          "weapon": {
+            "tf_projectile_rocket": {
+              "kills": 49,
+              "dmg": 12701,
+              "avg_dmg": 61.35748792270532,
+              "shots": 575,
+              "hits": 207
+            },
+            "shotgun_soldier": {
+              "kills": 35,
+              "dmg": 4416,
+              "avg_dmg": 28.862745098039216,
+              "shots": 219,
+              "hits": 153
+            },
+            "world": {
+              "kills": 7,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "player": {
+              "kills": 4,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "shovel": {
+              "kills": 0,
+              "dmg": 65,
+              "avg_dmg": 65,
+              "shots": 12,
+              "hits": 1
+            }
+          },
+          "total_time": -2401
+        }
+      ],
+      "kills": 95,
+      "deaths": 94,
+      "assists": 35,
+      "suicides": 2,
+      "kapd": "1.4",
+      "kpd": "1.0",
+      "dmg": 17182,
+      "dmg_real": 2746,
+      "dt": 17515,
+      "dt_real": 2788,
+      "hr": 0,
+      "lks": 4,
+      "as": 17,
+      "dapd": 182,
+      "dapm": -430,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 9
+    },
+    "[U:1:182828636]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 105,
+          "assists": 27,
+          "deaths": 92,
+          "dmg": 18578,
+          "weapon": {
+            "tf_projectile_rocket": {
+              "kills": 48,
+              "dmg": 12743,
+              "avg_dmg": 63.084158415841586,
+              "shots": 580,
+              "hits": 202
+            },
+            "shotgun_soldier": {
+              "kills": 37,
+              "dmg": 5835,
+              "avg_dmg": 28.886138613861387,
+              "shots": 285,
+              "hits": 202
+            },
+            "player": {
+              "kills": 16,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "world": {
+              "kills": 4,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": -2401
+        }
+      ],
+      "kills": 105,
+      "deaths": 92,
+      "assists": 27,
+      "suicides": 3,
+      "kapd": "1.4",
+      "kpd": "1.1",
+      "dmg": 18578,
+      "dmg_real": 2698,
+      "dt": 17613,
+      "dt_real": 2336,
+      "hr": 0,
+      "lks": 6,
+      "as": 19,
+      "dapd": 201,
+      "dapm": -465,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 7
+    },
+    "[U:1:180342878]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 84,
+          "assists": 38,
+          "deaths": 115,
+          "dmg": 15743,
+          "weapon": {
+            "tf_projectile_rocket": {
+              "kills": 52,
+              "dmg": 13177,
+              "avg_dmg": 69.35263157894737,
+              "shots": 638,
+              "hits": 190
+            },
+            "player": {
+              "kills": 13,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "shotgun_soldier": {
+              "kills": 13,
+              "dmg": 2501,
+              "avg_dmg": 35.72857142857143,
+              "shots": 118,
+              "hits": 70
+            },
+            "world": {
+              "kills": 6,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "shovel": {
+              "kills": 0,
+              "dmg": 65,
+              "avg_dmg": 65,
+              "shots": 8,
+              "hits": 1
+            }
+          },
+          "total_time": -2401
+        }
+      ],
+      "kills": 84,
+      "deaths": 115,
+      "assists": 38,
+      "suicides": 2,
+      "kapd": "1.1",
+      "kpd": "0.7",
+      "dmg": 15743,
+      "dmg_real": 2406,
+      "dt": 17857,
+      "dt_real": 2554,
+      "hr": 0,
+      "lks": 3,
+      "as": 27,
+      "dapd": 136,
+      "dapm": -394,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 13
+    },
+    "[U:1:210154445]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 100,
+          "assists": 30,
+          "deaths": 93,
+          "dmg": 16794,
+          "weapon": {
+            "quake_rl": {
+              "kills": 52,
+              "dmg": 13686,
+              "avg_dmg": 63.65581395348837,
+              "shots": 647,
+              "hits": 215
+            },
+            "shotgun_soldier": {
+              "kills": 19,
+              "dmg": 3043,
+              "avg_dmg": 31.697916666666668,
+              "shots": 142,
+              "hits": 96
+            },
+            "world": {
+              "kills": 8,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "player": {
+              "kills": 21,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "shovel": {
+              "kills": 0,
+              "dmg": 65,
+              "avg_dmg": 65,
+              "shots": 4,
+              "hits": 1
+            }
+          },
+          "total_time": -2401
+        }
+      ],
+      "kills": 100,
+      "deaths": 93,
+      "assists": 30,
+      "suicides": 3,
+      "kapd": "1.4",
+      "kpd": "1.1",
+      "dmg": 16794,
+      "dmg_real": 2644,
+      "dt": 15312,
+      "dt_real": 2816,
+      "hr": 0,
+      "lks": 5,
+      "as": 23,
+      "dapd": 180,
+      "dapm": -420,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 17
+    }
+  },
+  "names": {
+    "[U:1:89112868]": "SOOOOOAPYMEiSTER",
+    "[U:1:182828636]": "allmighty",
+    "[U:1:180342878]": "nubbi",
+    "[U:1:210154445]": "barni"
+  },
+  "rounds": [
+    {
+      "start_time": 1572137864,
+      "winner": "Blue",
+      "team": {
+        "Blue": {
+          "score": 24,
+          "kills": 205,
+          "dmg": 35372,
+          "ubers": 0
+        },
+        "Red": {
+          "score": 22,
+          "kills": 179,
+          "dmg": 32925,
+          "ubers": 0
+        }
+      },
+      "events": [
+        {
+          "type": "picked up",
+          "time": 5,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": 8,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 8,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 8,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": 12,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 14,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": 18,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 18,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 23,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": 28,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": 28,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 32,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": 34,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 39,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": 43,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 45,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": 50,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": 50,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 52,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": 57,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 59,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 63,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 65,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": 69,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 69,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 70,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 71,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 74,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": 79,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": 79,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 80,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 82,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 90,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 92,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 94,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 95,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 97,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": 98,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": 98,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 98,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": 103,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 106,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": 111,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": 111,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 112,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": 113,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 113,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 117,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": 122,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 122,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 123,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 124,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": 130,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": 131,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": 131,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": 133,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3462,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3461,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3454,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3454,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3451,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3449,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3447,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3440,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3439,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3434,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3434,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3431,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3428,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3426,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3420,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3419,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3412,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3411,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3405,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3405,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3404,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3404,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3402,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3394,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3393,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3389,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3387,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3382,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3382,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3381,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3379,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3377,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3374,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3372,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3369,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3367,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3363,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3361,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3361,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3355,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3352,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3352,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3348,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3344,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3341,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3338,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3333,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3331,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3331,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3329,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3329,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3326,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3323,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3323,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3321,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3316,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3315,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3310,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3308,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3303,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3301,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3296,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3294,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3289,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3289,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3286,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3283,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3283,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3282,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3277,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3277,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3276,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3271,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3271,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3268,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3266,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3263,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3263,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3261,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3257,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3248,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3240,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3240,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3232,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3229,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3227,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3217,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3216,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3211,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3211,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3209,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3204,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3204,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3204,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3197,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3197,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3196,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3189,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3189,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3189,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3189,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3189,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3188,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3183,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3183,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3182,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3182,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3178,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3174,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3174,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3173,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3169,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3169,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3165,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3162,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3162,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3157,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3156,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3156,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3155,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3153,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3150,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3146,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3145,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3143,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3143,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3142,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3139,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3139,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3136,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3134,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3134,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3134,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3132,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3129,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3129,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3129,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3128,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3126,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3126,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3126,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3121,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3121,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3120,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3117,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3117,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3116,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3116,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3116,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3116,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3110,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3105,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3103,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3103,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3098,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3096,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3096,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3093,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3091,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3091,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3088,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3085,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3085,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3081,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3079,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3079,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3077,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3073,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3071,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -3068,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3068,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3066,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3064,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3061,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3060,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3055,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -3052,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3050,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3047,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3045,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3040,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3040,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3039,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3039,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3038,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3032,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3031,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -3029,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3028,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3025,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3025,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3023,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3018,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3017,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -3014,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -3012,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -3009,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3009,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -3007,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -3001,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2998,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2997,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2997,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2996,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2993,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2991,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2987,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2987,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2986,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2981,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2981,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2980,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2976,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2972,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2971,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2969,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2967,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2967,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2966,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2965,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2965,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2965,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2960,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2960,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2957,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2952,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2952,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2951,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2944,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2944,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2943,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2940,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2940,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2937,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2933,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2933,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2932,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2926,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2926,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2922,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2922,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2922,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2921,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2919,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2917,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2913,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2912,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2907,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2906,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2902,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2900,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2896,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2895,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2890,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2890,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2886,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2880,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2880,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2877,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2873,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2873,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2872,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2870,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2864,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2864,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2862,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2859,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2859,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2857,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2855,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2853,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2850,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2848,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2846,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2841,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2836,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2836,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2836,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2834,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2834,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2829,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2825,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2825,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2820,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2820,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2818,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2814,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2810,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2807,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2805,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2803,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2800,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2797,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2797,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2795,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2792,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2792,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2791,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2789,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2789,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2788,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2786,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2782,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2780,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2779,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2775,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2775,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2773,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2772,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2765,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2764,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2762,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2760,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2760,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2757,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2752,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2750,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2746,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2746,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2744,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2743,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2741,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2739,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2739,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2738,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2737,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2736,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2732,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2732,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2731,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2731,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2730,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2726,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2726,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2725,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2721,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2721,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2713,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2713,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2713,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2712,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2709,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2707,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2704,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2704,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2700,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2696,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2695,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2689,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2689,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2688,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2688,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2688,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2688,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2683,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2683,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2681,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2676,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2676,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2675,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2671,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2671,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2668,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2665,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2665,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2665,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2664,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2664,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2660,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2660,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2659,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2657,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2657,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2655,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2652,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2652,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2651,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2645,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2645,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2643,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2642,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2642,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2642,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2639,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2639,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2635,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2633,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2629,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2627,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2625,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2625,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2622,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2618,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2618,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2616,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2612,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2612,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2611,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2606,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2604,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2597,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2597,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2597,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2594,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2592,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2588,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2588,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2580,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2578,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2576,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2573,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2572,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2561,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2559,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2557,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2557,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2556,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2553,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2553,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2551,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2550,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2548,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2547,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2547,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2546,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2543,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2543,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2542,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2539,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2536,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2530,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2529,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2524,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2522,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2519,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2518,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2516,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2514,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2507,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2507,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2506,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2506,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2504,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2501,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2501,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2499,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2495,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2495,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2493,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2488,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2487,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2480,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2480,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2480,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2479,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2479,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2478,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2475,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2470,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2470,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2470,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2469,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2467,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2466,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2462,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2461,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2457,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2455,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2452,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2450,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2446,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2445,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "captured",
+          "time": -2439,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2438,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2437,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2437,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2433,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2430,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2430,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2428,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2427,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2427,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "defended",
+          "time": -2422,
+          "steamid": "[U:1:89112868]",
+          "team": "Red"
+        },
+        {
+          "type": "dropped",
+          "time": -2422,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2420,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "defended",
+          "time": -2415,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2415,
+          "steamid": "[U:1:180342878]",
+          "team": "Red"
+        },
+        {
+          "type": "picked up",
+          "time": -2414,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2412,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2410,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "dropped",
+          "time": -2407,
+          "steamid": "[U:1:182828636]",
+          "team": "Blue"
+        },
+        {
+          "type": "picked up",
+          "time": -2405,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "captured",
+          "time": -2403,
+          "steamid": "[U:1:210154445]",
+          "team": "Blue"
+        },
+        {
+          "type": "round_win",
+          "time": -2401,
+          "team": "Blue"
+        }
+      ],
+      "players": {
+        "[U:1:180342878]": {
+          "team": "Red",
+          "kills": 84,
+          "dmg": 15743
+        },
+        "[U:1:182828636]": {
+          "team": "Blue",
+          "kills": 105,
+          "dmg": 18578
+        },
+        "[U:1:210154445]": {
+          "team": "Blue",
+          "kills": 100,
+          "dmg": 16794
+        },
+        "[U:1:89112868]": {
+          "team": "Red",
+          "kills": 95,
+          "dmg": 17182
+        }
+      },
+      "firstcap": null,
+      "length": -2401
+    }
+  ],
+  "healspread": {},
+  "classkills": {
+    "[U:1:182828636]": {
+      "soldier": 105
+    },
+    "[U:1:210154445]": {
+      "soldier": 100
+    },
+    "[U:1:180342878]": {
+      "soldier": 84
+    },
+    "[U:1:89112868]": {
+      "soldier": 95
+    }
+  },
+  "classdeaths": {
+    "[U:1:180342878]": {
+      "soldier": 113
+    },
+    "[U:1:89112868]": {
+      "soldier": 92
+    },
+    "[U:1:210154445]": {
+      "soldier": 90
+    },
+    "[U:1:182828636]": {
+      "soldier": 89
+    }
+  },
+  "classkillassists": {
+    "[U:1:182828636]": {
+      "soldier": 132
+    },
+    "[U:1:210154445]": {
+      "soldier": 130
+    },
+    "[U:1:180342878]": {
+      "soldier": 122
+    },
+    "[U:1:89112868]": {
+      "soldier": 130
+    }
+  },
+  "chat": [
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "ETF2L config (2016-01-26) loaded."
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "* Please check that the settings are correct for this game mode!"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "* You must record POV demos and take screenshots of all results."
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "name": "nubbi",
+      "msg": "☑ REKT ☐ Not REKT"
+    }
+  ],
+  "info": {
+    "map": "ctf_ballin_sky",
+    "supplemental": true,
+    "total_length": -2401,
+    "hasRealDamage": true,
+    "hasWeaponDamage": true,
+    "hasAccuracy": true,
+    "hasHP": true,
+    "hasHP_real": false,
+    "hasHS": false,
+    "hasHS_hit": false,
+    "hasBS": false,
+    "hasCP": false,
+    "hasSB": false,
+    "hasDT": true,
+    "hasAS": true,
+    "hasHR": false,
+    "hasIntel": true,
+    "AD_scoring": false,
+    "notifications": [],
+    "title": "serveme.tf #954739 - BLU vs RED",
+    "date": 1572139075,
+    "uploader": {
+      "id": "76561198140608606",
+      "name": "die young",
+      "info": "TFTrue v4.79"
+    }
+  },
+  "killstreaks": [
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 3,
+      "time": 10
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 6,
+      "time": 54
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 8,
+      "time": 50
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 13,
+      "time": 10
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 5,
+      "time": 126
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 8,
+      "time": 94
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 5,
+      "time": 122
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 7,
+      "time": 113
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 3,
+      "time": -3413
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 6,
+      "time": -3382
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 7,
+      "time": -3362
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 3,
+      "time": -3344
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 3,
+      "time": -3253
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 6,
+      "time": -3289
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 8,
+      "time": -3283
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 4,
+      "time": -3201
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 10,
+      "time": -3211
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 3,
+      "time": -3153
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 3,
+      "time": -3143
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 15,
+      "time": -3189
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 7,
+      "time": -3117
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 3,
+      "time": -3040
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 9,
+      "time": -3116
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 3,
+      "time": -3034
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 3,
+      "time": -2993
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 5,
+      "time": -3001
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 14,
+      "time": -3004
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 8,
+      "time": -2979
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 3,
+      "time": -2897
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 4,
+      "time": -2873
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 5,
+      "time": -2880
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 5,
+      "time": -2858
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 5,
+      "time": -2848
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 7,
+      "time": -2831
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 3,
+      "time": -2766
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 8,
+      "time": -2797
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 3,
+      "time": -2751
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 3,
+      "time": -2721
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 6,
+      "time": -2745
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 5,
+      "time": -2738
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 3,
+      "time": -2693
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 3,
+      "time": -2681
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 5,
+      "time": -2682
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 3,
+      "time": -2663
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 3,
+      "time": -2651
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 4,
+      "time": -2665
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 3,
+      "time": -2629
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 3,
+      "time": -2612
+    },
+    {
+      "steamid": "[U:1:182828636]",
+      "streak": 4,
+      "time": -2594
+    },
+    {
+      "steamid": "[U:1:89112868]",
+      "streak": 3,
+      "time": -2586
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 4,
+      "time": -2585
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 6,
+      "time": -2572
+    },
+    {
+      "steamid": "[U:1:210154445]",
+      "streak": 7,
+      "time": -2507
+    },
+    {
+      "steamid": "[U:1:180342878]",
+      "streak": 6,
+      "time": -2501
+    }
+  ],
+  "success": true
+}

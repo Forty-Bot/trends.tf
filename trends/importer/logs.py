@@ -79,6 +79,25 @@ def import_log(c, logid, log):
         info['red_score'] = info['Red']['score']
         info['blue_score'] = info['Blue']['score']
 
+    rounds = None
+    try:
+        rounds = log['rounds']
+    except KeyError:
+        # Old-style rounds
+        rounds = info['rounds']
+
+    length = info['total_length']
+    round_length = 0
+    for round in rounds:
+        if round['length'] > 0:
+            round_length += round['length']
+        else:
+            # Remove negative-duration rounds
+            length -= round['length']
+
+    # If we're still negative, use the sum of (positive) rounds
+    info['duration'] = round_length if length <= 0 else length
+
     c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", info)
     c.execute("INSERT INTO name (name) VALUES (%(uploader_name)s) ON CONFLICT DO NOTHING;", info)
     c.execute("""INSERT INTO player (steamid64, nameid) VALUES (
@@ -91,7 +110,7 @@ def import_log(c, logid, log):
                      logid, time, duration, title, mapid, red_score, blue_score, ad_scoring,
                      uploader, uploader_nameid
                  ) VALUES (
-                     %(logid)s, %(date)s, %(total_length)s, %(title)s,
+                     %(logid)s, %(date)s, %(duration)s, %(title)s,
                      (SELECT mapid FROM map WHERE map = %(map)s),
                      %(red_score)s, %(blue_score)s, %(AD_scoring)s, %(uploader_playerid)s,
                      (SELECT nameid FROM name WHERE name = %(uploader_name)s)
@@ -283,7 +302,7 @@ def import_log(c, logid, log):
             # Some logs accidentally have a timestamp instead of a duration. Try and fix this up as
             # best we can... This may also fix some logs where players have slightly more time
             # played than the match duration.
-            cls['total_time'] = min(cls['total_time'], info['total_length'])
+            cls['total_time'] = max(min(cls['total_time'], info['duration']), 0)
 
             c.execute("""INSERT INTO class_stats (
                              logid, playerid, classid, kills, assists, deaths, dmg, duration
@@ -374,17 +393,14 @@ def import_log(c, logid, log):
                                 healer, healee, logid)
                 c.execute("ROLLBACK TO SAVEPOINT before_heal_stats;")
 
-    rounds = None
-    try:
-        rounds = log['rounds']
-    except KeyError:
-        # Old-style rounds
-        rounds = log['info']['rounds']
-
     for (seq, round) in enumerate(rounds):
         teams = round.get('team', round)
         red = teams['Red']
         blue = teams['Blue']
+
+        # Ignore rounds with negative duration
+        if round['length'] <= 0:
+            continue
 
         round['logid'] = logid
         round['seq'] = seq

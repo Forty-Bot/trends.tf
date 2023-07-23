@@ -36,14 +36,19 @@ def database(request):
             logfiles = { logid: f"{os.path.dirname(__file__)}/logs/log_{logid}.json"
                 for logid in (
                     30099,
+                    2344394,
+                    2401045,
                     2408458,
                     2408491,
                     2600722,
                     2818814,
                     2844704,
+                    2878546,
+                    2931193,
                     3027588,
                     3069780,
                     3124976,
+                    3384488,
                 )
             }
 

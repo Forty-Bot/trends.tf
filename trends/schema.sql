@@ -424,7 +424,7 @@ CREATE INDEX IF NOT EXISTS demo_time ON demo (time) INCLUDE (demoid);
 CREATE TABLE IF NOT EXISTS log (
 	logid INTEGER PRIMARY KEY, -- SQLite won't infer a rowid alias unless the type is INTEGER
 	time BIGINT NOT NULL, -- Upload time
-	duration INT NOT NULL,
+	duration INT NOT NULL CHECK (duration >= 0),
 	title TEXT NOT NULL,
 	mapid INT NOT NULL REFERENCES map (mapid),
 	red_score INT NOT NULL,
@@ -504,7 +504,7 @@ PARTITION OF log_json (
 CREATE TABLE IF NOT EXISTS round (
 	logid INT NOT NULL REFERENCES log (logid),
 	seq INT NOT NULL, -- Round number, starting at 0
-	duration INT NOT NULL,
+	duration INT NOT NULL CHECK (duration > 0),
 	time BIGINT NOT NULL,
 	winner TEAM,
 	firstcap TEAM,
