@@ -96,11 +96,11 @@ def create_demos_parser(sub):
 
 def import_demos_cli(args, c):
     with sentry_sdk.start_transaction(op="import", name="demos"):
-        if args.new:
+        if 'new' in args and args.new:
             with c.cursor() as cur:
                 cur.execute("SELECT max(time) - 6 * 60 * 60 FROM demo;");
                 args.since = cur.fetchone()[0]
-        if args.old:
+        if 'old' in args and args.old:
             with c.cursor() as cur:
                 cur.execute("SELECT min(time) + 6 * 60 * 60 FROM demo;");
                 args.until = cur.fetchone()[0]
