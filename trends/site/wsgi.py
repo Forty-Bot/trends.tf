@@ -91,6 +91,7 @@ def anynone(iterable):
 # opacit(0.5) = 0.6
 # opacit'(0.5) = 0.2
 def opacit(x):
+    x = max(x, 0)
     return x * (x * (2.4 * x - 3.6) + 2) + 0.2
 
 def wlt_class(wins, losses):
