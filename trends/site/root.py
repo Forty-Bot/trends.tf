@@ -34,6 +34,12 @@ def index():
 def favicon():
     return flask.redirect(flask.url_for('static', filename="img/favicon.ico"), 301)
 
+@root.route('/about')
+def about():
+    resp = flask.make_response(flask.render_template("about.html"))
+    resp.cache_control.max_age = 300
+    return resp
+
 @root.route('/search')
 def search():
     q = flask.request.args.get('q', '', str)

@@ -1,0 +1,67 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% extends "base.html" %}
+{% block title %}About - {{ super() }}{% endblock %}
+{% macro trends() %}<a href="{{ url_for('.index') }}">trends.tf</a>{% endmacro %}
+{% block content %}
+	<div class="prose">
+	<h1>About {{ trends() }}</h1>
+	<p>
+	{{ trends() }} was born out of my desire to know all the useless stats about my gameplay. I
+	wrote the initial version in two weeks in November, 2020. I was very focused, since I was
+	going to start a new job and I wouldn't have as much free time. The initial version just had
+	the overview, logs, peers, weapons, and trends tabs on the player page. At first I used
+	<a href="https://sqlite.org/">SQLite</a>, which was great for getting started quickly, but
+	I've since moved on to <a href="https://www.postgresql.org/">PostgreSQL</a>. The rest of the
+	stack has stayed mostly the same: <a href="https://nginx.org/">nginx</a>,
+	<a href="https://uwsgi-docs.readthedocs.io/en/latest/">uWSGI</a>, and
+	<a href="https://flask.palletsprojects.com">flask</a>. Development continues in my free
+	time, when I feel like it.
+	</p>
+
+	<h2>Infrequently-asked questions</h2>
+	<h3>How often does {{ trends() }} update?</h3>
+	<p>
+	{{ trends() }} imports new data from <a href="https://logs.tf/">logs.tf</a>,
+	<a href="https://demos.tf/">demos.tf</a>, and <a href="https://etf2l.org/">ETF2L.org</a>
+	every five minutes. Steam names and avatars are updated constantly, but it can take several
+	hours to refresh them for all players. The leaderboard is updated daily. Most pages are
+	cached for up to 30 seconds, although this can be extended if there is no new data.
+	</p>
+
+	<h3>Why don't the stats on {{ trends() }} match logs.tf?</h3>
+	<p>
+	Many servers upload logs in the middle of the game. So if you check {{ trends() }} right
+	after your game ends, the mid-game logs will still be there. {{ trends() }} also does some
+	post-processing to clean up the data.
+	</p>
+
+	<h3>Why doesn't the linked log on the trends page match the data?</h3>
+	<p>
+	The graphs on the trends page show a rolling average of the past few logs (20 by default).
+	You can lower the window size, but it may make the graph noisier.
+	</p>
+
+	<h3>How do I have over 100% accuracy?</h3>
+	<p>
+	Accuracy is shots fired divided by shots hit. If you use a weapon with afterburn or bleed,
+	one shot can result in multiple ticks of damage.
+	</p>
+
+	<h3>How do I contribute?</h3>
+	<p>
+	{{ trends() }} is <a href="https://github.com/Forty-Bot/trends.tf">open source</a>. The best
+	way to help out is to contribute code. I would also appreciate help from web designers or
+	data analysts to improve the presentation. If you don't have programming prowess, you can
+	help by <a href="https://github.com/Forty-Bot/trends.tf/issues">submitting feature requests
+	and bug reports</a>. I try to prioritize features with community interest (no promises).
+	</p>
+
+	<h3>Does {{ trends() }} have an API?</h3>
+	<p> {{ trends() }} has a very small API at the moment. It is mostly used for site features
+	such as autocompletion. If you would like to see a more extensive API, send me a pull
+	request, or <a href="https://github.com/Forty-Bot/trends.tf/issues/41">comment on the
+	issue</a>.
+	</p>
+	</div>
+{% endblock %}

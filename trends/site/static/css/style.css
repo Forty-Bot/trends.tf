@@ -301,3 +301,7 @@ h3 {
 h4 {
 	margin: .5em 0;
 }
+
+.prose {
+	max-width: 50em;
+}
