@@ -20,7 +20,8 @@ def json_handler(error):
 @api.after_request
 def do_cache(resp):
     resp.add_etag()
-    resp.cache_control.max_age = 300
+    if resp.cache_control.max_age is None:
+        resp.cache_control.max_age = 300
     return resp
 
 @api.route('/logs')
