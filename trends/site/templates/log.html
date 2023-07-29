@@ -40,11 +40,10 @@
 	{% for weapon in weapons %}
 		{% if loop.first %}
 		<tr class="{{ steamid64 }}_{{ class }} hidden hidable2 subhead">
-			<td colspan="{{ logids | count + 1 }}"></th>
-			<th>Weapon</th>
+			<td colspan="{{ logids | count }}"></th>
+			<th class="left" colspan="2">Weapon</th>
 			<th><abbr title="Kills">K</abbr></th>
-			<th></th>
-			<th><abbr title="Accuracy">Acc</abbr></th>
+			<th colspan="2"><abbr title="Accuracy">Acc</abbr></th>
 			<th><abbr title="Damage per shot">DA/S</abbr></th>
 			<th colspan="{{ 1 + has['dt'] }}"></th>
 			<th><abbr title="Damage">DA</abbr></th>
@@ -52,11 +51,10 @@
 		</tr>
 		{% endif %}
 	<tr class="{{ steamid64 }}_{{ class }} hidden hidable2">
-		<td colspan="{{ logids | count + 1 }}"></th>
-		<td>{{ weapon['weapon'] }}</td>
+		<td colspan="{{ logids | count }}"></th>
+		<td class="left" colspan="2">{{ weapon['weapon'] }}</td>
 		<td>{{ weapon['kills'] }}</td>
-		<td></td>
-		<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
+		<td colspan="2">{{ optformat("{:.0%}", weapon['acc']) }}</td>
 		<td>{{ optint(weapon['dps']) }}</td>
 		<td colspan="{{ 1 + has['dt'] }}"></td>
 		<td>{{ weapon['dmg'] }}</td>
