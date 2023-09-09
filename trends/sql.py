@@ -49,10 +49,11 @@ def db_connect(url, name=None):
     return psycopg2.connect(url, cursor_factory=TracingCursor,
                             application_name=name or " ".join(sys.argv))
 
-def _db_init(cur):
+def db_schema(cur):
     with open("{}/schema.sql".format(os.path.dirname(__file__))) as schema:
         cur.execute(schema.read())
 
+def _db_init(cur):
     # Create new partitions for log_json, if there is anything in the default partition
     cur.execute("SELECT max(logid)/100000 FROM log_json_default")
     max_part = cur.fetchone()[0]

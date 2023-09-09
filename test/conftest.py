@@ -13,7 +13,7 @@ import trends.importer.logs
 import trends.importer.etf2l
 import trends.importer.link_matches
 from trends.importer.fetch import ETF2LFileFetcher, FileFetcher
-from trends.sql import db_connect, db_init
+from trends.sql import db_connect, db_init, db_schema
 
 @contextmanager
 def caplog_session(request):
@@ -30,8 +30,9 @@ def database(request):
         # This must happen in a separate connection because we use temporary tables which will alias
         # other queries.
         with db_connect(database.url()) as c:
-            db_init(c)
             cur = c.cursor()
+            db_schema(cur)
+            db_init(c)
 
             logfiles = { logid: f"{os.path.dirname(__file__)}/logs/log_{logid}.json"
                 for logid in (
