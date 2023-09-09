@@ -83,6 +83,7 @@ def substrings(draw, strings, min_size=0):
     return s[start:end]
 
 @given(st.data())
+@hypothesis.settings(deadline=1000)
 def test_filter(client, logs, players, titles, maps, names, compids, teamids, comps, divids, data):
     players = st.sampled_from(players).map(str)
 
