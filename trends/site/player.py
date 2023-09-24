@@ -611,7 +611,7 @@ def maps(steamid):
                (array_agg(map ORDER BY logs DESC))[1] AS map,
                (sum(wins) + 0.5 * sum(ties)) /
                    nullif(sum(wins + losses + ties), 0) AS winrate,
-               (sum(round_wins) + 0.5 * sum(round_losses)) /
+               (sum(round_wins) + 0.5 * sum(round_ties)) /
                    nullif(sum(round_wins + round_losses + round_ties), 0) AS round_winrate,
                sum(kills) AS kills,
                sum(deaths) AS deaths,
