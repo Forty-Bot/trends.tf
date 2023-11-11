@@ -101,7 +101,7 @@ def import_team(c, t):
                fetched
            ) VALUES (
                %(league)s, %(teamid)s, %(compid)s, %(divid)s,
-               CASE WHEN league_team_per_COMP(%(league)s) THEN (
+               CASE WHEN league_team_per_comp(%(league)s) THEN (
                    SELECT team_nameid FROM team_name WHERE team = %(name)s
                ) END, %(rgl_teamid)s, %(end_rank)s,
                CASE WHEN league_team_per_comp(%(league)s) THEN %(avatarhash)s END,
