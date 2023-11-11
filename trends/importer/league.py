@@ -4,13 +4,25 @@
 import psycopg2.extras
 
 def import_compdiv(c, cd):
+    """Import division and its competition
+    cd should be a dict with the following keys:
+
+    league: Internal league name ('rgl', etc.)
+    compid: External API ID for the competition
+    competition: Name of the competition
+    format: Internal format type ('sixes', etc.)
+    divid: External API ID for the division. May be None if this competition has no divisions, in
+           which case division and tier will be ignored (and may be absent).
+    division: Name of the division
+    tier: Numeric tier of the division within the competition (for sorting)
+    """
+
     c.execute(
         """INSERT INTO competition (league, compid, formatid, name)
            VALUES (
                %(league)s, %(compid)s,
                (SELECT formatid FROM format WHERE format = %(format)s), %(competition)s
            ) ON CONFLICT DO NOTHING;""", cd)
-
     if cd['divid'] is None:
         return
 
@@ -24,6 +36,33 @@ def import_compdiv(c, cd):
            ) ON CONFLICT DO NOTHING;""", cd)
 
 def import_team(c, t):
+    """Import a team
+    The competition and division should already be imported. t should be a dict with the following
+    keys:
+
+    league: Internal league name ('rgl', etc.)
+    compid: External API ID for the competition
+    divid: External API ID for the division, if this competition has divisions, or None.
+    name: Name of the team.
+    teamid: External API team ID. Should be None for RGL, in which case this function will look up
+            the internal team ID based on rgl_teamids and fill in teamid.
+    rgl_teamid: RGL API team ID. Mandatory for RGL and should not be set otherwise.
+    rgl_teamids: List of RGL API team IDs associated with this team (from other seasons). This
+                 should include rgl_teamid. This is mandatory for RGL and should not be set
+                 otherwise.
+    avatarhash: Team avatar hash. The format is league-specific.
+    end_rank: Final ranking of this team in the division (for sorting), or None if the competition
+              is ongoing.
+    fetched: Timestamp of when this team was fetched
+    updates: An optional list of dicts with the following keys:
+        player: A dict with the following keys:
+            steamid64: SteamID of the transferring player
+            name: Name of the player
+            avatarhash: Avatar hash of the player, or None
+            eu_playerid: ETF2L API player ID. Mandatory for ETF2L and should be None otherwise.
+        rostered: NumericRange of the join/leave (unix) timestamps
+    """
+
     teamid_col = "%(teamid)s"
     if teamids := t.get('rgl_teamids'):
         c.execute("SELECT teamid FROM team_comp WHERE rgl_teamid IN %s GROUP BY teamid",
@@ -202,6 +241,28 @@ def import_transfers(c, t):
     c.execute("DROP TABLE new_ranges;")
 
 def import_match(c, m):
+    """Import a match transfers
+    The competition, division, and teams should already be imported. m should be a dict with the
+    following keys:
+
+    league: Internal league name ('rgl', etc.)
+    compid: External API ID for the competition
+    divid: External API ID for the division, if this competition has divisions, or None
+    matchid: External API ID for the match
+    seq: Order of the round within the competition (for sorting). May be None if this competition
+         doesn't have rounds, in which case round will be ignored and may be absent.
+    round: Name of the round, if any
+    teamid1: External/Internal team ID for the first team. Must be less than teamid2
+    teamid2: External/Internal team ID for the second team. Must be greater than teamid2
+    score1: Score of the first team
+    score2: Score of the second team
+    maps: List of maps played in the match
+    forfeit: Whether this was a forfeit
+    scheduled: Timestamp of when the match was scheduled to be played. Optional for ETF2L.
+    submitted: Timestamp of when the match results were submitted, or None
+    fetched: Timestamp of when this match was fetched
+    """
+
     if m['seq'] is not None:
         c.execute("INSERT INTO round_name (round) VALUES (%(round)s) ON CONFLICT DO NOTHING;", m)
         col = "div" if m['divid'] else "comp"
@@ -212,7 +273,6 @@ def import_match(c, m):
                     (SELECT round_nameid FROM round_name WHERE round = %(round)s)
                 ) ON CONFLICT DO NOTHING;""", m)
 
-    m['winner'] = m.get('winner')
     c.execute("INSERT INTO map (map) SELECT unnest(%(maps)s::TEXT[]) ON CONFLICT DO NOTHING;", m)
     c.execute(
         """INSERT INTO match (
