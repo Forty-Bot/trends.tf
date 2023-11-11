@@ -93,7 +93,7 @@
 			                    compid=comp.compid) }}">
 				{{ comp.comp }}
 			</a></td>
-			<td class="left">{{ comp.div }}</td>
+			<td class="left">{{ comp.div or '' }}</td>
 			<td class="left">{{ format_map[comp.format] }}</td>
 			<td class="{{ wlt_class(comp.wins, comp.losses) }}">
 				{{ wlt(comp.wins, comp.losses, comp.ties) }}

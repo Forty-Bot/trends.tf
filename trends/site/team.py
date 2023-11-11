@@ -230,8 +230,8 @@ def overview(league, teamid):
                rounds_won::NUMERIC / nullif(rounds_won + rounds_lost, 0) AS round_winrate
            FROM team_comp
            JOIN competition USING (league, compid)
-           JOIN division USING (league, compid, divid)
-           JOIN div_name USING (div_nameid)
+           LEFT JOIN division USING (league, compid, divid)
+           LEFT JOIN div_name USING (div_nameid)
            JOIN format USING (formatid)
            JOIN (SELECT
                    league,
