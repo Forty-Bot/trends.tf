@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS player (
 	-- Whether the user is banned from uploading
 	banned BOOL NOT NULL DEFAULT FALSE,
 	ban_reason TEXT,
-	eu_playerid INT UNIQUE,
+	eu_playerid INT,
 	CHECK (ban_reason NOTNULL = banned)
 );
 
