@@ -10,7 +10,7 @@
 {% block content %}
 	{{ super() }}
 	<h1>Leaderboard</h1>
-	{{ filter('class', 'league', 'format', 'map', 'title', 'steamid64') }}
+	{{ filter('class', 'league', 'format', 'map', 'steamid64') }}
 	{{ sort({
 		'logs': "Logs",
 		'winrate': "Winrate",
