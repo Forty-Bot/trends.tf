@@ -44,8 +44,8 @@
 			</td>
 			<td>{{ wlt(team.wins, team.losses, team.ties) }}</td>
 			<td>{{ optformat("{:.0%}", team.winrate) }}</td>
-			<td>{{ team.rounds_won }}</td>
-			<td>{{ team.rounds_lost }}</td>
+			<td>{{ team.rounds_won | score }}</td>
+			<td>{{ team.rounds_lost | score }}</td>
 			<td>{{ optformat("{:.0%}", team.round_winrate) }}</td>
 		</tr>
 	{% endfor %}

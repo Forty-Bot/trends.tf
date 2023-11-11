@@ -99,8 +99,8 @@
 				{{ wlt(comp.wins, comp.losses, comp.ties) }}
 			</td>
 			<td>{{ optformat("{:.0%}", comp.winrate) }}</td>
-			<td>{{ comp.rounds_won }}</td>
-			<td>{{ comp.rounds_lost }}</td>
+			<td>{{ comp.rounds_won | score }}</td>
+			<td>{{ comp.rounds_lost | score }}</td>
 			<td>{{ optformat("{:.0%}", comp.round_winrate) }}</td>
 		</tr>
 		{% endfor %}

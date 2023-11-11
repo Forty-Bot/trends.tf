@@ -76,8 +76,8 @@
 	<td class="left">{{ _team_link(match.team1, match.teamid1) }}</td>
 	{% endif %}
 	<td class="left">{{ _team_link(match.team2, match.teamid2) }}</td>
-	<td class="{{ team1class }}">{{ match.score1 }}</td>
-	<td class="{{ team2class }}">{{ match.score2 }}</td>
+	<td class="{{ team1class }}">{{ match.score1 | score }}</td>
+	<td class="{{ team2class }}">{{ match.score2 | score }}</td>
 	<td class="left">
 	{% if match.forfeit %}
 		Forfeit

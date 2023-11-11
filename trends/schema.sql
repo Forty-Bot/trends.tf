@@ -280,8 +280,8 @@ CREATE TABLE IF NOT EXISTS match (
 	teamid2 INT NOT NULL,
 	round_seq INT,
 	mapids INT[] NOT NULL CHECK (mapids = uniq(sort(mapids))),
-	score1 INT NOT NULL,
-	score2 INT NOT NULL,
+	score1 REAL NOT NULL,
+	score2 REAL NOT NULL,
 	forfeit BOOL NOT NULL,
 	scheduled BIGINT, -- Scheduled time for the match
 	submitted BIGINT, -- Time results were submitted

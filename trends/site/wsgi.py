@@ -80,6 +80,14 @@ def avatar_filter(hash, size='full', league=None):
             'full': '_full',
         }[size])
 
+_SCORE_PRECISION = {
+	'etf2l': 0,
+	'rgl': 2,
+}
+
+def score_filter(score):
+    return f"{score:.{_SCORE_PRECISION[flask.g.league]}f}"
+
 def anynone(iterable):
     for item in iterable:
         if item is None:
@@ -169,6 +177,7 @@ def create_app():
     app.add_template_filter(opacit)
     app.add_template_filter(duration_filter, 'duration')
     app.add_template_filter(avatar_filter, 'avatar')
+    app.add_template_filter(score_filter, 'score')
 
     app.jinja_options['trim_blocks'] = True
     app.jinja_options['lstrip_blocks'] = True
