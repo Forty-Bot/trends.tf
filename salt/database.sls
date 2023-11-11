@@ -139,7 +139,7 @@ pg_includedir:
       - initdb
 
 # Budget pgtune
-{%- set connections = 15 %}
+{%- set connections = 18 %}
 # Reserve some memory for everyone else
 {%- set mem = ( grains.mem_total - 256 ) * 1024 %}
 {%- set shared_buffers = (mem / 4) | int %}
