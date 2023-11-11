@@ -19,14 +19,13 @@ def get_comp():
     cur = db.cursor()
     cur.execute(
         """SELECT
-               team_name AS name,
-               avatarhash,
-               fetched,
-               compid
+               (array_agg(team_name ORDER BY compid DESC))[1] AS name,
+               (array_agg(avatarhash ORDER BY compid DESC))[1] AS avatarhash,
+               (array_agg(rgl_teamid ORDER BY compid DESC))[1] AS rgl_teamid,
+               max(fetched) AS fetched
            FROM team_comp
            WHERE league = %s AND teamid = %s
-           ORDER by FETCHED DESC
-           LIMIT 1;""", (flask.g.league, flask.g.teamid))
+           GROUP BY league, teamid;""", (flask.g.league, flask.g.teamid))
 
     flask.g.team = cur.fetchone()
     if flask.g.team is None:
@@ -179,13 +178,9 @@ def overview(league, teamid):
            JOIN name USING (nameid)
            WHERE league = %s
                AND teamid = %s
-               AND (CASE WHEN league_team_per_comp(league) THEN
-                        compid = %s
-                    ELSE
-                        compid ISNULL
-                    END)
+               AND (league_team_per_comp(league) OR compid ISNULL)
                AND upper(rostered) ISNULL
-           ORDER BY lower(rostered);""", (league, teamid, flask.g.team['compid']))
+           ORDER BY lower(rostered);""", (league, teamid))
 
     old_roster = db.cursor()
     old_roster.execute(
@@ -201,18 +196,14 @@ def overview(league, teamid):
                FROM team_player
                WHERE league = %s
                    AND teamid = %s
-                   AND (CASE WHEN league_team_per_comp(league) THEN
-                            compid = %s
-                        ELSE
-                            compid ISNULL
-                        END)
+                   AND (league_team_per_comp(league) OR compid ISNULL)
                GROUP BY league, compid, teamid, playerid
                HAVING upper(range_max(rostered)) NOTNULL
            ) AS team_player
            JOIN player USING (playerid)
            JOIN name USING (nameid)
            ORDER BY upper(rostered) DESC
-           LIMIT 10;""", (league, teamid, flask.g.team['compid']))
+           LIMIT 10;""", (league, teamid))
 
     comps = db.cursor()
     comps.execute(
