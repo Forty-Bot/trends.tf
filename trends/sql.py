@@ -17,8 +17,10 @@ tracing_disabled = False
 def disable_tracing():
     global tracing_disabled
     tracing_disabled = True
-    yield
-    tracing_disabled = False
+    try:
+        yield
+    finally:
+        tracing_disabled = False
 
 class TracingCursor(psycopg2.extras.DictCursor):
     def _log(self, query, vars, paramstyle=psycopg2.paramstyle):
