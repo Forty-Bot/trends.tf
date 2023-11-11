@@ -5,8 +5,9 @@ import json
 import logging
 import time
 
-import requests
+import requests, requests.adapters
 import psycopg2, psycopg2.extras
+import urllib3.util
 
 def get_steamids_full(c):
     last_steamid = 0
@@ -42,6 +43,8 @@ def create_players_parser(sub):
     players.add_argument("-w", "--wait", type=int, metavar="DELAY",
                          help="Seconds to wait between API requests")
 
+retries = urllib3.util.Retry(backoff_factor=1, status_forcelist=(requests.codes.too_many,))
+
 def import_players(args, c):
     if args.wait is None:
         if args.get_steamids == get_steamids_full:
@@ -49,7 +52,8 @@ def import_players(args, c):
         else:
             args.wait = 1
 
-    s = requests.Session()
+    s = requests.session()
+    s.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
     cur = c.cursor()
     for steamids in args.get_steamids(c):
         try:
@@ -93,6 +97,8 @@ def import_players(args, c):
             else:
                 # Otherwise just log and try again later
                 logging.exception("Could not fetch player info")
+        except requests.exceptions.RetryError:
+            logging.warning("Being rate-limited (Ten 429 responses!)")
         except OSError:
             logging.exception("Could not fetch player info")
         except (ValueError, KeyError):
