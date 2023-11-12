@@ -15,9 +15,9 @@
 	</tr></thead>
 	<tbody class="noshade"><tr>
 		<td>{{ wlt(g.team_wlt.wins, g.team_wlt.losses, g.team_wlt.ties) }}</td>
-		<td>{{ "{:.0%}".format(g.team_wlt.winrate) }}</td>
+		<td>{{ optformat("{:.0%}", g.team_wlt.winrate) }}</td>
 		<td>{{ g.team_wlt.rounds_won | score }}-{{ g.team_wlt.rounds_lost | score}}</td>
-		<td>{{ "{:.1%}".format(g.team_wlt.round_winrate) }}</td>
+		<td>{{ optformat("{:.1%}", g.team_wlt.round_winrate) }}</td>
 	</tr></tbody>
 </table>
 {% endmacro %}
