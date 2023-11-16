@@ -10,7 +10,7 @@ from ..util import leagues
 team = flask.Blueprint('team', __name__)
 
 @team.url_value_preprocessor
-def get_compid(endpoint, values):
+def get_teamid(endpoint, values):
     flask.g.teamid = values['teamid']
 
 @team.before_request
@@ -212,6 +212,8 @@ def overview(league, teamid):
                competition.name AS comp,
                division AS div,
                format,
+               rgl_teamid,
+               team_name,
                wins,
                losses,
                ties,

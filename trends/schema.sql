@@ -1,6 +1,6 @@
 --() { :; }; exec psql -f "$0" "$@"
 -- SPDX-License-Identifier: AGPL-3.0-only
--- Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
+-- Copyright (C) 2020-23 Sean Anderson <seanga2@gmail.com>
 
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS intarray;
@@ -173,8 +173,7 @@ CREATE TABLE IF NOT EXISTS league_team (
 	-- When team_player (if not RGL) was last fetched
 	fetched BIGINT,
 	PRIMARY KEY (league, teamid),
-	CHECK (equal(league_team_per_comp(league), fetched ISNULL, team_nameid ISNULL)),
-	CHECK (NOT league_team_per_comp(league) OR avatarhash NOTNULL)
+	CHECK (equal(league_team_per_comp(league), fetched ISNULL, team_nameid ISNULL))
 );
 
 CREATE TABLE IF NOT EXISTS team_comp_backing (
@@ -297,7 +296,7 @@ CREATE TABLE IF NOT EXISTS match (
 	FOREIGN KEY (league, compid, teamid2) REFERENCES team_comp_backing (league, compid, teamid),
 	CHECK (teamid1 < teamid2),
 	CHECK (league_div_optional(league) OR (divid NOTNULL)),
-	CHECK (league_time_optional(league) OR (scheduled NOTNULL)),
+	CHECK (league_time_optional(league) OR forfeit OR (scheduled NOTNULL)),
 	CHECK (league_round_optional(league) OR (round_seq NOTNULL))
 );
 
@@ -307,10 +306,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS match_unique_div ON match (
 CREATE UNIQUE INDEX IF NOT EXISTS match_unique_comp ON match (
 	league, compid, round_seq, teamid1, teamid2
 ) WHERE divid ISNULL;
-CREATE INDEX IF NOT EXISTS match_team1 ON match (league, teamid1);
-CREATE INDEX IF NOT EXISTS match_team2 ON match (league, teamid2);
+CREATE INDEX IF NOT EXISTS match_team1 ON match (teamid1);
+CREATE INDEX IF NOT EXISTS match_team2 ON match (teamid2);
 CREATE INDEX IF NOT EXISTS match_time ON match (scheduled);
-CREATE INDEX IF NOT EXISTS match_comp ON match (league, compid);
 
 CREATE OR REPLACE VIEW match_wlt AS SELECT
 	league,

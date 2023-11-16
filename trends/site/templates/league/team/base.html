@@ -30,7 +30,13 @@
 	<div class="avatar">
 		<img src="{{ g.team['avatarhash'] | avatar('full', g.league) }}">
 		<div class="box">
-			<h1><a href="{{ league_url_map[g.league].format(g.teamid) }}">
+			<h1><a
+			{% if g.league == 'rgl' %}
+				href="https://rgl.gg/Public/Team.aspx?t={{ g.team.rgl_teamid }}"
+			{% else %}
+				href="{{ league_url_map[g.league].format(g.teamid) }}"
+			{% endif %}
+			>
 				{{ g.team.name }}
 			</a></h1>
 			{{ stats() }}

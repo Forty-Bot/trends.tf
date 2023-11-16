@@ -78,6 +78,9 @@
 			<th>Competition</th>
 			<th>Division</th>
 			<th>Format</th>
+			{% if g.league == 'rgl' %}
+			<th>Team</th>
+			{% endif %}
 			<th><abbr title="Wins-Losses-Ties">W-L-T</abbr></th>
 			<th><abbr title="Winrate; Ties count as 0.5 wins">WR</abbr></th>
 			<th><abbr title="Points Won">PW</abbr></th>
@@ -95,6 +98,13 @@
 			</a></td>
 			<td class="left">{{ comp.div or '' }}</td>
 			<td class="left">{{ format_map[comp.format] }}</td>
+			{% if g.league == 'rgl' %}
+			<td class="left">
+				<a href="https://rgl.gg/Public/Team.aspx?t={{ comp.rgl_teamid }}">
+					{{ comp.team_name }}
+				</a>
+			</td>
+			{% endif %}
 			<td class="{{ wlt_class(comp.wins, comp.losses) }}">
 				{{ wlt(comp.wins, comp.losses, comp.ties) }}
 			</td>

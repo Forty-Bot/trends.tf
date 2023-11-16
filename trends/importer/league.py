@@ -266,6 +266,25 @@ def import_match(c, m):
     if m['seq'] is not None:
         c.execute("INSERT INTO round_name (round) VALUES (%(round)s) ON CONFLICT DO NOTHING;", m)
         col = "div" if m['divid'] else "comp"
+
+        # FIXME
+        if m['league'] == 'rgl':
+            c.execute(
+                f"""WITH round AS (SELECT
+                            round_seq,
+                            round_nameid
+                        FROM {col}_round
+                        WHERE league = %(league)s
+                            AND {col}id = %({col}id)s
+                    ) SELECT round_seq
+                    FROM round
+                    WHERE round_nameid =
+                        (SELECT round_nameid FROM round_name WHERE round = %(round)s)
+                    UNION ALL
+                    SELECT coalesce(max(round_seq) + 1, 0)
+                    FROM round;""", m)
+            m['seq'] = c.fetchone()[0]
+
         c.execute(
             f"""INSERT INTO {col}_round (league, {col}id, round_seq, round_nameid)
                 VALUES (

@@ -25,7 +25,10 @@ events = {
     'classkillassists': 'assist',
 }
 
-leagues = ('etf2l',)
+leagues = (
+    'etf2l',
+    'rgl',
+)
 
 def clamp(n, lower, upper):
     return max(lower, min(n, upper))

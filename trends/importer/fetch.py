@@ -2,10 +2,14 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import collections
+from datetime import datetime
+from dateutil import tz
+from glob import glob
 import itertools
 import json
 import logging
 import os
+import re
 import sqlite3
 import time
 
@@ -510,3 +514,95 @@ class ETF2LBulkFetcher:
     def get_xfers(self, teamid, since=0):
         return self._get_data(f"https://api.etf2l.org/team/{teamid}/transfers", 'transfers',
                               since=since)
+
+class RGLFileFetcher:
+    def __init__(self, dir, **kwargs):
+        self.dir = dir
+
+    RE_MATCH_FILE = re.compile(r"^.*match_([0-9]*).json$")
+    def get_matchids(self):
+        for file in glob(f"{self.dir}/match_*.json"):
+            match = self.RE_MATCH_FILE.match(file)
+            if match:
+                yield int(match.group(1))
+
+    def get_json(self, path):
+        try:
+            logging.debug("GET %s", path)
+            with open(path) as file:
+                data = json.load(file)
+            fetched = int(os.path.getmtime(path))
+            data['fetched'] = fetched
+            return data
+        except FileNotFoundError:
+            pass
+
+    def get_season(self, seasonid):
+        return self.get_json(f"{self.dir}/season_{seasonid}.json")
+
+    def get_match(self, matchid):
+        return self.get_json(f"{self.dir}/match_{matchid}.json")
+
+    def get_team(self, teamid):
+        return self.get_json(f"{self.dir}/team_{teamid}.json")
+
+class RGLBulkFetcher:
+    def __init__(self, since=0, count=None, skip=0, **kwargs):
+        self.s = create_session()
+        self.count = count
+        self.skip = skip
+
+    PREFIX = "https://api.rgl.gg/v0"
+
+    def get_matchids(self):
+        # Number of datums yielded (up to a maximum of count)
+        yielded = 0
+        # The id we've seen. We assume new matches will all have higher matchids.
+        last_id = None
+        skip = self.skip
+
+        try:
+            while True:
+                fetched = int(time.time())
+                resp = self.s.post(f"{self.PREFIX}/matches/paged", params={
+                    'take': 100,
+                    'skip': skip,
+                }, json={
+                    'after': datetime.fromtimestamp(0, tz.UTC).isoformat(),
+                })
+                resp.raise_for_status()
+
+                resp = resp.json()
+                for result in resp:
+                    yield result['matchId']
+                    yielded += 1
+                    if self.count is not None and yielded >= self.count:
+                        return
+
+                skip += len(resp)
+        except (OSError, urllib3.exceptions.HTTPError):
+            logging.exception("Could not fetch matches")
+        except (ValueError, KeyError):
+            logging.exception("Could not parse matches")
+
+    def _get_data(self, url):
+        try:
+            fetched = int(time.time())
+            resp = self.s.get(url)
+            resp.raise_for_status()
+            resp = resp.json()
+            resp['fetched'] = fetched
+            return resp
+        except (OSError, urllib3.exceptions.HTTPError):
+            logging.exception("Could not fetch %s", url)
+        except (ValueError, KeyError):
+            logging.exception("Could not parse %s", url)
+
+    def get_season(self, seasonid):
+        return self._get_data(f"{self.PREFIX}/seasons/{seasonid}")
+
+    def get_match(self, matchid):
+        return self._get_data(f"{self.PREFIX}/matches/{matchid}")
+
+    def get_team(self, teamid):
+        return self._get_data(f"{self.PREFIX}/teams/{teamid}")
