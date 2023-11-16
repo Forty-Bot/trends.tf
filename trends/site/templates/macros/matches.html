@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/format.html" import date_col, optformat %}
-{% from "macros/icons.html" import demoicon %}
+{% from "macros/icons.html" import demoicon, matchicon %}
 {% macro _team_link(team, teamid) %}
 <a href="{{ url_for('league.team.overview', league=g.league, teamid=teamid) }}">
 	{{ team }}
@@ -44,14 +44,7 @@
 	{% set team2class = team1class %}
 	{% endif %}
 	<td class="tree"></td>
-	<td class="left">
-		<a href="https://etf2l.org/matches/{{ match.matchid }}">
-		<img class="avatar_small" src="{{
-			url_for('static', filename="img/{}.png".format(g.league))
-		 }}">
-		</img>
-		</a>
-	</td>
+	<td class="left">{{ matchicon(g.league, match.matchid) }}</td>
 	{% if comp %}
 		<td class="left">
 			<a href="{{ url_for('league.comp.overview', league=g.league,
