@@ -282,7 +282,7 @@ def import_match(c, m):
                %(league)s, %(matchid)s, %(compid)s, %(divid)s, %(teamid1)s, %(teamid2)s, %(seq)s,
                %(scheduled)s, %(submitted)s,
                (SELECT
-                       coalesce(array_agg(mapid), array[]::INT[])
+                       coalesce(array_agg(mapid ORDER BY mapid), array[]::INT[])
                    FROM map
                    WHERE map = any(%(maps)s)
                ), %(score1)s, %(score2)s, %(forfeit)s, %(fetched)s
