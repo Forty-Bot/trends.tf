@@ -1,0 +1,223 @@
+{
+  "id": 292885,
+  "url": "https://freezer.demos.tf/6f/ac/6fac7a6cb2112521e3c1676034026da1_match-20190805-2159-pl_swiftwater_final1.dem",
+  "name": "match-20190805-2159-pl_swiftwater_final1.dem",
+  "server": "♠️Studio 54♠️",
+  "duration": 1247,
+  "nick": "SourceTV Demo",
+  "map": "pl_swiftwater_final1",
+  "time": 1565061741,
+  "red": "shit",
+  "blue": "$gang",
+  "redScore": 1,
+  "blueScore": 1,
+  "playerCount": 18,
+  "uploader": {
+    "id": 43825,
+    "steamid": "76561198103050565",
+    "name": "Hinoᴳᶜ"
+  },
+  "hash": "6fac7a6cb2112521e3c1676034026da1",
+  "backend": "fridge",
+  "path": "/demos/6f/ac/6fac7a6cb2112521e3c1676034026da1_match-20190805-2159-pl_swiftwater_final1.dem",
+  "players": [
+    {
+      "id": 3802016,
+      "user_id": 43339,
+      "name": "Cute kinetic",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198061346578",
+      "kills": 12,
+      "assists": 7,
+      "deaths": 10
+    },
+    {
+      "id": 3802012,
+      "user_id": 2125,
+      "name": "Cute SWAGGERDEMON_",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198043497451",
+      "kills": 12,
+      "assists": 7,
+      "deaths": 15
+    },
+    {
+      "id": 3802014,
+      "user_id": 1764,
+      "name": "5perm Makkabeus Rex",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198074921456",
+      "kills": 18,
+      "assists": 5,
+      "deaths": 11
+    },
+    {
+      "id": 3802019,
+      "user_id": 2416,
+      "name": "earthling ´ ▽ ` )ﾉ",
+      "team": "red",
+      "class": "pyro",
+      "steamid": "76561198048965902",
+      "kills": 10,
+      "assists": 5,
+      "deaths": 6
+    },
+    {
+      "id": 3802021,
+      "user_id": 6569,
+      "name": "Cute neum",
+      "team": "red",
+      "class": "sniper",
+      "steamid": "76561198062615362",
+      "kills": 26,
+      "assists": 2,
+      "deaths": 10
+    },
+    {
+      "id": 3802018,
+      "user_id": 43825,
+      "name": "Cute^ Hino",
+      "team": "red",
+      "class": "spy",
+      "steamid": "76561198103050565",
+      "kills": 21,
+      "assists": 0,
+      "deaths": 14
+    },
+    {
+      "id": 3802007,
+      "user_id": 7017,
+      "name": "DUNK Mad61",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198125373001",
+      "kills": 11,
+      "assists": 5,
+      "deaths": 10
+    },
+    {
+      "id": 3802010,
+      "user_id": 17585,
+      "name": "captain commander mono",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198101349693",
+      "kills": 13,
+      "assists": 2,
+      "deaths": 16
+    },
+    {
+      "id": 3802009,
+      "user_id": 39083,
+      "name": "5perm d3nny",
+      "team": "blue",
+      "class": "sniper",
+      "steamid": "76561198088444038",
+      "kills": 11,
+      "assists": 2,
+      "deaths": 19
+    },
+    {
+      "id": 3802023,
+      "user_id": 18417,
+      "name": "5perm botwax",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198178851065",
+      "kills": 0,
+      "assists": 12,
+      "deaths": 5
+    },
+    {
+      "id": 3802008,
+      "user_id": 13444,
+      "name": "5perm Bliztank",
+      "team": "blue",
+      "class": "spy",
+      "steamid": "76561198019252798",
+      "kills": 9,
+      "assists": 1,
+      "deaths": 21
+    },
+    {
+      "id": 3802020,
+      "user_id": 11508,
+      "name": "5perm civ.",
+      "team": "blue",
+      "class": "heavyweapons",
+      "steamid": "76561197981617925",
+      "kills": 7,
+      "assists": 5,
+      "deaths": 16
+    },
+    {
+      "id": 3802024,
+      "user_id": 12012,
+      "name": "Cute rebite",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198036739643",
+      "kills": 0,
+      "assists": 10,
+      "deaths": 2
+    },
+    {
+      "id": 3802022,
+      "user_id": 17272,
+      "name": "5perm Guava",
+      "team": "blue",
+      "class": "pyro",
+      "steamid": "76561198051421643",
+      "kills": 9,
+      "assists": 5,
+      "deaths": 11
+    },
+    {
+      "id": 3802017,
+      "user_id": 12032,
+      "name": "Cute cookie",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198051499968",
+      "kills": 12,
+      "assists": 7,
+      "deaths": 12
+    },
+    {
+      "id": 3802015,
+      "user_id": 10457,
+      "name": "Cute GreenKing",
+      "team": "red",
+      "class": "engineer",
+      "steamid": "76561198063370996",
+      "kills": 11,
+      "assists": 8,
+      "deaths": 11
+    },
+    {
+      "id": 3802013,
+      "user_id": 14919,
+      "name": "5perm tuba god",
+      "team": "blue",
+      "class": "engineer",
+      "steamid": "76561198155465253",
+      "kills": 9,
+      "assists": 10,
+      "deaths": 10
+    },
+    {
+      "id": 3802011,
+      "user_id": 17779,
+      "name": "Cute Moist",
+      "team": "red",
+      "class": "heavyweapons",
+      "steamid": "76561198301176077",
+      "kills": 15,
+      "assists": 4,
+      "deaths": 8
+    }
+  ]
+}

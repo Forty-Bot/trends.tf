@@ -1,0 +1,44 @@
+{
+  "matchId": 3412,
+  "seasonName": "HL Season 3",
+  "divisionName": "Advanced",
+  "divisionId": 283,
+  "seasonId": 52,
+  "matchDate": "2019-08-06T01:30:00.000Z",
+  "matchName": "Playoffs 3",
+  "isForfeit": false,
+  "winner": 4869,
+  "teams": [
+    {
+      "teamName": "The Money Team",
+      "teamTag": "TMT",
+      "teamId": 4888,
+      "isHome": false,
+      "points": "1"
+    },
+    {
+      "teamName": "Super Handsome Inteligent Team",
+      "teamTag": "Cute",
+      "teamId": 4869,
+      "isHome": true,
+      "points": "2"
+    }
+  ],
+  "maps": [
+    {
+      "mapName": "koth_product_rcx",
+      "homeScore": 4,
+      "awayScore": 0
+    },
+    {
+      "mapName": "pl_vigil_rc5",
+      "homeScore": 0,
+      "awayScore": 2
+    },
+    {
+      "mapName": "pl_swiftwater_final1",
+      "homeScore": 2,
+      "awayScore": 0
+    }
+  ]
+}

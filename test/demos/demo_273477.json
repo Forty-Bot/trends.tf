@@ -1,0 +1,223 @@
+{
+  "id": 273477,
+  "url": "https://freezer.demos.tf/cb/04/cb047b7700d2702ccaa0f8da888bf758_match-20190603-2215-koth_ashville_rc1.dem",
+  "name": "match-20190603-2215-koth_ashville_rc1.dem",
+  "server": "na.serveme.tf (#273703)",
+  "duration": 707,
+  "nick": "SourceTV Demo",
+  "map": "koth_ashville_rc1",
+  "time": 1559615244,
+  "red": "BOPIS",
+  "blue": "TMT",
+  "redScore": 0,
+  "blueScore": 2,
+  "playerCount": 18,
+  "uploader": {
+    "id": 16377,
+    "steamid": "serveme.tf",
+    "name": "serveme.tf"
+  },
+  "hash": "cb047b7700d2702ccaa0f8da888bf758",
+  "backend": "fridge",
+  "path": "/demos/cb/04/cb047b7700d2702ccaa0f8da888bf758_match-20190603-2215-koth_ashville_rc1.dem",
+  "players": [
+    {
+      "id": 3572913,
+      "user_id": 20210,
+      "name": "TMT berryy",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198056475023",
+      "kills": 7,
+      "assists": 9,
+      "deaths": 8
+    },
+    {
+      "id": 3572926,
+      "user_id": 14919,
+      "name": "tuba god",
+      "team": "blue",
+      "class": "engineer",
+      "steamid": "76561198155465253",
+      "kills": 7,
+      "assists": 9,
+      "deaths": 6
+    },
+    {
+      "id": 3572909,
+      "user_id": 7468,
+      "name": "twitch.tv/5perm",
+      "team": "blue",
+      "class": "spy",
+      "steamid": "76561198072950262",
+      "kills": 19,
+      "assists": 1,
+      "deaths": 10
+    },
+    {
+      "id": 3572918,
+      "user_id": 11508,
+      "name": "›› civ.",
+      "team": "red",
+      "class": "pyro",
+      "steamid": "76561197981617925",
+      "kills": 6,
+      "assists": 7,
+      "deaths": 8
+    },
+    {
+      "id": 3572925,
+      "user_id": 17805,
+      "name": "B4DM0N",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198174779475",
+      "kills": 10,
+      "assists": 3,
+      "deaths": 14
+    },
+    {
+      "id": 3572915,
+      "user_id": 9161,
+      "name": "s9 LIZARD",
+      "team": "blue",
+      "class": "heavyweapons",
+      "steamid": "76561198111975583",
+      "kills": 20,
+      "assists": 7,
+      "deaths": 5
+    },
+    {
+      "id": 3572914,
+      "user_id": 12703,
+      "name": "parousia",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198072779843",
+      "kills": 15,
+      "assists": 5,
+      "deaths": 13
+    },
+    {
+      "id": 3572920,
+      "user_id": 3768,
+      "name": "AC-130",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198048752760",
+      "kills": 0,
+      "assists": 7,
+      "deaths": 5
+    },
+    {
+      "id": 3572917,
+      "user_id": 2330,
+      "name": "igualmente",
+      "team": "red",
+      "class": "engineer",
+      "steamid": "76561198008087350",
+      "kills": 2,
+      "assists": 5,
+      "deaths": 7
+    },
+    {
+      "id": 3572912,
+      "user_id": 39083,
+      "name": "TMT dennie",
+      "team": "blue",
+      "class": "sniper",
+      "steamid": "76561198088444038",
+      "kills": 11,
+      "assists": 2,
+      "deaths": 9
+    },
+    {
+      "id": 3572922,
+      "user_id": 13444,
+      "name": "Bliztank",
+      "team": "red",
+      "class": "spy",
+      "steamid": "76561198019252798",
+      "kills": 5,
+      "assists": 0,
+      "deaths": 23
+    },
+    {
+      "id": 3572919,
+      "user_id": 17908,
+      "name": "Wubs",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198100722286",
+      "kills": 9,
+      "assists": 2,
+      "deaths": 16
+    },
+    {
+      "id": 3572924,
+      "user_id": 32371,
+      "name": ".tv/xLuigislayer_",
+      "team": "red",
+      "class": "heavyweapons",
+      "steamid": "76561198091901520",
+      "kills": 8,
+      "assists": 4,
+      "deaths": 7
+    },
+    {
+      "id": 3572910,
+      "user_id": 17585,
+      "name": "Ɛ>|<3",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198101349693",
+      "kills": 22,
+      "assists": 2,
+      "deaths": 9
+    },
+    {
+      "id": 3572921,
+      "user_id": 12879,
+      "name": "Ƨ9 Tom Servo",
+      "team": "blue",
+      "class": "pyro",
+      "steamid": "76561197998662371",
+      "kills": 3,
+      "assists": 6,
+      "deaths": 5
+    },
+    {
+      "id": 3572916,
+      "user_id": 38997,
+      "name": "TMT GɇneralNick",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198287397900",
+      "kills": 1,
+      "assists": 16,
+      "deaths": 4
+    },
+    {
+      "id": 3572923,
+      "user_id": 1764,
+      "name": "TMT Makkabeus Rex",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198074921456",
+      "kills": 13,
+      "assists": 4,
+      "deaths": 7
+    },
+    {
+      "id": 3572911,
+      "user_id": 12300,
+      "name": "laim",
+      "team": "red",
+      "class": "sniper",
+      "steamid": "76561198072671407",
+      "kills": 8,
+      "assists": 1,
+      "deaths": 10
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "teamId": 4882,
+  "linkedTeams": [
+    2681,
+    3183,
+    5574,
+    5969,
+    6548,
+    6798,
+    7496,
+    9522
+  ],
+  "seasonId": 52,
+  "divisionId": 46,
+  "divisionName": "RGL-Advanced",
+  "teamLeader": "76561198091901520",
+  "createdAt": "2019-04-13T06:10:28.523Z",
+  "updatedAt": "2021-12-25T21:11:22.486Z",
+  "tag": "BOPIS",
+  "name": "Home Depot eSports",
+  "finalRank": 6,
+  "players": [
+    {
+      "name": "civ.",
+      "steamId": "76561197981617925",
+      "isLeader": false,
+      "joinedAt": "2019-06-03T05:29:50.786Z",
+      "leftAt": "2019-06-05T19:28:55.123Z"
+    },
+    {
+      "name": "Bonesaw",
+      "steamId": "76561198008087350",
+      "isLeader": false,
+      "joinedAt": "2019-05-04T20:44:11.946Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Bliztank",
+      "steamId": "76561198019252798",
+      "isLeader": false,
+      "joinedAt": "2019-05-04T02:49:53.206Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Serious.",
+      "steamId": "76561198042637681",
+      "isLeader": false,
+      "joinedAt": "2019-04-26T22:52:04.296Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Ness",
+      "steamId": "76561198048752760",
+      "isLeader": false,
+      "joinedAt": "2019-04-26T21:28:42.903Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "parsuh",
+      "steamId": "76561198057197772",
+      "isLeader": false,
+      "joinedAt": "2019-05-02T22:14:46.426Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "queeny",
+      "steamId": "76561198064301274",
+      "isLeader": false,
+      "joinedAt": "2019-05-19T20:31:58.510Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "krphyxzwlps",
+      "steamId": "76561198070136627",
+      "isLeader": false,
+      "joinedAt": "2019-04-26T21:34:48.453Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Liam",
+      "steamId": "76561198072671407",
+      "isLeader": false,
+      "joinedAt": "2019-05-04T20:44:10.776Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "animus",
+      "steamId": "76561198072779843",
+      "isLeader": false,
+      "joinedAt": "2019-05-02T04:19:04.296Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Luigi",
+      "steamId": "76561198091901520",
+      "isLeader": true,
+      "joinedAt": "2019-04-13T06:10:28.570Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Wubs",
+      "steamId": "76561198100722286",
+      "isLeader": false,
+      "joinedAt": "2019-04-26T21:27:31.283Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "zbra",
+      "steamId": "76561198107575115",
+      "isLeader": false,
+      "joinedAt": "2019-05-08T03:34:33.233Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "tosm",
+      "steamId": "76561198130032444",
+      "isLeader": false,
+      "joinedAt": "2019-05-04T20:44:09.840Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Steaklington",
+      "steamId": "76561198165285237",
+      "isLeader": false,
+      "joinedAt": "2019-04-27T05:07:21.136Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "norphel03",
+      "steamId": "76561198174779475",
+      "isLeader": false,
+      "joinedAt": "2019-04-28T00:23:51.883Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "M3ndo",
+      "steamId": "76561198213829632",
+      "isLeader": false,
+      "joinedAt": "2019-07-08T22:49:29.690Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "raisins",
+      "steamId": "76561198300402102",
+      "isLeader": false,
+      "joinedAt": "2019-05-03T21:21:03.373Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "fordo",
+      "steamId": "76561198330799279",
+      "isLeader": false,
+      "joinedAt": "2019-04-28T22:47:13.706Z",
+      "leftAt": "2019-06-03T05:27:25.093Z"
+    },
+    {
+      "name": "inkyy",
+      "steamId": "76561198799922000",
+      "isLeader": false,
+      "joinedAt": "2019-04-26T21:37:00.873Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    }
+  ]
+}

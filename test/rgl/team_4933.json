@@ -1,0 +1,218 @@
+{
+  "teamId": 4933,
+  "linkedTeams": [],
+  "seasonId": 52,
+  "divisionId": 23,
+  "divisionName": "RGL-Amateur",
+  "teamLeader": "76561198408282005",
+  "createdAt": "2019-05-01T01:45:58.876Z",
+  "updatedAt": "2021-05-25T00:17:19.850Z",
+  "tag": "peen",
+  "name": "People Eating Edible Noses",
+  "finalRank": 12,
+  "players": [
+    {
+      "name": "Gad",
+      "steamId": "76561198020792373",
+      "isLeader": false,
+      "joinedAt": "2019-05-01T20:29:34.656Z",
+      "leftAt": "2019-05-04T01:16:05.436Z"
+    },
+    {
+      "name": "gusinater",
+      "steamId": "76561198049845322",
+      "isLeader": false,
+      "joinedAt": "2019-06-18T18:06:14.490Z",
+      "leftAt": "2019-06-30T00:37:14.140Z"
+    },
+    {
+      "name": "larry",
+      "steamId": "76561198058233155",
+      "isLeader": false,
+      "joinedAt": "2019-05-27T15:47:03.616Z",
+      "leftAt": "2019-06-17T01:30:53.106Z"
+    },
+    {
+      "name": "larry",
+      "steamId": "76561198058233155",
+      "isLeader": false,
+      "joinedAt": "2019-06-17T19:32:15.603Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Eben",
+      "steamId": "76561198067584084",
+      "isLeader": false,
+      "joinedAt": "2019-07-05T00:22:53.423Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "acid",
+      "steamId": "76561198073603633",
+      "isLeader": false,
+      "joinedAt": "2019-06-02T19:18:04.926Z",
+      "leftAt": "2019-06-25T16:48:29.383Z"
+    },
+    {
+      "name": "Feel the bern",
+      "steamId": "76561198078824519",
+      "isLeader": false,
+      "joinedAt": "2019-05-06T20:22:54.076Z",
+      "leftAt": "2019-05-17T23:28:06.396Z"
+    },
+    {
+      "name": "Feel the bern",
+      "steamId": "76561198078824519",
+      "isLeader": false,
+      "joinedAt": "2019-05-28T02:20:58.783Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "carsick",
+      "steamId": "76561198092435879",
+      "isLeader": false,
+      "joinedAt": "2019-05-08T22:36:54.163Z",
+      "leftAt": "2019-06-12T18:29:47.456Z"
+    },
+    {
+      "name": "Random",
+      "steamId": "76561198103655963",
+      "isLeader": false,
+      "joinedAt": "2019-07-06T05:48:45.696Z",
+      "leftAt": "2019-07-22T02:46:47.433Z"
+    },
+    {
+      "name": "bnunny",
+      "steamId": "76561198105543135",
+      "isLeader": false,
+      "joinedAt": "2019-07-08T01:31:22.260Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "klad",
+      "steamId": "76561198119763794",
+      "isLeader": false,
+      "joinedAt": "2019-06-10T23:15:21.746Z",
+      "leftAt": "2019-06-25T16:48:45.853Z"
+    },
+    {
+      "name": "bobbymetro",
+      "steamId": "76561198145132802",
+      "isLeader": false,
+      "joinedAt": "2019-06-27T00:46:02.363Z",
+      "leftAt": "2019-07-08T17:05:08.973Z"
+    },
+    {
+      "name": "syd",
+      "steamId": "76561198146749756",
+      "isLeader": false,
+      "joinedAt": "2019-06-18T21:51:04.720Z",
+      "leftAt": "2019-06-23T04:16:09.636Z"
+    },
+    {
+      "name": "ICLemon",
+      "steamId": "76561198154886554",
+      "isLeader": false,
+      "joinedAt": "2019-05-06T20:22:58.216Z",
+      "leftAt": "2019-06-24T22:19:45.250Z"
+    },
+    {
+      "name": "Zoldier",
+      "steamId": "76561198184329195",
+      "isLeader": false,
+      "joinedAt": "2019-05-17T23:31:39.800Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "sleepdeprived",
+      "steamId": "76561198208244539",
+      "isLeader": false,
+      "joinedAt": "2019-05-05T17:45:26.863Z",
+      "leftAt": "2019-06-12T18:29:41.146Z"
+    },
+    {
+      "name": "levmad",
+      "steamId": "76561198251795592",
+      "isLeader": false,
+      "joinedAt": "2019-06-28T02:02:22.536Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "-SpectR-",
+      "steamId": "76561198271974942",
+      "isLeader": false,
+      "joinedAt": "2019-07-06T05:34:36.116Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "R33se",
+      "steamId": "76561198296531992",
+      "isLeader": false,
+      "joinedAt": "2019-06-08T02:56:37.593Z",
+      "leftAt": "2019-06-11T21:14:52.810Z"
+    },
+    {
+      "name": "Raid",
+      "steamId": "76561198303006492",
+      "isLeader": false,
+      "joinedAt": "2019-05-17T23:26:19.470Z",
+      "leftAt": "2019-05-17T23:27:53.163Z"
+    },
+    {
+      "name": "Raid",
+      "steamId": "76561198303006492",
+      "isLeader": true,
+      "joinedAt": "2019-05-19T14:10:32.806Z",
+      "leftAt": "2019-06-11T01:22:46.976Z"
+    },
+    {
+      "name": "bags",
+      "steamId": "76561198325865082",
+      "isLeader": false,
+      "joinedAt": "2019-05-09T19:43:45.300Z",
+      "leftAt": "2019-06-25T02:14:17.083Z"
+    },
+    {
+      "name": "Zer",
+      "steamId": "76561198330484179",
+      "isLeader": false,
+      "joinedAt": "2019-06-02T03:01:10.470Z",
+      "leftAt": "2019-07-06T05:35:02.773Z"
+    },
+    {
+      "name": "SuperFly",
+      "steamId": "76561198380227335",
+      "isLeader": false,
+      "joinedAt": "2019-05-12T03:37:34.943Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Myth.",
+      "steamId": "76561198401392472",
+      "isLeader": false,
+      "joinedAt": "2019-05-04T23:47:16.496Z",
+      "leftAt": "2019-05-21T19:29:14.383Z"
+    },
+    {
+      "name": "audino",
+      "steamId": "76561198408282005",
+      "isLeader": true,
+      "joinedAt": "2019-05-01T01:53:00.000Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Minkarou",
+      "steamId": "76561198870077864",
+      "isLeader": false,
+      "joinedAt": "2019-06-18T01:06:25.373Z",
+      "leftAt": "2019-06-27T00:06:27.610Z"
+    },
+    {
+      "name": "Trovial",
+      "steamId": "76561198875253732",
+      "isLeader": false,
+      "joinedAt": "2019-06-12T21:49:38.470Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    }
+  ]
+}

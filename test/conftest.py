@@ -14,7 +14,8 @@ import trends.importer.logs
 import trends.importer.etf2l
 import trends.importer.link_demos
 import trends.importer.link_matches
-from trends.importer.fetch import DemoFileFetcher, ETF2LFileFetcher, FileFetcher
+import trends.importer.rgl
+from trends.importer.fetch import DemoFileFetcher, ETF2LFileFetcher, FileFetcher, RGLFileFetcher
 from trends.sql import db_connect, db_init, db_schema
 
 @contextmanager
@@ -39,7 +40,17 @@ def database(request):
             logfiles = { logid: f"{os.path.dirname(__file__)}/logs/log_{logid}.json"
                 for logid in (
                     30099,
+                    2297197,
+                    2297225,
+                    2344272,
+                    2344306,
+                    2344331,
+                    2344354,
+                    2344383,
                     2344394,
+                    2344394,
+                    2392536,
+                    2392557,
                     2401045,
                     2408458,
                     2408491,
@@ -49,10 +60,10 @@ def database(request):
                     2878546,
                     2931193,
                     3027588,
-                    3302963,
-                    3302982,
                     3069780,
                     3124976,
+                    3302963,
+                    3302982,
                     3384488,
                 )
             }
@@ -65,6 +76,12 @@ def database(request):
 
         with db_connect(database.url()) as c:
             demofiles = (f"{os.path.dirname(__file__)}/demos/demo_{demoid}.json" for demoid in (
+                273469,
+                273477,
+                292844,
+                292859,
+                292868,
+                292885,
                 318447,
                 322265,
                 322285,
@@ -91,6 +108,14 @@ def database(request):
                     trends.importer.etf2l.import_etf2l(c, fetcher)
                 if caplog.records:
                     pytest.fail("Error importing ETF2L files")
+
+        with db_connect(database.url()) as c:
+            fetcher = RGLFileFetcher(dir=f"{os.path.dirname(__file__)}/rgl")
+            with caplog_session(request) as caplog:
+                with caplog.at_level(logging.ERROR):
+                    trends.importer.rgl.import_rgl(c, fetcher)
+                if caplog.records:
+                    pytest.fail("Error importing RGL files")
 
         with db_connect(database.url()) as c:
             cur = c.cursor()

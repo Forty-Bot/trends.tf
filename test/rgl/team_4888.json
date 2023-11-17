@@ -1,0 +1,162 @@
+{
+  "teamId": 4888,
+  "linkedTeams": [],
+  "seasonId": 52,
+  "divisionId": 46,
+  "divisionName": "RGL-Advanced",
+  "teamLeader": "76561198072950262",
+  "createdAt": "2019-04-14T16:15:55.953Z",
+  "updatedAt": "2021-05-24T22:36:01.743Z",
+  "tag": "TMT",
+  "name": "The Money Team",
+  "finalRank": 2,
+  "players": [
+    {
+      "name": "civ.",
+      "steamId": "76561197981617925",
+      "isLeader": true,
+      "joinedAt": "2019-07-01T17:45:19.303Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Tom Servo",
+      "steamId": "76561197998662371",
+      "isLeader": false,
+      "joinedAt": "2019-04-28T18:51:34.923Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "-=RiP=-Nect0[CL]",
+      "steamId": "76561198002816886",
+      "isLeader": false,
+      "joinedAt": "2019-05-10T01:54:51.020Z",
+      "leftAt": "2019-05-12T04:11:50.370Z"
+    },
+    {
+      "name": "Teatsmcghee",
+      "steamId": "76561198036483480",
+      "isLeader": false,
+      "joinedAt": "2019-05-13T02:27:14.316Z",
+      "leftAt": "2019-07-01T00:39:25.170Z"
+    },
+    {
+      "name": "Guava",
+      "steamId": "76561198051421643",
+      "isLeader": false,
+      "joinedAt": "2019-07-08T03:30:38.926Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "berryy",
+      "steamId": "76561198056475023",
+      "isLeader": false,
+      "joinedAt": "2019-05-12T03:11:36.546Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Dest -",
+      "steamId": "76561198059202536",
+      "isLeader": false,
+      "joinedAt": "2019-05-10T01:58:15.180Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "5perm",
+      "steamId": "76561198072950262",
+      "isLeader": true,
+      "joinedAt": "2019-04-28T00:57:12.110Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Makkabeus Rex",
+      "steamId": "76561198074921456",
+      "isLeader": true,
+      "joinedAt": "2019-04-29T22:47:23.263Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "d3nny",
+      "steamId": "76561198088444038",
+      "isLeader": false,
+      "joinedAt": "2019-04-14T18:56:50.573Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "mono70billion",
+      "steamId": "76561198101349693",
+      "isLeader": false,
+      "joinedAt": "2019-05-20T18:51:29.966Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "XBS",
+      "steamId": "76561198101933311",
+      "isLeader": false,
+      "joinedAt": "2019-05-20T17:44:48.610Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "lizard",
+      "steamId": "76561198111975583",
+      "isLeader": false,
+      "joinedAt": "2019-04-28T20:42:59.776Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Krispy Kreme 2012",
+      "steamId": "76561198125373001",
+      "isLeader": false,
+      "joinedAt": "2019-07-08T00:40:53.073Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Thot-Slayer 9000",
+      "steamId": "76561198138718997",
+      "isLeader": false,
+      "joinedAt": "2019-05-27T22:54:40.630Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "brick",
+      "steamId": "76561198155465253",
+      "isLeader": false,
+      "joinedAt": "2019-05-12T15:24:27.573Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "perfection",
+      "steamId": "76561198165249595",
+      "isLeader": false,
+      "joinedAt": "2019-04-28T00:32:58.946Z",
+      "leftAt": "2019-05-20T17:38:39.546Z"
+    },
+    {
+      "name": "Medeev",
+      "steamId": "76561198165381710",
+      "isLeader": false,
+      "joinedAt": "2019-05-22T21:50:41.543Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "botwax",
+      "steamId": "76561198178851065",
+      "isLeader": false,
+      "joinedAt": "2019-06-13T02:00:50.133Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "vizie",
+      "steamId": "76561198189429665",
+      "isLeader": false,
+      "joinedAt": "2019-05-13T02:06:46.776Z",
+      "leftAt": "2019-07-08T02:40:42.183Z"
+    },
+    {
+      "name": "GeneralNick",
+      "steamId": "76561198287397900",
+      "isLeader": false,
+      "joinedAt": "2019-04-14T16:15:00.000Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "teamId": 4941,
+  "linkedTeams": [],
+  "seasonId": 52,
+  "divisionId": 46,
+  "divisionName": "RGL-Advanced",
+  "teamLeader": "76561198044006334",
+  "createdAt": "2019-05-02T21:00:09.886Z",
+  "updatedAt": "2021-05-24T22:36:02.006Z",
+  "tag": "n",
+  "name": "Nine Trey Gangsters",
+  "finalRank": 10,
+  "players": [
+    {
+      "name": "charis",
+      "steamId": "76561197997528848",
+      "isLeader": false,
+      "joinedAt": "2019-05-03T21:47:36.326Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "eggo",
+      "steamId": "76561198028147388",
+      "isLeader": false,
+      "joinedAt": "2019-05-22T06:54:32.353Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "coming down i go back up",
+      "steamId": "76561198030625151",
+      "isLeader": false,
+      "joinedAt": "2019-05-02T22:35:14.636Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "yimi",
+      "steamId": "76561198040907214",
+      "isLeader": false,
+      "joinedAt": "2019-05-03T08:05:38.480Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Mikey_",
+      "steamId": "76561198044006334",
+      "isLeader": true,
+      "joinedAt": "2019-05-02T21:00:10.013Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "lux0r",
+      "steamId": "76561198045750631",
+      "isLeader": false,
+      "joinedAt": "2019-05-02T22:35:12.823Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": ":sunglasses:",
+      "steamId": "76561198048058321",
+      "isLeader": false,
+      "joinedAt": "2019-05-22T06:24:58.503Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Figsy",
+      "steamId": "76561198048965902",
+      "isLeader": false,
+      "joinedAt": "2019-05-21T03:57:35.370Z",
+      "leftAt": "2019-06-23T02:35:48.190Z"
+    },
+    {
+      "name": "train",
+      "steamId": "76561198059182316",
+      "isLeader": false,
+      "joinedAt": "2019-05-04T00:12:50.816Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Chris",
+      "steamId": "76561198389766923",
+      "isLeader": false,
+      "joinedAt": "2019-05-31T04:49:58.180Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    }
+  ]
+}

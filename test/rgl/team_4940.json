@@ -1,0 +1,148 @@
+{
+  "teamId": 4940,
+  "linkedTeams": [],
+  "seasonId": 52,
+  "divisionId": 23,
+  "divisionName": "RGL-Amateur",
+  "teamLeader": "76561198130084809",
+  "createdAt": "2019-05-02T00:18:17.340Z",
+  "updatedAt": "2021-05-25T00:17:19.566Z",
+  "tag": "NS2K",
+  "name": "Napalm Sticks to Kids",
+  "finalRank": 5,
+  "players": [
+    {
+      "name": "WolfTeeth",
+      "steamId": "76561198025198279",
+      "isLeader": false,
+      "joinedAt": "2019-06-12T01:59:00.143Z",
+      "leftAt": "2019-07-16T00:04:35.616Z"
+    },
+    {
+      "name": "Ulysses",
+      "steamId": "76561198026427504",
+      "isLeader": false,
+      "joinedAt": "2019-05-21T20:43:49.010Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Mythorn",
+      "steamId": "76561198042511673",
+      "isLeader": false,
+      "joinedAt": "2019-06-03T23:39:23.696Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Iggy",
+      "steamId": "76561198044994567",
+      "isLeader": false,
+      "joinedAt": "2019-05-26T00:03:01.120Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Omega",
+      "steamId": "76561198056592096",
+      "isLeader": true,
+      "joinedAt": "2019-05-22T00:19:40.040Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "rockandroll805",
+      "steamId": "76561198062568700",
+      "isLeader": false,
+      "joinedAt": "2019-06-05T07:52:32.620Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Joy",
+      "steamId": "76561198072344194",
+      "isLeader": false,
+      "joinedAt": "2019-07-07T07:11:50.460Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Axiom Unknown",
+      "steamId": "76561198075490415",
+      "isLeader": false,
+      "joinedAt": "2019-05-26T00:02:21.446Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Olivia",
+      "steamId": "76561198085410622",
+      "isLeader": false,
+      "joinedAt": "2019-07-03T19:17:35.073Z",
+      "leftAt": "2019-07-23T02:50:33.160Z"
+    },
+    {
+      "name": "vermin",
+      "steamId": "76561198087494895",
+      "isLeader": false,
+      "joinedAt": "2019-07-03T02:37:42.246Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "byro",
+      "steamId": "76561198087532900",
+      "isLeader": true,
+      "joinedAt": "2019-05-21T19:51:48.990Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Compton",
+      "steamId": "76561198094340140",
+      "isLeader": false,
+      "joinedAt": "2019-05-26T00:05:40.683Z",
+      "leftAt": "2019-06-18T22:29:36.186Z"
+    },
+    {
+      "name": "Person Meetup",
+      "steamId": "76561198121851448",
+      "isLeader": false,
+      "joinedAt": "2019-05-22T00:11:54.946Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Mr. Gnu",
+      "steamId": "76561198130084809",
+      "isLeader": true,
+      "joinedAt": "2019-05-27T01:02:54.676Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "dusk4_",
+      "steamId": "76561198137126564",
+      "isLeader": false,
+      "joinedAt": "2019-05-26T00:05:41.826Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "cayorne",
+      "steamId": "76561198170939290",
+      "isLeader": false,
+      "joinedAt": "2019-05-02T00:18:17.386Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "Joker",
+      "steamId": "76561198293826492",
+      "isLeader": false,
+      "joinedAt": "2019-05-22T01:04:34.376Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "jeight",
+      "steamId": "76561198301127858",
+      "isLeader": false,
+      "joinedAt": "2019-07-06T23:27:46.196Z",
+      "leftAt": "2019-08-13T00:00:00.000Z"
+    },
+    {
+      "name": "muddy",
+      "steamId": "76561198796671544",
+      "isLeader": false,
+      "joinedAt": "2019-06-18T22:52:02.890Z",
+      "leftAt": "2019-06-19T02:40:36.623Z"
+    }
+  ]
+}

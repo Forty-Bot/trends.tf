@@ -174,6 +174,12 @@ def test_linked(connection):
     cur = connection.cursor()
     cur.execute("SELECT logid, demoid FROM log WHERE demoid NOTNULL;")
     assert { logid: demoid for logid, demoid in cur } == {
+        2297197: 273469,
+        2297225: 273477,
+        2344272: 292844,
+        2344306: 292859,
+        2344331: 292868,
+        2344354: 292885,
         2401045: 318447,
         2408458: 322265,
         2408491: 322285,
@@ -188,6 +194,14 @@ def test_linked(connection):
 
     cur.execute("SELECT logid, league, matchid FROM log WHERE league NOTNULL;")
     assert { logid: (league, matchid) for logid, league, matchid in cur } == {
+        2344272: ('rgl', 3412),
+        2344306: ('rgl', 3412),
+        2344331: ('rgl', 3412),
+        2344354: ('rgl', 3412),
+        2344383: ('rgl', 3412),
+        2344394: ('rgl', 3412),
+        2392536: ('rgl', 4664),
+        2392557: ('rgl', 4664),
         2408458: ('etf2l', 77326),
         2408491: ('etf2l', 77326),
         3302963: ('etf2l', 84221),
