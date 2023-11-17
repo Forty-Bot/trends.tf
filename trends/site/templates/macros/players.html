@@ -1,0 +1,80 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/format.html" import optint, optformat, comma_col, duration_col %}
+{% from "macros/icons.html" import classicon, playerlink %}
+{% set player_sort = {
+	'name': "Player",
+	'k30': "Kills per 30 minutes",
+	'd30': "Deaths per 30 minutes",
+	'a30': "Assists per 30 minutes",
+	'kad': "Kills and assists per death",
+	'kd': "Kills per death",
+	'dpm': "Damage per minute",
+	'dtm': "Damage taken per minute",
+	'ddm': "Delta damage per minute",
+	'dr': "Damage per damage taken",
+	'acc': "Accuracy",
+	'dps': "Damage per shot",
+	'kills': "Kills",
+	'deaths': "Deaths",
+	'assists': "Assists",
+	'dmg': "Damage",
+	'dt': "Damage taken",
+	'duration': "Time Played",
+} %}
+{% macro player_table(players) %}
+<table>
+<thead><tr>
+	<th>Player</th>
+	<th><abbr title="Classes with at least &frac23; playtime">Classes</abbr></th>
+	<th><abbr title="Kills per 30 minutes">K/30</abbr></th>
+	<th><abbr title="Deaths per 30 minutes">D/30</abbr></th>
+	<th><abbr title="Assists per 30 minutes">A/30</abbr></th>
+	<th><abbr title="Kills and assists per death">KA/D</abbr></th>
+	<th><abbr title="Kills per death">K/D</abbr></th>
+	<th><abbr title="Damage per minute">DA/M</abbr></th>
+	<th><abbr title="Damage taken per minute">DT/M</abbr></th>
+	<th><abbr title="Delta damage per minute">ΔD/M</abbr></th>
+	<th><abbr title="Damage per damage taken">DR</abbr></th>
+	<th><abbr title="Accuracy">Acc</abbr></th>
+	<th><abbr title="Damage per shot">D/S</abbr></th>
+	<th><abbr title="Kills">K</abbr></th>
+	<th><abbr title="Deaths">D</abbr></th>
+	<th><abbr title="Assists">A</abbr></th>
+	<th><abbr title="Damage">DA</abbr></th>
+	<th><abbr title="Damage Taken">DT</abbr></th>
+	<th>Time Played</th>
+</tr></thead>
+<tbody>
+{% for player in players %}
+<tr>
+	<td class="left">
+		{{ playerlink(player.steamid64, player.name, player.avatarhash) }}
+	</td>
+	<td class="left">
+		{% for cls, pct in player.classes.items() %}
+			{{ classicon(cls, pct) }}
+		{% endfor %}
+	</td>
+	<td>{{ optformat("{:.1f}", player.k30) }}</td>
+	<td>{{ optformat("{:.1f}", player.a30) }}</td>
+	<td>{{ optformat("{:.1f}", player.d30) }}</td>
+	<td>{{ optformat("{:.1f}", player.kad) }}</td>
+	<td>{{ optformat("{:.1f}", player.kd) }}</td>
+	<td>{{ optint(player.dpm) }}</td>
+	<td>{{ optint(player.dtm) }}</td>
+	<td>{{ optint(player.ddm) }}</td>
+	<td>{{ optformat("{:.1f}", player.dr) }}</td>
+	<td>{{ optformat("{:.0%}", player.acc) }}</td>
+	<td>{{ optint(player.dps) }}</td>
+	{{ comma_col(player.kills) }}
+	{{ comma_col(player.deaths) }}
+	{{ comma_col(player.assists) }}
+	{{ comma_col(player.dmg) }}
+	{{ comma_col(player.dt) }}
+	{{ duration_col(player.duration) }}
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endmacro %}
