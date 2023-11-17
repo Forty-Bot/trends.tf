@@ -207,3 +207,10 @@ def test_linked(connection):
         3302963: ('etf2l', 84221),
         3302982: ('etf2l', 84221),
     }
+
+def test_dupes(connection):
+    cur = connection.cursor()
+    cur.execute("SELECT logid, duplicate_of FROM log WHERE duplicate_of NOTNULL")
+    assert { logid: duplicate_of for logid, duplicate_of in cur } == {
+        2344394: [2344272, 2344306, 2344354],
+    }
