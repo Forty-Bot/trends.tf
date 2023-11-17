@@ -163,6 +163,46 @@ def get_matches(league, teamid, filters, limit=100, offset=0):
 
     return matches
 
+def get_comps(league, teamid, limit=100, offset=0):
+    comps = get_db().cursor()
+    comps.execute(
+        """SELECT
+               compid,
+               competition.name AS comp,
+               division AS div,
+               format,
+               rgl_teamid,
+               team_name,
+               wins,
+               losses,
+               ties,
+               (wins + 0.5 * ties) / nullif(wins + losses + ties, 0) AS winrate,
+               rounds_won,
+               rounds_lost,
+               rounds_won::NUMERIC / nullif(rounds_won + rounds_lost, 0) AS round_winrate
+           FROM team_comp
+           JOIN competition USING (league, compid)
+           LEFT JOIN division USING (league, compid, divid)
+           LEFT JOIN div_name USING (div_nameid)
+           JOIN format USING (formatid)
+           JOIN (SELECT
+                   league,
+                   compid,
+                   teamid,
+                   sum(win) AS wins,
+                   sum(loss) AS losses,
+                   sum(tie) AS ties,
+                   sum(rounds_won) AS rounds_won,
+                   sum(rounds_lost) AS rounds_lost
+               FROM match_wlt
+               GROUP BY league, compid, teamid
+           ) AS match USING (league, compid, teamid)
+           WHERE league = %s AND teamid = %s
+           ORDER BY compid desc
+           LIMIT %s OFFSET %s;""", (league, teamid, limit, offset))
+
+    return comps
+
 @team.route('/')
 def overview(league, teamid):
     db = get_db()
@@ -205,43 +245,7 @@ def overview(league, teamid):
            ORDER BY upper(rostered) DESC
            LIMIT 10;""", (league, teamid))
 
-    comps = db.cursor()
-    comps.execute(
-        """SELECT
-               compid,
-               competition.name AS comp,
-               division AS div,
-               format,
-               rgl_teamid,
-               team_name,
-               wins,
-               losses,
-               ties,
-               (wins + 0.5 * ties) / nullif(wins + losses + ties, 0) AS winrate,
-               rounds_won,
-               rounds_lost,
-               rounds_won::NUMERIC / nullif(rounds_won + rounds_lost, 0) AS round_winrate
-           FROM team_comp
-           JOIN competition USING (league, compid)
-           LEFT JOIN division USING (league, compid, divid)
-           LEFT JOIN div_name USING (div_nameid)
-           JOIN format USING (formatid)
-           JOIN (SELECT
-                   league,
-                   compid,
-                   teamid,
-                   sum(win) AS wins,
-                   sum(loss) AS losses,
-                   sum(tie) AS ties,
-                   sum(rounds_won) AS rounds_won,
-                   sum(rounds_lost) AS rounds_lost
-               FROM match_wlt
-               GROUP BY league, compid, teamid
-           ) AS match USING (league, compid, teamid)
-           WHERE league = %s AND teamid = %s
-           ORDER BY compid desc
-           LIMIT 10;""", (league, teamid))
-
+    comps = get_comps(league, teamid, limit=10)
     matches = get_matches(league, teamid, get_filter_params(), limit=25)
 
     return flask.render_template("league/team/overview.html", roster=roster, old_roster=old_roster,

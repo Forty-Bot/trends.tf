@@ -1,9 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
-{% from "macros/format.html" import optformat %}
+{% from "macros/comps.html" import comp_table %}
 {% from "macros/matches.html" import match_table %}
-{% from "macros/pretty.html" import format_map %}
-{% from "macros/wlt.html" import wlt %}
 {% extends "league/team/base.html" %}
 {% block head %}
 	{{ super() }}
@@ -72,50 +70,7 @@
 
 	<div class="float">
 	<h3>Recent Competitions</h3>
-	<table>
-	<thead>
-		<tr>
-			<th>Competition</th>
-			<th>Division</th>
-			<th>Format</th>
-			{% if g.league == 'rgl' %}
-			<th>Team</th>
-			{% endif %}
-			<th><abbr title="Wins-Losses-Ties">W-L-T</abbr></th>
-			<th><abbr title="Winrate; Ties count as 0.5 wins">WR</abbr></th>
-			<th><abbr title="Points Won">PW</abbr></th>
-			<th><abbr title="Points Lost">PL</abbr></th>
-			<th><abbr title="Point Ratio">PR</abbr></th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for comp in comps %}
-		<tr>
-			<td class="left">
-			<a href="{{ url_for('league.comp.overview', league=g.league,
-			                    compid=comp.compid) }}">
-				{{ comp.comp }}
-			</a></td>
-			<td class="left">{{ comp.div or '' }}</td>
-			<td class="left">{{ format_map[comp.format] }}</td>
-			{% if g.league == 'rgl' %}
-			<td class="left">
-				<a href="https://rgl.gg/Public/Team.aspx?t={{ comp.rgl_teamid }}">
-					{{ comp.team_name }}
-				</a>
-			</td>
-			{% endif %}
-			<td class="{{ wlt_class(comp.wins, comp.losses) }}">
-				{{ wlt(comp.wins, comp.losses, comp.ties) }}
-			</td>
-			<td>{{ optformat("{:.0%}", comp.winrate) }}</td>
-			<td>{{ comp.rounds_won | score }}</td>
-			<td>{{ comp.rounds_lost | score }}</td>
-			<td>{{ optformat("{:.0%}", comp.round_winrate) }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-	</table>
+	{{ comp_table(comps) }}
 	</div>
 
 	<div class="float">
