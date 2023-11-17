@@ -1,0 +1,157 @@
+{
+  "id": 902150,
+  "url": "https://freezer.demos.tf/3f/fb/3ffb69bc21c728ea045a4499024c3714_match-20221112-2106-cp_reckoner_rc6.dem",
+  "name": "match-20221112-2106-cp_reckoner_rc6.dem",
+  "server": "serveme.tf #1289042",
+  "duration": 1814,
+  "nick": "SourceTV Demo",
+  "map": "cp_reckoner_rc6",
+  "time": 1668289023,
+  "red": "RED",
+  "blue": "BLU",
+  "redScore": 4,
+  "blueScore": 1,
+  "playerCount": 12,
+  "uploader": {
+    "id": 16377,
+    "steamid": "serveme.tf",
+    "name": "serveme.tf"
+  },
+  "hash": "3ffb69bc21c728ea045a4499024c3714",
+  "backend": "freezer",
+  "path": "/demos/3f/fb/3ffb69bc21c728ea045a4499024c3714_match-20221112-2106-cp_reckoner_rc6.dem",
+  "players": [
+    {
+      "id": 11285481,
+      "user_id": 9674,
+      "name": "SOLAR",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198021217905",
+      "kills": 23,
+      "assists": 6,
+      "deaths": 21
+    },
+    {
+      "id": 11285482,
+      "user_id": 46213,
+      "name": ".xiodsaf",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198129153029",
+      "kills": 2,
+      "assists": 13,
+      "deaths": 11
+    },
+    {
+      "id": 11285483,
+      "user_id": 36442,
+      "name": "MatZer",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198068587455",
+      "kills": 38,
+      "assists": 11,
+      "deaths": 16
+    },
+    {
+      "id": 11285484,
+      "user_id": 2924,
+      "name": "Bonkers",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561197996945333",
+      "kills": 21,
+      "assists": 6,
+      "deaths": 21
+    },
+    {
+      "id": 11285485,
+      "user_id": 845,
+      "name": "ahmed1mustafa",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198087437472",
+      "kills": 18,
+      "assists": 9,
+      "deaths": 18
+    },
+    {
+      "id": 11285486,
+      "user_id": 2731,
+      "name": "lupus",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198019146522",
+      "kills": 24,
+      "assists": 16,
+      "deaths": 21
+    },
+    {
+      "id": 11285487,
+      "user_id": 2736,
+      "name": "Poisson",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198024087059",
+      "kills": 18,
+      "assists": 12,
+      "deaths": 24
+    },
+    {
+      "id": 11285488,
+      "user_id": 14840,
+      "name": "The delegator",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198049352466",
+      "kills": 13,
+      "assists": 9,
+      "deaths": 18
+    },
+    {
+      "id": 11285489,
+      "user_id": 2846,
+      "name": "Phnx",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198049741167",
+      "kills": 24,
+      "assists": 2,
+      "deaths": 25
+    },
+    {
+      "id": 11285490,
+      "user_id": 7634,
+      "name": "BeaVerN",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561197977444051",
+      "kills": 25,
+      "assists": 9,
+      "deaths": 23
+    },
+    {
+      "id": 11285491,
+      "user_id": 438,
+      "name": "There is no pain",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198034874515",
+      "kills": 0,
+      "assists": 13,
+      "deaths": 20
+    },
+    {
+      "id": 11285492,
+      "user_id": 50084,
+      "name": "W",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198109161900",
+      "kills": 29,
+      "assists": 22,
+      "deaths": 17
+    }
+  ]
+}

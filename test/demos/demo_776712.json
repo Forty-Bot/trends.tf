@@ -1,0 +1,223 @@
+{
+  "id": 776712,
+  "url": "https://freezer.demos.tf/99/5b/995b6cccae1b315bce087d5bfd10af44_match-20220205-1655-koth_ashville_rc2d.dem",
+  "name": "match-20220205-1655-koth_ashville_rc2d.dem",
+  "server": "hl.br.tf2pickup.org #1",
+  "duration": 2061,
+  "nick": "SourceTV Demo",
+  "map": "koth_ashville_rc2d",
+  "time": 1644092997,
+  "red": "MOBIL",
+  "blue": "BLU",
+  "redScore": 2,
+  "blueScore": 3,
+  "playerCount": 18,
+  "uploader": {
+    "id": 68158,
+    "steamid": "76561199013998674",
+    "name": "Adam"
+  },
+  "hash": "995b6cccae1b315bce087d5bfd10af44",
+  "backend": "freezer",
+  "path": "/demos/99/5b/995b6cccae1b315bce087d5bfd10af44_match-20220205-1655-koth_ashville_rc2d.dem",
+  "players": [
+    {
+      "id": 9729171,
+      "user_id": 40476,
+      "name": "Airank",
+      "team": "blue",
+      "class": "engineer",
+      "steamid": "76561198359342454",
+      "kills": 39,
+      "assists": 18,
+      "deaths": 35
+    },
+    {
+      "id": 9729172,
+      "user_id": 56637,
+      "name": "cabrinha",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198826552639",
+      "kills": 42,
+      "assists": 20,
+      "deaths": 36
+    },
+    {
+      "id": 9729173,
+      "user_id": 68240,
+      "name": "RECONOCER",
+      "team": "red",
+      "class": "sniper",
+      "steamid": "76561198177700859",
+      "kills": 34,
+      "assists": 7,
+      "deaths": 31
+    },
+    {
+      "id": 9729174,
+      "user_id": 32818,
+      "name": "gG;",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198108359693",
+      "kills": 2,
+      "assists": 26,
+      "deaths": 28
+    },
+    {
+      "id": 9729175,
+      "user_id": 81360,
+      "name": "trimegisto",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198138328235",
+      "kills": 44,
+      "assists": 11,
+      "deaths": 36
+    },
+    {
+      "id": 9729176,
+      "user_id": 41056,
+      "name": "ts",
+      "team": "red",
+      "class": "heavyweapons",
+      "steamid": "76561198255116292",
+      "kills": 34,
+      "assists": 28,
+      "deaths": 25
+    },
+    {
+      "id": 9729177,
+      "user_id": 68427,
+      "name": "camirgo",
+      "team": "blue",
+      "class": "sniper",
+      "steamid": "76561198094127029",
+      "kills": 26,
+      "assists": 10,
+      "deaths": 31
+    },
+    {
+      "id": 9729178,
+      "user_id": 52903,
+      "name": "mercury",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198400459993",
+      "kills": 49,
+      "assists": 21,
+      "deaths": 34
+    },
+    {
+      "id": 9729179,
+      "user_id": 69499,
+      "name": "berg",
+      "team": "blue",
+      "class": "heavyweapons",
+      "steamid": "76561198873897230",
+      "kills": 36,
+      "assists": 11,
+      "deaths": 38
+    },
+    {
+      "id": 9729180,
+      "user_id": 67537,
+      "name": "kova",
+      "team": "red",
+      "class": "pyro",
+      "steamid": "76561198082720287",
+      "kills": 22,
+      "assists": 23,
+      "deaths": 23
+    },
+    {
+      "id": 9729181,
+      "user_id": 68669,
+      "name": "Black",
+      "team": "red",
+      "class": "spy",
+      "steamid": "76561198388658456",
+      "kills": 32,
+      "assists": 3,
+      "deaths": 78
+    },
+    {
+      "id": 9729182,
+      "user_id": 33196,
+      "name": "Lockz",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198245478154",
+      "kills": 56,
+      "assists": 8,
+      "deaths": 23
+    },
+    {
+      "id": 9729183,
+      "user_id": 57485,
+      "name": "opie",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198974113157",
+      "kills": 32,
+      "assists": 16,
+      "deaths": 45
+    },
+    {
+      "id": 9729184,
+      "user_id": 66990,
+      "name": "Nero",
+      "team": "blue",
+      "class": "pyro",
+      "steamid": "76561198321698714",
+      "kills": 49,
+      "assists": 18,
+      "deaths": 23
+    },
+    {
+      "id": 9729185,
+      "user_id": 68158,
+      "name": "Adam",
+      "team": "red",
+      "class": "engineer",
+      "steamid": "76561199013998674",
+      "kills": 28,
+      "assists": 20,
+      "deaths": 37
+    },
+    {
+      "id": 9729186,
+      "user_id": 34034,
+      "name": "furlanet",
+      "team": "blue",
+      "class": "spy",
+      "steamid": "76561198044564226",
+      "kills": 40,
+      "assists": 6,
+      "deaths": 26
+    },
+    {
+      "id": 9729187,
+      "user_id": 25229,
+      "name": "mobil",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198118282467",
+      "kills": 47,
+      "assists": 14,
+      "deaths": 37
+    },
+    {
+      "id": 9729188,
+      "user_id": 73404,
+      "name": "Fall 8)",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561199121206897",
+      "kills": 1,
+      "assists": 22,
+      "deaths": 27
+    }
+  ]
+}

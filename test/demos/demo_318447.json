@@ -1,0 +1,69 @@
+{
+  "id": 318447,
+  "url": "https://freezer.demos.tf/0b/c2/0bc271355dfa58842866b4922ec7d644_match-20191027-0257-ctf_ballin_sky.dem",
+  "name": "match-20191027-0257-ctf_ballin_sky.dem",
+  "server": "serveme.tf (#954739)",
+  "duration": 1300,
+  "nick": "SourceTV Demo",
+  "map": "ctf_ballin_sky",
+  "time": 1572139166,
+  "red": "RED",
+  "blue": "BLU",
+  "redScore": 0,
+  "blueScore": 0,
+  "playerCount": 4,
+  "uploader": {
+    "id": 16377,
+    "steamid": "serveme.tf",
+    "name": "serveme.tf"
+  },
+  "hash": "0bc271355dfa58842866b4922ec7d644",
+  "backend": "fridge",
+  "path": "/demos/0b/c2/0bc271355dfa58842866b4922ec7d644_match-20191027-0257-ctf_ballin_sky.dem",
+  "players": [
+    {
+      "id": 4097655,
+      "user_id": 8147,
+      "name": "nubbi",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198140608606",
+      "kills": 89,
+      "assists": 39,
+      "deaths": 118
+    },
+    {
+      "id": 4097653,
+      "user_id": 5977,
+      "name": "allmighty",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198143094364",
+      "kills": 113,
+      "assists": 27,
+      "deaths": 92
+    },
+    {
+      "id": 4097654,
+      "user_id": 4213,
+      "name": "SOOOOOAPYMEiSTER",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198049378596",
+      "kills": 98,
+      "assists": 37,
+      "deaths": 98
+    },
+    {
+      "id": 4097652,
+      "user_id": 10986,
+      "name": "barni",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198170420173",
+      "kills": 103,
+      "assists": 32,
+      "deaths": 95
+    }
+  ]
+}

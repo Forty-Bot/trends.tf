@@ -172,6 +172,20 @@ def test_search(client, connection):
 
 def test_linked(connection):
     cur = connection.cursor()
+    cur.execute("SELECT logid, demoid FROM log WHERE demoid NOTNULL;")
+    assert { logid: demoid for logid, demoid in cur } == {
+        2401045: 318447,
+        2408458: 322265,
+        2408491: 322285,
+        2844704: 585088,
+        2878546: 609093,
+        2931193: 640794,
+        3069780: 737954,
+        3124976: 776712,
+        3302963: 902137,
+        3302982: 902150,
+    }
+
     cur.execute("SELECT logid, league, matchid FROM log WHERE league NOTNULL;")
     assert { logid: (league, matchid) for logid, league, matchid in cur } == {
         2408458: ('etf2l', 77326),

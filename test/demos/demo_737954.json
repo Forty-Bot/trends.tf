@@ -1,0 +1,223 @@
+{
+  "id": 737954,
+  "url": "https://freezer.demos.tf/46/7b/467b9f654e124288af6d84f3836bdf88_match-20211112-2034-koth_proplant_v7.dem",
+  "name": "match-20211112-2034-koth_proplant_v7.dem",
+  "server": "serveme.tf",
+  "duration": 1450,
+  "nick": "SourceTV Demo",
+  "map": "koth_proplant_v7",
+  "time": 1636747101,
+  "red": "RED",
+  "blue": "BLU",
+  "redScore": 3,
+  "blueScore": 1,
+  "playerCount": 18,
+  "uploader": {
+    "id": 16377,
+    "steamid": "serveme.tf",
+    "name": "serveme.tf"
+  },
+  "hash": "467b9f654e124288af6d84f3836bdf88",
+  "backend": "freezer",
+  "path": "/demos/46/7b/467b9f654e124288af6d84f3836bdf88_match-20211112-2034-koth_proplant_v7.dem",
+  "players": [
+    {
+      "id": 9245135,
+      "user_id": 22589,
+      "name": "aryanne",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198066977500",
+      "kills": 24,
+      "assists": 11,
+      "deaths": 17
+    },
+    {
+      "id": 9245136,
+      "user_id": 10346,
+      "name": "Sebastianey",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198051400133",
+      "kills": 2,
+      "assists": 19,
+      "deaths": 13
+    },
+    {
+      "id": 9245137,
+      "user_id": 475,
+      "name": "redwood",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198012304706",
+      "kills": 18,
+      "assists": 2,
+      "deaths": 35
+    },
+    {
+      "id": 9245138,
+      "user_id": 17924,
+      "name": "CARDOOR fan girl",
+      "team": "blue",
+      "class": "pyro",
+      "steamid": "76561198105348049",
+      "kills": 15,
+      "assists": 8,
+      "deaths": 12
+    },
+    {
+      "id": 9245139,
+      "user_id": 69609,
+      "name": "BlastFM",
+      "team": "red",
+      "class": "engineer",
+      "steamid": "76561199086400161",
+      "kills": 8,
+      "assists": 7,
+      "deaths": 17
+    },
+    {
+      "id": 9245140,
+      "user_id": 8866,
+      "name": "Fire",
+      "team": "red",
+      "class": "spy",
+      "steamid": "76561198046588043",
+      "kills": 22,
+      "assists": 2,
+      "deaths": 25
+    },
+    {
+      "id": 9245141,
+      "user_id": 9306,
+      "name": "saltyy",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198124055526",
+      "kills": 26,
+      "assists": 10,
+      "deaths": 20
+    },
+    {
+      "id": 9245142,
+      "user_id": 9151,
+      "name": "lawjr",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198046280845",
+      "kills": 31,
+      "assists": 5,
+      "deaths": 21
+    },
+    {
+      "id": 9245143,
+      "user_id": 23035,
+      "name": "CAR DOOR",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198055283295",
+      "kills": 20,
+      "assists": 9,
+      "deaths": 19
+    },
+    {
+      "id": 9245144,
+      "user_id": 60873,
+      "name": "Dummy",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198349741126",
+      "kills": 0,
+      "assists": 23,
+      "deaths": 13
+    },
+    {
+      "id": 9245145,
+      "user_id": 5566,
+      "name": "eX. FTH",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198066287815",
+      "kills": 33,
+      "assists": 19,
+      "deaths": 20
+    },
+    {
+      "id": 9245146,
+      "user_id": 74127,
+      "name": "Oda vissza nézős",
+      "team": "blue",
+      "class": "spy",
+      "steamid": "76561198841141907",
+      "kills": 24,
+      "assists": 1,
+      "deaths": 30
+    },
+    {
+      "id": 9245147,
+      "user_id": 65876,
+      "name": "glock18kulawleb",
+      "team": "blue",
+      "class": "sniper",
+      "steamid": "76561198271936950",
+      "kills": 28,
+      "assists": 4,
+      "deaths": 22
+    },
+    {
+      "id": 9245148,
+      "user_id": 60662,
+      "name": "Aaron",
+      "team": "red",
+      "class": "sniper",
+      "steamid": "76561198324775476",
+      "kills": 21,
+      "assists": 2,
+      "deaths": 20
+    },
+    {
+      "id": 9245149,
+      "user_id": 12022,
+      "name": "goz",
+      "team": "red",
+      "class": "heavyweapons",
+      "steamid": "76561198155229347",
+      "kills": 26,
+      "assists": 21,
+      "deaths": 13
+    },
+    {
+      "id": 9245150,
+      "user_id": 5290,
+      "name": "[☁]Emiel",
+      "team": "blue",
+      "class": "engineer",
+      "steamid": "76561198063814219",
+      "kills": 13,
+      "assists": 10,
+      "deaths": 18
+    },
+    {
+      "id": 9245151,
+      "user_id": 4137,
+      "name": "Not Steven",
+      "team": "blue",
+      "class": "heavyweapons",
+      "steamid": "76561198051881261",
+      "kills": 20,
+      "assists": 17,
+      "deaths": 20
+    },
+    {
+      "id": 9245152,
+      "user_id": 3551,
+      "name": "sac",
+      "team": "red",
+      "class": "pyro",
+      "steamid": "76561197992659494",
+      "kills": 21,
+      "assists": 16,
+      "deaths": 17
+    }
+  ]
+}

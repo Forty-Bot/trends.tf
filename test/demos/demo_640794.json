@@ -1,0 +1,157 @@
+{
+  "id": 640794,
+  "url": "https://freezer.demos.tf/9d/5c/9d5ccefdefbd14165bc8d6dc80013442_match-20210526-0114-cp_snakewater_final1.dem",
+  "name": "match-20210526-0114-cp_snakewater_final1.dem",
+  "server": "Qixalite Bookable",
+  "duration": 1558,
+  "nick": "SourceTV Demo",
+  "map": "cp_snakewater_final1",
+  "time": 1621993210,
+  "red": "cafe6",
+  "blue": "BLU",
+  "redScore": 1,
+  "blueScore": 6,
+  "playerCount": 13,
+  "uploader": {
+    "id": 50252,
+    "steamid": "76561198400033565",
+    "name": "Kodyn"
+  },
+  "hash": "9d5ccefdefbd14165bc8d6dc80013442",
+  "backend": "freezer",
+  "path": "/demos/9d/5c/9d5ccefdefbd14165bc8d6dc80013442_match-20210526-0114-cp_snakewater_final1.dem",
+  "players": [
+    {
+      "id": 8007351,
+      "user_id": 12254,
+      "name": "void star",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198072475431",
+      "kills": 2,
+      "assists": 2,
+      "deaths": 5
+    },
+    {
+      "id": 8007352,
+      "user_id": 71675,
+      "name": "Vortex✨",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561197960679316",
+      "kills": 24,
+      "assists": 2,
+      "deaths": 19
+    },
+    {
+      "id": 8007353,
+      "user_id": 51200,
+      "name": "ease",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198069256234",
+      "kills": 6,
+      "assists": 21,
+      "deaths": 7
+    },
+    {
+      "id": 8007354,
+      "user_id": 29887,
+      "name": "v1lshock",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198108926359",
+      "kills": 13,
+      "assists": 8,
+      "deaths": 23
+    },
+    {
+      "id": 8007355,
+      "user_id": 8006,
+      "name": "hypnotoad",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561197998448537",
+      "kills": 22,
+      "assists": 17,
+      "deaths": 12
+    },
+    {
+      "id": 8007356,
+      "user_id": 8681,
+      "name": "doclepx",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198163202559",
+      "kills": 1,
+      "assists": 3,
+      "deaths": 15
+    },
+    {
+      "id": 8007357,
+      "user_id": 32027,
+      "name": "FULLFRANIUM puntero",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198061538510",
+      "kills": 11,
+      "assists": 8,
+      "deaths": 18
+    },
+    {
+      "id": 8007358,
+      "user_id": 24228,
+      "name": "carrinha",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198107669147",
+      "kills": 12,
+      "assists": 5,
+      "deaths": 17
+    },
+    {
+      "id": 8007359,
+      "user_id": 56978,
+      "name": "Twist",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198831919884",
+      "kills": 25,
+      "assists": 9,
+      "deaths": 13
+    },
+    {
+      "id": 8007360,
+      "user_id": 12400,
+      "name": "helnot @sponsored chikorita.cfg",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561197994289118",
+      "kills": 26,
+      "assists": 6,
+      "deaths": 15
+    },
+    {
+      "id": 8007361,
+      "user_id": 25080,
+      "name": "hokxyz_",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198179773806",
+      "kills": 12,
+      "assists": 9,
+      "deaths": 17
+    },
+    {
+      "id": 8007362,
+      "user_id": 58235,
+      "name": "ve uno coc",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198197664415",
+      "kills": 20,
+      "assists": 1,
+      "deaths": 21
+    }
+  ]
+}

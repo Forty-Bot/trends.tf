@@ -9,10 +9,12 @@ import logging
 import pytest
 from testing.postgresql import Postgresql
 
+import trends.importer.demos
 import trends.importer.logs
 import trends.importer.etf2l
+import trends.importer.link_demos
 import trends.importer.link_matches
-from trends.importer.fetch import ETF2LFileFetcher, FileFetcher
+from trends.importer.fetch import DemoFileFetcher, ETF2LFileFetcher, FileFetcher
 from trends.sql import db_connect, db_init, db_schema
 
 @contextmanager
@@ -62,6 +64,26 @@ def database(request):
                     pytest.fail("Error importing logs")
 
         with db_connect(database.url()) as c:
+            demofiles = (f"{os.path.dirname(__file__)}/demos/demo_{demoid}.json" for demoid in (
+                318447,
+                322265,
+                322285,
+                585088,
+                609093,
+                640794,
+                737954,
+                776712,
+                902137,
+                902150,
+            ))
+
+            with caplog_session(request) as caplog:
+                with caplog.at_level(logging.ERROR):
+                    trends.importer.demos.import_demos(c, DemoFileFetcher(demos=demofiles))
+                if caplog.records:
+                    pytest.fail("Error importing demos")
+
+        with db_connect(database.url()) as c:
             fetcher = ETF2LFileFetcher(results=f"{os.path.dirname(__file__)}/etf2l/results.json",
                                        xferdir=f"{os.path.dirname(__file__)}/etf2l/")
             with caplog_session(request) as caplog:
@@ -81,6 +103,7 @@ def database(request):
         with db_connect(database.url()) as c:
             class args:
                 since = datetime.fromtimestamp(0)
+            trends.importer.link_demos.link_logs(args, c)
             trends.importer.link_matches.link_matches(args, c)
 
         yield database

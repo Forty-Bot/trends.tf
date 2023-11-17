@@ -1,0 +1,157 @@
+{
+  "id": 609093,
+  "url": "https://freezer.demos.tf/bf/4b/bf4b227bbb9f5892d355b690194c5672_match-20210328-0256-cp_process_final.dem",
+  "name": "match-20210328-0256-cp_process_final.dem",
+  "server": "na.serveme.tf",
+  "duration": 1812,
+  "nick": "SourceTV Demo",
+  "map": "cp_process_final",
+  "time": 1616916383,
+  "red": "RED",
+  "blue": "eeee",
+  "redScore": 4,
+  "blueScore": 2,
+  "playerCount": 13,
+  "uploader": {
+    "id": 16377,
+    "steamid": "serveme.tf",
+    "name": "serveme.tf"
+  },
+  "hash": "bf4b227bbb9f5892d355b690194c5672",
+  "backend": "fridge",
+  "path": "/demos/bf/4b/bf4b227bbb9f5892d355b690194c5672_match-20210328-0256-cp_process_final.dem",
+  "players": [
+    {
+      "id": 7615249,
+      "user_id": 4218,
+      "name": "miperton",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198043909391",
+      "kills": 38,
+      "assists": 13,
+      "deaths": 19
+    },
+    {
+      "id": 7615253,
+      "user_id": 76891,
+      "name": "swedes",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198004703462",
+      "kills": 21,
+      "assists": 12,
+      "deaths": 27
+    },
+    {
+      "id": 7615247,
+      "user_id": 2745,
+      "name": "<.>",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198025263187",
+      "kills": 29,
+      "assists": 4,
+      "deaths": 31
+    },
+    {
+      "id": 7615243,
+      "user_id": 18290,
+      "name": "drd",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198149548170",
+      "kills": 2,
+      "assists": 12,
+      "deaths": 20
+    },
+    {
+      "id": 7615245,
+      "user_id": 52136,
+      "name": "Jw.",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198190170075",
+      "kills": 23,
+      "assists": 2,
+      "deaths": 26
+    },
+    {
+      "id": 7615251,
+      "user_id": 3405,
+      "name": "Jordangod888 ttv",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198015327889",
+      "kills": 22,
+      "assists": 10,
+      "deaths": 20
+    },
+    {
+      "id": 7615250,
+      "user_id": 16031,
+      "name": "spoon",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198146234744",
+      "kills": 37,
+      "assists": 20,
+      "deaths": 20
+    },
+    {
+      "id": 7615248,
+      "user_id": 1431,
+      "name": "HE1MSTATT.",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198092527854",
+      "kills": 29,
+      "assists": 8,
+      "deaths": 20
+    },
+    {
+      "id": 7615254,
+      "user_id": 2234,
+      "name": "۰۰۰ sp0rk!",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561197992709906",
+      "kills": 21,
+      "assists": 5,
+      "deaths": 14
+    },
+    {
+      "id": 7615252,
+      "user_id": 4249,
+      "name": "marsupial superstar",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198102148550",
+      "kills": 17,
+      "assists": 2,
+      "deaths": 31
+    },
+    {
+      "id": 7615246,
+      "user_id": 48590,
+      "name": "starbucks_vinny",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198827413603",
+      "kills": 27,
+      "assists": 13,
+      "deaths": 18
+    },
+    {
+      "id": 7615244,
+      "user_id": 18390,
+      "name": "crys",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198144149458",
+      "kills": 0,
+      "assists": 18,
+      "deaths": 20
+    }
+  ]
+}

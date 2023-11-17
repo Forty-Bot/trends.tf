@@ -1,0 +1,157 @@
+{
+  "id": 322285,
+  "url": "https://freezer.demos.tf/88/40/884026588b9c33a4dec71931c09dfed2_match-20191106-2106-cp_snakewater_final1.dem",
+  "name": "match-20191106-2106-cp_snakewater_final1.dem",
+  "server": "serveme.tf (#958079)",
+  "duration": 1814,
+  "nick": "SourceTV Demo",
+  "map": "cp_snakewater_final1",
+  "time": 1573076216,
+  "red": "RED",
+  "blue": "BLU",
+  "redScore": 5,
+  "blueScore": 2,
+  "playerCount": 12,
+  "uploader": {
+    "id": 16377,
+    "steamid": "serveme.tf",
+    "name": "serveme.tf"
+  },
+  "hash": "884026588b9c33a4dec71931c09dfed2",
+  "backend": "fridge",
+  "path": "/demos/88/40/884026588b9c33a4dec71931c09dfed2_match-20191106-2106-cp_snakewater_final1.dem",
+  "players": [
+    {
+      "id": 4143398,
+      "user_id": 11177,
+      "name": "Ascent toemas_",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198156188209",
+      "kills": 19,
+      "assists": 10,
+      "deaths": 11
+    },
+    {
+      "id": 4143392,
+      "user_id": 3163,
+      "name": "alien",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198072093365",
+      "kills": 17,
+      "assists": 13,
+      "deaths": 15
+    },
+    {
+      "id": 4143395,
+      "user_id": 8649,
+      "name": "Ascent klassy",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198066409475",
+      "kills": 24,
+      "assists": 8,
+      "deaths": 11
+    },
+    {
+      "id": 4143396,
+      "user_id": 787,
+      "name": "Ascent iatgink",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198058822614",
+      "kills": 13,
+      "assists": 4,
+      "deaths": 21
+    },
+    {
+      "id": 4143390,
+      "user_id": 5104,
+      "name": "karnax",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561197989750235",
+      "kills": 15,
+      "assists": 7,
+      "deaths": 19
+    },
+    {
+      "id": 4143389,
+      "user_id": 22735,
+      "name": "dwo69",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198000620637",
+      "kills": 17,
+      "assists": 8,
+      "deaths": 18
+    },
+    {
+      "id": 4143400,
+      "user_id": 4689,
+      "name": "Ascent Domo (i swear im seeds)",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198056790920",
+      "kills": 2,
+      "assists": 14,
+      "deaths": 12
+    },
+    {
+      "id": 4143397,
+      "user_id": 5139,
+      "name": "Ascent LUKASTANK",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198084583387",
+      "kills": 20,
+      "assists": 4,
+      "deaths": 12
+    },
+    {
+      "id": 4143391,
+      "user_id": 3164,
+      "name": "Ascension Olgha",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198055312047",
+      "kills": 0,
+      "assists": 18,
+      "deaths": 12
+    },
+    {
+      "id": 4143399,
+      "user_id": 6261,
+      "name": "Ascent papi",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198075312767",
+      "kills": 20,
+      "assists": 3,
+      "deaths": 16
+    },
+    {
+      "id": 4143393,
+      "user_id": 322,
+      "name": "Raf",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198076754104",
+      "kills": 13,
+      "assists": 4,
+      "deaths": 18
+    },
+    {
+      "id": 4143394,
+      "user_id": 3712,
+      "name": "deli69",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198124859583",
+      "kills": 21,
+      "assists": 6,
+      "deaths": 16
+    }
+  ]
+}
