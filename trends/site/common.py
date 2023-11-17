@@ -44,7 +44,7 @@ def get_logs():
                 { **filters, 'limit': limit, 'offset': offset })
     return logs
 
-def get_players(q):
+def search_players(q):
     if len(q) < 3:
         flask.abort(400, "Searches must contain at least 3 characters")
 

@@ -4,7 +4,7 @@
 import flask
 from mpmetrics.flask import PrometheusMetrics
 
-from .common import get_logs, get_players, logs_last_modified
+from .common import get_logs, search_players, logs_last_modified
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
                   last_modified
 from ..steamid import SteamID
@@ -58,7 +58,7 @@ def search():
     except ValueError:
         pass
 
-    return flask.render_template("search.html", q=q, results=get_players(q).fetchall())
+    return flask.render_template("search.html", q=q, results=search_players(q).fetchall())
 
 @root.route('/leaderboard')
 def leaderboard():
