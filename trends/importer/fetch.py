@@ -579,6 +579,10 @@ class RGLBulkFetcher:
                     if self.count is not None and yielded >= self.count:
                         return
 
+                # No more data
+                if len(resp) < 100:
+                    return
+
                 skip += len(resp)
         except (OSError, urllib3.exceptions.HTTPError):
             logging.exception("Could not fetch matches")
