@@ -66,8 +66,8 @@ class SteamID:
         if not input:
             raise ValueError("Unknown ID: {}".format(input))
 
-        reg = re.compile("^STEAM_([0-5]):([0-1]):([0-9]+)$")
-        reg3 = re.compile("^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]")
+        reg = re.compile(r"^STEAM_([0-5]):([0-1]):([0-9]+)$")
+        reg3 = re.compile(r"^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]")
         try:
             mat = reg.match(input)
             mat3 = reg3.match(input)
