@@ -1,9 +1,9 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
-{% from "macros/format.html" import optformat %}
+{% from "macros/format.html" import date_col, optformat %}
 {% from "macros/pretty.html" import format_map %}
 {% from "macros/wlt.html" import wlt %}
-{% macro comp_table(comps) %}
+{% macro comp_table(comps, date=False) %}
 <table>
 <thead>
 	<tr>
@@ -18,6 +18,10 @@
 		<th><abbr title="Points Won">PW</abbr></th>
 		<th><abbr title="Points Lost">PL</abbr></th>
 		<th><abbr title="Point Ratio">PR</abbr></th>
+		{% if date %}
+		<th><abbr title="Date of oldest match">From</abbr></th>
+		<th><abbr title="Date of newest match">To</abbr></th>
+		{% endif %}
 	</tr>
 </thead>
 <tbody>
@@ -44,6 +48,10 @@
 		<td>{{ comp.rounds_won | score }}</td>
 		<td>{{ comp.rounds_lost | score }}</td>
 		<td>{{ optformat("{:.0%}", comp.round_winrate) }}</td>
+		{% if date %}
+		{{ date_col(comp.from) }}
+		{{ date_col(comp.to) }}
+		{% endif %}
 	</tr>
 	{% endfor %}
 </tbody>

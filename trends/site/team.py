@@ -164,6 +164,12 @@ def get_matches(league, teamid, filters, limit=100, offset=0):
     return matches
 
 def get_comps(league, teamid, limit=100, offset=0):
+    order, order_clause = get_order({
+        'compid': "compid",
+        'from': "date_from",
+        'to': "date_to",
+    }, 'compid')
+
     comps = get_db().cursor()
     comps.execute(
         """SELECT
@@ -179,7 +185,9 @@ def get_comps(league, teamid, limit=100, offset=0):
                (wins + 0.5 * ties) / nullif(wins + losses + ties, 0) AS winrate,
                rounds_won,
                rounds_lost,
-               rounds_won::NUMERIC / nullif(rounds_won + rounds_lost, 0) AS round_winrate
+               rounds_won::NUMERIC / nullif(rounds_won + rounds_lost, 0) AS round_winrate,
+               date_from AS from,
+               date_to AS to
            FROM team_comp
            JOIN competition USING (league, compid)
            LEFT JOIN division USING (league, compid, divid)
@@ -193,13 +201,15 @@ def get_comps(league, teamid, limit=100, offset=0):
                    sum(loss) AS losses,
                    sum(tie) AS ties,
                    sum(rounds_won) AS rounds_won,
-                   sum(rounds_lost) AS rounds_lost
+                   sum(rounds_lost) AS rounds_lost,
+                   max(scheduled) AS date_to,
+                   min(scheduled) AS date_from
                FROM match_wlt
                GROUP BY league, compid, teamid
            ) AS match USING (league, compid, teamid)
            WHERE league = %s AND teamid = %s
-           ORDER BY compid desc
-           LIMIT %s OFFSET %s;""", (league, teamid, limit, offset))
+           ORDER BY {}
+           LIMIT %s OFFSET %s;""".format(order_clause), (league, teamid, limit, offset))
 
     return comps
 
@@ -285,6 +295,14 @@ def roster(league, teamid):
        { **filters, 'league': league, 'teamid': teamid, 'limit': limit, 'offset': offset })
 
     return flask.render_template("league/team/roster.html", roster=roster.fetchall())
+
+@team.route('/comps')
+def comps(league, teamid):
+    limit, offset = get_pagination()
+
+    comps = get_comps(league, teamid, limit, offset)
+
+    return flask.render_template("league/team/comps.html", comps=comps.fetchall())
 
 @team.route('/matches')
 def matches(league, teamid):

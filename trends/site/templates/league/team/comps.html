@@ -1,0 +1,19 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/comps.html" import comp_table %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/sort.html" import sort %}
+{% extends "league/team/base.html" %}
+{% block title %}Competitions - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Competitions</h2>
+	{{ sort({
+		'compid': "Competition ID",
+		'from': "From",
+		'to': "To",
+	}) }}
+	{{ navigation(comps) }}
+	{{ comp_table(comps, date=True) }}
+	{{ navigation(comps) }}
+{% endblock %}
