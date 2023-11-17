@@ -114,10 +114,13 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
         st.builds(lambda compid, rule: rule.format(*compid), st.sampled_from(compids),
             st.sampled_from((
             "/league/{}/comp/{}/matches",
+            "/league/{}/comp/{}/players",
         ))),
         st.builds(lambda teamid, rule: rule.format(*teamid), st.sampled_from(teamids),
             st.sampled_from((
             "/league/{}/team/{}/roster",
+            "/league/{}/team/{}/matches",
+            "/league/{}/team/{}/player",
         ))),
     ))
 
