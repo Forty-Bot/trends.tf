@@ -156,9 +156,23 @@ def get_matches(compid, filters, limit=100, offset=0):
           'offset': offset })
     return matches
 
-def get_players(league, compid, filters, limit=100, offset=0):
-    filter_clauses = get_filter_clauses(filters, 'divid', 'primary_classid', 'map', 'time', 'logid')
-    filter_clauses += "\nAND compid = %(compid)s"
+def get_players(league, compid, teamid, filters, limit=100, offset=0):
+    if compid is not None:
+        assert teamid is None
+        filter_clauses = get_filter_clauses(filters, 'divid', 'primary_classid', 'map', 'time',
+                                            'logid')
+        filter_clauses += "\nAND compid = %(compid)s"
+    elif teamid is not None:
+        filter_clauses = get_filter_clauses(filters, 'compid', 'primary_classid', 'map', 'time',
+                                            'logid')
+        filter_clauses += """AND %(teamid)s in (teamid1, teamid2)
+                             AND team = CASE WHEN equal(team1_is_red, %(teamid)s = teamid1) THEN
+                                 'Red'::TEAM
+                             ELSE
+                                 'Blue'::TEAM
+                             END"""
+    else:
+        assert False
 
     order, order_clause = get_order({
         'name': "name",

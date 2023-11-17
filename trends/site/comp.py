@@ -101,6 +101,6 @@ def players(league, compid):
     limit, offset = get_pagination()
     filters = get_filter_params()
 
-    players = get_players(league, compid, filters, limit, offset)
+    players = get_players(league, compid, None, filters, limit, offset)
 
     return flask.render_template("league/comp/players.html", players=players.fetchall())

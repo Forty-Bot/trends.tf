@@ -1,0 +1,22 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/players.html" import player_sort, player_table %}
+{% from "macros/sort.html" import sort %}
+{% extends "league/team/base.html" %}
+{% block title %}Players - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Players</h2>
+	<datalist id="comps">
+	{% for comp in comps %}
+		<option value="{{ comp[0] }}"></option>
+	{% endfor %}
+	</datalist>
+	{{ filter('comp', 'class', 'map', 'date', 'steamid64') }}
+	{{ sort(player_sort) }}
+	{{ navigation(players) }}
+	{{ player_table(players) }}
+	{{ navigation(players) }}
+{% endblock %}

@@ -3,6 +3,7 @@
 
 import flask
 
+from .common import get_players
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
                   last_modified
 from ..util import leagues
@@ -304,10 +305,7 @@ def comps(league, teamid):
 
     return flask.render_template("league/team/comps.html", comps=comps.fetchall())
 
-@team.route('/matches')
-def matches(league, teamid):
-    limit, offset = get_pagination()
-
+def get_comp_list(league, teamid):
     comps = get_db().cursor()
     comps.execute(
         """SELECT name
@@ -316,6 +314,25 @@ def matches(league, teamid):
            WHERE league = %s AND teamid = %s;
         """, (league, teamid));
 
+    return comps
+
+@team.route('/matches')
+def matches(league, teamid):
+    limit, offset = get_pagination()
+
+    comps = get_comp_list(league, teamid)
     matches = get_matches(league, teamid, get_filter_params(), limit, offset)
 
-    return flask.render_template("league/team/matches.html", matches=matches.fetchall(), comps=comps)
+    return flask.render_template("league/team/matches.html", matches=matches.fetchall(),
+                                 comps=comps)
+
+@team.route('/players')
+def players(league, teamid):
+    limit, offset = get_pagination()
+    filters = get_filter_params()
+
+    comps = get_comp_list(league, teamid)
+    players = get_players(league, None, teamid, filters, limit, offset)
+
+    return flask.render_template("league/team/players.html", players=players.fetchall(),
+                                 comps=comps)
