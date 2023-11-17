@@ -38,9 +38,10 @@ rgl_format_map = {
     'HL': 'highlander',
     'Highlander': 'highlander',
     'Newcomer Cup': 'sixes',
+    'PASS Time': 'other',
 }
 
-RE_NAME_FORMAT = re.compile(r"(Sixes|NR Sixes|P7|Prolander|Fresh Meat|HL|Newcomer Cup)")
+RE_NAME_FORMAT = re.compile(r"(Sixes|NR Sixes|P7|Prolander|Fresh Meat|HL|Newcomer Cup|PASS Time)")
 def parse_season(season):
     if season['formatName'] is None:
         m = RE_NAME_FORMAT.match(season['name'])
