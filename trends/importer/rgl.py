@@ -2,6 +2,7 @@
 # Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
 
 from datetime import datetime
+from dateutil import tz
 import functools
 import re
 import json
@@ -144,7 +145,7 @@ def create_rgl_parser(sub):
     b = rgl_sub.add_parser("bulk", help="Bulk import from api.rgl.gg")
     b.set_defaults(fetcher=RGLBulkFetcher)
     b.add_argument("-s", "--since", type=datetime.fromisoformat,
-                   default=0, metavar="DATE",
+                   default=datetime.fromtimestamp(0, tz.UTC), metavar="DATE",
                    help="Only fetch matches created since DATE")
     b.add_argument("-N", "--new", action='store_true',
                    help="Only fetch matches created since the newest imported rgl")
@@ -158,7 +159,7 @@ def import_rgl_cli(args, c):
         if 'new' in args and args.new:
             with c.cursor() as cur:
                 cur.execute(
-                    """SELECT max(fetched) - 6 * 60 * 60
+                    """SELECT max(scheduled) - 6 * 60 * 60
                        FROM match
                        WHERE league = 'rgl';""");
                 args.since = datetime.fromtimestamp(cur.fetchone()[0])

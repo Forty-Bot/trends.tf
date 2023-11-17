@@ -2,8 +2,6 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import collections
-from datetime import datetime
-from dateutil import tz
 from glob import glob
 import itertools
 import json
@@ -549,6 +547,7 @@ class RGLFileFetcher:
 class RGLBulkFetcher:
     def __init__(self, since=0, count=None, skip=0, **kwargs):
         self.s = create_session()
+        self.since = since
         self.count = count
         self.skip = skip
 
@@ -568,7 +567,7 @@ class RGLBulkFetcher:
                     'take': 100,
                     'skip': skip,
                 }, json={
-                    'after': datetime.fromtimestamp(0, tz.UTC).isoformat(),
+                    'after': self.since.isoformat(),
                 })
                 resp.raise_for_status()
 
