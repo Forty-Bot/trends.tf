@@ -172,8 +172,10 @@ def test_search(client, connection):
 
 def test_linked(connection):
     cur = connection.cursor()
-    cur.execute("SELECT 1 FROM log WHERE league NOTNULL;")
-    for _ in cur:
-        break
-    else:
-        pytest.fail("No linked matches")
+    cur.execute("SELECT logid, league, matchid FROM log WHERE league NOTNULL;")
+    assert { logid: (league, matchid) for logid, league, matchid in cur } == {
+        2408458: ('etf2l', 77326),
+        2408491: ('etf2l', 77326),
+        3302963: ('etf2l', 84221),
+        3302982: ('etf2l', 84221),
+    }
