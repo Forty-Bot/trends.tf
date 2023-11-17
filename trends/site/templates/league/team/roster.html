@@ -11,13 +11,13 @@
 	{{ super() }}
 	<h2>Roster</h2>
 	{{ filter('steamid64', 'date') }}
-	{{ navigation(roster) }}
 	{{ sort({
 		'newer': "Newer",
 		'older': "Older",
 		'from': "From",
 		'to': "To",
 	}) }}
+	{{ navigation(roster) }}
 	{% set has_comp = roster | count and roster[0].comp != None %}
 	<table>
 	<thead>
