@@ -6,7 +6,7 @@ Flask==2.1.1
 idna==3.3
 Jinja2==3.0.3
 MarkupSafe==2.0.1
-mpmetrics==0.0.6
+mpmetrics==0.1.0
 packaging==21.3
 prometheus-client==0.15.0
 prometheus-flask-exporter==0.21.0
