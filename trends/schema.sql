@@ -167,7 +167,7 @@ CREATE INDEX IF NOT EXISTS team_names ON team_name USING gin (team gin_trgm_ops)
 CREATE TABLE IF NOT EXISTS league_team (
 	league LEAGUE NOT NULL,
 	-- This is a surrogate key for RGL; for other leagues it is their teamid
-	teamid SERIAL NOT NULL,
+	teamid INT NOT NULL,
 	team_nameid INT REFERENCES team_name (team_nameid),
 	avatarhash TEXT,
 	-- When team_player (if not RGL) was last fetched

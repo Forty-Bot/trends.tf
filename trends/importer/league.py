@@ -73,7 +73,7 @@ def import_team(c, t):
         if row := c.fetchone():
             t['teamid'] = row[0]
         else:
-            teamid_col = "DEFAULT"
+            teamid_col = min(teamids)
 
     c.execute("INSERT INTO team_name (team) VALUES (%(name)s) ON CONFLICT DO NOTHING", t)
     c.execute(
