@@ -177,7 +177,11 @@ def compids(connection):
 @pytest.fixture(scope='session')
 def teamids(connection):
     cur = connection.cursor()
-    cur.execute("SELECT league, teamid FROM league_team LIMIT 1000;")
+    cur.execute("""
+        SELECT league, coalesce(rgl_teamid, teamid)
+        FROM team_comp_backing
+        GROUP BY 1, 2
+        LIMIT 1000;""")
     return cur.fetchall()
 
 @pytest.fixture(scope='session')

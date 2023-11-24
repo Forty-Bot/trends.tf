@@ -20,17 +20,29 @@ def get_comp():
     cur = db.cursor()
     cur.execute(
         """SELECT
+               teamid,
                (array_agg(team_name ORDER BY compid DESC))[1] AS name,
                (array_agg(avatarhash ORDER BY compid DESC))[1] AS avatarhash,
                (array_agg(rgl_teamid ORDER BY compid DESC))[1] AS rgl_teamid,
                max(fetched) AS fetched
            FROM team_comp
-           WHERE league = %s AND teamid = %s
-           GROUP BY league, teamid;""", (flask.g.league, flask.g.teamid))
+           WHERE league = %(league)s AND teamid = %(teamid)s
+           GROUP BY league, teamid
+           UNION ALL
+           SELECT teamid, NULL, NULL, NULL, NULL
+           FROM team_comp_backing
+           WHERE league = %(league)s AND rgl_teamid = %(teamid)s
+           UNION ALL
+           SELECT NULL, NULL, NULL, NULL, NULL;""",
+        { 'league': flask.g.league, 'teamid': flask.g.teamid })
 
     flask.g.team = cur.fetchone()
-    if flask.g.team is None:
+    if flask.g.team['teamid'] is None:
         flask.abort(404)
+    elif flask.g.team['teamid'] != flask.g.teamid:
+        args = flask.request.args | flask.request.view_args
+        args['teamid'] = flask.g.team['teamid']
+        return flask.redirect(flask.url_for(flask.request.endpoint, **args), 301)
 
     if resp := last_modified(flask.g.team['fetched']):
         return resp
