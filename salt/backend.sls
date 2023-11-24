@@ -165,6 +165,30 @@
         [Install]
         WantedBy=timers.target
 
+/etc/systemd/system/rgl_import.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Import RGL matches
+
+        [Service]
+        Type=oneshot
+        EnvironmentFile=/etc/default/trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv rgl bulk -N postgres:///trends
+        User=daemon
+
+/etc/systemd/system/rgl_import.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Import RGL matches every 5 minutes
+
+        [Timer]
+        OnCalendar=*:2/5
+
+        [Install]
+        WantedBy=timers.target
+
 /etc/systemd/system/link.service:
   file.managed:
     - contents: |
@@ -230,6 +254,8 @@ backend_services:
       - /etc/systemd/system/demo_import.timer
       - /etc/systemd/system/etf2l_import.service
       - /etc/systemd/system/etf2l_import.timer
+      - /etc/systemd/system/rgl_import.service
+      - /etc/systemd/system/rgl_import.timer
       - /etc/systemd/system/link.service
       - /etc/systemd/system/link.timer
       - /etc/systemd/system/link_matches.service
@@ -272,6 +298,12 @@ demo_import.timer:
       - backend_services
 
 etf2l_import.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+rgl_import.timer:
   service.running:
     - enable: True
     - require:
