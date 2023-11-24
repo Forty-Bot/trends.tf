@@ -11,14 +11,7 @@ def alter_cols(cur, table, *cols):
     if not cols:
         cols = ('teamid',)
 
-    clauses = ", ".join(f"ALTER {col} TYPE INT USING ({col} + 100000)" for col in cols)
-    cur.execute(f"ALTER TABLE {table} {clauses};")
     for col in cols:
-        cur.execute(f"""
-            UPDATE {table}
-            SET {col} = new.new_teamid
-            FROM new
-            WHERE league = 'rgl' AND new.teamid = {table}.{col} - 100000;""")
         cur.execute(f"""
             UPDATE {table}
             SET {col} = {col} - 100000
@@ -55,35 +48,10 @@ def migrate():
             cur.execute(f"DROP VIEW {view};")
             logging.info(f"DROP VIEW {view}")
 
-        cur.execute("""
-            CREATE TEMP TABLE new AS
-            SELECT
-                teamid,
-                min(rgl_teamid) AS new_teamid
-            FROM team_comp_backing
-            WHERE league = 'rgl'
-            GROUP BY league, teamid;""")
-        logging.info("CREATE TABLE new")
-
         alter_cols(cur, 'league_team')
         alter_cols(cur, 'team_comp_backing')
         alter_cols(cur, 'team_player')
         alter_cols(cur, 'match', 'teamid2', 'teamid1')
-        cur.execute("""
-            UPDATE log
-            SET team1_is_red = NOT team1_is_red
-            FROM match
-            WHERE match.league = 'rgl' AND log.league = 'rgl'
-                AND log.matchid = match.matchid
-                AND teamid1 >= teamid2;""")
-        logging.info("UPDATE log")
-        cur.execute("""
-            UPDATE match
-            SET teamid1 = teamid2, teamid2 = teamid1
-            WHERE teamid1 >= teamid2;""");
-        logging.info("UPDATE match swap teamids")
-        cur.execute("ALTER TABLE match ADD CHECK (teamid1 < teamid2)");
-        logging.info("ALTER TABLE match ADD CHECK")
 
         add_fkey(cur, 'team_comp_backing', 'league_team', 'league, teamid')
         add_fkey(cur, 'team_player', 'team_comp_backing', 'league, teamid, compid')
@@ -92,9 +60,6 @@ def migrate():
                  'league, compid, teamid')
         add_fkey(cur, 'match', 'team_comp_backing', 'league, compid, teamid2',
                  'league, compid, teamid')
-
-        cur.execute("ALTER TABLE league_team ALTER teamid DROP DEFAULT");
-        cur.execute("DROP SEQUENCE league_team_teamid_seq;")
 
         cur.execute("COMMIT;")
 
