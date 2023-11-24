@@ -139,7 +139,7 @@ def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", l
         })
     return logs
 
-def get_teams(c, filters, order_clause="upper(rostered)", limit=10, offset=0):
+def get_teams(c, filters, order_clause="upper(rostered) DESC", limit=10, offset=0):
     inner_clauses = get_filter_clauses(filters, 'league', date_range='rostered')
     outer_clauses = get_filter_clauses(filters, 'formatid')
 
@@ -188,7 +188,7 @@ def get_teams(c, filters, order_clause="upper(rostered)", limit=10, offset=0):
            LEFT JOIN div_name USING (div_nameid)
            WHERE r = 1
                    {}
-           ORDER BY {} NULLS FIRST, lower(rostered) ASC
+           ORDER BY {}
            LIMIT %(limit)s OFFSET %(offset)s;""".format(inner_clauses, outer_clauses, order_clause),
            { 'playerid': flask.g.playerid, 'limit': limit, 'offset': offset, **filters })
     return teams.fetchall()
