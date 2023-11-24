@@ -1,6 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/comps.html" import comp_table %}
+{% from "macros/format.html" import date_col %}
 {% from "macros/matches.html" import match_table %}
 {% extends "league/team/base.html" %}
 {% block head %}
@@ -32,7 +33,7 @@
 					{{ player.name }}
 				</a>
 			</td>
-			<td class="left date" timestamp="{{ player.joined }}"></td>
+			{{ date_col(player.joined) }}
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -60,8 +61,8 @@
 					{{ player.name }}
 				</a>
 			</td>
-			<td class="left date" timestamp="{{ player.joined }}"></td>
-			<td class="left date" timestamp="{{ player.left }}"></td>
+			{{ date_col(player.joined) }}
+			{{ date_col(player.left) }}
 		</tr>
 		{% endfor %}
 	</tbody>

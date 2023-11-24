@@ -2,6 +2,7 @@
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/dupes.html" import show_dupes %}
 {% from "macros/filter.html" import filter %}
+{% from "macros/format.html" import datetime_col %}
 {% from "macros/icons.html" import demoicon, matchicon %}
 {% from "macros/js.html" import local_js %}
 {% from "macros/pagination.html" import navigation %}
@@ -56,7 +57,7 @@
 				<td class="left">{{ log['map'] }}</td>
 				<td class="left">{{ log['format'] or '' }}</td>
 				<td>{{ log['duration'] | duration }}</td>
-				<td class="left date" timestamp="{{ log['time'] }}"></td>
+				{{ datetime_col(log['time']) }}
 				<td class="left">{{ show_dupes(log['duplicate_of']) }}</td>
 			</tr>
 			{% endfor %}

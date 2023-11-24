@@ -1,6 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
-{% from "macros/format.html" import date_col, optformat %}
+{% from "macros/format.html" import datetime_col, optformat %}
 {% from "macros/icons.html" import demoicon, matchicon %}
 {% macro _team_link(team, teamid) %}
 <a href="{{ url_for('league.team.overview', league=g.league, teamid=teamid) }}">
@@ -78,7 +78,7 @@
 		{{ match.maps | join(", ") if match.maps else "" }}
 	{% endif %}
 	</td>
-	{{ date_col(match.scheduled) }}
+	{{ datetime_col(match.scheduled) }}
 </tr>
 {% if match.logs != None %}
 <tr class="{{ match.matchid }} padding-row hidden"></tr>
@@ -102,7 +102,7 @@
 		<td class="{{ team1class }}">{{ log.score1 }}</td>
 		<td class="{{ team2class }}">{{ log.score2 }}</td>
 		<td class="left">{{ log.map }}</td>
-		<td class="left date" timestamp="{{ log.time }}"></td>
+		{{ datetime_col(log.time) }}
 	</tr>
 {% endfor %}
 <tr class="{{ match.matchid }} padding-row hidden"></tr>

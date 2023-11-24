@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
 {% from "macros/dupes.html" import show_dupes %}
-{% from "macros/format.html" import duration_col, optformat, optint %}
+{% from "macros/format.html" import datetime_col, duration_col, optformat, optint %}
 {% from "macros/icons.html" import classicon, demoicon, matchicon, playerlink %}
 {% from "macros/js.html" import local_js %}
 {% from "macros/pretty.html" import class_map, league_map %}
@@ -340,7 +340,7 @@
 			{{ log['blue_score'] }}
 		</td>
 		<td>{{ log['duration'] | duration }}</td>
-		<td class="left date" timestamp="{{ log['time'] }}"></td>
+		{{ datetime_col(log['time']) }}
 		<td class="left">{{ show_dupes(log['duplicate_of']) }}</td>
 		{% if logs | count > 1 %}
 		<td class="left">

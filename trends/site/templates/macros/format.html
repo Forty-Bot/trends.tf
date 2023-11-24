@@ -23,10 +23,16 @@
 		{{ optformat("{:.{}%}", val, precision) }}
 	</td>
 {% endmacro %}
-{% macro date_col(date) %}
+{% macro _date_col(date, cls) %}
 {% if date != None %}
-	<td class="left date" timestamp="{{ date }}"></td>
+	<td class="left {{ cls }}" timestamp="{{ date }}"></td>
 {% else %}
 	<td></td>
 {% endif %}
+{% endmacro %}
+{% macro datetime_col(date) %}
+{{ _date_col(date, "datetime") }}
+{% endmacro %}
+{% macro date_col(date) %}
+{{ _date_col(date, "date") }}
 {% endmacro %}

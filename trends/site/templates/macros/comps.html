@@ -1,6 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2023 Sean Anderson <seanga2@gmail.com> #}
-{% from "macros/format.html" import date_col, optformat %}
+{% from "macros/format.html" import datetime_col, optformat %}
 {% from "macros/pretty.html" import format_map %}
 {% from "macros/wlt.html" import wlt %}
 {% macro comp_table(comps, date=False) %}
@@ -49,8 +49,8 @@
 		<td>{{ comp.rounds_lost | score }}</td>
 		<td>{{ optformat("{:.0%}", comp.round_winrate) }}</td>
 		{% if date %}
-		{{ date_col(comp.from) }}
-		{{ date_col(comp.to) }}
+		{{ datetime_col(comp.from) }}
+		{{ datetime_col(comp.to) }}
 		{% endif %}
 	</tr>
 	{% endfor %}
