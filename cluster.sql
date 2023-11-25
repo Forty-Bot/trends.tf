@@ -5,7 +5,7 @@
 -- works chronologically. So we need to re-cluster tables which use a primary
 -- key where steamid64 comes before logid.
 
-CLUSTER VERBOSE player_stats USING player_stats_pkey;
+CLUSTER VERBOSE player_stats_backing USING player_stats_pkey;
 CLUSTER VERBOSE player_stats_extra USING player_stats_extra_pkey;
 CLUSTER VERBOSE medic_stats USING medic_stats_pkey;
 CLUSTER VERBOSE class_stats USING class_stats_pkey;
