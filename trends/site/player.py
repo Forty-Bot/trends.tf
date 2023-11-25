@@ -139,56 +139,102 @@ def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", l
         })
     return logs
 
-def get_teams(c, filters, order_clause="upper(rostered) DESC", limit=10, offset=0):
+def get_teams(c, filters, order_clause="rto DESC", limit=10, offset=0):
     inner_clauses = get_filter_clauses(filters, 'league', date_range='rostered')
     outer_clauses = get_filter_clauses(filters, 'formatid')
 
     teams = c.cursor()
     teams.execute(
-        """SELECT
-               league,
-               format,
-               competition.name AS comp,
-               competition.compid,
-               division AS div,
-               team,
-               teamid,
-               lower(rostered) AS from,
-               upper(rostered) AS to
-           FROM (SELECT
+        """WITH t AS (SELECT
                    tc.league,
-                   tc.compid,
+                   tc.compid AS compid,
+                   comp.compid AS ccompid,
                    tc.teamid,
+                   tc.team_nameid,
                    divid,
-                   team_name AS team,
                    rostered,
-                   rank() OVER (
-                       PARTITION BY tc.league, tc.teamid
-                       ORDER BY tc.league, tc.compid DESC
-                   ) AS r
+                   comp.scheduled
                FROM (SELECT
                         league,
                         teamid,
                         compid,
-                        range_max(rostered) AS rostered
+                        range_agg(rostered) AS rostered
                     FROM team_player
                     WHERE playerid = %(playerid)s
                         {}
                     GROUP BY league, teamid, compid
                ) AS tp
-               JOIN team_comp AS tc ON (
+               JOIN team_comp_backing AS tc ON (
                    tp.league = tc.league
                    AND tp.teamid = tc.teamid
                    AND (NOT league_team_per_comp(tc.league)
                         OR tp.compid = tc.compid)
-           )) AS teams
-           JOIN competition USING (league, compid)
-           JOIN format USING (formatid)
-           LEFT JOIN division USING (league, divid)
-           LEFT JOIN div_name USING (div_nameid)
-           WHERE r = 1
+               ) LEFT JOIN (SELECT
+                       league,
+                       compid,
+                       int8range(scheduled_from, scheduled_to, '[]') AS scheduled
+                   FROM competition
+                   WHERE scheduled_from NOTNULL
+               ) AS comp ON (
+                   tp.league = comp.league
+                   AND NOT league_team_per_comp(tc.league)
+                   AND tc.compid = comp.compid AND tp.rostered && comp.scheduled
+               )
+           ) SELECT
+               league,
+               format,
+               l.comp AS comp2,
+               l.compid AS compid2,
+               u.comp AS comp1,
+               u.compid AS compid1,
+               div,
+               team,
+               teamid,
+               rfrom AS from,
+               rto AS to
+           FROM (SELECT
+                   league,
+                   teamid,
+                   coalesce(t.team_nameid, league_team.team_nameid) AS team_nameid,
+                   competition.compid,
+                   competition.name AS comp,
+                   format,
+                   division AS div,
+                   upper(rostered) AS rto
+               FROM (SELECT
+                       league,
+                       teamid,
+                       coalesce(max(ccompid), max(compid)) as compid
+                   FROM t
+                   GROUP BY league, teamid
+               ) AS u
+               JOIN t USING (league, teamid, compid)
+               JOIN competition USING (league, compid)
+               JOIN format USING (formatid)
+               LEFT JOIN division USING (league, divid)
+               LEFT JOIN div_name USING (div_nameid)
+               JOIN league_team USING (league, teamid)
+               WHERE TRUE
                    {}
-           ORDER BY {}
+           ) AS u
+           JOIN (SELECT
+                   league,
+                   teamid,
+                   compid,
+                   competition.name AS comp,
+                   lower(rostered) AS rfrom
+               FROM (SELECT
+                       league,
+                       teamid,
+                       coalesce(min(ccompid), min(compid)) as compid
+                   FROM t
+                   GROUP BY league, teamid
+               ) AS l
+               JOIN t USING (league, teamid, compid)
+               JOIN competition USING (league, compid)
+           ) AS l USING (league, teamid)
+           JOIN team_name USING (team_nameid)
+           ORDER BY {}, rfrom DESC, u.compid DESC, l.compid DESC
            LIMIT %(limit)s OFFSET %(offset)s;""".format(inner_clauses, outer_clauses, order_clause),
            { 'playerid': flask.g.playerid, 'limit': limit, 'offset': offset, **filters })
     return teams.fetchall()
@@ -314,8 +360,8 @@ def teams(steamid):
     limit, offset = get_pagination()
     filters = get_filter_params()
     order, order_clause = get_order({
-        'to': "upper(rostered)",
-        'from': "lower(rostered)",
+        'to': "rto",
+        'from': "rfrom",
 	}, 'to')
     teams = get_teams(get_db(), get_filter_params(), order_clause, limit=limit, offset=offset)
     return flask.render_template("player/teams.html", teams=teams)

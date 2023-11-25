@@ -292,6 +292,13 @@ def import_match(c, m):
                     (SELECT round_nameid FROM round_name WHERE round = %(round)s)
                 ) ON CONFLICT DO NOTHING;""", m)
 
+    c.execute("""
+        UPDATE competition
+        SET
+            scheduled_from = least(scheduled_from, %(scheduled)s::BIGINT),
+            scheduled_to = greatest(scheduled_to, %(scheduled)s::BIGINT)
+        WHERE league = %(league)s
+            AND compid = %(compid)s;""", m)
     c.execute("INSERT INTO map (map) SELECT unnest(%(maps)s::TEXT[]) ON CONFLICT DO NOTHING;", m)
     c.execute(
         """INSERT INTO match (

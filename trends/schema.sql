@@ -135,6 +135,9 @@ CREATE TABLE IF NOT EXISTS competition (
 	compid INT NOT NULL,
 	formatid INT NOT NULL REFERENCES format (formatid),
 	name TEXT NOT NULL,
+	scheduled_from BIGINT,
+	scheduled_to BIGINT,
+	CHECK (equal(scheduled_from ISNULL, scheduled_to ISNULL)),
 	PRIMARY KEY (league, compid)
 );
 

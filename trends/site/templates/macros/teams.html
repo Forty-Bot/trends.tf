@@ -8,15 +8,19 @@
 		<tr>
 			<th>League</th>
 			<th>Team</th>
-			<th>Most-recent Competition</th>
+			<th>Competitions</th>
 			<th><abbr title="Division of most-recent competition">
 				Division
 			</abbr></th>
 			<th><abbr title="Format of most-recent competition">
 				Format
 			</abbr></th>
-			<th><abbr title="Most-recent join date">Rostered From</abbr></th>
-			<th><abbr title="Most-recent leave date">Rostered To</abbr></th>
+			<th><abbr title="Join date for least-recent competition">
+				Rostered From
+			</abbr></th>
+			<th><abbr title="Leave date for most-recent competition">
+				Rostered To
+			</abbr></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -33,9 +37,17 @@
 			</a></td>
 			<td class="left">
 			<a href="{{ url_for('league.comp.overview', league=team['league'],
-					    compid=team['compid']) }}">
-				{{ team['comp'] }}
-			</a></td>
+					    compid=team['compid2']) }}">
+				{{ team['comp2'] }}
+			</a>
+			{% if team['compid1'] != team['compid2'] %}
+			to
+			<a href="{{ url_for('league.comp.overview', league=team['league'],
+					    compid=team['compid1']) }}">
+				{{ team['comp1'] }}
+			</a>
+			{% endif %}
+			</td>
 			<td class="left">{{ team['div'] if team['div'] != None }}</td>
 			<td class="left">{{ format_map[team['format']] }}</td>
 			{{ date_col(team['from']) }}
