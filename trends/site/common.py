@@ -156,7 +156,8 @@ def get_matches(compid, filters, limit=100, offset=0):
           'offset': offset })
     return matches
 
-def get_players(league, compid, teamid, filters, limit=100, offset=0):
+def get_players(league, compid, teamid, filters, limit=100, offset=0,
+                default_order=('name', 'asc')):
     if compid is not None:
         assert teamid is None
         filter_clauses = get_filter_clauses(filters, 'divid', 'primary_classid', 'map', 'time',
@@ -193,7 +194,7 @@ def get_players(league, compid, teamid, filters, limit=100, offset=0):
         'dmg': "dmg",
         'dt': "dt",
         'duration': "duration",
-    }, 'name', 'asc')
+    }, *default_order)
 
     players = get_db().cursor()
     players.execute(

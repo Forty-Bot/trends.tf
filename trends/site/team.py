@@ -343,7 +343,8 @@ def players(league, teamid):
     filters = get_filter_params()
 
     comps = get_comp_list(league, teamid)
-    players = get_players(league, None, teamid, filters, limit, offset)
+    players = get_players(league, None, teamid, filters, limit, offset,
+                          default_order=('duration', 'desc'))
 
     return flask.render_template("league/team/players.html", players=players.fetchall(),
                                  comps=comps)
