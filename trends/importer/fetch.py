@@ -16,7 +16,10 @@ import urllib3.util, urllib3.exceptions
 
 from .. import util
 
-class APIError(OSError):
+class FetchError(OSError):
+    pass
+
+class APIError(FetchError):
     """The logs.tf API returned a failure"""
     def __init__(self, msg):
         super().__init__("logs.tf API request failed: %s".format(msg))
@@ -462,8 +465,8 @@ class ETF2LFileFetcher:
                     xfer['fetched'] = fetched
                     yield xfer
                 page += 1
-        except FileNotFoundError:
-            pass
+        except FileNotFoundError as e:
+            raise FetchError from e
 
 class ETF2LBulkFetcher:
     def __init__(self, since=0, count=None, page=1, **kwargs):
@@ -500,10 +503,12 @@ class ETF2LBulkFetcher:
                     return
 
                 page += 1
-        except (OSError, urllib3.exceptions.HTTPError):
+        except (OSError, urllib3.exceptions.HTTPError) as e:
             logging.exception("Could not fetch from %s", url)
-        except (ValueError, KeyError):
+            raise FetchError from e
+        except (ValueError, KeyError) as e:
             logging.exception("Could not parse %s", url)
+            raise FetchError from e
 
     def get_results(self):
         return self._get_data("https://api.etf2l.org/results", 'results', self.count,
@@ -532,8 +537,8 @@ class RGLFileFetcher:
             fetched = int(os.path.getmtime(path))
             data['fetched'] = fetched
             return data
-        except FileNotFoundError:
-            pass
+        except FileNotFoundError as e:
+            raise FetchError from e
 
     def get_season(self, seasonid):
         return self.get_json(f"{self.dir}/season_{seasonid}.json")
@@ -596,10 +601,12 @@ class RGLBulkFetcher:
             resp = resp.json()
             resp['fetched'] = fetched
             return resp
-        except (OSError, urllib3.exceptions.HTTPError):
+        except (OSError, urllib3.exceptions.HTTPError) as e:
             logging.exception("Could not fetch %s", url)
-        except (ValueError, KeyError):
+            raise FetchError from e
+        except (ValueError, KeyError) as e:
             logging.exception("Could not parse %s", url)
+            raise FetchError from e
 
     def get_season(self, seasonid):
         return self._get_data(f"{self.PREFIX}/seasons/{seasonid}")

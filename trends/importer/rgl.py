@@ -12,7 +12,7 @@ import time
 from psycopg2.extras import NumericRange
 import sentry_sdk
 
-from .fetch import RGLBulkFetcher, RGLFileFetcher
+from .fetch import FetchError, RGLBulkFetcher, RGLFileFetcher
 from .league import *
 from ..sql import db_connect
 from ..steamid import SteamID
@@ -233,6 +233,8 @@ def import_rgl(c, fetcher):
                 res['score2'] = res['teams'][1]['score']
                 import_match(cur, res)
                 cur.execute("COMMIT;")
+        except FetchError:
+            continue
         except (IndexError, KeyError, psycopg2.errors.UniqueViolation):
             logging.exception("Could not parse match %s", matchid)
             cur.execute("ROLLBACK;")

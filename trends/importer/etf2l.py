@@ -10,7 +10,7 @@ import time
 from psycopg2.extras import NumericRange
 import sentry_sdk
 
-from .fetch import ETF2LFileFetcher, ETF2LBulkFetcher
+from .fetch import ETF2LFileFetcher, ETF2LBulkFetcher, FetchError
 from .league import *
 from ..sql import db_connect
 from ..steamid import SteamID
@@ -200,6 +200,8 @@ def import_etf2l(c, fetcher):
                     import_team(cur, team)
                 import_match(cur, res)
                 cur.execute("COMMIT;")
+        except FetchError:
+            continue
         except (IndexError, KeyError, psycopg2.errors.UniqueViolation):
             logging.exception("Could not parse result %s", result['id'])
             cur.execute("ROLLBACK;")
