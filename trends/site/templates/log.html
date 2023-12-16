@@ -77,7 +77,7 @@
 		<td>{{ cls['kills'] }}</td>
 		<td>{{ cls['deaths'] }}</td>
 		<td>{{ cls['assists'] }}</td>
-		<td>{{ cls['dpm'] | int }}</td>
+		<td>{{ optint(cls['dpm']) }}</td>
 		<td colspan="{{ 1 + has['dt'] }}"></td>
 		<td>{{ cls['dmg'] }}</td>
 		{# +2 for heal/lks #}
@@ -169,11 +169,11 @@
 	<td>{{ row['kills'] }}</td>
 	<td>{{ row['deaths'] }}</td>
 	<td>{{ row['assists'] }}</td>
-	<td>{{ row['dpm'] | int }}</td>
+	<td>{{ optint(row['dpm']) }}</td>
 	{% if has['dt'] %}
 		<td>{{ optint(row['dtm']) }}</td>
 	{% endif %}
-	<td>{{ row['hpm'] | int }}</td>
+	<td>{{ optint(row['hpm']) }}</td>
 	<td>{{ row['dmg'] }}</td>
 	{% macro optcol(col) %}
 		{% if has[col] %}

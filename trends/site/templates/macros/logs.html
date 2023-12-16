@@ -69,10 +69,10 @@
 			<td>{{ log['kills'] }}</td>
 			<td>{{ log['deaths'] }}</td>
 			<td>{{ log['assists'] }}</td>
-			<td>{{ log['dpm'] | int }}</td>
+			<td>{{ optint(log['dpm']) }}</td>
 			<td>{{ optint(log['dtm']) }}</td>
-			<td>{{ log['hpm_given'] | int }}</td>
-			<td>{{ log['hpm_recieved'] | int }}</td>
+			<td>{{ optint(log['hpm_given']) }}</td>
+			<td>{{ optint(log['hpm_recieved']) }}</td>
 			<td>{{ optformat("{:.0%}", log['acc']) }}</td>
 			{{ datetime_col(log['time']) }}
 			{% if extra %}
