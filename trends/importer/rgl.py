@@ -29,6 +29,9 @@ def filter_matchids(c, matchids):
             for row in cur:
                 yield row[0]
 
+def no_filter_matchids(c, matchids):
+    yield from matchids
+
 rgl_format_map = {
     'Sixes': 'sixes',
     'NR Sixes': 'sixes',
@@ -138,6 +141,8 @@ def parse_team(team):
 def create_rgl_parser(sub):
     rgl = sub.add_parser("rgl", help="Import rgl matches")
     rgl.set_defaults(importer=import_rgl_cli)
+    rgl.add_argument("-R", "--reimport", action='store_true',
+                     help="Reimport all matches, even if they are already present")
     rgl_sub = rgl.add_subparsers()
     f = rgl_sub.add_parser("file", help="Import from the local filesystem")
     f.set_defaults(fetcher=RGLFileFetcher)
@@ -164,16 +169,17 @@ def import_rgl_cli(args, c):
                        FROM match
                        WHERE league = 'rgl';""");
                 args.since = datetime.fromtimestamp(cur.fetchone()[0])
-        return import_rgl(c, args.fetcher(**vars(args)))
+        return import_rgl(c, args.fetcher(**vars(args)),
+                          no_filter_matchids if args.reimport else filter_matchids)
 
-def import_rgl(c, fetcher):
+def import_rgl(c, fetcher, filter=filter_matchids):
     @functools.cache
     def get_season(seasonid):
         return parse_season(fetcher.get_season(seasonid))
 
     cur = c.cursor()
     count = 0
-    for matchid in filter_matchids(c, fetcher.get_matchids()):
+    for matchid in filter(c, fetcher.get_matchids()):
         try:
             result = fetcher.get_match(matchid)
             res = parse_match(result)

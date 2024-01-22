@@ -300,23 +300,35 @@ def import_match(c, m):
         WHERE league = %(league)s
             AND compid = %(compid)s;""", m)
     c.execute("INSERT INTO map (map) SELECT unnest(%(maps)s::TEXT[]) ON CONFLICT DO NOTHING;", m)
-    c.execute(
-        """INSERT INTO match (
-               league, matchid, compid, divid, teamid1, teamid2, round_seq, scheduled, submitted,
-               mapids, score1, score2, forfeit, fetched
-           ) VALUES (
-               %(league)s, %(matchid)s, %(compid)s, %(divid)s, %(teamid1)s, %(teamid2)s, %(seq)s,
-               %(scheduled)s, %(submitted)s,
-               (SELECT
-                       coalesce(array_agg(mapid ORDER BY mapid), array[]::INT[])
-                   FROM map
-                   WHERE map = any(%(maps)s)
-               ), %(score1)s, %(score2)s, %(forfeit)s, %(fetched)s
-           ) ON CONFLICT (league, matchid)
-           DO UPDATE SET
-               scheduled = EXCLUDED.scheduled,
-               mapids = EXCLUDED.mapids,
-               score1 = EXCLUDED.score1,
-               score2 = EXCLUDED.score2,
-               forfeit = EXCLUDED.forfeit,
-               fetched = greatest(match.fetched, EXCLUDED.fetched);""", m)
+    # Can't use ON CONFLICT here because there are multiple unique indices which could match
+    try:
+        c.execute("SAVEPOINT match_update;")
+        c.execute(
+            """INSERT INTO match (
+                   league, matchid, compid, divid, teamid1, teamid2, round_seq, scheduled, submitted,
+                   mapids, score1, score2, forfeit, fetched
+               ) VALUES (
+                   %(league)s, %(matchid)s, %(compid)s, %(divid)s, %(teamid1)s, %(teamid2)s, %(seq)s,
+                   %(scheduled)s, %(submitted)s,
+                   (SELECT
+                           coalesce(array_agg(mapid ORDER BY mapid), array[]::INT[])
+                       FROM map
+                       WHERE map = any(%(maps)s)
+                   ), %(score1)s, %(score2)s, %(forfeit)s, %(fetched)s
+               );""", m)
+    except psycopg2.errors.UniqueViolation:
+        c.execute("ROLLBACK TO SAVEPOINT match_update;")
+        c.execute(
+            """UPDATE match SET
+                   scheduled = %(scheduled)s,
+                   mapids = (SELECT
+                           coalesce(array_agg(mapid ORDER BY mapid), array[]::INT[])
+                       FROM map
+                       WHERE map = any(%(maps)s)
+                   ),
+                   score1 = %(score1)s,
+                   score2 = %(score2)s,
+                   forfeit = %(forfeit)s,
+                   fetched = greatest(fetched, %(fetched)s)
+                WHERE league = %(league)s
+                    AND matchid = %(matchid)s;""", m)
