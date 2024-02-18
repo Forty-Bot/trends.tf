@@ -68,10 +68,6 @@ def test_crawl(client):
         if node.requested:
             print(node.path)
 
-class PlayerPage:
-    def __init__(self, endpoint):
-        self.endpoint = endpoint
-
 @st.composite
 def substrings(draw, strings, min_size=0):
     s = draw(strings)
