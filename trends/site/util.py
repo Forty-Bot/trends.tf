@@ -140,8 +140,8 @@ def get_filter_clauses(params, *valid_columns, **column_map):
         column_map[col] = col
 
     def id_clause(column):
-      if params[column] and column in column_map:
-          clauses.append(f"AND {column_map[column]} = %({column})s")
+        if params[column] and column in column_map:
+            clauses.append(f"AND {column_map[column]} = %({column})s")
 
     id_clause('league')
     id_clause('divid')
