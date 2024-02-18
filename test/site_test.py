@@ -169,48 +169,136 @@ def test_search(client, connection):
                 resp = client.get(path, query_string={'q': player['name']})
                 assert str(player['steamid64']) in resp.get_data(as_text=True)
 
+linked_demos = {
+    2297197: 273469,
+    2297225: 273477,
+    2344272: 292844,
+    2344306: 292859,
+    2344331: 292868,
+    2344354: 292885,
+    2401045: 318447,
+    2408458: 322265,
+    2408491: 322285,
+    2506954: 375937,
+    2844704: 585088,
+    2878546: 609093,
+    2931193: 640794,
+    3069780: 737954,
+    3124976: 776712,
+    3302963: 902137,
+    3302982: 902150,
+}
+
+linked_matches = {
+    2344272: ('rgl', 3412),
+    2344306: ('rgl', 3412),
+    2344331: ('rgl', 3412),
+    2344354: ('rgl', 3412),
+    2344383: ('rgl', 3412),
+    2344394: ('rgl', 3412),
+    2392536: ('rgl', 4664),
+    2392557: ('rgl', 4664),
+    2408458: ('etf2l', 77326),
+    2408491: ('etf2l', 77326),
+    3302963: ('etf2l', 84221),
+    3302982: ('etf2l', 84221),
+}
+
 def test_linked(connection):
     cur = connection.cursor()
     cur.execute("SELECT logid, demoid FROM log WHERE demoid NOTNULL;")
-    assert { logid: demoid for logid, demoid in cur } == {
-        2297197: 273469,
-        2297225: 273477,
-        2344272: 292844,
-        2344306: 292859,
-        2344331: 292868,
-        2344354: 292885,
-        2401045: 318447,
-        2408458: 322265,
-        2408491: 322285,
-        2506954: 375937,
-        2844704: 585088,
-        2878546: 609093,
-        2931193: 640794,
-        3069780: 737954,
-        3124976: 776712,
-        3302963: 902137,
-        3302982: 902150,
-    }
+    assert { logid: demoid for logid, demoid in cur } == linked_demos
 
     cur.execute("SELECT logid, league, matchid FROM log WHERE league NOTNULL;")
-    assert { logid: (league, matchid) for logid, league, matchid in cur } == {
-        2344272: ('rgl', 3412),
-        2344306: ('rgl', 3412),
-        2344331: ('rgl', 3412),
-        2344354: ('rgl', 3412),
-        2344383: ('rgl', 3412),
-        2344394: ('rgl', 3412),
-        2392536: ('rgl', 4664),
-        2392557: ('rgl', 4664),
-        2408458: ('etf2l', 77326),
-        2408491: ('etf2l', 77326),
-        3302963: ('etf2l', 84221),
-        3302982: ('etf2l', 84221),
-    }
+    assert { logid: (league, matchid) for logid, league, matchid in cur } == linked_matches
+
+duplicates = {
+    2344394: [2344272, 2344306, 2344354],
+}
 
 def test_dupes(connection):
     cur = connection.cursor()
     cur.execute("SELECT logid, duplicate_of FROM log WHERE duplicate_of NOTNULL")
-    assert { logid: duplicate_of for logid, duplicate_of in cur } == {
-        2344394: [2344272, 2344306, 2344354],
+    assert { logid: duplicate_of for logid, duplicate_of in cur } == duplicates
+
+def test_api_logs(client):
+    def get(**params):
+        resp = client.get("api/v1/logs", query_string=params)
+        assert resp.status_code == 200
+        return resp.json['logs']
+
+    logs = get()
+    valid_keys = {
+        'demoid',
+        'duplicate_of',
+        'duration',
+        'format',
+        'league',
+        'logid',
+        'map',
+        'matchid',
+        'time',
+        'title',
     }
+
+    for log in logs:
+        logid = log['logid']
+        assert logid is not None
+
+        assert set(log.keys()) == valid_keys
+
+        if logid in linked_demos:
+            assert log['demoid'] == linked_demos[logid]
+        else:
+            assert log['demoid'] is None
+
+        if logid in linked_matches:
+            assert (log['league'], log['matchid']) == linked_matches[logid]
+        else:
+            assert log['league'] is None
+            assert log['matchid'] is None
+
+        if logid in duplicates:
+            assert log['duplicate_of'] == duplicates[logid]
+        else:
+            assert log['duplicate_of'] is None
+
+    assert logs == sorted(logs, key=lambda log: log['logid'], reverse=True)
+
+    def paged(limit=10):
+        off = 0
+        while True:
+            logs = get(limit=limit, offset=off)
+            assert len(logs) <= limit
+            yield from logs
+
+            if len(logs) < limit:
+                return
+            off += limit
+
+    assert logs == list(paged())
+    assert get(offset=len(logs)) == []
+
+    for by in ('logid', 'date', 'duration'):
+        key = lambda log: log['time' if by == 'date' else by]
+        for reverse in (True, False):
+            logs = get(sort=by, sort_dir='desc' if reverse else 'asc')
+            assert logs == sorted(logs, key=key, reverse=reverse)
+
+    for log in get(league="etf2l"):
+        assert log['league'] == "etf2l"
+
+    for log in get(format="sixes"):
+        assert log['format'] == "sixes"
+
+    for log in get(title="serveme"):
+        assert "serveme" in log['title']
+
+    for log in get(map="cp"):
+        assert "cp" in log['map']
+
+    for log in get(date_from='2019-11-06', timezone='America/New_York'):
+        assert log['time'] >= 1573016400
+
+    for log in get(date_to='2019-11-06', timezone='America/New_York'):
+        assert log['time'] <= 1573016400
