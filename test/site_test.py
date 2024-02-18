@@ -138,8 +138,8 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
         ('title', data.draw(substrings(st.sampled_from([''] + titles)))),
         ('name', data.draw(substrings(st.sampled_from([''] + comps)))),
         ('timezone', data.draw(st.timezone_keys())),
-        ('date_to_ts', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),
-        ('date_from_ts', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),
+        ('date_to', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),
+        ('date_from', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),
         ('q', data.draw(st.one_of(players, substrings(st.sampled_from(names))))),
     ] + [('steamid64', steamid) for steamid in data.draw(st.lists(players))])
 
