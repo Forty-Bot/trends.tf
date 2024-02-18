@@ -43,31 +43,23 @@ You can exit the `psql` shell using the `\q` command.
 
 === Importing data
 
-There are several different ways to import new logs. To import the 1000 most recent logs from
-https://logs.tf/[logs.tf], run
+There are several different ways to import new logs. The simplest is to use the test data set. To
+populate your database, run
 
-    $ trends_importer -vv logs bulk -c 1000 postgresql:///trends
+    $ test/create.py postgresql:///trends
 
 Any valid https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING[connection
-string] may be used instead of `postgresql:///trends`. To import logs continuously, remove the
-`-c 1000` parameters.
+string] may be used instead of `postgresql:///trends`. This data set is small, and mostly contains
+unusual logs which caused bugs in the past.
 
 The performance of trends.tf changes significantly as more data is imported into the database. To
 quickly import many logs for testing, you can use the output of the
 https://github.com/ldesgoui/clone_logs[`clone_logs` tool]. Cloned logs in batches of 100,000 are
-available from https://mega.nz/#F!l9oGiKCb!lTWT2RSkTYv-TJZb92_ksA[Lucas Desgouilles's archive].  For
+available from https://mega.nz/#F!l9oGiKCb!lTWT2RSkTYv-TJZb92_ksA[Lucas Desgouilles's archive]. For
 example, to import logs from the file `2200k-to-2300k.7z`, run
 
     $ 7z x 2200k-to-2300k.7z
     $ trends_importer -vv logs clone_logs -d 22.sqlite3 postgresql:///trends
-
-To import recent player names and avatars, you will need a
-https://steamcommunity.com/dev/apikey[Steam API key]. Then, to import the avatars and usernames for
-all players currently in your database, run
-
-    $ trends_importer players -k <steam API key> postgresql:///trends
-
-replacing `<steam API key>` with your actual key.
 
 === Running the server
 
