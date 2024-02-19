@@ -1,0 +1,347 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2024 Sean Anderson <seanga2@gmail.com> #}
+{% extends "base.html" %}
+{% block title %}API - {{ super() }}{% endblock %}
+{% macro trends() %}<a href="{{ url_for('.index') }}">trends.tf</a>{% endmacro %}
+{% macro pre(text) %}<span class="pre">{{ text }}</span>{% endmacro %}
+{% macro def(name, id) %}<h3 id="{{ id }}">{{ pre(name) }}</h3>{% endmacro %}
+{% macro ref(name, id) %}<a href="#{{ id }}">{{ pre(name) }}</a>{% endmacro %}
+{% macro apipath(endpoint, version=1) %}
+{{- "/v{}/{}".format(version, endpoint) if version else "/{}".format(endpoint) -}}
+{% endmacro %}
+{% macro apidef(endpoint, version=1, method="GET") %}
+<h3 id="api-{{method }}-{{ endpoint }}-v{{ version }}">
+	{{ method }}
+	<a href="{{ url_for('api.{}'.format(endpoint)) }}">{{ pre(apipath(endpoint, version)) }}</a>
+</h3>
+{% endmacro %}
+{% macro apiref(endpoint, version=1, method="GET") %}
+{{ ref(apipath(endpoint, version), "api-{}-{}-v{}".format(method, endpoint, version)) }}
+{% endmacro %}
+{% macro fielddef(name) %}{{ def(name, "field-{}".format(name)) }}{% endmacro %}
+{% macro fieldref(name) %}{{ ref(name, "field-{}".format(name)) }}{% endmacro %}
+{% macro paramdef(name) %}{{ def(name, "param-{}".format(name)) }}{% endmacro %}
+{% macro paramref(name) %}{{ ref(name, "param-{}".format(name)) }}{% endmacro %}
+{% block content %}
+	<div class="prose">
+	<h1>The {{ trends() }} API</h1>
+	<p>
+	{{ trends() }} provides a HTTPS-based API to access some of its information. API calls are
+	made by sending requests to endpoints, which return JSON-encoded responses.
+	</p>
+
+	<h3>Requests</h3>
+	<p>
+	Endpoints are specified as an HTTP method and a URL. All endpoints support the
+	{{ pre("OPTIONS") }} method. Additionally, endpoints supporting the {{ pre("GET") }} method
+	also support the {{ pre("HEAD") }} method. Endpoint URLs implicitly start with
+	{{ pre("https://trends.tf/api") }}. For example, an endpoint such as
+	<blockquote>GET {{ pre("/foo") }}</blockquote> would have a full URL of
+	{{ pre("https://trends.tf/api/foo") }}. The {{ pre("If-None-Match") }} and
+	{{ pre("If-Modified-Since") }} headers are supported, and may be used to re-use cached
+	responses.
+	</p>
+
+	<p>
+	Information may be passed to requests via arguments or parameters. Arguments are part of the
+	path component of the URL. For example, when accessing the (imaginary) endpoint {{
+	pre("/v1/foo/<bar>/baz") }} at {{ pre("/v1/foo/29/baz") }}, the argument {{ pre("bar") }} is
+	set to {{ pre("29") }}.
+	</p>
+
+	<p>
+	Parameters are passed via the query component of the URL. Parameters consist of key/value
+	pairs where {{ pre("&") }} separates parameters from each other, and {{ pre("=") }}
+	separates keys from values. Parameters are generally referred to by their keys. Values must
+	be URL-encoded. Continuing the above example, if the requested URL was instead
+	{{ pre("/v1/foo/29/baz?qux=33&frob=forty%20two") }}, the parameter {{ pre("qux") }} would be
+	set to {{ pre("33") }}, and the parameter {{ pre("frob") }} would be set to
+	{{ pre("forty two") }}. Passing an empty value to a parameter is equivalent to omitting the
+	parameter.
+	</p>
+
+	<h3>Responses</h3>
+	<p>
+	Responses are <a href="https://datatracker.ietf.org/doc/html/rfc8259">JSON</a>-encoded
+	objects. Object members are specified like
+	<blockquote>{{ pre("name") }} : <em>type</em></blockquote>
+	where {{ pre("name") }} is the name of the member, and <em>type</em> is one of:
+	<dl>
+		<dt>bool</dt>
+		<dd>Either {{ pre('true') }} or {{ pre('false') }}</dd>
+		<dt>number</dt>
+		<dd>An IEEE 764 double-precision literal</dd>
+		<dt>string</dt>
+		<dd>A UTF-8-encoded string</dd>
+		<dt>object</dt>
+		<dd>A nested object</dd>
+		<dt>option(<em>type</em>)</dt>
+		<dd>
+		Either <em>type</em> or {{ pre("null") }}.
+		</dd>
+		<dt>array(<em>type</em>)</dt>
+		<dd>An array of one or more <em>type</em>s.</dd>
+	</dl>
+	All documented object members will always be present. Absence of a value will never be
+	represented by the absence of the member itself. Values of non-option types will never be
+	{{ pre("null") }}.
+	</p>
+
+	<p>
+	Responses use HTTP status codes to indicate status. Clients must support HTTP 3XX (redirect)
+	status responses. Clients should parse the status code before interpreting the response
+	body, as an error status may change the format of the response. 5XX (server error) responses
+	may result in content types which are not {{ pre("application/json") }}.
+	</p>
+
+	<p>
+	All responses include the {{ pre("ETag") }} header. Additionally, some endpoints include the
+	{{ pre("Last-Modified") }} header. If the results are paged, the {{ pre("Last-Modified") }}
+	header reflects the last-modified time of the whole set of results. The
+	{{ pre("Last-Modified") }} header may be more pessimistic than necessary, returning times
+	later than when the result was last modified.
+	</p>
+
+
+	<p>
+	Error responses may include the following field:
+	<dl>
+		<dt>{{ pre('error') }} : object<dt>
+		<dd>
+		<dl>
+			<dt>{{ pre('code') }} : number</dt>
+			<dd>The HTTP status code</dd>
+			<dt>{{ pre('description') }} : string</dt>
+			<dd>An informational description of the error</dd>
+			<dt>{{ pre('name') }} : string</dt>
+			<dd>The name of the error</dd>
+		</dl>
+		</dd>		
+	</dl>
+	</p>
+
+	<h2 id="params">Parameters</h2>
+	<p>
+	This section documents parameters with shared semantics across multiple endpoints.
+	</p>
+
+	{% macro date_param(p, r) %}
+	{{ paramdef(p) }}
+	<p>
+	Filter the results to those occuring on or {{ r }} midnight on the specified
+	<a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">RFC 3339 full date</a>.
+	Midnight is determined based on the value of the {{ paramref('timezone') }} parameter. For
+	example, supplying {{ pre("{}=2022-03-04".format(p)) }} and
+	{{ pre("timezone=America/New_York") }} to the {{ apiref('logs') }} endpoint would
+	<a href="{{ url_for('api.logs', timezone="America/New_York", **{ p: "2022-03-04" }) }}">
+	filter results to logs occuring on or {{ r }} 2022-03-04 05:00:00Z</a>.
+	</p>
+	{% endmacro %}
+
+	{{ date_param("date_from", "after") }}
+	{{ date_param("date_to", "before") }}
+
+	{{ paramdef("format") }}
+	<p>
+	Filter the results to logs with matching {{ fieldref('format') }}s. For example, supplying
+	{{ pre("format=sixes") }} to the {{ apiref('logs') }} endpoint would
+	<a href="{{ url_for('api.logs', format="sixes") }}">filter results to 6v6 logs</a>.
+	</p>
+
+	{{ paramdef("league") }}
+	<p>
+	Filter the results to those associated with a {{ fieldref('league') }}.	For example,
+	supplying {{ pre("league=rgl") }} to the {{ apiref('logs') }} endpoint would
+	<a href="{{ url_for('api.logs', league="rgl") }}">filter results to RGL matches</a>.
+	</p>
+
+	{{ paramdef("limit") }}
+	<p>
+	Return at most this many results. For example, supplying {{ pre("limit=10") }} to the
+	{{ apiref('logs') }} endpoint would <a href="{{ url_for('api.logs', limit=10) }}">return at
+	most 10 matches</a>. Unless otherwise stated, this parameter defaults to 100. Specifying
+	a value greater than the default results in the default.
+	</p>
+
+	{{ paramdef("map") }}
+	<p>
+	Filter the results to those including the value of this parameter (case-insensitive) in the
+	map name. For example, supplying {{ pre("map=cp_") }} to the {{ apiref('logs') }}
+	endpoint would <a href="{{ url_for('api.logs', map="cp_") }}">filter results to
+	control-point logs</a>.
+	</p>
+
+	{{ paramdef("offset") }}
+	<p>
+	Skip results equal to the value of this parameter. For example, supplying
+	{{ pre("limit=10") }} and {{ pre("offset=20") }} to the {{ apiref('logs') }} endpoint would
+	<a href="{{ url_for('api.logs', limit=10, offset=20) }}">return 10 matches starting from the
+	21<sup>st</sup> match</a>. This may be used to request successive pages from an endpoint.
+	The default offset is 0.
+	</p>
+
+	{{ paramdef("sort") }}
+	<p>
+	This parameter specifies the key to use when sorting the output. The valid keys vary between
+	endpoints, although they generally denote similar meanings. Results are always sorted.
+	</p>
+
+	{{ paramdef("sort_dir") }}
+	<p>
+	This parameter specifies the sort direction as either {{ pre('asc') }} (ascending) or
+	{{ pre('desc') }} (descending). Ascending sorts satisfy the relation that one result comes
+	before another if and only if the value of the first result's sort key is less than or equal
+	to the other result's sort key. Conversely, descending sorts satisfy the relation that one
+	result comes before another if and only if the value of the first result's sort key is
+	greater than or equal to the other result's sort key.
+
+	{{ paramdef("timezone") }}
+	<p>
+	This parameter supplies the time zone for use with the {{ paramref('date_from') }}, and
+	{{ paramref('date_to') }} parameters. It must be the name of a time zone as specified in the
+	<a href="https://www.iana.org/time-zones">IANA time zone database</a>. If this parameter is
+	invalid or unspecified, the time zone defaults to UTC.
+	</p>
+
+	{{ paramdef("title") }}
+	<p>
+	Filter the results to those including the value of this parameter (case-insensitive) in the
+	title of the log. For example, supplying {{ pre("title=center") }} to the
+	{{ apiref('logs') }} endpoint would
+	<a href="{{ url_for('api.logs', title="center") }}">filter results to TF2Center lobbies</a>.
+	</p>
+
+	<h2 id="types">Members</h2>
+	<p>
+	This section documents members common across multiple responses.
+	</p>
+
+	{{ fielddef('demoid') }}
+	<p>
+	A unique number identifying a demo. This is assigned by
+	<a href="https://demos.tf">demos.tf</a>.
+	</p>
+
+	{{ fielddef('format') }}
+	<p>
+	A game format as one of the following values:
+	<ul>
+		<li>{{ pre('ultiduo') }} (2v2)</li>
+		<li>{{ pre('fours') }} (4v4)</li>
+		<li>{{ pre('sixes') }} (6v6)</li>
+		<li>{{ pre('prolander') }} (7v7)</li>
+		<li>{{ pre('highlander') }} (9v9)</li>
+		<li>{{ pre('other') }}</li>
+	</ul>
+	Format detection is based on player count and playtime. This may cause some formats to be
+	detected as others if they share the same nominal number of players.
+	</p>
+
+	{{ fielddef('league') }}
+	<p>
+	A competetive league as one of the following values:
+	<ul>
+		<li>{{ pre('etf2l') }} (European Team Fortress 2 League)</li>
+		<li>{{ pre('rgl') }} (Recharge Gaming League)</li>
+	</ul>
+	</p>
+
+	{{ fielddef('logid') }}
+	<p>
+	A unique number identifying a log. This is assigned by
+	<a href="https://logs.tf">logs.tf</a>.
+	</p>
+
+	{{ fielddef('matchid') }}
+	<p>
+	A unique number identifying a match played as part of a {{ fieldref('league') }}.
+	{{ pre('matchid') }}s are only valid in the context of a particular {{ fieldref('league') }};
+	different leagues may reuse the same {{ pre('matchid') }}. {{ pre('matchid') }}s are
+	assigned by their respective {{ fieldref('league') }}s.
+	</p>
+
+	{{ fielddef('steamid64') }}
+	<p>
+	A unique number identifying a player. This is assigned by
+	<a href="https://developer.valvesoftware.com/wiki/SteamID">Valve</a>.
+	</p>
+
+	{{ fielddef('time') }}
+	<p>
+	Unix time. That is, the number of non-leap seconds since 1970-01-01 00:00:00Z.
+	</p>
+
+	<h2>Endpoints</h2>
+	{{ apidef('logs') }}
+	<p>
+	The {{ pre('/v1/logs') }} endpoint provides a list of log summaries similar to what
+	is presented on the <a href="{{ url_for('.logs') }}">logs page</a>.
+	</p>
+
+	<h4>Parameters</h4>
+	<p>
+	The {{ pre('/v1/logs') }} endpoint supports the following <a href="#params">common
+	parameters</a>:
+	<ul>
+		<li>{{ paramref("date_from") }}</li>
+		<li>{{ paramref("date_to") }}</li>
+		<li>{{ paramref("format") }}</li>
+		<li>{{ paramref("league") }}</li>
+		<li>{{ paramref("limit") }}</li>
+		<li>{{ paramref("map") }}</li>
+		<li>{{ paramref("offset") }}</li>
+		<li>
+			{{ paramref("sort") }}, with valid values being:
+			<dl>
+				<dt>{{ pre('logid') }}</dt>
+				<dd>Sort by {{ pre('logid') }}</dd>
+				<dt>{{ pre('date') }}</dt>
+				<dd>Sort by {{ pre('time') }}</dd>
+				<dt>{{ pre('duration') }}</dt>
+				<dd>Sort by {{ pre('duration') }}</dd>
+			</dl>
+		</li>
+		<li>{{ paramref("sort_dir") }} (default {{ pre('desc') }})</li>
+		<li>{{ paramref("timezone") }}</li>
+		<li>{{ paramref("title") }}</li>
+	</ul>
+	</p>
+
+	<h4>Response</h4>
+	<dl>
+		<dt>{{ pre('logs') }} : array(object)<dt>
+		<dd>
+		<p>
+		Each element corresponds to a log:
+		<dl>
+			<dt>{{ pre('demoid') }} : option(number)</dt>
+			<dd>The linked {{ fieldref('demoid') }}, if any</dd>
+			<dt>{{ pre('duplicate_of') }} : option(array(number))</dt>
+			<dd>
+			An array of {{ fieldref('logid') }}s that this log is a duplicate of (which
+			may themselves be duplicates), if any. Duplicate logs are typically combined
+			or otherwise duplicated versions of other logs. They should not be used for
+			statistical purposes.
+			</dd>
+			<dt>{{ pre('duration') }} : number</dt>
+			<dd>The duration of the log, in seconds</dd>
+			<dt>{{ pre('format') }} : option(string)</dt>
+			<dd>The {{ fieldref('format') }} of the log</dd>
+			<dt>{{ pre('league') }} : option(string)</dt>
+			<dd>The {{ fieldref('league') }} of the linked match, if any</dd>
+			<dt>{{ pre('logid') }} : number</dt>
+			<dd>The {{ fieldref('logid') }} of the log</dd>
+			<dt>{{ pre('map') }} : string</dt>
+			<dd>The (user-supplied) map this log was played on</dd>
+			<dt>{{ pre('matchid') }} : option(number)</dt>
+			<dd>The {{ fieldref('matchid') }} of the linked match, if any</dd>
+			<dt>{{ pre('time') }} : number</dt>
+			<dd>The upload {{ fieldref('time') }} of the log</dd>
+			<dt>{{ pre('title') }} : string</dt>
+			<dd>The (user-supplied) title for the log</dd>
+		</dl>
+		</p>
+		</dd>		
+	</dl>
+	</div>
+{% endblock %}

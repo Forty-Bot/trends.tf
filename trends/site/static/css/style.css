@@ -31,6 +31,7 @@ body {
 	background: var(--bg);
 	color: var(--main);
 	font-family: sans-serif;
+	font-size: 16px;
 	display: block;
 	text-align: left;
 }
@@ -304,4 +305,8 @@ h4 {
 
 .prose {
 	max-width: 50em;
+}
+
+.pre {
+	font-family: monospace;
 }

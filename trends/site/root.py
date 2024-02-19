@@ -40,6 +40,12 @@ def about():
     resp.cache_control.max_age = 300
     return resp
 
+@root.route('/apidoc')
+def api():
+    resp = flask.make_response(flask.render_template("api.html"))
+    resp.cache_control.max_age = 300
+    return resp
+
 @root.route('/search')
 def search():
     q = flask.request.args.get('q', '', str)

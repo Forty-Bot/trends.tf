@@ -66,10 +66,11 @@
 	</p>
 
 	<h3>Does {{ trends() }} have an API?</h3>
-	<p> {{ trends() }} has a very small API at the moment. It is mostly used for site features
-	such as autocompletion. If you would like to see a more extensive API, send me a pull
-	request, or <a href="https://github.com/Forty-Bot/trends.tf/issues/41">comment on the
-	issue</a>.
+	<p>
+	{{ trends() }} has a <a href="{{ url_for('.api') }}">very small API</a> at the moment.
+	It is mostly used for site features such as autocompletion. If you would like to see a more
+	extensive API, send me a pull request, or <a
+	href="https://github.com/Forty-Bot/trends.tf/issues/41">comment on the issue</a>.
 	</p>
 	</div>
 {% endblock %}
