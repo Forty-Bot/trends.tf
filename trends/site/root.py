@@ -155,9 +155,9 @@ def leaderboard():
 
 @root.route('/logs')
 def logs():
-    if resp := logs_last_modified():
+    if resp := logs_last_modified(True):
         return resp
-    return flask.render_template("logs.html", logs=get_logs('basic').fetchall())
+    return flask.render_template("logs.html", logs=get_logs('basic', True).fetchall())
 
 @root.route('/log')
 def log_form():

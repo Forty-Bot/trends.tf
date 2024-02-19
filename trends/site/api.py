@@ -36,10 +36,12 @@ def next_page(rows):
 
 @api.route('/logs')
 def logs():
-    if resp := logs_last_modified():
+    dupes = flask.request.args.get('include_dupes', 'yes', str) == 'yes'
+    if resp := logs_last_modified(dupes):
         return resp
+
     view = flask.request.args.get('view', 'basic', str)
-    logs = [dict(log) for log in get_logs(view)]
+    logs = [dict(log) for log in get_logs(view, dupes)]
     return flask.jsonify(logs=logs, next_page=next_page(logs))
 
 @api.route('/maps')

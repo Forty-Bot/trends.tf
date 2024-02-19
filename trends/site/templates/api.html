@@ -358,6 +358,14 @@
 			</dl>
 			</p>
 		</li>
+		<li>
+			{{ pre("include_dupes") }} (default {{ pre("yes") }})
+			<p>
+			Include duplicate logs in the output. If {{ pre("yes") }}, then
+			{{ pre("duplicate_of") }} may be non-{{ pre("null") }}. If {{ pre("no") }},
+			then such logs will be not be included with the results.
+			</p>
+		</li>
 	</ul>
 	</p>
 	<h4>Response</h4>

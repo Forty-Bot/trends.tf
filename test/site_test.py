@@ -349,3 +349,6 @@ def test_api_logs(client):
 
     for log in get(updated_since=updated_pivot)[0]:
         assert log['updated'] > updated_pivot
+
+    for log in get(include_dupes='no')[0]:
+        assert log['duplicate_of'] is None

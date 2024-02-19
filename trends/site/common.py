@@ -6,10 +6,12 @@ import flask
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
                   last_modified
 
-def logs_last_modified():
+def logs_last_modified(dupes):
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'title', 'formatd', 'mapid', 'time', 'logid',
                                         'updated', 'league')
+    if not dupes:
+        filter_clauses += "\nAND duplicate_of ISNULL"
 
     db = get_db()
     cur = db.cursor()
@@ -34,11 +36,14 @@ def logs_last_modified():
     cur.execute(query, filters)
     return last_modified(cur.fetchone()[0])
 
-def get_logs(view):
+def get_logs(view, dupes):
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid',
                                         'updated', league='log.league')
+    if not dupes:
+        filter_clauses += "\nAND duplicate_of ISNULL"
+
     order, order_clause = get_order({
         'logid': "logid",
         'duration': "duration",
