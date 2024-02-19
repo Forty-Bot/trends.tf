@@ -17,6 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	let timezone = document.getElementById('timezone');
 	if (timezone) {
-		timezone.value = time_formatter.resolvedOptions().timeZone;
+		timezone.value = datetime_formatter.resolvedOptions().timeZone;
 	}
 });
