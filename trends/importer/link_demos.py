@@ -41,7 +41,9 @@ def link_logs(args, c):
         cur.execute("SELECT count(*) from linked;");
         count = cur.fetchone()[0]
         cur.execute("""UPDATE log
-                       SET demoid = linked.demoid
+                       SET
+                           demoid = linked.demoid,
+                           updated = extract(EPOCH FROM now())::BIGINT
                        FROM linked
                        WHERE log.logid = linked.logid;""")
         cur.execute("COMMIT;")

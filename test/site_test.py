@@ -146,6 +146,7 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
         ('date_from', data.draw(st.one_of(st.just(''), st.dates().map(str)))),
         ('time_to', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
         ('time_from', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
+        ('updated_since', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
         ('q', data.draw(st.one_of(players, substrings(st.sampled_from(names))))),
     ] + [('steamid64', steamid) for steamid in data.draw(st.lists(players))])
 
@@ -245,29 +246,38 @@ def test_api_logs(client):
         'matchid',
         'time',
         'title',
+        'updated',
     }
 
+    updated_pivot = 0
     for log in logs:
         logid = log['logid']
         assert logid is not None
 
         assert set(log.keys()) == valid_keys
 
+        unupdated = True
         if logid in linked_demos:
             assert log['demoid'] == linked_demos[logid]
+            unupdated = False
         else:
             assert log['demoid'] is None
 
         if logid in linked_matches:
             assert (log['league'], log['matchid']) == linked_matches[logid]
+            unupdated = False
         else:
             assert log['league'] is None
             assert log['matchid'] is None
 
         if logid in duplicates:
             assert log['duplicate_of'] == duplicates[logid]
+            unupdated = False
         else:
             assert log['duplicate_of'] is None
+
+        if unupdated:
+            updated_pivot = max(updated_pivot, log['updated'])
 
     assert logs == sorted(logs, key=lambda log: log['logid'], reverse=True)
 
@@ -331,3 +341,6 @@ def test_api_logs(client):
 
     for log in get(time_to=1573016400):
         assert log['time'] <= 1573016400
+
+    for log in get(updated_since=updated_pivot):
+        assert log['updated'] > updated_pivot

@@ -440,6 +440,7 @@ CREATE TABLE IF NOT EXISTS log (
 	league LEAGUE,
 	matchid INT,
 	team1_is_red BOOL,
+	updated BIGINT NOT NULL,
 	FOREIGN KEY (league, matchid) REFERENCES match (league, matchid),
 	CHECK ((uploader ISNULL) = (uploader_nameid ISNULL)),
 	-- All duplicates must be newer (and have larger logids) than what they are duplicates of
@@ -468,12 +469,10 @@ CREATE OR REPLACE VIEW log_nodups AS SELECT
 FROM log
 WHERE duplicate_of ISNULL;
 
--- For log search
 CREATE INDEX IF NOT EXISTS log_title ON log USING gin (title gin_trgm_ops);
-
--- To filter by date
 CREATE INDEX IF NOT EXISTS log_time ON log (time);
-
+CREATE INDEX IF NOT EXISTS log_updated on log (updated, time);
+CREATE INDEX IF NOT EXISTS log_map ON log (mapid);
 CREATE INDEX IF NOT EXISTS log_match ON log (league, matchid);
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS map_popularity AS

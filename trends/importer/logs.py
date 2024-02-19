@@ -108,12 +108,13 @@ def import_log(c, logid, log):
     info['uploader_playerid'] = c.fetchone()[0]
     c.execute("""INSERT INTO log (
                      logid, time, duration, title, mapid, red_score, blue_score, ad_scoring,
-                     uploader, uploader_nameid
+                     uploader, uploader_nameid, updated
                  ) VALUES (
                      %(logid)s, %(date)s, %(duration)s, %(title)s,
                      (SELECT mapid FROM map WHERE map = %(map)s),
                      %(red_score)s, %(blue_score)s, %(AD_scoring)s, %(uploader_playerid)s,
-                     (SELECT nameid FROM name WHERE name = %(uploader_name)s)
+                     (SELECT nameid FROM name WHERE name = %(uploader_name)s),
+                     extract(EPOCH FROM now())::BIGINT
                  );""",
               info)
     c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)", (logid, log))

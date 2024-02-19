@@ -7,20 +7,43 @@ from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_
                   last_modified
 
 def logs_last_modified():
+    filters = get_filter_params()
+    filter_clauses = get_filter_clauses(filters, 'title', 'formatd', 'mapid', 'time', 'logid',
+                                        'updated', 'league')
+
     db = get_db()
     cur = db.cursor()
-    cur.execute("SELECT max(time) FROM log;")
+    if filters['date_to_ts'] is not None:
+        # Postgres doesn't use log_time to filter on date_to_ts so we get a bad plan if date_to_ts
+        # is too far in the past (as we end up doing a full scan of log_updated). Give the planner a
+        # hint that it should use log_time instead. We pay the price by always reading 1000 rows.
+        query = f"""WITH log AS MATERIALIZED (SELECT
+                            updated
+                        FROM log
+                        WHERE TRUE
+                            {filter_clauses}
+                        ORDER BY updated DESC
+                        LIMIT 1000
+                    ) SELECT max(updated) FROM log;"""
+    else:
+        query = f"""SELECT max(updated)
+                        FROM log
+                        WHERE TRUE
+                            {filter_clauses};"""
+
+    cur.execute(query, filters)
     return last_modified(cur.fetchone()[0])
 
 def get_logs(view):
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid',
-                                        league='log.league')
+                                        'updated', league='log.league')
     order, order_clause = get_order({
         'logid': "logid",
         'duration': "duration",
         'date': "time",
+        'updated': "updated",
 	}, 'logid')
 
     if view == 'players':
@@ -73,6 +96,7 @@ def get_logs(view):
     logs.execute(f"""SELECT
                         logid,
                         time,
+                        updated,
                         duration,
                         title,
                         map,

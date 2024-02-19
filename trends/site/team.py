@@ -44,6 +44,7 @@ def get_comp():
         args['teamid'] = flask.g.team['teamid']
         return flask.redirect(flask.url_for(flask.request.endpoint, **args), 301)
 
+    # FIXME: not quite accurate when we display logs
     if resp := last_modified(flask.g.team['fetched']):
         return resp
 

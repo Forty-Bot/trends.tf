@@ -226,6 +226,15 @@
 	<a href="{{ url_for('api.logs', title="center") }}">filter results to TF2Center lobbies</a>.
 	</p>
 
+	{{ paramdef('updated_since') }}
+	<p>
+	Filter the results to those updated after the specified UNIX time.
+	For example, supplying {{ pre("updated_since=1646334000".format(p)) }} to the
+	{{ apiref('logs') }} endpoint would
+	<a href="{{ url_for('api.logs', updated_since=1646334000) }}">filter results to logs
+	updated after 2022-03-04 05:00:00Z</a>.
+	</p>
+
 	<h2 id="types">Members</h2>
 	<p>
 	This section documents members common across multiple responses.
@@ -324,6 +333,8 @@
 				<dd>Sort by {{ pre('time') }}</dd>
 				<dt>{{ pre('duration') }}</dt>
 				<dd>Sort by {{ pre('duration') }}</dd>
+				<dt>{{ pre('updated') }}</dt>
+				<dd>Sort by {{ pre('updated') }}</dd>
 			</dl>
 		</li>
 		<li>{{ paramref("sort_dir") }} (default {{ pre('desc') }})</li>
@@ -384,6 +395,8 @@
 			<dd>The upload {{ fieldref('time') }} of the log</dd>
 			<dt>{{ pre('title') }} : string</dt>
 			<dd>The (user-supplied) title for the log</dd>
+			<dt>{{ pre('updated') }} : number</dt>
+			<dd>The {{ fieldref('time') }} this object was last modified</dd>
 		</dl>
 		</p>
 

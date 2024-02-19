@@ -24,6 +24,7 @@ def get_overview():
         if not last_active:
             flask.abort(404)
 
+        # FIXME: this is not really accurate...
         if resp := last_modified(last_active):
             return resp
         break

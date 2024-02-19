@@ -177,6 +177,7 @@ def log(logids):
     logs.execute("""SELECT
                         logid,
                         time,
+                        updated,
                         title,
                         map,
                         format,
@@ -197,7 +198,7 @@ def log(logids):
     logids = tuple(log['logid'] for log in logs)
     if not logids:
         flask.abort(404)
-    if resp := last_modified(max(log['time'] for log in logs)):
+    if resp := last_modified(max(log['updated'] for log in logs)):
         return resp
 
     params = { 'logids': logids, 'llogids': list(logids) }

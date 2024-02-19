@@ -86,6 +86,7 @@ def link_matches(args, c):
         cur.execute("""UPDATE log SET
                            league = log_matches.league,
                            matchid = log_matches.matchid,
+                           updated = extract(EPOCH FROM now())::BIGINT,
                            team1_is_red = log_matches.team1_is_red
                        FROM log_matches
                        WHERE log.logid = log_matches.logid;""")

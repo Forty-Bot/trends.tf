@@ -21,7 +21,11 @@ def last_modified(since):
     if flask.current_app.debug:
         return None
 
-    flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
+    if since is None:
+        flask.g.last_modified = datetime.now(tz.UTC)
+    else:
+        flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
+
     if not werkzeug.http.is_resource_modified(flask.request.environ,
                                               last_modified=flask.g.last_modified):
         return "", 304
@@ -82,6 +86,7 @@ def get_filter_params():
     params['league'] = args.get('league', type=str)
     params['comp'] = args.get('comp', type=str)
     params['divid'] = args.get('divid', type=int)
+    params['updated'] = args.get('updated_since', type=int)
     if val := tuple(args.getlist('steamid64', type=int)[:5]):
         players = get_db().cursor()
         players.execute("""SELECT
@@ -165,6 +170,9 @@ def get_filter_clauses(params, *valid_columns, **column_map):
     simple_clause('class', 'classid')
     simple_clause('format', 'formatid')
     simple_clause('comp', 'compid', 'competition', 'name')
+
+    if 'updated' in column_map and params['updated']:
+        clauses.append(f"AND {column_map['updated']} > %(updated)s")
 
     if 'primary_classid' in column_map and params['class']:
         clauses.append(f"""AND {column_map['primary_classid']} = (
