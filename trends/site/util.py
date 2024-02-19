@@ -108,18 +108,21 @@ def get_filter_params():
     set_like_param('name')
 
     timezone = args.get('timezone', tz.UTC, tz.gettz)
-    def set_date_params(name):
-        name_ts = "{}_ts".format(name)
+    def set_date_params(prep):
+        name = f"date_{prep}"
+        name_ts = f"date_{prep}_ts"
         if date := args.get(name, None, datetime.fromisoformat):
             utcdate = date.replace(tzinfo=timezone).astimezone(tz.UTC)
             params[name] = date.date().isoformat()
             params[name_ts] = int(utcdate.timestamp())
+        elif timestamp := args.get(f"time_{prep}", None, int):
+            params[name_ts] = timestamp
         else:
             params[name] = None
             params[name_ts] = None
 
-    set_date_params('date_from')
-    set_date_params('date_to')
+    set_date_params('from')
+    set_date_params('to')
 
     if params['date_from_ts'] and params['date_to_ts']:
         if params['date_from_ts'] <= params['date_to_ts']:

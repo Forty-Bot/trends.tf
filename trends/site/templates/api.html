@@ -195,6 +195,21 @@
 	result comes before another if and only if the value of the first result's sort key is
 	greater than or equal to the other result's sort key.
 
+	{% macro time_param(p, r) %}
+	{{ paramdef(p) }}
+	<p>
+	Filter the results to those occuring at or {{ r }} the specified UNIX time.
+	For example, supplying {{ pre("{}=1646334000".format(p)) }} to the {{ apiref('logs') }}
+	endpoint would
+	<a href="{{ url_for('api.logs', **{ p: "1646334000" }) }}">filter results to logs occuring
+	on or {{ r }} 2022-03-04 05:00:00Z</a>. If either {{ paramref('date_from') }} or
+	{{ paramref('date_to') }} is present, they override this parameter.
+	</p>
+	{% endmacro %}
+
+	{{ time_param("time_from", "after") }}
+	{{ time_param("time_to", "before") }}
+
 	{{ paramdef("timezone") }}
 	<p>
 	This parameter supplies the time zone for use with the {{ paramref('date_from') }}, and
@@ -312,6 +327,8 @@
 			</dl>
 		</li>
 		<li>{{ paramref("sort_dir") }} (default {{ pre('desc') }})</li>
+		<li>{{ paramref("time_from") }}</li>
+		<li>{{ paramref("time_to") }}</li>
 		<li>{{ paramref("timezone") }}</li>
 		<li>{{ paramref("title") }}</li>
 	</ul>

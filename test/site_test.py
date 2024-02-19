@@ -121,6 +121,9 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
         ))),
     ))
 
+    def as_timestamp(dt):
+        return dt.timestamp()
+
     params = MultiDict([
         ('class', data.draw(st.sampled_from(('',) + classes))),
         ('format', data.draw(st.sampled_from((
@@ -139,8 +142,10 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
         ('title', data.draw(substrings(st.sampled_from([''] + titles)))),
         ('name', data.draw(substrings(st.sampled_from([''] + comps)))),
         ('timezone', data.draw(st.timezone_keys())),
-        ('date_to', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),
-        ('date_from', data.draw(st.one_of(st.just(''), st.datetimes().map(str)))),
+        ('date_to', data.draw(st.one_of(st.just(''), st.dates().map(str)))),
+        ('date_from', data.draw(st.one_of(st.just(''), st.dates().map(str)))),
+        ('time_to', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
+        ('time_from', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
         ('q', data.draw(st.one_of(players, substrings(st.sampled_from(names))))),
     ] + [('steamid64', steamid) for steamid in data.draw(st.lists(players))])
 
@@ -319,4 +324,10 @@ def test_api_logs(client):
         assert log['time'] >= 1573016400
 
     for log in get(date_to='2019-11-06', timezone='America/New_York'):
+        assert log['time'] <= 1573016400
+
+    for log in get(time_from=1573016400):
+        assert log['time'] >= 1573016400
+
+    for log in get(time_to=1573016400):
         assert log['time'] <= 1573016400
