@@ -13,6 +13,7 @@ from python_testing_crawler import Allow, Crawler, Rule, Request
 from werkzeug.datastructures import MultiDict
 from werkzeug.exceptions import HTTPException
 
+from trends.steamid import SteamID
 from trends.site.wsgi import create_app
 from trends.util import classes, leagues
 
@@ -278,6 +279,23 @@ def test_api_logs(client):
 
     assert logs == list(paged())
     assert get(offset=len(logs)) == []
+
+    for log in get(view='players'):
+        assert set(log.keys()) == valid_keys | { 'red', 'blue' }
+        for team in ('red', 'blue'):
+            team = log[team]
+            if log['league'] is None:
+                assert team['teamid'] is None
+            else:
+                assert team['teamid'] is not None
+
+            if log['league'] == 'rgl':
+                assert team['rgl_teamid'] is not None
+            else:
+                assert team['rgl_teamid'] is None
+
+            for player in team['players']:
+                SteamID(player)
 
     for by in ('logid', 'date', 'duration'):
         key = lambda log: log['time' if by == 'date' else by]

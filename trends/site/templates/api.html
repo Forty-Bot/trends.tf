@@ -266,6 +266,16 @@
 	<a href="https://developer.valvesoftware.com/wiki/SteamID">Valve</a>.
 	</p>
 
+	{{ fielddef('teamid') }}
+	<p>
+	A unique number identifying a team in a {{ fieldref('league') }} across multiple
+	competitions. {{ pre('teamid') }}s are only valid in the context of a particular
+	{{ fieldref('league') }}; different leagues may reuse the same {{ pre('teamid') }}.
+	{{ pre('teamid') }}s are generally assigned by their respective {{ fieldref('league') }}s.
+	The {{ pre('teamid') }}s used for RGL teams correspond to the minimum RGL
+	{{ pre('teamId') }} used by a team across multiple seasons.
+	</p>
+
 	{{ fielddef('time') }}
 	<p>
 	Unix time. That is, the number of non-leap seconds since 1970-01-01 00:00:00Z.
@@ -307,6 +317,24 @@
 	</ul>
 	</p>
 
+	<p>
+	The {{ pre('/v1/logs') }} endpoint also supports the following additional parameters:
+	<ul>
+		<li>
+			{{ pre("view") }} (default {{ pre("basic") }})
+			<p>
+			Return additional members for each log, as described below. Valid values
+			are:
+			<dl>
+				<dt>{{ pre("basic") }}</dt>
+				<dd>The default with no additional members</dd>
+				<dt>{{ pre("players") }}</dt>
+				<dd>Include additional members for players in the log</dd>
+			</dl>
+			</p>
+		</li>
+	</ul>
+	</p>
 	<h4>Response</h4>
 	<dl>
 		<dt>{{ pre('logs') }} : array(object)<dt>
@@ -339,6 +367,38 @@
 			<dd>The upload {{ fieldref('time') }} of the log</dd>
 			<dt>{{ pre('title') }} : string</dt>
 			<dd>The (user-supplied) title for the log</dd>
+		</dl>
+		</p>
+
+		<p>
+		Additionally, if the parameter {{ pre("view") }} is {{ pre("players") }}, the
+		following members are included:
+		<dl>
+			<dt>{{ pre('blue') }}, {{ pre('red') }} : object</dt>
+			<dd>
+			<p>
+			Information about the blue and red teams:
+			<dl>
+				<dt>{{ pre('players') }} : array(string)</dt>
+				<dd>
+				An array of {{ fieldref('steamid64') }}s, one for each player on
+				the team.
+				</dd>
+				<dt>{{ pre('rgl_teamid') }} : option(number)</dt>
+				<dd>
+				The RGL {{ pre("teamId") }} of this team. This ID is only valid
+				for use with the RGL API, and cannot be used elsewhere on
+				{{ trends() }}. This member is only present when {{ pre('league') }}
+				is {{ pre('rgl') }}.
+				</dd>
+				<dt>{{ pre('teamid') }} : option(number)</dt>
+				<dd>
+				The {{ fieldref('teamid') }} of this team, if there is a linked
+				match.
+				</dd>
+			</dl>
+			</p>
+			</dd>
 		</dl>
 		</p>
 		</dd>		

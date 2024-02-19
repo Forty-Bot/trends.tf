@@ -12,18 +12,65 @@ def logs_last_modified():
     cur.execute("SELECT max(time) FROM log;")
     return last_modified(cur.fetchone()[0])
 
-def get_logs():
+def get_logs(view):
     limit, offset = get_pagination()
     filters = get_filter_params()
-    filter_clauses = get_filter_clauses(filters, 'title', 'league', 'format', 'map', 'time',
-                                        'logid')
+    filter_clauses = get_filter_clauses(filters, 'title', 'format', 'map', 'time', 'logid',
+                                        league='log.league')
     order, order_clause = get_order({
         'logid': "logid",
         'duration': "duration",
         'date': "time",
 	}, 'logid')
+
+    if view == 'players':
+        extra_cols = """,
+            json_build_object(
+                'teamid', CASE WHEN team1_is_red THEN teamid1 ELSE teamid2 END,
+                'rgl_teamid', CASE WHEN team1_is_red THEN
+                    team1.rgl_teamid
+                ELSE
+                    team2.rgl_teamid
+                END,
+                'players', red_players
+            ) AS red,
+            json_build_object(
+                'teamid', CASE WHEN team1_is_red THEN teamid2 ELSE teamid1 END,
+                'rgl_teamid', CASE WHEN team1_is_red THEN
+                    team2.rgl_teamid
+                ELSE
+                    team1.rgl_teamid
+                END,
+                'players', blue_players
+            ) AS blue"""
+
+        extra_tables = """
+            CROSS JOIN LATERAL (SELECT
+                    array_agg(steamid64::TEXT) FILTER (WHERE team = 'Red') AS red_players,
+                    array_agg(steamid64::TEXT) FILTER (WHERE team = 'Blue') AS blue_players
+                FROM player_stats_backing
+                JOIN player USING (playerid)
+                WHERE logid = log.logid
+            ) AS players
+            LEFT JOIN match USING (league, matchid)
+            LEFT JOIN team_comp_backing AS team1 ON (
+                log.league = 'rgl'
+                AND team1.league = 'rgl'
+                AND team1.compid = match.compid
+                AND team1.teamid = match.teamid1
+            ) LEFT JOIN team_comp_backing AS team2 ON (
+                log.league = 'rgl'
+                AND team2.league = 'rgl'
+                AND team2.compid = match.compid
+                AND team2.teamid = match.teamid2
+            )
+            """
+    else:
+        extra_cols = ""
+        extra_tables = ""
+
     logs = get_db().cursor()
-    logs.execute("""SELECT
+    logs.execute(f"""SELECT
                         logid,
                         time,
                         duration,
@@ -32,15 +79,16 @@ def get_logs():
                         format,
                         duplicate_of,
                         demoid,
-                        league,
-                        matchid
+                        log.league,
+                        matchid{extra_cols}
                     FROM log
                     JOIN map USING (mapid)
                     LEFT JOIN format USING (formatid)
+                    {extra_tables}
                     WHERE TRUE
-                        {}
-                    ORDER BY {}
-                    LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
+                        {filter_clauses}
+                    ORDER BY {order_clause}
+                    LIMIT %(limit)s OFFSET %(offset)s;""",
                 { **filters, 'limit': limit, 'offset': offset })
     return logs
 

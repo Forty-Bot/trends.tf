@@ -28,7 +28,8 @@ def do_cache(resp):
 def logs():
     if resp := logs_last_modified():
         return resp
-    return flask.jsonify(logs=[dict(log) for log in get_logs()])
+    view = flask.request.args.get('view', 'basic', str)
+    return flask.jsonify(logs=[dict(log) for log in get_logs(view)])
 
 @api.route('/maps')
 def maps():
