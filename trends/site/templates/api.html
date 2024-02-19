@@ -171,15 +171,6 @@
 	control-point logs</a>.
 	</p>
 
-	{{ paramdef("offset") }}
-	<p>
-	Skip results equal to the value of this parameter. For example, supplying
-	{{ pre("limit=10") }} and {{ pre("offset=20") }} to the {{ apiref('logs') }} endpoint would
-	<a href="{{ url_for('api.logs', limit=10, offset=20) }}">return 10 matches starting from the
-	21<sup>st</sup> match</a>. This may be used to request successive pages from an endpoint.
-	The default offset is 0.
-	</p>
-
 	{{ paramdef("sort") }}
 	<p>
 	This parameter specifies the key to use when sorting the output. The valid keys vary between
@@ -284,6 +275,13 @@
 	assigned by their respective {{ fieldref('league') }}s.
 	</p>
 
+	{{ fielddef('next_page') }}
+	<p>
+	A relative URL to the next page of results. If the number of returned results is equal
+	to the {{ paramref('limit') }}, then this field may be non-{{ pre("null") }} even if the
+	next page is empty.
+	</p>
+
 	{{ fielddef('steamid64') }}
 	<p>
 	A unique number identifying a player. This is assigned by
@@ -323,7 +321,6 @@
 		<li>{{ paramref("league") }}</li>
 		<li>{{ paramref("limit") }}</li>
 		<li>{{ paramref("map") }}</li>
-		<li>{{ paramref("offset") }}</li>
 		<li>
 			{{ paramref("sort") }}, with valid values being:
 			<dl>
@@ -431,7 +428,8 @@
 			</dd>
 		</dl>
 		</p>
-		</dd>		
+		<dt>{{ pre('next_page') }} : option(string)<dt>
+		<dd>The {{ fieldref('next_page') }} of logs, if any</dd>
 	</dl>
 	</div>
 {% endblock %}

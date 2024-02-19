@@ -232,9 +232,10 @@ def test_api_logs(client):
     def get(**params):
         resp = client.get("api/v1/logs", query_string=params)
         assert resp.status_code == 200
-        return resp.json['logs']
+        resp = resp.json
+        return resp['logs'], resp['next_page']
 
-    logs = get()
+    logs, next_page = get()
     valid_keys = {
         'demoid',
         'duplicate_of',
@@ -280,22 +281,26 @@ def test_api_logs(client):
             updated_pivot = max(updated_pivot, log['updated'])
 
     assert logs == sorted(logs, key=lambda log: log['logid'], reverse=True)
+    assert next_page is None
 
     def paged(limit=10):
         off = 0
         while True:
-            logs = get(limit=limit, offset=off)
+            logs, next_page = get(limit=limit, offset=off)
             assert len(logs) <= limit
             yield from logs
 
             if len(logs) < limit:
+                assert next_page is None
                 return
+
             off += limit
+            assert next_page == f"/api/v1/logs?limit={limit}&offset={off}"
 
     assert logs == list(paged())
-    assert get(offset=len(logs)) == []
+    assert get(offset=len(logs)) == ([], None)
 
-    for log in get(view='players'):
+    for log in get(view='players')[0]:
         assert set(log.keys()) == valid_keys | { 'red', 'blue' }
         for team in ('red', 'blue'):
             team = log[team]
@@ -315,32 +320,32 @@ def test_api_logs(client):
     for by in ('logid', 'date', 'duration'):
         key = lambda log: log['time' if by == 'date' else by]
         for reverse in (True, False):
-            logs = get(sort=by, sort_dir='desc' if reverse else 'asc')
+            logs, _ = get(sort=by, sort_dir='desc' if reverse else 'asc')
             assert logs == sorted(logs, key=key, reverse=reverse)
 
-    for log in get(league="etf2l"):
+    for log in get(league="etf2l")[0]:
         assert log['league'] == "etf2l"
 
-    for log in get(format="sixes"):
+    for log in get(format="sixes")[0]:
         assert log['format'] == "sixes"
 
-    for log in get(title="serveme"):
+    for log in get(title="serveme")[0]:
         assert "serveme" in log['title']
 
-    for log in get(map="cp"):
+    for log in get(map="cp")[0]:
         assert "cp" in log['map']
 
-    for log in get(date_from='2019-11-06', timezone='America/New_York'):
+    for log in get(date_from='2019-11-06', timezone='America/New_York')[0]:
         assert log['time'] >= 1573016400
 
-    for log in get(date_to='2019-11-06', timezone='America/New_York'):
+    for log in get(date_to='2019-11-06', timezone='America/New_York')[0]:
         assert log['time'] <= 1573016400
 
-    for log in get(time_from=1573016400):
+    for log in get(time_from=1573016400)[0]:
         assert log['time'] >= 1573016400
 
-    for log in get(time_to=1573016400):
+    for log in get(time_to=1573016400)[0]:
         assert log['time'] <= 1573016400
 
-    for log in get(updated_since=updated_pivot):
+    for log in get(updated_since=updated_pivot)[0]:
         assert log['updated'] > updated_pivot

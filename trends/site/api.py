@@ -24,12 +24,23 @@ def do_cache(resp):
         resp.cache_control.max_age = 300
     return resp
 
+def next_page(rows):
+    args = flask.request.args.copy()
+    args.update(flask.request.view_args)
+
+    limit, offset = flask.g.page
+    args['limit'] = limit
+    if len(rows) == limit:
+        args['offset'] = offset + limit
+        return flask.url_for(flask.request.endpoint, **args)
+
 @api.route('/logs')
 def logs():
     if resp := logs_last_modified():
         return resp
     view = flask.request.args.get('view', 'basic', str)
-    return flask.jsonify(logs=[dict(log) for log in get_logs(view)])
+    logs = [dict(log) for log in get_logs(view)]
+    return flask.jsonify(logs=logs, next_page=next_page(logs))
 
 @api.route('/maps')
 def maps():
