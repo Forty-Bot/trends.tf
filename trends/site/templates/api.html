@@ -186,6 +186,16 @@
 	result comes before another if and only if the value of the first result's sort key is
 	greater than or equal to the other result's sort key.
 
+	{{ paramdef("steamid64") }}
+	<p>
+	Filter the results to those including this {{ fieldref('steamid64') }}. This parameter may
+	be specified up to five times to filter by additional players. For example, supplying
+	{{ pre("steamid64=76561197970669109") }} and {{ pre("steamid64=76561198053621664") }} to the
+	{{ apiref('logs') }} endpoint would
+	<a href="{{ url_for('api.logs', steamid64=[76561197970669109, 76561198053621664]) }}">
+	filter results to those where b4nny and habib both played</a>.
+	</p>
+
 	{% macro time_param(p, r) %}
 	{{ paramdef(p) }}
 	<p>
@@ -321,6 +331,7 @@
 		<li>{{ paramref("league") }}</li>
 		<li>{{ paramref("limit") }}</li>
 		<li>{{ paramref("map") }}</li>
+		<li>{{ paramref("steamid64") }}</li>
 		<li>
 			{{ paramref("sort") }}, with valid values being:
 			<dl>

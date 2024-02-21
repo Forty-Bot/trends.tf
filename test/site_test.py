@@ -12,6 +12,7 @@ import pytest
 from python_testing_crawler import Allow, Crawler, Rule, Request
 from werkzeug.datastructures import MultiDict
 from werkzeug.exceptions import HTTPException
+from werkzeug.urls import url_encode
 
 from trends.steamid import SteamID
 from trends.site.wsgi import create_app
@@ -283,19 +284,21 @@ def test_api_logs(client):
     assert logs == sorted(logs, key=lambda log: log['logid'], reverse=True)
     assert next_page is None
 
-    def paged(limit=10):
-        off = 0
+    def paged(**args):
+        args['offset'] = 0
+        if 'limit' not in args:
+            args['limit'] = 10
         while True:
-            logs, next_page = get(limit=limit, offset=off)
-            assert len(logs) <= limit
+            logs, next_page = get(**args)
+            assert len(logs) <= args['limit']
             yield from logs
 
-            if len(logs) < limit:
+            if len(logs) < args['limit']:
                 assert next_page is None
                 return
 
-            off += limit
-            assert next_page == f"/api/v1/logs?limit={limit}&offset={off}"
+            args['offset'] += args['limit']
+            assert next_page == f"/api/v1/logs?{url_encode(args)}"
 
     assert logs == list(paged())
     assert get(offset=len(logs)) == ([], None)
@@ -352,3 +355,8 @@ def test_api_logs(client):
 
     for log in get(include_dupes='no')[0]:
         assert log['duplicate_of'] is None
+
+    for log in paged(view='players', limit=1, steamid64=[76561198330799279, 76561198046130018]):
+        players = log['blue']['players'] + log['red']['players']
+        assert "76561198330799279" in players
+        assert "76561198046130018" in players
