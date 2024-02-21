@@ -1,7 +1,7 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com> #}
 {% macro navigation(rows) %}
-	{% set args = request.args.copy() %}
+	{% set args = request.args.to_dict(flat=False) %}
 	{% do args.update(request.view_args) %}
 	{% do args.__setitem__('limit', g.page.limit) %}
 	{% if g.page.offset != 0 %}

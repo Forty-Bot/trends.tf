@@ -25,7 +25,7 @@ def do_cache(resp):
     return resp
 
 def next_page(rows):
-    args = flask.request.args.copy()
+    args = flask.request.args.to_dict(flat=False)
     args.update(flask.request.view_args)
 
     limit, offset = flask.g.page
