@@ -39,7 +39,11 @@ Verify that you can connect to the database by running
 
     $ psql -d trends
 
-You can exit the `psql` shell using the `\q` command.
+You can exit the `psql` shell using the `\q` command. Finally, before importing any data, run
+
+    $ sudo -u postgres psql -d trends -f trends/bloom.sql
+
+to enable the bloom index extension (which must be done as a superuser).
 
 === Importing data
 

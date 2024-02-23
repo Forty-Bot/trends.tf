@@ -74,11 +74,16 @@ def leaderboard():
 
     # Since we are using a cube, we need to explicitly select the NULL rows
     cube_clauses = []
-    for (name, column) in (('class', 'classid'), ('format', 'formatid'), ('map', 'mapid')):
+    grouping = 0b00000
+    for (name, column, group) in (
+            ('map',    'mapid',    0b00001),
+            ('class',  'classid',  0b00010),
+            ('format', 'formatid', 0b00100),
+            ('league', 'league',   0b01000),
+    ):
         if not filters[name]:
-            cube_clauses.append("AND {} ISNULL".format(column))
-    if not filters['league']:
-        cube_clauses.append("AND league ISNULL")
+            cube_clauses.append(f"AND {column} ISNULL")
+            grouping |= group
     cube_clauses = '\n'.join(cube_clauses)
 
     order, order_clause = get_order({
@@ -137,7 +142,7 @@ def leaderboard():
                                    sum(dmg) * 1.0 / nullif(sum(dt), 0) AS dr,
                                    sum(hits) * 1.0 / nullif(sum(shots), 0) AS acc
                                FROM leaderboard_cube
-                               WHERE playerid NOTNULL
+                               WHERE playerid NOTNULL AND grouping = %(grouping)s
                                    {}
                                    {}
                                GROUP BY playerid
@@ -147,7 +152,7 @@ def leaderboard():
                            LEFT JOIN player USING (playerid)
                            LEFT JOIN name USING (nameid);"""
                            .format(filter_clauses, cube_clauses, order_clause),
-                        { **filters, 'limit': limit, 'offset': offset })
+                        { **filters, 'grouping': grouping, 'limit': limit, 'offset': offset })
     resp = flask.make_response(flask.render_template("leaderboard.html",
                                leaderboard=leaderboard.fetchall()))
     resp.cache_control.max_age = 3600

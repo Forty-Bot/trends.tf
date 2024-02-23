@@ -3,10 +3,12 @@
 
 from contextlib import contextmanager
 import logging
+import os
 
 import pytest
 from testing.postgresql import Postgresql
 
+import trends
 from trends.sql import db_connect
 from .create import create_test_db
 
@@ -22,6 +24,10 @@ def database(request):
     postgres_args = Postgresql.DEFAULT_SETTINGS['postgres_args']
     postgres_args += " -c full_page_writes=off"
     with Postgresql(postgres_args=postgres_args) as database:
+        with db_connect(database.url()) as c:
+            with open(f"{os.path.dirname(trends.__file__)}/bloom.sql") as bloom:
+                c.cursor().execute(bloom.read())
+
         with caplog_session(request) as caplog:
             with caplog.at_level(logging.ERROR):
                 create_test_db(database.url())

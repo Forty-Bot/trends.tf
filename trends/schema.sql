@@ -695,6 +695,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	formatid,
 	primary_classid AS classid,
 	mapid,
+	grouping(playerid, league, formatid, primary_classid, mapid) AS grouping,
 	sum(log.duration) AS duration,
 	sum((wins > losses)::INT) AS wins,
 	sum((wins = losses)::INT) AS ties,
@@ -712,10 +713,49 @@ GROUP BY CUBE (playerid, league, formatid, classid, mapid)
 ORDER BY mapid, classid, formatid, playerid, league
 WITH NO DATA;
 
-CREATE UNIQUE INDEX IF NOT EXISTS leaderboard_pkey
-	ON leaderboard_cube (mapid, classid, formatid, playerid, league);
+-- To help out the query planner
+CREATE STATISTICS IF NOT EXISTS leaderboard_stats (dependencies, ndistinct, mcv)
+	ON league, formatid, classid, mapid, grouping
+	FROM leaderboard_cube;
 
-CREATE INDEX IF NOT EXISTS leaderboard_classid ON leaderboard_cube (classid, formatid);
+-- When we have no filters (or nothing better)
+CREATE INDEX IF NOT EXISTS leaderboard_grouping ON leaderboard_cube (grouping);
+
+-- When we have a single filter
+CREATE INDEX IF NOT EXISTS leaderboard_league ON leaderboard_cube (league)
+	WHERE playerid NOTNULL
+		AND league NOTNULL
+		AND formatid ISNULL
+		AND classid ISNULL
+		AND mapid ISNULL
+		AND grouping = b'01110'::INT;
+CREATE INDEX IF NOT EXISTS leaderboard_format ON leaderboard_cube (formatid)
+	WHERE playerid NOTNULL
+		AND league ISNULL
+		AND formatid NOTNULL
+		AND classid ISNULL
+		AND mapid ISNULL
+		AND grouping = b'01110'::INT;
+CREATE INDEX IF NOT EXISTS leaderboard_class ON leaderboard_cube (classid)
+	WHERE playerid NOTNULL
+		AND league ISNULL
+		AND formatid ISNULL
+		AND classid NOTNULL
+		AND mapid ISNULL
+		AND grouping = b'01110'::INT;
+CREATE INDEX IF NOT EXISTS leaderboard_map ON leaderboard_cube (mapid)
+	WHERE playerid NOTNULL
+		AND league ISNULL
+		AND formatid ISNULL
+		AND classid ISNULL
+		AND mapid NOTNULL
+		AND grouping = b'01110'::INT;
+
+-- When we have multiple filters
+CREATE INDEX IF NOT EXISTS leaderboard_bloom ON leaderboard_cube
+	USING bloom (grouping, mapid, classid, formatid, league)
+	WITH (col1=1, col2=1, col3=1, col4=1, col5=1)
+	WHERE playerid NOTNULL;
 
 CREATE TABLE IF NOT EXISTS weapon (
 	weaponid SERIAL PRIMARY KEY,

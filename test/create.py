@@ -88,16 +88,15 @@ def create_test_db(url):
     with db_connect(url) as c:
         cur = c.cursor()
         cur.execute("ANALYZE;")
-        # A second time to test partitioning log_json
-        db_init(c)
-        cur.execute("REFRESH MATERIALIZED VIEW leaderboard_cube;")
-        cur.execute("REFRESH MATERIALIZED VIEW map_popularity;")
-
-    with db_connect(url) as c:
         class args:
             since = datetime.fromtimestamp(0)
         trends.importer.link_demos.link_logs(args, c)
         trends.importer.link_matches.link_matches(args, c)
+        cur.execute("ANALYZE;")
+        # A second time to test partitioning log_json
+        db_init(c)
+        cur.execute("REFRESH MATERIALIZED VIEW leaderboard_cube;")
+        cur.execute("REFRESH MATERIALIZED VIEW map_popularity;")
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
