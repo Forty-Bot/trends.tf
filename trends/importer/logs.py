@@ -114,7 +114,7 @@ def import_log(c, logid, log):
                      (SELECT mapid FROM map WHERE map = %(map)s),
                      %(red_score)s, %(blue_score)s, %(AD_scoring)s, %(uploader_playerid)s,
                      (SELECT nameid FROM name WHERE name = %(uploader_name)s),
-                     extract(EPOCH FROM now())::BIGINT
+                     greatest(extract(EPOCH FROM now())::BIGINT, %(date)s)
                  );""",
               info)
     c.execute("INSERT INTO log_json (logid, data) VALUES (%s, %s)", (logid, log))

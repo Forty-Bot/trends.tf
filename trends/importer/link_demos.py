@@ -43,7 +43,7 @@ def link_logs(args, c):
         cur.execute("""UPDATE log
                        SET
                            demoid = linked.demoid,
-                           updated = extract(EPOCH FROM now())::BIGINT
+                           updated = greatest(extract(EPOCH FROM now())::BIGINT, log.updated + 1)
                        FROM linked
                        WHERE log.logid = linked.logid;""")
         cur.execute("COMMIT;")
