@@ -60,6 +60,7 @@ def get_logs(view, dupes):
                 ELSE
                     team2.rgl_teamid
                 END,
+                'score', red_score,
                 'players', red_players
             ) AS red,
             json_build_object(
@@ -69,6 +70,7 @@ def get_logs(view, dupes):
                 ELSE
                     team1.rgl_teamid
                 END,
+                'score', blue_score,
                 'players', blue_players
             ) AS blue"""
 

@@ -442,6 +442,14 @@
 				The {{ fieldref('teamid') }} of this team, if there is a linked
 				match.
 				</dd>
+				<dt>{{ pre('score') }} : number</dt>
+				<dd>
+				The points scored by this team. This is the raw number as reported
+				on the scoreboard, and does not reflect rounds played. For instance,
+				if there is a stalemate due to the round timer this will not be
+				reflected in either score, and if there is a stalemate due to the
+				time limit this will be an extra point for the winning team.
+				</dd>
 			</dl>
 			</p>
 			</dd>

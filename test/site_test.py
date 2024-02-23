@@ -317,6 +317,7 @@ def test_api_logs(client):
             else:
                 assert team['rgl_teamid'] is None
 
+            assert team['score'] is not None
             for player in team['players']:
                 SteamID(player)
 
