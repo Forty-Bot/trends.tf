@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
+# Copyright (C) 2022, 24 Sean Anderson <seanga2@gmail.com>
 
 import logging
 import sys
@@ -15,7 +15,10 @@ def ban_player(steamid, reason, database):
         cur.execute("BEGIN;")
         cur.execute("UPDATE player SET banned = TRUE, ban_reason = %s WHERE steamid64 = %s",
                     (reason, steamid))
-        cur.execute("CREATE TEMP TABLE to_delete AS SELECT logid FROM log WHERE uploader = %s;",
+        cur.execute("""CREATE TEMP TABLE to_delete AS SELECT
+                           logid
+                       FROM log
+                       WHERE uploader = (SELECT playerid FROM player WHERE steamid64 = %s);""",
                     (steamid,))
         delete_logs(cur)
         cur.execute("COMMIT;")
