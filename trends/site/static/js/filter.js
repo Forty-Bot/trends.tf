@@ -24,11 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function render_option(data, escape) {
 	let div = document.createElement('div');
-	let img = document.createElement('img');
-	img.classList.add('avatar_small');
-	img.setAttribute('src', "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/" +
-	                        `avatars/${data.avatarhash.slice(0, 2)}/${data.avatarhash}.jpg`);
-	div.append(img, " ", data.name);
+	if (data.avatarhash == null) {
+		div.append(data.name);
+	} else {
+		let img = document.createElement('img');
+		img.classList.add('avatar_small');
+		img.setAttribute('src', "https://steamcdn-a.akamaihd.net/steamcommunity/public/"
+					`images/avatars/${data.avatarhash.slice(0, 2)}/` +
+					`${data.avatarhash}.jpg`);
+		div.append(img, " ", data.name);
+	}
 	return div;
 }
 
