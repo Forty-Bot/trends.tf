@@ -76,10 +76,10 @@ def leaderboard():
     cube_clauses = []
     grouping = 0b00000
     for (name, column, group) in (
-            ('map',    'mapid',    0b00001),
-            ('class',  'classid',  0b00010),
-            ('format', 'formatid', 0b00100),
-            ('league', 'league',   0b01000),
+            ('map',    'mapid',    0b0001),
+            ('class',  'classid',  0b0010),
+            ('format', 'formatid', 0b0100),
+            ('league', 'league',   0b1000),
     ):
         if not filters[name]:
             cube_clauses.append(f"AND {column} ISNULL")
@@ -142,7 +142,7 @@ def leaderboard():
                                    sum(dmg) * 1.0 / nullif(sum(dt), 0) AS dr,
                                    sum(hits) * 1.0 / nullif(sum(shots), 0) AS acc
                                FROM leaderboard_cube
-                               WHERE playerid NOTNULL AND grouping = %(grouping)s
+                               WHERE grouping = %(grouping)s
                                    {}
                                    {}
                                GROUP BY playerid

@@ -695,7 +695,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	formatid,
 	primary_classid AS classid,
 	mapid,
-	grouping(playerid, league, formatid, primary_classid, mapid) AS grouping,
+	grouping(league, formatid, primary_classid, mapid) AS grouping,
 	sum(log.duration) AS duration,
 	sum((wins > losses)::INT) AS wins,
 	sum((wins = losses)::INT) AS ties,
@@ -709,7 +709,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS leaderboard_cube AS SELECT
 	sum(hits) AS hits
 FROM log_nodups AS log
 JOIN player_stats USING (logid)
-GROUP BY CUBE (playerid, league, formatid, classid, mapid)
+GROUP BY playerid, CUBE (league, formatid, classid, mapid)
 ORDER BY mapid, classid, formatid, playerid, league
 WITH NO DATA;
 
@@ -723,39 +723,34 @@ CREATE INDEX IF NOT EXISTS leaderboard_grouping ON leaderboard_cube (grouping);
 
 -- When we have a single filter
 CREATE INDEX IF NOT EXISTS leaderboard_league ON leaderboard_cube (league)
-	WHERE playerid NOTNULL
+	WHERE grouping = b'0111'::INT
 		AND league NOTNULL
 		AND formatid ISNULL
 		AND classid ISNULL
-		AND mapid ISNULL
-		AND grouping = b'00111'::INT;
+		AND mapid ISNULL;
 CREATE INDEX IF NOT EXISTS leaderboard_format ON leaderboard_cube (formatid)
-	WHERE playerid NOTNULL
+	WHERE grouping = b'1011'::INT
 		AND league ISNULL
 		AND formatid NOTNULL
 		AND classid ISNULL
-		AND mapid ISNULL
-		AND grouping = b'01011'::INT;
+		AND mapid ISNULL;
 CREATE INDEX IF NOT EXISTS leaderboard_class ON leaderboard_cube (classid)
-	WHERE playerid NOTNULL
+	WHERE grouping = b'1101'::INT
 		AND league ISNULL
 		AND formatid ISNULL
 		AND classid NOTNULL
-		AND mapid ISNULL
-		AND grouping = b'01101'::INT;
+		AND mapid ISNULL;
 CREATE INDEX IF NOT EXISTS leaderboard_map ON leaderboard_cube (mapid)
-	WHERE playerid NOTNULL
+	WHERE grouping = b'1110'::INT
 		AND league ISNULL
 		AND formatid ISNULL
 		AND classid ISNULL
-		AND mapid NOTNULL
-		AND grouping = b'01110'::INT;
+		AND mapid NOTNULL;
 
 -- When we have multiple filters
 CREATE INDEX IF NOT EXISTS leaderboard_bloom ON leaderboard_cube
 	USING bloom (grouping, mapid, classid, formatid, league)
-	WITH (col1=1, col2=1, col3=1, col4=1, col5=1)
-	WHERE playerid NOTNULL;
+	WITH (col1=1, col2=1, col3=1, col4=1, col5=1);
 
 CREATE TABLE IF NOT EXISTS weapon (
 	weaponid SERIAL PRIMARY KEY,
