@@ -728,21 +728,21 @@ CREATE INDEX IF NOT EXISTS leaderboard_league ON leaderboard_cube (league)
 		AND formatid ISNULL
 		AND classid ISNULL
 		AND mapid ISNULL
-		AND grouping = b'01110'::INT;
+		AND grouping = b'00111'::INT;
 CREATE INDEX IF NOT EXISTS leaderboard_format ON leaderboard_cube (formatid)
 	WHERE playerid NOTNULL
 		AND league ISNULL
 		AND formatid NOTNULL
 		AND classid ISNULL
 		AND mapid ISNULL
-		AND grouping = b'01110'::INT;
+		AND grouping = b'01011'::INT;
 CREATE INDEX IF NOT EXISTS leaderboard_class ON leaderboard_cube (classid)
 	WHERE playerid NOTNULL
 		AND league ISNULL
 		AND formatid ISNULL
 		AND classid NOTNULL
 		AND mapid ISNULL
-		AND grouping = b'01110'::INT;
+		AND grouping = b'01101'::INT;
 CREATE INDEX IF NOT EXISTS leaderboard_map ON leaderboard_cube (mapid)
 	WHERE playerid NOTNULL
 		AND league ISNULL
