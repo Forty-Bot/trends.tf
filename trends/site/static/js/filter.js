@@ -29,7 +29,7 @@ function render_option(data, escape) {
 	} else {
 		let img = document.createElement('img');
 		img.classList.add('avatar_small');
-		img.setAttribute('src', "https://steamcdn-a.akamaihd.net/steamcommunity/public/"
+		img.setAttribute('src', "https://steamcdn-a.akamaihd.net/steamcommunity/public/" +
 					`images/avatars/${data.avatarhash.slice(0, 2)}/` +
 					`${data.avatarhash}.jpg`);
 		div.append(img, " ", data.name);
