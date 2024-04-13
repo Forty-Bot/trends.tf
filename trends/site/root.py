@@ -105,7 +105,7 @@ def leaderboard():
 
     db = get_db()
     leaderboard = db.cursor()
-    leaderboard.execute("""SELECT
+    leaderboard.execute(f"""SELECT
                                name,
                                avatarhash,
                                steamid64,
@@ -143,15 +143,15 @@ def leaderboard():
                                    sum(hits) * 1.0 / nullif(sum(shots), 0) AS acc
                                FROM leaderboard_cube
                                WHERE grouping = %(grouping)s
-                                   {}
-                                   {}
+                                   {filter_clauses}
+                                   {cube_clauses}
                                GROUP BY playerid
-                               ORDER BY {} NULLS LAST
+                               ORDER BY {order_clause} NULLS LAST
                                LIMIT %(limit)s OFFSET %(offset)s
                            ) AS leaderboard
                            LEFT JOIN player USING (playerid)
-                           LEFT JOIN name USING (nameid);"""
-                           .format(filter_clauses, cube_clauses, order_clause),
+                           LEFT JOIN name USING (nameid)
+                           ORDER BY {order_clause};""",
                         { **filters, 'grouping': grouping, 'limit': limit, 'offset': offset })
     resp = flask.make_response(flask.render_template("leaderboard.html",
                                leaderboard=leaderboard.fetchall()))
