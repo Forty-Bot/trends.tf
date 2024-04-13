@@ -54,7 +54,7 @@
 
         [Service]
         Type=oneshot
-        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW CONCURRENTLY leaderboard_cube' postgres:///trends
+        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW leaderboard_cube' postgres:///trends
         User=daemon
 
 /etc/systemd/system/leaderboard_refresh.timer:
