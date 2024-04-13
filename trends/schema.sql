@@ -238,8 +238,9 @@ CREATE TABLE IF NOT EXISTS team_player (
 		rostered WITH &&,
 		playerid WITH =
 	) WHERE (compid ISNULL),
-	FOREIGN KEY (league, teamid) REFERENCES league_team (league, teamid),
-	FOREIGN KEY (league, teamid, compid) REFERENCES team_comp_backing (league, teamid, compid),
+	FOREIGN KEY (league, teamid) REFERENCES league_team (league, teamid) DEFERRABLE,
+	FOREIGN KEY (league, teamid, compid)
+		REFERENCES team_comp_backing (league, teamid, compid) DEFERRABLE,
 	CHECK (league_team_per_comp(league) = (compid NOTNULL))
 );
 
@@ -295,8 +296,10 @@ CREATE TABLE IF NOT EXISTS match (
 	FOREIGN KEY (league, round_compid, round_seq)
 		REFERENCES comp_round (league, compid, round_seq),
 	FOREIGN KEY (league, divid, round_seq) REFERENCES div_round (league, divid, round_seq),
-	FOREIGN KEY (league, compid, teamid1) REFERENCES team_comp_backing (league, compid, teamid),
-	FOREIGN KEY (league, compid, teamid2) REFERENCES team_comp_backing (league, compid, teamid),
+	FOREIGN KEY (league, compid, teamid1)
+		REFERENCES team_comp_backing (league, compid, teamid) DEFERRABLE,
+	FOREIGN KEY (league, compid, teamid2)
+		REFERENCES team_comp_backing (league, compid, teamid) DEFERRABLE,
 	CHECK (teamid1 < teamid2),
 	CHECK (league_div_optional(league) OR (divid NOTNULL)),
 	CHECK (league_time_optional(league) OR forfeit OR (scheduled NOTNULL)),

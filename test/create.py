@@ -13,6 +13,22 @@ import trends.importer.rgl
 from trends.importer.fetch import DemoFileFetcher, ETF2LFileFetcher, FileFetcher, RGLFileFetcher
 from trends.sql import db_connect, db_init, db_schema
 
+# Pretend these two teams aren't linked so we can test combining them
+class RGLFirstFetcher(RGLFileFetcher):
+    def get_team(self, teamid):
+        ret = super().get_team(teamid)
+        if teamid == 5574:
+            ret['linkedTeams'] = []
+            ret['fetched'] = 1
+        if teamid == 4882:
+            ret['linkedTeams'] = []
+            ret['fetched'] = 1
+        return ret
+
+class RGLSecondFetcher(RGLFileFetcher):
+    def get_matchids(self):
+        yield 4664
+
 def create_test_db(url):
     # We use separate connections for importing because we use temporary tables which will alias
     # other queries.
@@ -82,9 +98,10 @@ def create_test_db(url):
         trends.importer.etf2l.import_etf2l(c, fetcher)
 
     with db_connect(url) as c:
-        fetcher = RGLFileFetcher(dir=f"{os.path.dirname(__file__)}/rgl")
-        trends.importer.rgl.import_rgl(c, fetcher)
-
+        dir = f"{os.path.dirname(__file__)}/rgl"
+        trends.importer.rgl.import_rgl(c, RGLFirstFetcher(dir=dir))
+        trends.importer.rgl.import_rgl(c, RGLSecondFetcher(dir=dir),
+                                       filter=trends.importer.rgl.no_filter_matchids)
     with db_connect(url) as c:
         cur = c.cursor()
         cur.execute("ANALYZE;")

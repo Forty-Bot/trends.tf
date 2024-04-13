@@ -37,6 +37,38 @@ def import_compdiv(c, cd):
                (SELECT div_nameid FROM div_name WHERE division = %(division)s), %(tier)s
            ) ON CONFLICT DO NOTHING;""", cd)
 
+def combine_teams(c, league, teamids):
+    """Combine teams
+    Combine the teams specified into one team. This may occasionally be necessary when RGL teams are
+    retroactively linked.
+    """
+
+    new_teamid = min(teamids)
+    teamids = tuple(teamid for teamid in teamids if teamid != new_teamid)
+    def set_constraints(behavior):
+        c.execute(
+            f"""SET CONSTRAINTS
+                    team_player_league_teamid_fkey,
+                    team_player_league_teamid_compid_fkey,
+                    match_league_compid_teamid1_fkey,
+                    match_league_compid_teamid2_fkey
+                {behavior};""");
+
+    set_constraints("DEFERRED")
+    for table, col in (
+        ('team_comp_backing', 'teamid'),
+        ('team_player', 'teamid'),
+        ('match', 'teamid1'),
+        ('match', 'teamid2'),
+    ):
+        c.execute(
+            f"""UPDATE {table}
+                SET {col} = %s
+                WHERE league = %s AND {col} IN %s;""", (new_teamid, league, teamids))
+    set_constraints("IMMEDIATE")
+
+    return new_teamid
+
 def import_team(c, t):
     """Import a team
     The competition and division should already be imported. t should be a dict with the following
@@ -69,13 +101,14 @@ def import_team(c, t):
     if teamids := t.get('rgl_teamids'):
         c.execute("SELECT teamid FROM team_comp WHERE rgl_teamid IN %s GROUP BY teamid",
                   (teamids,))
-        if c.rowcount not in (0, 1):
-            logging.warning("Too many matching teams for linked RGL teamids %s", teamids)
-
-        if row := c.fetchone():
-            t['teamid'] = row[0]
+        if c.rowcount > 1:
+            logging.info("Combining RGL teamids %s", teamids)
+            t['teamid'] = combine_teams(c, t['league'], tuple(row[0] for row in c.fetchall()))
         else:
-            teamid_col = min(teamids)
+            if row := c.fetchone():
+                t['teamid'] = row[0]
+            else:
+                teamid_col = min(teamids)
 
     c.execute("INSERT INTO team_name (team) VALUES (%(name)s) ON CONFLICT DO NOTHING", t)
     c.execute(
