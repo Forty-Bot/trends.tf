@@ -53,6 +53,7 @@ eu_type_map = {
     'Highlander': 'highlander',
     'Highlander Open': 'highlander',
     'National Highlander Team': 'highlander',
+    'Highlander Fun Team': 'highlander',
     'Fun Team': 'other',
     '6v6 Fun Team': 'sixes',
     'LAN Team': 'other',

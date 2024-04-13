@@ -1,0 +1,1089 @@
+{
+  "status": {
+    "code": 200,
+    "message": "OK"
+  },
+  "page": {
+    "entries_per_page": 100,
+    "page": 1,
+    "total_pages": 1
+  },
+  "transfers": [
+    {
+      "who": {
+        "id": 147870,
+        "url": "https://api.etf2l.org/player/147870.json",
+        "country": "Russia",
+        "steam": {
+          "id": "STEAM_0:1:482306584",
+          "id64": "76561198924878897",
+          "avatar": "https://avatars.steamstatic.com/dc5dfc4a26155f83370e207b0e1476cc10d03c60_full.jpg",
+          "id3": "U:1:964613169"
+        },
+        "name": "Teco"
+      },
+      "type": "left",
+      "time": 1712687450
+    },
+    {
+      "by": {
+        "country": "Kazakhstan",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119"
+        },
+        "name": "YsEn"
+      },
+      "type": "left",
+      "time": 1712235015,
+      "who": {
+        "steam": {
+          "id3": "U:1:873545421",
+          "avatar": "https://avatars.steamstatic.com/a4030a5e3d24daf3a3592743001ecca4e1fe2725_full.jpg",
+          "id64": "76561198833811149",
+          "id": "STEAM_0:1:436772710"
+        },
+        "name": "alexmodern",
+        "country": "International",
+        "url": "https://api.etf2l.org/player/148092.json",
+        "id": 148092
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391"
+        },
+        "name": "YsEn",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan"
+      },
+      "type": "joined",
+      "time": 1712058062,
+      "who": {
+        "name": "P0ker",
+        "steam": {
+          "id3": "U:1:847572207",
+          "avatar": "https://avatars.steamstatic.com/1200b45c30ca022fabb9e4fbad866461daa699f8_full.jpg",
+          "id64": "76561198807837935",
+          "id": "STEAM_0:1:423786103"
+        },
+        "country": "International",
+        "url": "https://api.etf2l.org/player/143069.json",
+        "id": 143069
+      }
+    },
+    {
+      "who": {
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/144411.json",
+        "id": 144411,
+        "name": "weff",
+        "steam": {
+          "id": "STEAM_0:0:478662936",
+          "id64": "76561198917591600",
+          "avatar": "https://avatars.steamstatic.com/020bc1b44b9f8bf940f00b00d397815010e0ab19_full.jpg",
+          "id3": "U:1:957325872"
+        }
+      },
+      "type": "joined",
+      "by": {
+        "country": "Kazakhstan",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119"
+        },
+        "name": "YsEn"
+      },
+      "time": 1712018661
+    },
+    {
+      "type": "left",
+      "time": 1711892657,
+      "who": {
+        "name": "LemStore",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/428e7140600cb9981ee9bbf042fc9f84537e1472_full.jpg",
+          "id3": "U:1:46496071",
+          "id64": "76561198006761799",
+          "id": "STEAM_0:1:23248035"
+        },
+        "url": "https://api.etf2l.org/player/147814.json",
+        "id": 147814,
+        "country": "Russia"
+      }
+    },
+    {
+      "time": 1711194114,
+      "type": "joined",
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg"
+        },
+        "name": "YsEn",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan"
+      },
+      "who": {
+        "id": 147876,
+        "url": "https://api.etf2l.org/player/147876.json",
+        "country": "Russia",
+        "name": "Sotnikov",
+        "steam": {
+          "id64": "76561198356772714",
+          "id3": "U:1:396506986",
+          "avatar": "https://avatars.steamstatic.com/3440847fe1523208fd24ae06f826368c94f84e6a_full.jpg",
+          "id": "STEAM_0:0:198253493"
+        }
+      }
+    },
+    {
+      "time": 1711192956,
+      "type": "joined",
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "name": "YsEn",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg"
+        }
+      },
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:482306584",
+          "id3": "U:1:964613169",
+          "avatar": "https://avatars.steamstatic.com/dc5dfc4a26155f83370e207b0e1476cc10d03c60_full.jpg",
+          "id64": "76561198924878897"
+        },
+        "name": "Teco",
+        "country": "Russia",
+        "id": 147870,
+        "url": "https://api.etf2l.org/player/147870.json"
+      }
+    },
+    {
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        },
+        "name": "YsEn"
+      },
+      "type": "joined",
+      "time": 1711178862,
+      "who": {
+        "name": "ais",
+        "steam": {
+          "id": "STEAM_0:0:220603711",
+          "id64": "76561198401473150",
+          "avatar": "https://avatars.steamstatic.com/867a8fbd6ace1817cbbdcd95cc67a632cadf870a_full.jpg",
+          "id3": "U:1:441207422"
+        },
+        "country": "International",
+        "id": 147564,
+        "url": "https://api.etf2l.org/player/147564.json"
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/145659.json",
+        "id": 145659,
+        "country": "Russia",
+        "name": "deincept",
+        "steam": {
+          "id": "STEAM_0:1:631881263",
+          "avatar": "https://avatars.steamstatic.com/0c8e78a8c52c8c4da39947c19138b9b0de98d58b_full.jpg",
+          "id3": "U:1:1263762527",
+          "id64": "76561199224028255"
+        }
+      },
+      "time": 1711131093,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1710755906,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:113041585",
+          "id64": "76561198186348898",
+          "id3": "U:1:226083170",
+          "avatar": "https://avatars.steamstatic.com/8dc8c0bf506994be070a61a51ee653a3e1fbbf9a_full.jpg"
+        },
+        "name": "limonchik",
+        "country": "Russia",
+        "id": 126410,
+        "url": "https://api.etf2l.org/player/126410.json"
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id": "STEAM_0:1:124497695"
+        },
+        "name": "YsEn",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan"
+      },
+      "type": "joined",
+      "time": 1710701250,
+      "who": {
+        "name": "Plush",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/6febc8726ff270fab9ce2d6d3edf8eeb59bcffa3_full.jpg",
+          "id3": "U:1:1155534277",
+          "id64": "76561199115800005",
+          "id": "STEAM_0:1:577767138"
+        },
+        "country": "Russia",
+        "id": 146249,
+        "url": "https://api.etf2l.org/player/146249.json"
+      }
+    },
+    {
+      "who": {
+        "id": 143642,
+        "url": "https://api.etf2l.org/player/143642.json",
+        "country": "Russia",
+        "steam": {
+          "id": "STEAM_0:1:492647443",
+          "id64": "76561198945560615",
+          "avatar": "https://avatars.steamstatic.com/4832519c8b14acd4f33dff5705b9aa0bfb89d13d_full.jpg",
+          "id3": "U:1:985294887"
+        },
+        "name": "puj"
+      },
+      "type": "left",
+      "time": 1710698667
+    },
+    {
+      "who": {
+        "country": "Ukraine",
+        "id": 140689,
+        "url": "https://api.etf2l.org/player/140689.json",
+        "name": "HU40CU",
+        "steam": {
+          "id64": "76561199053955880",
+          "avatar": "https://avatars.steamstatic.com/e0faab8ade21893dc52a77695d7856cc2dadb9ef_full.jpg",
+          "id3": "U:1:1093690152",
+          "id": "STEAM_0:0:546845076"
+        }
+      },
+      "type": "left",
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        },
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182
+      },
+      "time": 1710695477
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        },
+        "name": "YsEn",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan"
+      },
+      "type": "left",
+      "time": 1710695269,
+      "who": {
+        "name": "Sharcher",
+        "steam": {
+          "id64": "76561198831556015",
+          "id3": "U:1:871290287",
+          "avatar": "https://avatars.steamstatic.com/324f25b9dd746925a4d36329a7c50077cf41bcfd_full.jpg",
+          "id": "STEAM_0:1:435645143"
+        },
+        "country": "International",
+        "id": 148137,
+        "url": "https://api.etf2l.org/player/148137.json"
+      }
+    },
+    {
+      "time": 1709660869,
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119"
+        },
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan"
+      },
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:492647443",
+          "id3": "U:1:985294887",
+          "avatar": "https://avatars.steamstatic.com/4832519c8b14acd4f33dff5705b9aa0bfb89d13d_full.jpg",
+          "id64": "76561198945560615"
+        },
+        "name": "puj",
+        "id": 143642,
+        "url": "https://api.etf2l.org/player/143642.json",
+        "country": "Russia"
+      }
+    },
+    {
+      "by": {
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "name": "YsEn",
+        "steam": {
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id": "STEAM_0:1:124497695"
+        }
+      },
+      "type": "left",
+      "time": 1709524095,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:753674690",
+          "id3": "U:1:1507349380",
+          "avatar": "https://avatars.steamstatic.com/4fb7b54ead567a50753bcb48242f9b05a2d49bc1_full.jpg",
+          "id64": "76561199467615108"
+        },
+        "name": "LordOfOlives",
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/145737.json",
+        "id": 145737
+      }
+    },
+    {
+      "time": 1709475857,
+      "type": "joined",
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119"
+        },
+        "name": "YsEn",
+        "country": "Kazakhstan",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json"
+      },
+      "who": {
+        "id": 145683,
+        "url": "https://api.etf2l.org/player/145683.json",
+        "country": "Russia",
+        "steam": {
+          "id64": "76561198827450388",
+          "avatar": "https://avatars.steamstatic.com/ab8ab511cc91a1d516584bf103c1a4ac063cde1e_full.jpg",
+          "id3": "U:1:867184660",
+          "id": "STEAM_0:0:433592330"
+        },
+        "name": "The Loud"
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/147886.json",
+        "id": 147886,
+        "country": "International",
+        "name": "Fancyy",
+        "steam": {
+          "id64": "76561199015423988",
+          "avatar": "https://avatars.steamstatic.com/34adcd2a2c63e40ce323f872f4781ef5ee322413_full.jpg",
+          "id3": "U:1:1055158260",
+          "id": "STEAM_0:0:527579130"
+        }
+      },
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        },
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182
+      },
+      "type": "left",
+      "time": 1709475805
+    },
+    {
+      "who": {
+        "country": "Russia",
+        "id": 147890,
+        "url": "https://api.etf2l.org/player/147890.json",
+        "name": "Neo",
+        "steam": {
+          "id64": "76561198801075063",
+          "id3": "U:1:840809335",
+          "avatar": "https://avatars.steamstatic.com/b9912cffddf764189ed01801a2615cb81e2ce97f_full.jpg",
+          "id": "STEAM_0:1:420404667"
+        }
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id64": "76561198209261119"
+        },
+        "name": "YsEn"
+      },
+      "type": "joined",
+      "time": 1709424963
+    },
+    {
+      "who": {
+        "id": 126410,
+        "url": "https://api.etf2l.org/player/126410.json",
+        "country": "Russia",
+        "name": "limonchik",
+        "steam": {
+          "id": "STEAM_0:0:113041585",
+          "id64": "76561198186348898",
+          "id3": "U:1:226083170",
+          "avatar": "https://avatars.steamstatic.com/8dc8c0bf506994be070a61a51ee653a3e1fbbf9a_full.jpg"
+        }
+      },
+      "time": 1709424934,
+      "type": "joined",
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391"
+        },
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182
+      }
+    },
+    {
+      "time": 1709218417,
+      "by": {
+        "country": "Kazakhstan",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119"
+        },
+        "name": "YsEn"
+      },
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/148137.json",
+        "id": 148137,
+        "country": "International",
+        "steam": {
+          "id": "STEAM_0:1:435645143",
+          "avatar": "https://avatars.steamstatic.com/324f25b9dd746925a4d36329a7c50077cf41bcfd_full.jpg",
+          "id3": "U:1:871290287",
+          "id64": "76561198831556015"
+        },
+        "name": "Sharcher"
+      }
+    },
+    {
+      "time": 1708965798,
+      "type": "joined",
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119"
+        },
+        "name": "YsEn",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan"
+      },
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:753674690",
+          "id64": "76561199467615108",
+          "id3": "U:1:1507349380",
+          "avatar": "https://avatars.steamstatic.com/4fb7b54ead567a50753bcb48242f9b05a2d49bc1_full.jpg"
+        },
+        "name": "LordOfOlives",
+        "id": 145737,
+        "url": "https://api.etf2l.org/player/145737.json",
+        "country": "Russia"
+      }
+    },
+    {
+      "who": {
+        "id": 148095,
+        "url": "https://api.etf2l.org/player/148095.json",
+        "country": "Kazakhstan",
+        "name": "KobeyUber",
+        "steam": {
+          "id64": "76561198327281117",
+          "id3": "U:1:367015389",
+          "avatar": "https://avatars.steamstatic.com/758f733df5897da5f4c0813660973ab4e241a3d4_full.jpg",
+          "id": "STEAM_0:1:183507694"
+        }
+      },
+      "type": "joined",
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "name": "YsEn",
+        "steam": {
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id": "STEAM_0:1:124497695"
+        }
+      },
+      "time": 1708848193
+    },
+    {
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/b9912cffddf764189ed01801a2615cb81e2ce97f_full.jpg",
+          "id3": "U:1:840809335",
+          "id64": "76561198801075063",
+          "id": "STEAM_0:1:420404667"
+        },
+        "name": "Neo",
+        "country": "Russia",
+        "id": 147890,
+        "url": "https://api.etf2l.org/player/147890.json"
+      },
+      "type": "left",
+      "by": {
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan",
+        "name": "YsEn",
+        "steam": {
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        }
+      },
+      "time": 1708838553
+    },
+    {
+      "type": "joined",
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id": "STEAM_0:1:124497695"
+        },
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan"
+      },
+      "time": 1708799880,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:240457312",
+          "id64": "76561198441180353",
+          "avatar": "https://avatars.steamstatic.com/968fdf29ccf5fe07d3adc8125cfd49a0b55cd412_full.jpg",
+          "id3": "U:1:480914625"
+        },
+        "name": "seriosuly?",
+        "url": "https://api.etf2l.org/player/140188.json",
+        "id": 140188,
+        "country": "Russia"
+      }
+    },
+    {
+      "type": "joined",
+      "by": {
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg"
+        },
+        "name": "YsEn"
+      },
+      "time": 1708799871,
+      "who": {
+        "country": "Poland",
+        "url": "https://api.etf2l.org/player/148003.json",
+        "id": 148003,
+        "name": "wiz",
+        "steam": {
+          "id3": "U:1:956383806",
+          "avatar": "https://avatars.steamstatic.com/82e8e709b748d927dc7d1694fcf5a7d362dce4fa_full.jpg",
+          "id64": "76561198916649534",
+          "id": "STEAM_0:0:478191903"
+        }
+      }
+    },
+    {
+      "type": "left",
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id": "STEAM_0:1:124497695"
+        },
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182
+      },
+      "time": 1708798710,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:450584468",
+          "id64": "76561198861434665",
+          "id3": "U:1:901168937",
+          "avatar": "https://avatars.steamstatic.com/cc963c45b877398c8d1688f8788b713dd26730f6_full.jpg"
+        },
+        "name": "Lexandris",
+        "country": "International",
+        "url": "https://api.etf2l.org/player/147893.json",
+        "id": 147893
+      }
+    },
+    {
+      "type": "joined",
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg"
+        },
+        "name": "YsEn",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan"
+      },
+      "time": 1708508600,
+      "who": {
+        "country": "International",
+        "url": "https://api.etf2l.org/player/148092.json",
+        "id": 148092,
+        "name": "alexmodern",
+        "steam": {
+          "id": "STEAM_0:1:436772710",
+          "id64": "76561198833811149",
+          "id3": "U:1:873545421",
+          "avatar": "https://avatars.steamstatic.com/a4030a5e3d24daf3a3592743001ecca4e1fe2725_full.jpg"
+        }
+      }
+    },
+    {
+      "type": "joined",
+      "by": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        },
+        "name": "YsEn",
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182
+      },
+      "time": 1708504604,
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:23248035",
+          "id64": "76561198006761799",
+          "id3": "U:1:46496071",
+          "avatar": "https://avatars.steamstatic.com/428e7140600cb9981ee9bbf042fc9f84537e1472_full.jpg"
+        },
+        "name": "LemStore",
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/147814.json",
+        "id": 147814
+      }
+    },
+    {
+      "type": "joined",
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391"
+        },
+        "name": "YsEn"
+      },
+      "time": 1708250692,
+      "who": {
+        "name": "ZzanN :D",
+        "steam": {
+          "id": "STEAM_0:0:438253524",
+          "id3": "U:1:876507048",
+          "avatar": "https://avatars.steamstatic.com/a2f67d84e7f4538e30ad2b988ac33721ed3a864e_full.jpg",
+          "id64": "76561198836772776"
+        },
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/138219.json",
+        "id": 138219
+      }
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/145659.json",
+        "id": 145659,
+        "country": "Russia",
+        "steam": {
+          "id": "STEAM_0:1:631881263",
+          "id3": "U:1:1263762527",
+          "avatar": "https://avatars.steamstatic.com/0c8e78a8c52c8c4da39947c19138b9b0de98d58b_full.jpg",
+          "id64": "76561199224028255"
+        },
+        "name": "deincept"
+      },
+      "by": {
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391"
+        },
+        "name": "YsEn"
+      },
+      "type": "joined",
+      "time": 1708250579
+    },
+    {
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "steam": {
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        },
+        "name": "YsEn"
+      },
+      "type": "joined",
+      "time": 1706297010,
+      "who": {
+        "steam": {
+          "id64": "76561198370902997",
+          "avatar": "https://avatars.steamstatic.com/63d8d5a4c0873a3d03d05d32bac7fb9d6382f784_full.jpg",
+          "id3": "U:1:410637269",
+          "id": "STEAM_0:1:205318634"
+        },
+        "name": "EVR1k",
+        "url": "https://api.etf2l.org/player/147398.json",
+        "id": 147398,
+        "country": "Russia"
+      }
+    },
+    {
+      "who": {
+        "country": "International",
+        "url": "https://api.etf2l.org/player/147893.json",
+        "id": 147893,
+        "steam": {
+          "id3": "U:1:901168937",
+          "avatar": "https://avatars.steamstatic.com/cc963c45b877398c8d1688f8788b713dd26730f6_full.jpg",
+          "id64": "76561198861434665",
+          "id": "STEAM_0:1:450584468"
+        },
+        "name": "Lexandris"
+      },
+      "time": 1706292374,
+      "type": "joined",
+      "by": {
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan",
+        "name": "YsEn",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391"
+        }
+      }
+    },
+    {
+      "time": 1706282849,
+      "type": "joined",
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id": "STEAM_0:1:124497695"
+        },
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan"
+      },
+      "who": {
+        "steam": {
+          "id64": "76561198801075063",
+          "id3": "U:1:840809335",
+          "avatar": "https://avatars.steamstatic.com/b9912cffddf764189ed01801a2615cb81e2ce97f_full.jpg",
+          "id": "STEAM_0:1:420404667"
+        },
+        "name": "Neo",
+        "country": "Russia",
+        "id": 147890,
+        "url": "https://api.etf2l.org/player/147890.json"
+      }
+    },
+    {
+      "time": 1706189446,
+      "by": {
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391"
+        },
+        "name": "YsEn",
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan"
+      },
+      "type": "joined",
+      "who": {
+        "id": 147886,
+        "url": "https://api.etf2l.org/player/147886.json",
+        "country": "International",
+        "name": "Fancyy",
+        "steam": {
+          "id": "STEAM_0:0:527579130",
+          "id3": "U:1:1055158260",
+          "avatar": "https://avatars.steamstatic.com/34adcd2a2c63e40ce323f872f4781ef5ee322413_full.jpg",
+          "id64": "76561199015423988"
+        }
+      }
+    },
+    {
+      "time": 1706176244,
+      "by": {
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182,
+        "country": "Kazakhstan",
+        "name": "YsEn",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg"
+        }
+      },
+      "type": "joined",
+      "who": {
+        "name": "Liqu1dator.WOT",
+        "steam": {
+          "id64": "76561198404001106",
+          "avatar": "https://avatars.steamstatic.com/457d5103a0c0dda16a3f3f2fc48619134a635a5c_full.jpg",
+          "id3": "U:1:443735378",
+          "id": "STEAM_0:0:221867689"
+        },
+        "country": "International",
+        "url": "https://api.etf2l.org/player/147848.json",
+        "id": 147848
+      }
+    },
+    {
+      "who": {
+        "name": "Alex Mordi",
+        "steam": {
+          "id": "STEAM_0:1:170306983",
+          "id64": "76561198300879695",
+          "avatar": "https://avatars.steamstatic.com/45f1a88df3dc20adeff13cf40b9a5748f3c0d8ac_full.jpg",
+          "id3": "U:1:340613967"
+        },
+        "id": 147866,
+        "url": "https://api.etf2l.org/player/147866.json",
+        "country": "International"
+      },
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "name": "YsEn",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391"
+        }
+      },
+      "type": "joined",
+      "time": 1706008463
+    },
+    {
+      "time": 1705691786,
+      "by": {
+        "name": "YsEn",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id3": "U:1:248995391",
+          "id64": "76561198209261119",
+          "id": "STEAM_0:1:124497695"
+        },
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan"
+      },
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id": "STEAM_0:1:512331104",
+          "id3": "U:1:1024662209",
+          "avatar": "https://avatars.steamstatic.com/20ef94d6a09c3bc1f2406ab76116d66062c4bc08_full.jpg",
+          "id64": "76561198984927937"
+        },
+        "name": "CN1",
+        "id": 147841,
+        "url": "https://api.etf2l.org/player/147841.json",
+        "country": "International"
+      }
+    },
+    {
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "name": "YsEn",
+        "steam": {
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg",
+          "id": "STEAM_0:1:124497695"
+        }
+      },
+      "type": "joined",
+      "time": 1705668880,
+      "who": {
+        "name": "HU40CU",
+        "steam": {
+          "id": "STEAM_0:0:546845076",
+          "id64": "76561199053955880",
+          "id3": "U:1:1093690152",
+          "avatar": "https://avatars.steamstatic.com/e0faab8ade21893dc52a77695d7856cc2dadb9ef_full.jpg"
+        },
+        "url": "https://api.etf2l.org/player/140689.json",
+        "id": 140689,
+        "country": "Ukraine"
+      }
+    },
+    {
+      "type": "joined",
+      "by": {
+        "id": 140182,
+        "url": "https://api.etf2l.org/player/140182.json",
+        "country": "Kazakhstan",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg"
+        },
+        "name": "YsEn"
+      },
+      "time": 1705595994,
+      "who": {
+        "url": "https://api.etf2l.org/player/147834.json",
+        "id": 147834,
+        "country": "Russia",
+        "steam": {
+          "id64": "76561198946767983",
+          "avatar": "https://avatars.steamstatic.com/8e09bb10c69a79b7575dbbb0b357e5399af8a542_full.jpg",
+          "id3": "U:1:986502255",
+          "id": "STEAM_0:1:493251127"
+        },
+        "name": "XDelordr"
+      }
+    },
+    {
+      "time": 1705593381,
+      "type": "joined",
+      "who": {
+        "name": "YsEn",
+        "steam": {
+          "id": "STEAM_0:1:124497695",
+          "id64": "76561198209261119",
+          "id3": "U:1:248995391",
+          "avatar": "https://avatars.steamstatic.com/b25c63b1f1c0fef9ac41e5b43e86746bf74bc500_full.jpg"
+        },
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/140182.json",
+        "id": 140182
+      }
+    }
+  ]
+}

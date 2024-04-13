@@ -677,6 +677,54 @@
         "id": 2796
       },
       "r1": 0
+    },
+    {
+      "competition": {
+        "category": "The Highlander Open",
+        "type": "Highlander Fun Team",
+        "name": "The Highlander Open #4",
+        "id": 909,
+        "url": "https://api.etf2l.org/competition/909.json"
+      },
+      "time": 1713027600,
+      "round": "Week 2",
+      "clan2": {
+        "drop": 0,
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/660bfdba89bf1.png",
+          "group": null
+        },
+        "url": "https://api.etf2l.org/team/36135",
+        "country": "International",
+        "name": "Contract In Flames",
+        "id": 36135
+      },
+      "r1": 0,
+      "week": 2,
+      "defaultwin": 1,
+      "id": 88524,
+      "clan1": {
+        "drop": 0,
+        "steam": {
+          "group": "-HysK-",
+          "avatar": "http://etf2l.org/images/avatars/65a94a848c9fb.jpg"
+        },
+        "country": "Russia",
+        "url": "https://api.etf2l.org/team/36139",
+        "name": "HysK",
+        "id": 36139
+      },
+      "r2": 0,
+      "maps": [
+        "koth_proot_b5b",
+        "koth_product_final"
+      ],
+      "division": {
+        "name": "Group Stage",
+        "skill_contrib": 4,
+        "id": 2946,
+        "tier": 3
+      }
     }
   ],
   "page": {
