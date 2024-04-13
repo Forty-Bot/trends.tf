@@ -26,10 +26,10 @@ xfsprogs:
     - require:
       - blockdev: {{ db_dev }}
 
-{% set pg_version = 13 %}
+{% set pg_version = 15 %}
 {% if grains.os_family == 'Debian' %}
-{% set pg_confdir = "/etc/postgresql/13/data" %}
-{% set citus_version = "10.2" %} # I have no idea why they do it like this
+{% set pg_confdir = "/etc/postgresql/{}/data".format(pg_version) %}
+{% set citus_version = "11.3" %} # I have no idea why they do it like this
 {% set citus = "postgresql-{}-citus-{}".format(pg_version, citus_version) %}
 /usr/share/keyrings/citus.pub:
   file.managed:
