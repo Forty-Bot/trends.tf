@@ -157,13 +157,20 @@ create a file `/etc/prometheus_pass` containing the key. Set its permissions to 
 
 === Restoring a backup
 
-To restore a database, first create a database to restore into. Do not restore the schema first.
-Then (making sure that the variables outlined above are exported), run
+To restore a database (making sure that the variables outlined above are exported), run
 
-    $ restic dump latest trends.dump.zst | unzstd - | pg_restore --verbose -d <database>
+    # mkdir /srv/postgres/restored
+    # chown sean:sean /srv/postgres/restored
+    $ restic dump latest trends.tar.zst | unzstd - | tar -xC /srv/postgres/restored
+    $ pg_verifybackup /srv/postgres/restored
+    # chown -R postgres:postgres /srv/postgres/restored
+    # systemctl stop postgresql@XX-data
+    # rm -rf /srv/postgres/data
+    # mv /srv/postgres/restored /srv/postgres/data
+    # systemctl start postgresql@XX-data
 
-where `database` is the name of the new database. You can also specify a different snapshot instead
-of `latest` by using an ID from `restic snapshots`.
+You can also specify a different snapshot instead of `latest` by using an ID from `restic
+snapshots`.
 
 === Compressing old logs' json
 

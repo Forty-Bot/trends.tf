@@ -233,8 +233,8 @@ restic:
     - contents: |
         #!/usr/bin/bash
         set -euo pipefail
-        pg_dump --verbose -Fc -Z0 trends | zstd --rsyncable - | \
-          restic backup --stdin --stdin-filename trends.dump.zst
+        pg_basebackup --verbose -Ft -Xf -D - | zstd --rsyncable - | \
+          restic backup --stdin --stdin-filename trends.tar.zst
         restic forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 12
 
 /etc/systemd/system/backup.service:
