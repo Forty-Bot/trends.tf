@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
 
+import logging
+
 import psycopg2.extras
 
 def import_compdiv(c, cd):
