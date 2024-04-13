@@ -41,7 +41,7 @@ rgl_format_map = {
     'HL': 'highlander',
     'Highlander': 'highlander',
     'Newcomer Cup': 'sixes',
-    'PASS Time': 'other',
+    'PASS Time': 'fours',
 }
 
 RE_NAME_FORMAT = re.compile(r"(Sixes|NR Sixes|P7|Prolander|Fresh Meat|HL|Newcomer Cup|PASS Time)")
