@@ -2,6 +2,7 @@
 # Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
 
 from datetime import datetime
+from dateutil import tz
 import re
 import json
 import logging
@@ -136,7 +137,7 @@ def create_etf2l_parser(sub):
     b = etf2l_sub.add_parser("bulk", help="Bulk import from etf2ls.tf")
     b.set_defaults(fetcher=ETF2LBulkFetcher)
     b.add_argument("-s", "--since", type=datetime.fromisoformat,
-                   default=0, metavar="DATE",
+                   default=datetime.fromtimestamp(0, tz.UTC), metavar="DATE",
                    help="Only fetch matches created since DATE")
     b.add_argument("-N", "--new", action='store_true',
                    help="Only fetch matches created since the newest imported etf2l")
