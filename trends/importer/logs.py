@@ -798,7 +798,6 @@ def import_logs(c, fetcher, update_only):
     def commit():
         with sentry_sdk.start_span(op='db.transaction', description="commit"):
             cur.execute("BEGIN;")
-            cur.execute("SET CONSTRAINTS ALL DEFERRED;");
             delete_dup_logs(c)
             delete_bogus_logs(cur)
             delete_logs(cur)
