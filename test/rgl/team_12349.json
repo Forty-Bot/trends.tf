@@ -1,0 +1,40 @@
+{
+  "teamId": 12349,
+  "linkedTeams": [
+    11752
+  ],
+  "seasonId": 149,
+  "divisionId": 175,
+  "divisionName": "Division 2",
+  "teamLeader": "76561198124380112",
+  "createdAt": "2024-03-21T23:17:05.803Z",
+  "updatedAt": "2024-04-12T04:59:59.153Z",
+  "tag": "DIPPER",
+  "name": "Dipper Nation",
+  "finalRank": 99,
+  "teamStatus": "Dead",
+  "teamReady": false,
+  "players": [
+    {
+      "name": "Gunden",
+      "steamId": "76561198124380112",
+      "isLeader": true,
+      "joinedAt": "2024-03-21T23:17:05.850Z",
+      "leftAt": "2024-04-02T04:33:05.936Z"
+    },
+    {
+      "name": "Fuko",
+      "steamId": "76561198079853160",
+      "isLeader": false,
+      "joinedAt": "2024-03-21T23:17:06.006Z",
+      "leftAt": "2024-04-02T04:33:05.936Z"
+    },
+    {
+      "name": "sody",
+      "steamId": "76561198069558815",
+      "isLeader": false,
+      "joinedAt": "2024-03-21T23:45:39.076Z",
+      "leftAt": "2024-04-02T04:33:05.936Z"
+    }
+  ]
+}

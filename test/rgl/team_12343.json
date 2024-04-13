@@ -1,0 +1,45 @@
+{
+  "teamId": 12343,
+  "linkedTeams": [],
+  "seasonId": 149,
+  "divisionId": 175,
+  "divisionName": "Division 2",
+  "teamLeader": "76561198095121758",
+  "createdAt": "2024-03-21T00:07:04.283Z",
+  "updatedAt": "2024-04-12T04:59:59.186Z",
+  "tag": "GH",
+  "name": "goblin horse",
+  "finalRank": 2,
+  "teamStatus": "Ready",
+  "teamReady": true,
+  "players": [
+    {
+      "name": "pyroclastic flow",
+      "steamId": "76561198095121758",
+      "isLeader": true,
+      "joinedAt": "2024-03-21T00:07:04.470Z",
+      "leftAt": null
+    },
+    {
+      "name": "Jaguar",
+      "steamId": "76561197971152439",
+      "isLeader": false,
+      "joinedAt": "2024-03-27T18:55:15.313Z",
+      "leftAt": null
+    },
+    {
+      "name": "Bluster (Potentially Sentient!)",
+      "steamId": "76561198838054669",
+      "isLeader": false,
+      "joinedAt": "2024-03-30T23:15:50.896Z",
+      "leftAt": null
+    },
+    {
+      "name": "sigh",
+      "steamId": "76561197960690085",
+      "isLeader": false,
+      "joinedAt": "2024-03-31T19:35:35.690Z",
+      "leftAt": null
+    }
+  ]
+}

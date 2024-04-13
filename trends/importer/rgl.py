@@ -46,13 +46,13 @@ rgl_format_map = {
 
 RE_NAME_FORMAT = re.compile(r"(Sixes|NR Sixes|P7|Prolander|Fresh Meat|HL|Newcomer Cup|PASS Time)")
 def parse_season(season):
-    if season['formatName'] is None:
-        m = RE_NAME_FORMAT.match(season['name'])
+    try:
+        fmt = rgl_format_map[season['formatName']]
+    except KeyError:
+        m = RE_NAME_FORMAT.search(season['name'])
         if not m:
             raise ValueError(f"Unknown format for {season['name']}")
         fmt = rgl_format_map[m.group(1)]
-    else:
-        fmt = rgl_format_map[season['formatName']]
 
     return {
         'format': fmt,
