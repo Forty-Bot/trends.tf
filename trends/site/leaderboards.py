@@ -92,7 +92,7 @@ def overview():
                            ) AS leaderboard
                            LEFT JOIN player USING (playerid)
                            LEFT JOIN name USING (nameid)
-                           ORDER BY {order_clause};""",
+                           ORDER BY {order_clause} NULLS LAST;""",
                         { **filters, 'grouping': grouping, 'limit': limit, 'offset': offset })
     resp = flask.make_response(flask.render_template("leaderboards/overview.html",
                                leaderboard=leaderboard.fetchall()))
