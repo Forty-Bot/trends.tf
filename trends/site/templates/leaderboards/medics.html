@@ -1,0 +1,116 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2021 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/filter.html" import filter %}
+{% from "macros/format.html" import optint, optformat, comma_col, duration_col %}
+{% from "macros/pagination.html" import navigation %}
+{% from "macros/icons.html" import classicon, playerlink %}
+{% from "macros/sort.html" import sort %}
+{% extends "leaderboards/base.html" %}
+{% block title %}Medics - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h2>Medics</h2>
+	{{ filter('league', 'format', 'map') }}
+	{{ sort({
+		'logs': "Logs",
+		'ubers': "Übers",
+		'drops': "Drops",
+		'ubers30': "Übers per 30 minutes",
+		'drops30': "Drops per 30 minutes",
+		'lost30': "Advantages lost per 30 minutes",
+		'droprate': "Drop percentage",
+		'medirate': "Medigun Über percentage",
+		'kritzrate': "Kritz Über percentage",
+		'otherrate': "Other Über percentage",
+		'avg_time_before_using': "Average time before Übering",
+		'avg_time_to_build': "Average time to build",
+		'avg_uber_duration': "Average Über duration",
+		'hpm': "Healing per minute",
+		'hpm_scout': "Scout healing per minute",
+		'hpm_soldier': "Soldier healing per minute",
+		'hpm_pyro': "Pyro healing per minute",
+		'hpm_demoman': "Demo healing per minute",
+		'hpm_engineer': "Engineer healing per minute",
+		'hpm_heavyweapons': "Heavy healing per minute",
+		'hpm_medic': "Medic healing per minute",
+		'hpm_sniper': "Sniper healing per minute",
+		'hpm_spy': "Spy healing per minute",
+		'hpm_other': "Other healing per minute",
+		'duration': "Duration",
+	   }) }}
+	{{ navigation(medics) }}
+{% macro header() %}
+<tr>
+	<th></th>
+	<th>Player</th>
+	<th><abbr title="Total logs">Logs</abbr></th>
+	<th>Übers</th>
+	<th>Drops</th>
+	<th><abbr title="Percent of built ubers dropped">D%</abbr></th>
+	<th><abbr title="Übers per 30 minutes">Ü/30</abbr></th>
+	<th><abbr title="Drops per 30 minutes">D/30</abbr></th>
+	<th><abbr title="Advantages lost per 30 minutes">L/30</abbr></th>
+	<th><abbr title="Medigun Übers used (when recorded)">M%</30/abbr></th>
+	<th><abbr title="Kritz Übers used (when recorded)">K%</abbr></th>
+	<th><abbr title="Other Übers used (when recorded)">O%</abbr></th>
+	<th><abbr title="Average time before using in seconds">
+		<span class="mean">TU</span>
+	</abbr></th>
+	<th><abbr title="Average time to build in seconds"><span class="mean">TB</span></abbr></th>
+	<th><abbr title="Average Über duration in seconds"><span class="mean">TI</span></abbr></th>
+	<th><abbr title="Healing per minute">H/M</abbr></th>
+	<th><abbr title="Scout healing per minute">{{ classicon('scout') }}H/M</abbr></th>
+	<th><abbr title="Soldier healing per minute">{{ classicon('soldier') }}H/M</abbr></th>
+	<th><abbr title="Pyro healing per minute">{{ classicon('pyro') }}H/M</abbr></th>
+	<th><abbr title="Demo healing per minute">{{ classicon('demoman') }}H/M</abbr></th>
+	<th><abbr title="Engineer healing per minute">{{ classicon('engineer') }}H/M</abbr></th>
+	<th><abbr title="Heavy healing per minute">{{ classicon('heavyweapons') }}H/M</abbr></th>
+	<th><abbr title="Medic healing per minute">{{ classicon('medic') }}H/M</abbr></th>
+	<th><abbr title="Sniper healing per minute">{{ classicon('sniper') }}H/M</abbr></th>
+	<th><abbr title="Spy healing per minute">{{ classicon('spy') }}H/M</abbr></th>
+	<th><abbr title="Other healing per minute">?H/M</abbr></th>
+	<th>Time Played</td>
+</tr>
+{% endmacro %}
+	<table>
+		<thead>{{ header() }}</thead>
+		<tbody>
+			{% for medic in medics %}
+			<tr>
+				<td>{{ loop.index + g.page.offset }}</td>
+				<td class="left">
+					{{ playerlink(medic.steamid64, medic.name,
+					              medic.avatarhash) }}
+				</td>
+				<td>{{ medic.logs }}</td>
+				<td>{{ optint(medic.ubers) }}</td>
+				<td>{{ optint(medic.drops) }}</td>
+				<td>{{ optformat("{:.1%}", medic.droprate) }}</td>
+				<td>{{ optformat("{:.1f}", medic.ubers30) }}</td>
+				<td>{{ optformat("{:.1f}", medic.drops30) }}</td>
+				<td>{{ optformat("{:.1f}", medic.lost30) }}</td>
+				<td>{{ optformat("{:.1%}", medic.medirate) }}</td>
+				<td>{{ optformat("{:.1%}", medic.kritzrate) }}</td>
+				<td>{{ optformat("{:.1%}", medic.otherrate) }}</td>
+				<td>{{ optint(medic.avg_time_before_using) }}</td>
+				<td>{{ optint(medic.avg_time_to_build) }}</td>
+				<td>{{ optformat("{:.1f}", medic.avg_uber_duration) }}</td>
+				<td>{{ optint(medic.hpm) }}</td>
+				<td>{{ optint(medic.hpm_scout) }}</td>
+				<td>{{ optint(medic.hpm_soldier) }}</td>
+				<td>{{ optint(medic.hpm_pyro) }}</td>
+				<td>{{ optint(medic.hpm_demoman) }}</td>
+				<td>{{ optint(medic.hpm_engineer) }}</td>
+				<td>{{ optint(medic.hpm_heavyweapons) }}</td>
+				<td>{{ optint(medic.hpm_medic) }}</td>
+				<td>{{ optint(medic.hpm_sniper) }}</td>
+				<td>{{ optint(medic.hpm_spy) }}</td>
+				<td>{{ optint(medic.hpm_other) }}</td>
+				<td>{{ medic['duration'] | duration }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>{{ header() }}</tfoot>
+	</table>
+	{{ navigation(medics) }}
+{% endblock %}

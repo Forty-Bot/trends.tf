@@ -310,3 +310,7 @@ h4 {
 .pre {
 	font-family: monospace;
 }
+
+.mean {
+	text-decoration: overline;
+}

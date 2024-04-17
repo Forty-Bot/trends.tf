@@ -69,6 +69,29 @@
         [Install]
         WantedBy=timers.target
 
+/etc/systemd/system/medic_refresh.service:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Refresh medic leaderboard
+
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW medic_cube' postgres:///trends
+        User=daemon
+
+/etc/systemd/system/medic_refresh.timer:
+  file.managed:
+    - contents: |
+        [Unit]
+        Description=Daily medic leaderboard refresh
+
+        [Timer]
+        OnCalendar=7:30
+
+        [Install]
+        WantedBy=timers.target
+
 /etc/systemd/system/map_refresh.service:
   file.managed:
     - contents: |
@@ -246,6 +269,8 @@ backend_services:
       - /etc/systemd/system/player_import.service
       - /etc/systemd/system/leaderboard_refresh.service
       - /etc/systemd/system/leaderboard_refresh.timer
+      - /etc/systemd/system/medic_refresh.service
+      - /etc/systemd/system/medic_refresh.timer
       - /etc/systemd/system/map_refresh.service
       - /etc/systemd/system/map_refresh.timer
       - /etc/systemd/system/weapon_import.service
@@ -274,6 +299,12 @@ player_import.service:
       - backend_services
 
 leaderboard_refresh.timer:
+  service.running:
+    - enable: True
+    - require:
+      - backend_services
+
+medic_refresh.timer:
   service.running:
     - enable: True
     - require:

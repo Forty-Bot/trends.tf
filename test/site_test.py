@@ -101,6 +101,7 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
             "/search",
             "/logs",
             "/leaderboard",
+            "/medics",
             "/api/v1/players",
             "/api/v1/logs",
         )),

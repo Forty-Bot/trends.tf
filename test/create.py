@@ -114,6 +114,7 @@ def create_test_db(url):
         # A second time to test partitioning log_json
         db_init(c)
         cur.execute("REFRESH MATERIALIZED VIEW leaderboard_cube;")
+        cur.execute("REFRESH MATERIALIZED VIEW medic_cube;")
         cur.execute("REFRESH MATERIALIZED VIEW map_popularity;")
 
 if __name__ == '__main__':
