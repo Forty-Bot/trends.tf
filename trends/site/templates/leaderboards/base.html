@@ -1,0 +1,10 @@
+{# SPDX-License-Identifier: AGPL-3.0-only #}
+{# Copyright (C) 2020-24 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/nav.html" import navbar %}
+{% extends "base.html" %}
+{% block title %}Leaderboards - {{ super() }}{% endblock %}
+{% block content %}
+	{{ super() }}
+	<h1>Leaderboards</h1>
+	{{ navbar(('.overview', "Overview"),) }}
+{% endblock %}

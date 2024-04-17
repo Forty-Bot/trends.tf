@@ -5,11 +5,11 @@
 {% from "macros/pagination.html" import navigation %}
 {% from "macros/icons.html" import playerlink %}
 {% from "macros/sort.html" import sort %}
-{% extends "base.html" %}
-{% block title %}Leaderboard - {{ super() }}{% endblock %}
+{% extends "leaderboards/base.html" %}
+{% block title %}Overview - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
-	<h1>Leaderboard</h1>
+	<h2>Overview</h2>
 	{{ filter('class', 'league', 'format', 'map') }}
 	{{ sort({
 		'logs': "Logs",

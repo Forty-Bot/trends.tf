@@ -6,7 +6,7 @@
 	<h1>Team Fortress 2 Stats and Trends</h1>
 	<dl>
 		<dt>Players</dt>
-		<dd><a href="{{ url_for('.leaderboard') }}">
+		<dd><a href="{{ url_for('leaderboards.overview') }}">
 			{{ "{:,}".format(players) }}
 		</a></dt>
 		<dt>Logs</dt>
