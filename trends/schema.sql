@@ -618,10 +618,10 @@ CREATE TABLE IF NOT EXISTS medic_stats (
 	drops INT NOT NULL,
 	advantages_lost INT,
 	biggest_advantage_lost INT,
-	avg_time_before_healing REAL,
-	avg_time_before_using REAL,
-	avg_time_to_build REAL,
-	avg_uber_duration REAL,
+	avg_time_before_healing REAL CHECK (avg_time_before_healing > 0),
+	avg_time_before_using REAL CHECK (avg_time_before_using > 0),
+	avg_time_to_build REAL CHECK (avg_time_to_build > 0),
+	avg_uber_duration REAL CHECK (avg_uber_duration > 0 AND avg_uber_duration < 8),
 	deaths_after_uber INT, -- within 20s
 	deaths_before_uber INT, -- 95-99%
 	PRIMARY KEY (playerid, logid),

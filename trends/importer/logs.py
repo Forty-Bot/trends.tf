@@ -275,11 +275,19 @@ def import_log(c, logid, log):
                     other_ubers = medic['ubers'] - medic['medigun_ubers'] - medic['kritz_ubers']
                     medic['other_ubers'] = other_ubers
 
-                # All of these could be missing
+                # Remove nonsensical derived data
                 for prop in ('avg_time_before_healing', 'avg_time_before_using',
-                             'avg_time_to_build', 'avg_uber_length', 'advantages_lost',
-                             'biggest_advantage_lost', 'deaths_within_20s_after_uber',
-                             'deaths_with_95_99_uber'):
+                             'avg_time_to_build', 'avg_uber_length'):
+                    medic[prop] = medic.get(prop, 0)
+                    if medic[prop] <= 0:
+                        medic[prop] = None
+
+                if medic['avg_uber_length'] is not None and medic['avg_uber_length'] > 8:
+                    medic['avg_uber_length'] = None
+
+                # All of these could be missing
+                for prop in ('advantages_lost', 'biggest_advantage_lost',
+                             'deaths_within_20s_after_uber', 'deaths_with_95_99_uber'):
                     medic[prop] = medic.get(prop)
 
                 c.execute("""INSERT INTO medic_stats (
