@@ -789,7 +789,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS medic_cube AS SELECT
 	sum(healing_other) AS healing_other
 FROM log_nodups AS log
 JOIN medic_stats USING (logid)
-LEFT JOIN LATERAL (SELECT
+LEFT JOIN (SELECT
 		logid,
 		healer AS playerid,
 		sum(healing) AS healing,
@@ -806,9 +806,7 @@ LEFT JOIN LATERAL (SELECT
 	FROM heal_stats
 	JOIN player_stats USING (logid)
 	LEFT JOIN class ON (classid=primary_classid)
-	WHERE logid = medic_stats.logid
-		AND healer = medic_stats.playerid
-		AND player_stats.playerid = healee
+	WHERE player_stats.playerid = healee
 	GROUP BY logid, healer
 ) AS heal_stats USING (logid, playerid)
 GROUP BY playerid, CUBE (league, formatid, mapid)
