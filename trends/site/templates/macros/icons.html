@@ -10,7 +10,7 @@
 		style="opacity: {{ "{:.0%}".format(pct | float | opacit) }}"
 	{% endif %}
 	>
-{% endmacro %}
+{%- endmacro %}
 {% macro demoicon(demoid) %}
 	{% if demoid != None %}
 	<a href="https://demos.tf/{{ demoid }}">
