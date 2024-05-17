@@ -786,6 +786,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS medic_cube AS SELECT
 	sum(healing_medic) AS healing_medic,
 	sum(healing_sniper) AS healing_sniper,
 	sum(healing_spy) AS healing_spy,
+	sum(healing_enemy) AS healing_enemy,
 	sum(healing_other) AS healing_other
 FROM log_nodups AS log
 JOIN medic_stats USING (logid)
@@ -793,6 +794,7 @@ LEFT JOIN (SELECT
 		logid,
 		healer AS playerid,
 		sum(healing) AS healing,
+		sum(CASE WHEN healer = healee THEN healing END) AS healing_self,
 		sum(CASE WHEN class = 'scout' THEN healing END) AS healing_scout,
 		sum(CASE WHEN class = 'soldier' THEN healing END) AS healing_soldier,
 		sum(CASE WHEN class = 'pyro' THEN healing END) AS healing_pyro,
@@ -802,11 +804,15 @@ LEFT JOIN (SELECT
 		sum(CASE WHEN class = 'medic' THEN healing END) AS healing_medic,
 		sum(CASE WHEN class = 'sniper' THEN healing END) AS healing_sniper,
 		sum(CASE WHEN class = 'spy' THEN healing END) AS healing_spy,
+		sum(CASE WHEN healer_stats.team != healee_stats.team THEN healing END)
+			AS healing_enemy,
 		sum(CASE WHEN class ISNULL THEN healing END) AS healing_other
 	FROM heal_stats
-	JOIN player_stats USING (logid)
-	LEFT JOIN class ON (classid=primary_classid)
-	WHERE player_stats.playerid = healee
+	JOIN player_stats AS healer_stats USING (logid)
+	JOIN player_stats AS healee_stats USING (logid)
+	LEFT JOIN class ON (classid=healee_stats.primary_classid)
+	WHERE healer_stats.playerid = healer
+		AND healee_stats.playerid = healee
 	GROUP BY logid, healer
 ) AS heal_stats USING (logid, playerid)
 GROUP BY playerid, CUBE (league, formatid, mapid)

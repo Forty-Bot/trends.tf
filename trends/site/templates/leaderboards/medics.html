@@ -35,6 +35,7 @@
 		'hpm_medic': "Medic healing per minute",
 		'hpm_sniper': "Sniper healing per minute",
 		'hpm_spy': "Spy healing per minute",
+		'hpm_enemy': "Enemy healing per minute",
 		'hpm_other': "Other healing per minute",
 		'duration': "Duration",
 	   }) }}
@@ -68,6 +69,7 @@
 	<th><abbr title="Medic healing per minute">{{ classicon('medic') }}H/M</abbr></th>
 	<th><abbr title="Sniper healing per minute">{{ classicon('sniper') }}H/M</abbr></th>
 	<th><abbr title="Spy healing per minute">{{ classicon('spy') }}H/M</abbr></th>
+	<th><abbr title="Enemy healing per minute">EH/M</abbr></th>
 	<th><abbr title="Other healing per minute">?H/M</abbr></th>
 	<th>Time Played</td>
 </tr>
@@ -105,6 +107,7 @@
 				<td>{{ optint(medic.hpm_medic) }}</td>
 				<td>{{ optint(medic.hpm_sniper) }}</td>
 				<td>{{ optint(medic.hpm_spy) }}</td>
+				<td>{{ optint(medic.hpm_enemy) }}</td>
 				<td>{{ optint(medic.hpm_other) }}</td>
 				<td>{{ medic['duration'] | duration }}</td>
 			</tr>
