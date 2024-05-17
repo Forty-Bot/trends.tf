@@ -12,6 +12,7 @@ def overview():
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'classid', 'league', 'formatid', 'mapid')
+    log_clauses = get_filter_clauses(filters, logs='sum(wins + losses + ties)')
 
     # Since we are using a cube, we need to explicitly select the NULL rows
     cube_clauses = []
@@ -87,6 +88,8 @@ def overview():
                                    {filter_clauses}
                                    {cube_clauses}
                                GROUP BY playerid
+                               HAVING TRUE
+                                   {log_clauses}
                                ORDER BY {order_clause} NULLS LAST
                                LIMIT %(limit)s OFFSET %(offset)s
                            ) AS leaderboard
@@ -104,6 +107,7 @@ def medics():
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'league', 'formatid', 'mapid')
+    log_clauses = get_filter_clauses(filters, logs='sum(logs)')
 
     # Since we are using a cube, we need to explicitly select the NULL rows
     cube_clauses = []
@@ -227,6 +231,8 @@ def medics():
                                {filter_clauses}
                                {cube_clauses}
                            GROUP BY playerid
+                           HAVING TRUE
+                               {log_clauses}
                            ORDER BY {order_clause} NULLS LAST
                            LIMIT %(limit)s OFFSET %(offset)s
                        ) AS medics

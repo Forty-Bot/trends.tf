@@ -87,6 +87,7 @@ def get_filter_params():
     params['comp'] = args.get('comp', type=str)
     params['divid'] = args.get('divid', type=int)
     params['updated'] = args.get('updated_since', type=int)
+    params['min_logs'] = args.get('min_logs', type=int)
     if val := tuple(args.getlist('steamid64', type=int)[:5]):
         players = get_db().cursor()
         players.execute("""SELECT
@@ -173,6 +174,9 @@ def get_filter_clauses(params, *valid_columns, **column_map):
 
     if 'updated' in column_map and params['updated']:
         clauses.append(f"AND {column_map['updated']} > %(updated)s")
+
+    if 'logs' in column_map and params['min_logs']:
+        clauses.append(f"AND {column_map['logs']} >= %(min_logs)s")
 
     if 'primary_classid' in column_map and params['class']:
         clauses.append(f"""AND {column_map['primary_classid']} = (

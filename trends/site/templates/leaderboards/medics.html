@@ -10,7 +10,7 @@
 {% block content %}
 	{{ super() }}
 	<h2>Medics</h2>
-	{{ filter('league', 'format', 'map') }}
+	{{ filter('league', 'format', 'map', 'min_logs') }}
 	{{ sort({
 		'logs': "Logs",
 		'ubers': "Übers",

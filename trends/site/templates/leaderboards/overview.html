@@ -10,7 +10,7 @@
 {% block content %}
 	{{ super() }}
 	<h2>Overview</h2>
-	{{ filter('class', 'league', 'format', 'map') }}
+	{{ filter('class', 'league', 'format', 'map', 'min_logs') }}
 	{{ sort({
 		'logs': "Logs",
 		'winrate': "Winrate",

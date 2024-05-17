@@ -84,6 +84,12 @@
 		</select>
 	</label>
 	{% endif %}
+	{% if 'min_logs' in params %}
+	<label><abbr title="Minimum Logs">Min Logs</abbr>:
+		<input type="number" name="min_logs" min="0"
+		 value="{{ g.filters['min_logs'] or 0 }}">
+	</label>
+	{% endif %}
 	{% if 'date' in params %}
 	<input id="timezone" type="hidden" name="timezone">
 	<label>From:
