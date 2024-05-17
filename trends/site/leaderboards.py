@@ -90,12 +90,12 @@ def overview():
                                GROUP BY playerid
                                HAVING TRUE
                                    {log_clauses}
-                               ORDER BY {order_clause} NULLS LAST
+                               ORDER BY {order_clause} NULLS LAST, logs DESC, playerid
                                LIMIT %(limit)s OFFSET %(offset)s
                            ) AS leaderboard
                            LEFT JOIN player USING (playerid)
                            LEFT JOIN name USING (nameid)
-                           ORDER BY {order_clause} NULLS LAST;""",
+                           ORDER BY {order_clause} NULLS LAST, logs DESC, playerid;""",
                         { **filters, 'grouping': grouping, 'limit': limit, 'offset': offset })
     resp = flask.make_response(flask.render_template("leaderboards/overview.html",
                                leaderboard=leaderboard.fetchall()))
@@ -233,12 +233,12 @@ def medics():
                            GROUP BY playerid
                            HAVING TRUE
                                {log_clauses}
-                           ORDER BY {order_clause} NULLS LAST
+                           ORDER BY {order_clause} NULLS LAST, logs DESC, playerid
                            LIMIT %(limit)s OFFSET %(offset)s
                        ) AS medics
                        LEFT JOIN player USING (playerid)
                        LEFT JOIN name USING (nameid)
-                       ORDER BY {order_clause} NULLS LAST;""",
+                       ORDER BY {order_clause} NULLS LAST, logs DESC, playerid;""",
                         { **filters, 'grouping': grouping, 'limit': limit, 'offset': offset })
     resp = flask.make_response(flask.render_template("leaderboards/medics.html",
                                medics=medics.fetchall()))
