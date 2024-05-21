@@ -88,7 +88,7 @@ def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=
 
     logs = c.cursor()
     logs.execute(
-        """SELECT
+        f"""SELECT
                ps.logid,
                title,
                map,
@@ -120,15 +120,15 @@ def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=
                FROM log
                JOIN player_stats AS ps USING (logid)
                WHERE playerid = %(playerid)s
-                   {}
+                   {filter_clauses}
            ) as ps
            JOIN map USING (mapid)
            LEFT JOIN format USING (formatid)
            LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
            LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
            WHERE ps.playerid = %(playerid)s
-           ORDER BY {} NULLS LAST
-           LIMIT %(limit)s OFFSET %(offset)s;""".format(filter_clauses, order_clause),
+           ORDER BY {order_clause} NULLS LAST
+           LIMIT %(limit)s OFFSET %(offset)s;""",
         {
             **filters,
             'playerid': flask.g.playerid,
