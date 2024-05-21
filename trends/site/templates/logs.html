@@ -16,7 +16,8 @@
 {% block content %}
 	{{ super() }}
 	<h1>Logs</h1>
-	{{ filter('title', 'league', 'format', 'map', 'title', 'steamid64', 'date') }}
+	{{ filter('title', 'league', 'format', 'map', 'title', 'steamid64', 'date',
+		  'include_dupes') }}
 	{{ sort({
 		'logid': "Log ID",
 		'duration': "Duration",

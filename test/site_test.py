@@ -149,6 +149,7 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
         ('time_to', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
         ('time_from', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
         ('updated_since', data.draw(st.one_of(st.just(''), st.datetimes().map(as_timestamp)))),
+        ('include_dupes', data.draw(st.sampled_from(('', 'yes', 'no')))),
         ('q', data.draw(st.one_of(players, substrings(st.sampled_from(names))))),
     ] + [('steamid64', steamid) for steamid in data.draw(st.lists(players))])
 

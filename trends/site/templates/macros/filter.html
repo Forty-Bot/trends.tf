@@ -99,6 +99,13 @@
 		<input type="date" name="date_to" value="{{ g.filters['date_to'] or "" }}">
 	</label>
 	{% endif %}
+	{% if 'include_dupes' in params %}
+		<label><abbr title="Include duplicate logs">Dupes:</abbr>
+		<input type="checkbox" name="include_dupes" value="yes"
+		 {{ 'checked' if g.filters['dupes'] }}>
+		<input type="hidden" name="include_dupes" value="no">
+	</label>
+	{% endif %}
 	<button type="submit">Filter</button>
 </form>
 {% endmacro %}

@@ -88,6 +88,7 @@ def get_filter_params():
     params['divid'] = args.get('divid', type=int)
     params['updated'] = args.get('updated_since', type=int)
     params['min_logs'] = args.get('min_logs', type=int)
+    params['dupes'] = args.get('include_dupes', 'yes', str) == 'yes'
     if val := tuple(args.getlist('steamid64', type=int)[:5]):
         players = get_db().cursor()
         players.execute("""SELECT
@@ -171,6 +172,9 @@ def get_filter_clauses(params, *valid_columns, **column_map):
     simple_clause('class', 'classid')
     simple_clause('format', 'formatid')
     simple_clause('comp', 'compid', 'competition', 'name')
+
+    if 'duplicate_of' in column_map and not params['dupes']:
+        clauses.append(f"AND {column_map['duplicate_of']} ISNULL")
 
     if 'updated' in column_map and params['updated']:
         clauses.append(f"AND {column_map['updated']} > %(updated)s")

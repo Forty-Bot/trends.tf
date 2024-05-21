@@ -75,12 +75,10 @@ base_filter_columns = frozenset({'league', 'formatid', 'title', 'mapid', 'time',
 # These columns filters should be used when pretty names for class, format, and map are not used
 surrogate_filter_columns = base_filter_columns.union({'primary_classid'})
 
-def get_logs(c, playerid, filters, duplicates=True, order_clause="logid DESC", limit=100, offset=0):
+def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=0):
     real_offset = offset
     filter_clauses = get_filter_clauses(filters, 'primary_classid', 'league', 'formatid', 'title',
-                                        'mapid', 'time', 'logid')
-    if not duplicates:
-        filter_clauses += "\nAND duplicate_of ISNULL"
+                                        'mapid', 'time', 'logid', 'duplicate_of')
     if 'hpm' not in order_clause:
         filter_clauses += """
             ORDER BY {} NULLS LAST
@@ -244,6 +242,7 @@ def get_teams(c, filters, order_clause="rto DESC", limit=10, offset=0):
 def overview(steamid):
     c = get_db()
     filters = get_filter_params()
+    filters['dupes'] = False
     filter_clauses = get_filter_clauses(filters, *surrogate_filter_columns)
 
     classes = c.cursor()
@@ -328,7 +327,7 @@ def overview(steamid):
                ) AS names
                JOIN name USING (nameid)""", (flask.g.playerid,))
 
-    logs = get_logs(c, flask.g.playerid, filters, limit=25, duplicates=False)
+    logs = get_logs(c, flask.g.playerid, filters, limit=25)
     teams = get_teams(c, filters)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  formats=formats, aliases=aliases, teams=teams)
