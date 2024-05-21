@@ -81,7 +81,7 @@ def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=
                                         'mapid', 'time', 'logid', 'duplicate_of')
     if 'hpm' not in order_clause:
         filter_clauses += """
-            ORDER BY {} NULLS LAST
+            ORDER BY {} NULLS LAST, logid DESC
             LIMIT %(limit)s OFFSET %(real_offset)s
         """.format(order_clause)
         offset = 0
@@ -127,7 +127,7 @@ def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=
            LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
            LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
            WHERE ps.playerid = %(playerid)s
-           ORDER BY {order_clause} NULLS LAST
+           ORDER BY {order_clause} NULLS LAST, logid DESC
            LIMIT %(limit)s OFFSET %(offset)s;""",
         {
             **filters,
