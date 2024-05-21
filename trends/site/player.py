@@ -75,16 +75,63 @@ base_filter_columns = frozenset({'league', 'formatid', 'title', 'mapid', 'time',
 # These columns filters should be used when pretty names for class, format, and map are not used
 surrogate_filter_columns = base_filter_columns.union({'primary_classid'})
 
-def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=0):
+# Columns in player_stats_extra
+log_extra_order_map = {
+    'lks': "lks",
+    'airshots': "airshots",
+    'medkits': "medkits",
+    'medkits_hp': "medkits_hp",
+    'backstabs': "backstabs",
+    'headshots': "headshots",
+    'headshots_hit': "headshots_hit",
+    'sentries': "sentries",
+}
+
+# Columns not in player_stats
+log_joined_order_map = {
+    'hgm': "hpm_given",
+    'hrm': "hpm_recieved",
+    # This is renamed, and needs special treatment
+    'captures': "coalesce(cpc + ic, cpc, ic)",
+    **log_extra_order_map,
+}
+
+# All columns we can sort logs by
+log_order_map = {
+    'logid': "logid",
+    'wins': "wins",
+    'losses': "losses",
+    'ties': "ties",
+    'duration': "duration",
+    'kills': "kills",
+    'deaths': "deaths",
+    'assists': "assists",
+    'dpm': "dpm",
+    'dtm': "dtm",
+    'acc': "acc",
+    'date': "time",
+    **log_joined_order_map,
+}
+
+def get_logs(c, playerid, filters, extra=False, order_clause="logid DESC", limit=100, offset=0):
     real_offset = offset
     filter_clauses = get_filter_clauses(filters, 'primary_classid', 'league', 'formatid', 'title',
                                         'mapid', 'time', 'logid', 'duplicate_of')
-    if 'hpm' not in order_clause:
+    if not any(col in order_clause for col in log_joined_order_map.values()):
         filter_clauses += """
             ORDER BY {} NULLS LAST, logid DESC
             LIMIT %(limit)s OFFSET %(real_offset)s
         """.format(order_clause)
         offset = 0
+
+    if extra:
+        extra_cols = ",\n               ".join((
+            "",
+            "coalesce(cpc + ic, cpc, ic) AS captures",
+            *log_extra_order_map.values()
+        ))
+    else:
+        extra_cols = ""
 
     logs = c.cursor()
     logs.execute(
@@ -112,6 +159,7 @@ def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=
                league,
                matchid,
                time
+               {extra_cols}
            FROM (SELECT
                    *,
                    ps.dmg * 60.0 / nullif(log.duration, 0) AS dpm,
@@ -126,6 +174,7 @@ def get_logs(c, playerid, filters, order_clause="logid DESC", limit=100, offset=
            LEFT JOIN format USING (formatid)
            LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
            LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
+           {"LEFT JOIN player_stats_extra AS pse USING (logid, playerid)" if extra else ""}
            WHERE ps.playerid = %(playerid)s
            ORDER BY {order_clause} NULLS LAST, logid DESC
            LIMIT %(limit)s OFFSET %(offset)s;""",
@@ -336,23 +385,9 @@ def overview(steamid):
 def logs(steamid):
     limit, offset = get_pagination()
     filters = get_filter_params()
-    order, order_clause = get_order({
-        'logid': "logid",
-        'wins': "wins",
-        'losses': "losses",
-        'ties': "ties",
-        'duration': "duration",
-        'kills': "kills",
-        'deaths': "deaths",
-        'assists': "assists",
-        'dpm': "dpm",
-        'dtm': "dtm",
-        'hgm': "hpm_given",
-        'hrm': "hpm_recieved",
-        'acc': "acc",
-        'date': "time",
-	}, 'logid')
-    logs = get_logs(get_db(), flask.g.playerid, filters, order_clause=order_clause, limit=limit, offset=offset)
+    order, order_clause = get_order(log_order_map, 'logid')
+    logs = get_logs(get_db(), flask.g.playerid, filters, extra=True, order_clause=order_clause,
+                    limit=limit, offset=offset)
     return flask.render_template("player/logs.html", logs=logs.fetchall())
 
 @player.route('/teams')

@@ -27,6 +27,17 @@
 	<th><abbr title="Healing Given per Minute ">HG/M</abbr></th>
 	<th><abbr title="Healing Recieved per Minute ">HR/M</abbr></th>
 	<th><abbr title="Accuracy">Acc</abbr></th>
+	{% if extra %}
+	<th><abbr title="Most kills in one life">K/1</abbr></th>
+	<th><abbr title="Airshots">AS</abbr></th>
+	<th><abbr title="Medkit score: small = 1, medium = 2, large = 3">MS</abbr></th>
+	<th><abbr title="Healing from medkits">MKHP</abbr></th>
+	<th><abbr title="Backstabs">BS</abbr></th>
+	<th><abbr title="Headshot kills">HSK</abbr></th>
+	<th><abbr title="Headshots">HS</abbr></th>
+	<th><abbr title="Sentry score: level 1 = 1, level 2 = 2, level 3 = 3">S</abbr></th>
+	<th><abbr title="Captures">C</abbr></th>
+	{% endif %}
 	<th>Date</th>
 	{% if extra %}
 	<th><abbr title="Some logs are duplicates of other logs">Duplicate of</abbr></th>
@@ -74,6 +85,17 @@
 			<td>{{ optint(log['hpm_given']) }}</td>
 			<td>{{ optint(log['hpm_recieved']) }}</td>
 			<td>{{ optformat("{:.0%}", log['acc']) }}</td>
+			{% if extra %}
+			<td>{{ optint(log.lks) }}</td>
+			<td>{{ optint(log.airshots) }}</td>
+			<td>{{ optint(log.medkits) }}</td>
+			<td>{{ optint(log.medkits_hp) }}</td>
+			<td>{{ optint(log.backstabs) }}</td>
+			<td>{{ optint(log.headshots) }}</td>
+			<td>{{ optint(log.headshots_hit) }}</td>
+			<td>{{ optint(log.sentries) }}</td>
+			<td>{{ optint(log.captures) }}</td>
+			{% endif %}
 			{{ datetime_col(log['time']) }}
 			{% if extra %}
 			<td class="left">{{ show_dupes(log['duplicate_of']) }}</td>
