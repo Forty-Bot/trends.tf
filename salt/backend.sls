@@ -46,75 +46,28 @@
         [Install]
         WantedBy=multi-user.target
 
-/etc/systemd/system/leaderboard_refresh.service:
+/etc/systemd/system/view_refresh.service:
   file.managed:
     - contents: |
         [Unit]
-        Description=Refresh leaderboard
+        Description=Refresh materialized views
 
         [Service]
         Type=oneshot
-        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW leaderboard_cube' postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -v refresh postgres:///trends
         User=daemon
 
-/etc/systemd/system/leaderboard_refresh.timer:
+/etc/systemd/system/view_refresh.timer:
   file.managed:
     - contents: |
         [Unit]
-        Description=Daily leaderboard refresh
+        Description=Daily materialized view refresh
 
         [Timer]
         OnCalendar=7:00
 
         [Install]
         WantedBy=timers.target
-
-/etc/systemd/system/medic_refresh.service:
-  file.managed:
-    - contents: |
-        [Unit]
-        Description=Refresh medic leaderboard
-
-        [Service]
-        Type=oneshot
-        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW medic_cube' postgres:///trends
-        User=daemon
-
-/etc/systemd/system/medic_refresh.timer:
-  file.managed:
-    - contents: |
-        [Unit]
-        Description=Daily medic leaderboard refresh
-
-        [Timer]
-        OnCalendar=7:30
-
-        [Install]
-        WantedBy=timers.target
-
-/etc/systemd/system/map_refresh.service:
-  file.managed:
-    - contents: |
-        [Unit]
-        Description=Refresh map popularity
-
-        [Service]
-        Type=oneshot
-        ExecStart=/usr/bin/psql -c 'REFRESH MATERIALIZED VIEW map_popularity' postgres:///trends
-        User=daemon
-
-/etc/systemd/system/map_refresh.timer:
-  file.managed:
-    - contents: |
-        [Unit]
-        Description=Daily map popularity refresh
-
-        [Timer]
-        OnCalendar=6:45
-
-        [Install]
-        WantedBy=timers.target
-
 
 /etc/systemd/system/weapon_import.service:
   file.managed:
@@ -267,12 +220,8 @@ backend_services:
       - /etc/systemd/system/log_import.service
       - /etc/systemd/system/log_import.timer
       - /etc/systemd/system/player_import.service
-      - /etc/systemd/system/leaderboard_refresh.service
-      - /etc/systemd/system/leaderboard_refresh.timer
-      - /etc/systemd/system/medic_refresh.service
-      - /etc/systemd/system/medic_refresh.timer
-      - /etc/systemd/system/map_refresh.service
-      - /etc/systemd/system/map_refresh.timer
+      - /etc/systemd/system/view_refresh.service
+      - /etc/systemd/system/view_refresh.timer
       - /etc/systemd/system/weapon_import.service
       - /etc/systemd/system/weapon_import.timer
       - /etc/systemd/system/demo_import.service
@@ -298,19 +247,7 @@ player_import.service:
     - require:
       - backend_services
 
-leaderboard_refresh.timer:
-  service.running:
-    - enable: True
-    - require:
-      - backend_services
-
-medic_refresh.timer:
-  service.running:
-    - enable: True
-    - require:
-      - backend_services
-
-map_refresh.timer:
+view_refresh.timer:
   service.running:
     - enable: True
     - require:

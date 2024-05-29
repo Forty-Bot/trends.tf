@@ -23,6 +23,8 @@ def last_modified(since):
 
     if since is None:
         flask.g.last_modified = datetime.now(tz.UTC)
+    elif isinstance(since, datetime):
+        flask.g.last_modified = since
     else:
         flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
 
@@ -54,6 +56,21 @@ def get_db():
 def put_db(exception):
     if db := flask.g.pop('db_conn', None):
         db.close()
+
+def view_updated(view, pretty=None):
+    c = get_db()
+    with c.cursor() as cur:
+        cur.execute("SELECT pg_try_advisory_lock_shared(%s::REGCLASS::BIGINT)", (view,))
+        if not cur.fetchone()[0]:
+            msg = f"The {pretty or view} is being refreshed. Please try again later"
+            raise werkzeug.exceptions.ServiceUnavailable(msg)
+
+        cur.execute("""SELECT last_updated
+                       FROM materialized_view
+                       WHERE oid = %s::REGCLASS;""", (view,))
+        row = cur.fetchone()
+        if row[0] is not None:
+            return last_modified(row[0])
 
 class NoopClient:
     def get(self, key, default=None):

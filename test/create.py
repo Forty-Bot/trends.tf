@@ -9,6 +9,7 @@ import trends.importer.logs
 import trends.importer.etf2l
 import trends.importer.link_demos
 import trends.importer.link_matches
+import trends.importer.refresh
 import trends.importer.rgl
 from trends.importer.fetch import DemoFileFetcher, ETF2LFileFetcher, FileFetcher, RGLFileFetcher
 from trends.sql import db_connect, db_init, db_schema
@@ -113,9 +114,7 @@ def create_test_db(url):
         cur.execute("ANALYZE;")
         # A second time to test partitioning log_json
         db_init(c)
-        cur.execute("REFRESH MATERIALIZED VIEW leaderboard_cube;")
-        cur.execute("REFRESH MATERIALIZED VIEW medic_cube;")
-        cur.execute("REFRESH MATERIALIZED VIEW map_popularity;")
+        trends.importer.refresh.refresh(None, c)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:

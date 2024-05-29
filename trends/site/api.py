@@ -5,7 +5,7 @@ import flask
 import werkzeug.exceptions
 
 from .common import get_logs, search_players, logs_last_modified
-from .util import get_db, get_pagination
+from .util import get_db, get_pagination, view_updated
 
 api = flask.Blueprint('api', __name__)
 
@@ -45,6 +45,9 @@ def logs():
 
 @api.route('/maps')
 def maps():
+    if resp := view_updated('map_popularity'):
+        return resp
+
     limit, offset = get_pagination(limit=500)
     maps = get_db().cursor()
     maps.execute(

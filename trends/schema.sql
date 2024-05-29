@@ -921,3 +921,14 @@ CREATE TABLE IF NOT EXISTS chat (
 -- Reverse index for lookups by playerid
 -- Don't index NULLs since we don't generally want to look them up.
 --CREATE INDEX IF NOT EXISTS chat_playerid ON chat (playerid, logid) WHERE playerid NOTNULL;
+
+CREATE TABLE IF NOT EXISTS materialized_view (
+	oid OID PRIMARY KEY,
+	last_updated TIMESTAMPTZ
+);
+
+INSERT INTO materialized_view (oid) VALUES
+	('leaderboard_cube'::REGCLASS),
+	('medic_cube'::REGCLASS),
+	('map_popularity'::REGCLASS)
+ON CONFLICT DO NOTHING;

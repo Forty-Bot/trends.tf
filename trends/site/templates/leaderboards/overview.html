@@ -78,4 +78,7 @@
 		<tfoot>{{ header() }}</tfoot>
 	</table>
 	{{ navigation(leaderboard) }}
+	{% if g.last_modified is not undefined %}
+	<p>Last updated <span class="datetime" timestamp="{{ g.last_modified.timestamp() }}"></p>
+	{% endif %}
 {% endblock %}

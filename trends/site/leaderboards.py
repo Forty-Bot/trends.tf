@@ -3,12 +3,16 @@
 
 import flask
 
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
+from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
+                  view_updated
 
 leaderboards = flask.Blueprint('leaderboards', __name__)
 
 @leaderboards.route('/')
 def overview():
+    if resp := view_updated('leaderboard_cube', "leaderboard"):
+        return resp
+
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'classid', 'league', 'formatid', 'mapid')
@@ -104,6 +108,9 @@ def overview():
 
 @leaderboards.route('/medics')
 def medics():
+    if resp := view_updated('medic_cube', "medic leaderboard"):
+        return resp
+
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'league', 'formatid', 'mapid')
