@@ -27,3 +27,6 @@ logs/*
 # Build artifacts
 *.pkg.tar*
 *.deb
+
+# Vendored dependencies
+trends/site/static/vendor/

@@ -10,9 +10,10 @@
 	<link rel="stylesheet" type="text/css"
 	 href="{{ url_for('static', filename='css/style.css') }}">
 	<title>{% block title %}trends.tf{% endblock %}</title>
-	{% set tom_select_prefix = "https://cdn.jsdelivr.net/npm/tom-select@2.0.0/dist" %}
-	<script type="module" src="{{ tom_select_prefix }}/js/tom-select.popular.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="{{ tom_select_prefix }}/css/tom-select.min.css">
+	<script type="module"
+	 src="{{ url_for('static', filename="vendor/tom-select.popular.min.js") }}"></script>
+	<link rel="stylesheet" type="text/css"
+	 href="{{ url_for('static', filename="vendor/tom-select.min.css") }}">
 	{{ local_js("js/dates.js") }}
 	{{ local_js("js/filter.js") }}
 	<link rel="icon" href="{{ url_for('static', filename="img/favicon.ico") }}">
