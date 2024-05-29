@@ -9,7 +9,7 @@ function unwrap_json(response) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	document.getElementById('map_input').addEventListener('focus', () => {
+	document.getElementById('map_input')?.addEventListener('focus', () => {
 		let maplist = document.getElementById('maps');
 
 		fetch("/api/v1/maps").then(unwrap_json).then(json => {
@@ -38,23 +38,26 @@ function render_option(data, escape) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	new TomSelect(document.getElementById('players_input'), {
-		plugins: ['remove_button'],
-		maxItems: 5,
-		valueField: 'steamid64',
-		labelField: 'name',
-		searchField: ['aliases', 'name'],
-		load: (query, callback) => {
-			fetch(`/api/v1/players?q=${query}`)
-				.then(unwrap_json)
-				.then(json => {
-					callback(json.players);
-				});
-		},
-		shouldLoad: query => query.length > 3,
-		render: {
-			item: render_option,
-			option: render_option,
-		},
-	});
+	input = document.getElementById('players_input');
+	if (input != null) {
+		new TomSelect(document.getElementById('players_input'), {
+			plugins: ['remove_button'],
+			maxItems: 5,
+			valueField: 'steamid64',
+			labelField: 'name',
+			searchField: ['aliases', 'name'],
+			load: (query, callback) => {
+				fetch(`/api/v1/players?q=${query}`)
+					.then(unwrap_json)
+					.then(json => {
+						callback(json.players);
+					});
+			},
+			shouldLoad: query => query.length > 3,
+			render: {
+				item: render_option,
+				option: render_option,
+			},
+		});
+	}
 })
