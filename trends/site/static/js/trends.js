@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function create_title(context) {
-		return time_formatter.format(new Date(data[context[0].dataIndex].time * 1000));
+		return datetime_formatter.format(new Date(data[context[0].dataIndex].time * 1000));
 	}
 
 	function create_label(context, format) {
