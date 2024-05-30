@@ -38,7 +38,7 @@ function render_option(data, escape) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	input = document.getElementById('players_input');
+	let input = document.getElementById('players_input');
 	if (input != null) {
 		new TomSelect(document.getElementById('players_input'), {
 			plugins: ['remove_button'],

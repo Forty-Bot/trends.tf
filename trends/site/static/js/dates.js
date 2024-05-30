@@ -5,11 +5,11 @@ var date_formatter = new Intl.DateTimeFormat('und', {dateStyle: 'medium'});
 var datetime_formatter = new Intl.DateTimeFormat('und', {dateStyle: 'medium', timeStyle: 'short'});
 
 document.addEventListener('DOMContentLoaded', () => {
-	for (date of document.getElementsByClassName("datetime"))
+	for (let date of document.getElementsByClassName("datetime"))
 		date.textContent = datetime_formatter.format(
 			new Date(date.getAttribute('timestamp') * 1000));
 
-	for (date of document.getElementsByClassName("date"))
+	for (let date of document.getElementsByClassName("date"))
 		date.textContent = date_formatter.format(
 			new Date(date.getAttribute('timestamp') * 1000));
 });

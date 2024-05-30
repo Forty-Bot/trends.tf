@@ -9,7 +9,7 @@ function cell_value(row, column) {
 	let i = 0;
 	let cell;
 	for (let td of row.children) {
-		cs = colspan(td) || 1;
+		let cs = colspan(td) || 1;
 		if (column >= i && column < i + cs) {
 			cell = td;
 			break;
@@ -74,7 +74,7 @@ function sort_rows(rows, insert, column, asc, reverse) {
 
 function register_sort(table, header) {
 	let column = 0;
-	for (th of header.parentNode.children) {
+	for (const th of header.parentNode.children) {
 		if (th === header) {
 			break;
 		}
