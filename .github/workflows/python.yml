@@ -31,4 +31,5 @@ jobs:
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           pip install -r requirements.txt -r requirements_test.txt
+          pip install -e .
       - run: pytest
