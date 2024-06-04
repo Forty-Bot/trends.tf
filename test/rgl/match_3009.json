@@ -1,0 +1,35 @@
+{
+  "matchId": 3009,
+  "seasonName": "HL Season 3",
+  "divisionName": "Advanced",
+  "divisionId": 283,
+  "seasonId": 52,
+  "regionId": 24,
+  "matchDate": "2019-06-04T01:30:00.000Z",
+  "matchName": "Ashville",
+  "isForfeit": false,
+  "winner": 4888,
+  "teams": [
+    {
+      "teamName": "Home Depot eSports",
+      "teamTag": "BOPIS",
+      "teamId": 4882,
+      "isHome": false,
+      "points": "0.67"
+    },
+    {
+      "teamName": "The Money Team",
+      "teamTag": "TMT",
+      "teamId": 4888,
+      "isHome": true,
+      "points": "2.33"
+    }
+  ],
+  "maps": [
+    {
+      "mapName": "koth_ashville_rc1",
+      "homeScore": 4,
+      "awayScore": 2
+    }
+  ]
+}

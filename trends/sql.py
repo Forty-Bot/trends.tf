@@ -110,6 +110,7 @@ def db_init(c):
 log_tables = (('log', 'logid'), ('log_json', 'logid'), ('round', 'logid, seq'),
              ('player_stats_backing', 'playerid, logid'),
              ('player_stats_extra', 'playerid, logid'),
+             ('killstreak', 'playerid, logid, time'),
              ('medic_stats', 'playerid, logid'),
              ('heal_stats', 'logid, healer, healee'),
              ('class_stats', 'playerid, logid, classid'),

@@ -627,6 +627,33 @@
 	{{ event(events['death']) }}
 	<h3>Assists</h3>
 	{{ event(events['assist']) }}
+	{% if killstreaks | count %}
+	<h2>Killstreaks</h2>
+	{% for killstreak in killstreaks %}
+	<h3>{{ killstreak['title'] }}</h3>
+	<table>
+		<thead class="sortable"><tr>
+			<th>Time</th>
+			<th>Team</th>
+			<th>Player</th>
+			<th>Kills</th>
+		</tr></thead>
+		<tbody>
+		{% for streak in killstreak['killstreaks'] %}
+		<tr>
+			{{ duration_col(streak.time) }}
+			<td class="left {{ streak.team | lower }}">{{ streak.team }}</td>
+			<td class="left">
+				{{ playerlink(streak.steamid64, streak.name,
+					      players[streak.steamid64]) }}
+			</td>
+			<td>{{ streak.kills }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% endfor %}
+	{% endif %}
 	<h2>Chat</h2>
 	{% for chat in chats %}
 	<h3>{{ chat['title'] }}</h3>

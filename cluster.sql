@@ -7,6 +7,7 @@
 
 CLUSTER VERBOSE player_stats_backing USING player_stats_pkey;
 CLUSTER VERBOSE player_stats_extra USING player_stats_extra_pkey;
+CLUSTER VERBOSE killstreak USING killstreak_pkey;
 CLUSTER VERBOSE medic_stats USING medic_stats_pkey;
 CLUSTER VERBOSE class_stats USING class_stats_pkey;
 CLUSTER VERBOSE weapon_stats USING weapon_stats_pkey;

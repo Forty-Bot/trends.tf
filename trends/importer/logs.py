@@ -357,6 +357,24 @@ def import_log(c, logid, log):
                                  %(dmg)s, %(avg_dmg)s, %(shots)s, %(hits)s
                              );""", weapon)
 
+    for killstreak in log.get('killstreaks', ()):
+        try:
+            steamid = SteamID(killstreak['steamid'])
+        except ValueError:
+            continue
+
+        try:
+            c.execute("SAVEPOINT before_killstreak;")
+            c.execute("""INSERT INTO killstreak (
+                             logid, playerid, time, kills
+                         ) VALUES (
+                            %s, (SELECT playerid FROM player WHERE steamid64 = %s), %s, %s
+                         ) ON CONFLICT DO NOTHING;""",
+                      (logid, steamid, killstreak['time'], killstreak['streak']))
+        except (psycopg2.errors.ForeignKeyViolation, psycopg2.errors.NotNullViolation):
+            logging.warning("%s is only present in killstreak for log %s", steamid, logid)
+            c.execute("ROLLBACK TO SAVEPOINT before_killstreak;")
+
     for (seq, msg) in enumerate(log['chat']):
         try:
             steamid = SteamID(msg['steamid']) if msg['steamid'] != 'Console' else None
@@ -784,6 +802,9 @@ def import_logs(c, fetcher, update_only):
                            PRIMARY KEY ({})
                        );""".format(table[0], table[0], table[1]))
     # This doesn't include foreign keys, so include some which we want to handle in import_log
+    cur.execute("""ALTER TABLE killstreak
+                   ADD FOREIGN KEY (logid, playerid)
+                       REFERENCES player_stats_backing (logid, playerid);""")
     cur.execute("""ALTER TABLE heal_stats
                    ADD FOREIGN KEY (logid, healer)
                        REFERENCES player_stats_backing (logid, playerid),

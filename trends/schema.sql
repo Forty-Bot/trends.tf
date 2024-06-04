@@ -608,6 +608,15 @@ CREATE TABLE IF NOT EXISTS player_stats_extra (
 	CHECK ((dmg_real ISNULL) = (dt_real ISNULL))
 );
 
+CREATE TABLE IF NOT EXISTS killstreak (
+	logid INT NOT NULL,
+	playerid INT NOT NULL,
+	time INT NOT NULL,
+	kills INT NOT NULL CHECK (kills > 0),
+	PRIMARY KEY (playerid, logid, time),
+	FOREIGN KEY (logid, playerid) REFERENCES player_stats_backing (logid, playerid)
+);
+
 CREATE TABLE IF NOT EXISTS medic_stats (
 	logid INT NOT NULL,
 	playerid INT NOT NULL,

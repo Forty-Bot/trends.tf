@@ -28,6 +28,7 @@
 	<th><abbr title="Healing Recieved per Minute ">HR/M</abbr></th>
 	<th><abbr title="Accuracy">Acc</abbr></th>
 	{% if extra %}
+	<th><abbr title="Longest killstreak">LKS</abbr></th>
 	<th><abbr title="Most kills in one life">K/1</abbr></th>
 	<th><abbr title="Airshots">AS</abbr></th>
 	<th><abbr title="Medkit score: small = 1, medium = 2, large = 3">MS</abbr></th>
@@ -86,6 +87,7 @@
 			<td>{{ optint(log['hpm_recieved']) }}</td>
 			<td>{{ optformat("{:.0%}", log['acc']) }}</td>
 			{% if extra %}
+			<td>{{ optint(log.mks) }}</td>
 			<td>{{ optint(log.lks) }}</td>
 			<td>{{ optint(log.airshots) }}</td>
 			<td>{{ optint(log.medkits) }}</td>

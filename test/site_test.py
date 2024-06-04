@@ -200,6 +200,9 @@ linked_demos = {
 }
 
 linked_matches = {
+    2297197: ('rgl', 3009),
+    2297225: ('rgl', 3009),
+    2297265: ('rgl', 3009),
     2344272: ('rgl', 3412),
     2344306: ('rgl', 3412),
     2344331: ('rgl', 3412),
@@ -223,6 +226,7 @@ def test_linked(connection):
     assert { logid: (league, matchid) for logid, league, matchid in cur } == linked_matches
 
 duplicates = {
+    2297265: [2297197],
     2344394: [2344272, 2344306, 2344354],
 }
 

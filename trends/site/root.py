@@ -481,6 +481,35 @@ def log(logids):
                       GROUP BY event;""", params)
     events = { event_stats['event']: event_stats['events'] for event_stats in events.fetchall() }
 
+    killstreaks = db.cursor()
+    killstreaks.execute("""SELECT
+                               logid,
+                               title,
+                               array_agg(json_build_object(
+                                   'team', team,
+                                   'steamid64', steamid64,
+                                   'name', name,
+                                   'time', killstreak.time,
+                                   'kills', kills
+                               ) ORDER BY killstreak.time) AS killstreaks
+                           FROM (SELECT
+                                   logid,
+                                   playerid,
+                                   team,
+                                   name,
+                                   time,
+                                   killstreak.kills
+                               FROM killstreak
+                               JOIN player_stats USING (logid, playerid)
+                               JOIN name USING (nameid)
+                               WHERE logid IN %(logids)s
+                           ) AS killstreak
+                           JOIN log USING (logid)
+                           JOIN player USING (playerid)
+                           GROUP BY logid, title
+                           ORDER BY array_position(%(llogids)s, logid);""", params)
+    killstreaks = killstreaks.fetchall()
+
     chats = db.cursor()
     chats.execute("""SELECT
                         logid,
@@ -510,7 +539,8 @@ def log(logids):
 
     return flask.render_template("log.html", logids=logids, logs=logs, matches=matches,
                                  rounds=rounds.fetchall(), players=players, totals=totals,
-                                 medics=medics, events=events, chats=chats)
+                                 medics=medics, events=events, killstreaks=killstreaks,
+                                 chats=chats)
 
 metrics_extension = PrometheusMetrics.for_app_factory(group_by='endpoint', path=None)
 
