@@ -165,7 +165,7 @@ def import_rgl_cli(args, c):
         if 'new' in args and args.new:
             with c.cursor() as cur:
                 cur.execute(
-                    """SELECT max(scheduled) - 6 * 60 * 60
+                    """SELECT least(max(scheduled), extract(EPOCH FROM now())::BIGINT) - 6 * 60 * 60
                        FROM match
                        WHERE league = 'rgl';""");
                 args.since = datetime.fromtimestamp(cur.fetchone()[0])
