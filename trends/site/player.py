@@ -85,7 +85,6 @@ log_extra_order_map = {
     'headshots': "headshots",
     'headshots_hit': "headshots_hit",
     'sentries': "sentries",
-    # Not in extra but close enough...
     'mks': "mks",
 }
 
@@ -177,13 +176,6 @@ def get_logs(c, playerid, filters, extra=False, order_clause="logid DESC", limit
            LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
            LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
            {"LEFT JOIN player_stats_extra AS pse USING (logid, playerid)" if extra else ""}
-           {'''LEFT JOIN (SELECT
-                       logid,
-                       playerid,
-                       max(kills) AS mks
-                   FROM killstreak
-                   GROUP BY logid, playerid
-               ) AS ks USING (logid, playerid)''' if extra else ""}
            WHERE ps.playerid = %(playerid)s
            ORDER BY {order_clause} NULLS LAST, logid DESC
            LIMIT %(limit)s OFFSET %(offset)s;""",

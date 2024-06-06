@@ -734,6 +734,19 @@ def update_acc(cur, bounds=None):
                  .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
               bounds)
 
+def update_ks(cur):
+    cur.execute("""UPDATE player_stats_extra AS pse SET
+                       mks = new.mks
+                   FROM (SELECT
+                           logid,
+                           playerid,
+                           max(kills) AS mks
+                       FROM killstreak
+                       GROUP BY logid, playerid
+                   ) AS new
+                   WHERE pse.logid = new.logid
+                       AND pse.playerid = new.playerid;""")
+
 def create_logs_parser(sub):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -837,6 +850,7 @@ def import_logs(c, fetcher, update_only):
             update_wlt(cur)
             update_player_classes(cur)
             update_acc(cur)
+            update_ks(cur)
             publicize(c, log_tables)
             cur.execute("COMMIT;")
             logging.info("Committed %s imported log(s)...", count)

@@ -603,6 +603,7 @@ CREATE TABLE IF NOT EXISTS player_stats_extra (
 	healing INT,
 	cpc INT, -- Capture Point Captures
 	ic INT, -- Intel Captures
+	mks INT, -- Max killstreaks, computed from killstreak
 	PRIMARY KEY (playerid, logid),
 	FOREIGN KEY (logid, playerid) REFERENCES player_stats_backing (logid, playerid),
 	CHECK ((dmg_real ISNULL) = (dt_real ISNULL))
