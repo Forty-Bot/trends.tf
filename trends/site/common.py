@@ -8,7 +8,7 @@ from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_
 
 def logs_last_modified():
     filters = get_filter_params()
-    filter_clauses = get_filter_clauses(filters, 'title', 'formatd', 'mapid', 'time', 'logid',
+    filter_clauses = get_filter_clauses(filters, 'title', 'formatid', 'mapid', 'time', 'logid',
                                         'updated', 'league', 'duplicate_of')
 
     db = get_db()
