@@ -14,8 +14,9 @@ from psycopg2.extras import NumericRange
 import pylibmc
 import werkzeug.exceptions, werkzeug.http
 
-from ..util import clamp
+from ..cache import NoopClient, TracingClient
 from ..sql import db_connect
+from ..util import clamp
 
 def last_modified(since):
     if flask.current_app.debug:
@@ -72,19 +73,12 @@ def view_updated(view, pretty=None):
         if row[0] is not None:
             return last_modified(row[0])
 
-class NoopClient:
-    def get(self, key, default=None):
-        return default
-
-    def set(self, key, value, **kwargs):
-        pass
-
 @global_context('mc_conn')
 def get_mc():
     servers = flask.current_app.config['MEMCACHED_SERVERS']
     if servers:
         try:
-            mc = pylibmc.Client(servers.split(','), binary=True)
+            mc = TracingClient(servers.split(','), binary=True)
             # pylibmc doesn't actually connect until we make a request. Force a connection failure
             # up front so we can log it and use a fallback client
             mc.get('connection_test')
