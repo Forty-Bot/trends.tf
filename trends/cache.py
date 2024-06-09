@@ -26,15 +26,16 @@ class NoopClient:
         return False
 
 @contextlib.contextmanager
-def cache_span(op, key):
-    sentry_sdk.add_breadcrumb(type='query', category=op, message=key)
-    with sentry_sdk.start_span(op=op) as span:
+def cache_span(category, op, key):
+    sentry_sdk.add_breadcrumb(type='query', category=category, message=key)
+    with sentry_sdk.start_span(op=category, description=f"{op} {key}") as span:
+        span.set_data('cache.operation', op)
         span.set_data('cache.key', key)
         yield span
 
 class TracingClient(pylibmc.Client):
     def get(self, key, default=None):
-        with cache_span('cache.get', key) as span:
+        with cache_span('cache.get', 'Get', key) as span:
             value = super().get(key, None)
             if value is None:
                 span.set_data('cache.hit', False)
@@ -45,23 +46,23 @@ class TracingClient(pylibmc.Client):
 
     def get_multi(self, keys):
         keys = list(keys)
-        with sentry_sdk.start_span('cache.get', keys) as span:
+        with sentry_sdk.start_span('cache.get', 'GetMulti', keys) as span:
             values = super().get_multi(keys)
             span.set_data('cache.hit', bool(values))
             return values
 
     def set(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', key):
+        with cache_span('cache.set', 'Set', key):
             return super().set(key, None, *args, **kwargs)
 
     def set_multi(self, mapping, *args, **kwargs):
-        with cache_span('cache.set', list(mapping)) as span:
+        with cache_span('cache.set', 'SetMulti', list(mapping)) as span:
             return super().set_multi(mapping, *args, **kwargs)
 
     def add(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', key):
+        with cache_span('cache.set', 'Add', key):
             return super().add(key, None, *args, **kwargs)
 
     def replace(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', key):
+        with cache_span('cache.set', 'Replace', key):
             return super().replace(key, None, *args, **kwargs)

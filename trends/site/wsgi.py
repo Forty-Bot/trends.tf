@@ -38,12 +38,11 @@ def trace_template_error(app, exception):
     if span := flask.g.pop('span', None):
         span.__exit__(*sys.exc_info())
 
-class DefaultConfig:
+class EnvConfig:
     DATABASE = "postgresql:///trends"
     TIMEOUT = 60000
     MEMCACHED_SERVERS = "127.0.0.1:11211"
 
-class EnvConfig:
     def __init__(self):
         for name in ("DATABASE", "TIMEOUT", "MEMCACHED_SERVERS"):
             val = os.environ.get(name)
@@ -163,7 +162,6 @@ def set_last_modified(resp):
 
 def create_app():
     app = flask.Flask(__name__)
-    app.config.from_object(DefaultConfig)
     app.config.from_object(EnvConfig())
 
     app.after_request(set_last_modified)
