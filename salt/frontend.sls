@@ -364,11 +364,20 @@ munin_node:
       - munin_node
 {% endfor %}
 
+munin_node_conf:
+  file.replace:
+    - name: /etc/munin/munin-node.conf
+    - pattern: "^host.*$"
+    - repl: host 127.0.0.1
+    - append_if_not_found: True
+    - require:
+      - munin_node
+
 munin-node.service:
   service.running:
     - enable: True
     - require:
-      - munin_node
+      - munin_node_conf
       {% for suffix in memcached_suffixes %}
       - /etc/munin/plugins/memcached_{{ suffix }}
       {% endfor %}
