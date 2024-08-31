@@ -56,6 +56,70 @@
 	searching for "product" will match "koth_product_rcx" and "koth_product_final".
 	</p>
 
+	<h3>What are the conditions for linking a match?</h3>
+	<p>
+	A log is linked to a match if all of the following conditions are fulfilled:
+	</p>
+	<ul>
+		<li>
+		The log must have been uploaded within 12 hours (before or after) the scheduled
+		match time.
+		</li>
+		<li>
+			The following three conditions all deal with an
+			amount&mdash;<i>one-third</i>&mdash;that is &frac13; of the format's
+			combined player count. For example, Highlander matches have 18 players so
+			<i>one-third</i> is 6.
+		<ul>
+			<li>
+			At least <i>one-third</i> of the players must have been rostered on one of
+			the teams at the scheduled match time.
+			</li>
+			<li>
+			At least <i>one-third</i> of the players must have been rostered on the
+			other team at the scheduled match time.
+			</li>
+			<li>
+			There may be at most <i>one-third</i> of the players not rostered on either
+			team.
+			</li>
+		</ul>
+	</ul>
+
+	<h3>What are the conditions for linking a demo?</h3>
+	<p>
+	A demo is linked to a log if all of the following conditions are fullfilled:
+	</p>
+	<ul>
+		<li>
+		The demo must have been uploaded within 5 minutes (before or after) the log's upload
+		time.
+		</li>
+		<li>
+		Either
+		<ul>
+			<li>
+			all the log's players must be present in the demo
+			</li>
+		</ul>
+		or
+		<ul>
+			<li>
+			all the demo's players must be present in the log.
+			</li>
+		</ul>
+		</li>
+	</ul>
+	<p>
+	The strict upload time requirements are because there are often no distinguishing
+	differences other than upload time between two demos that are consistent between the log and
+	the demo. Kills, deaths, and assists often differ because logs.tf excludes kills in
+	humiliation time. Duration often differs for the same reason. The scoreline may differ if
+	there is a stalemate or tie. Other distinguishing features, such as the title, map, and
+	players, are often identical for halves played back-to-back. This leaves upload time as the
+	only remaining identifying feature.
+	</p>
+
 	<h3>How do I contribute?</h3>
 	<p>
 	{{ trends() }} is <a href="https://github.com/Forty-Bot/trends.tf">open source</a>. The best
