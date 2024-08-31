@@ -343,6 +343,52 @@ nginx.service:
       - munin-html.socket
       - dhparam
 
+fail2ban:
+  pkg.installed:
+    - refresh: False
+
+/etc/fail2ban/filter.d/nginx-bad-bots.conf:
+  file.managed:
+    - contents: |
+        [Definition]
+        failregex = ^<HOST> -.*" 403
+
+/etc/fail2ban/jail.d/defaults-debian.conf:
+  file.absent:
+    - require:
+      - fail2ban
+
+/etc/fail2ban/jail.d/trends.conf:
+  file.managed:
+    - contents: |
+        [DEFAULT]
+        bantime = 1d
+        banaction = nftables
+        banaction_allports = nftables[type=allports]
+
+        [nginx-bad-bots]
+        enabled = true
+        bantime = 30d
+        port = http,https
+        logpath = %(nginx_access_log)s
+
+        [nginx-limit-req]
+        enabled = true
+        bantime = 1h
+        maxretry = 60
+        port = http,https
+        logpath = %(nginx_error_log)s
+
+fail2ban.service:
+  service.running:
+    - enable: True
+    - reload: True
+    - require:
+      - fail2ban
+      - /etc/fail2ban/filter.d/nginx-bad-bots.conf
+      - /etc/fail2ban/jail.d/defaults-debian.conf
+      - /etc/fail2ban/jail.d/trends.conf
+
 munin_node:
   pkg.installed:
     - pkgs:
