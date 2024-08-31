@@ -5,7 +5,6 @@ import flask
 
 from .common import get_matches, get_players
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
-from ..util import leagues
 
 comp = flask.Blueprint('comp', __name__)
 

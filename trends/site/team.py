@@ -6,7 +6,6 @@ import flask
 from .common import get_players
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
                   last_modified
-from ..util import leagues
 
 team = flask.Blueprint('team', __name__)
 

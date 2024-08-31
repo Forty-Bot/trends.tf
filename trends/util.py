@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 
+import enum
 import itertools
 import pkg_resources
 
@@ -25,10 +26,13 @@ events = {
     'classkillassists': 'assist',
 }
 
-leagues = (
-    'etf2l',
-    'rgl',
-)
+@enum.unique
+class League(str, enum.Enum):
+    ETF2L = 'etf2l'
+    RGL = 'rgl'
+
+    def __str__(self):
+        return self.value
 
 def clamp(n, lower, upper):
     return max(lower, min(n, upper))

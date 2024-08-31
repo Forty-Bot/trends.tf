@@ -7,7 +7,7 @@ from .common import get_matches
 from .comp import comp
 from .team import team
 from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
-from ..util import leagues
+from ..util import League
 
 league = flask.Blueprint('league', __name__)
 league.register_blueprint(comp, url_prefix='/comp/<int:compid>')
@@ -15,11 +15,9 @@ league.register_blueprint(team, url_prefix='/team/<int:teamid>')
 
 @league.url_value_preprocessor
 def get_league(endpoint, values):
-    flask.g.league = values['league']
-
-@league.before_request
-def verify_league():
-    if flask.g.league not in leagues:
+    try:
+        flask.g.league = League(values['league'])
+    except ValueError:
         flask.abort(404)
 
 @league.route('/comps')

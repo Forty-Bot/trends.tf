@@ -16,7 +16,7 @@ from werkzeug.urls import url_encode
 
 from trends.steamid import SteamID
 from trends.site.wsgi import create_app
-from trends.util import classes, leagues
+from trends.util import classes, League
 
 @pytest.fixture(scope='session')
 def app(database):
@@ -84,6 +84,7 @@ def substrings(draw, strings, min_size=0):
 @hypothesis.settings(deadline=1000)
 def test_filter(client, logs, players, titles, maps, names, compids, teamids, comps, divids, data):
     players = st.sampled_from(players).map(str)
+    leagues = tuple(str(league) for league in League)
 
     path = data.draw(st.one_of(
         st.builds(lambda steamid, rule: rule.format(steamid), players, st.sampled_from((
