@@ -102,7 +102,6 @@
 	later than when the result was last modified.
 	</p>
 
-
 	<p>
 	Error responses may include the following field:
 	<dl>
@@ -118,6 +117,15 @@
 		</dl>
 		</dd>		
 	</dl>
+	</p>
+
+	<h3>Rate limits</h3>
+	<p>
+	To ensure that the site remains available to all users, requests are currently limited to 10
+	per minute across the site. A small number of requests in excess of this rate will be served
+	as usual. Further requests in excess of this rate will result in 429 responses. Repeatedly
+	exceeding these rate limits will result in your IP address being banned. This ban will
+	automatically lift after one hour. Static content is not rate-limited.
 	</p>
 
 	<h2 id="params">Parameters</h2>
