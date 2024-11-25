@@ -6,6 +6,8 @@ import contextlib
 import pylibmc
 import sentry_sdk
 
+_sentinel = object()
+
 class NoopClient:
     def get(self, key, default=None):
         return default
@@ -35,7 +37,7 @@ def cache_span(category, op, key):
 
 class TracingClient(pylibmc.Client):
     def get(self, key, default=None):
-        with cache_span('cache.get', 'Get', key) as span:
+        with cache_span('cache.get', 'get', key) as span:
             value = super().get(key, _sentinel)
             if value is _sentinel:
                 span.set_data('cache.hit', False)
@@ -46,23 +48,23 @@ class TracingClient(pylibmc.Client):
 
     def get_multi(self, keys):
         keys = list(keys)
-        with sentry_sdk.start_span('cache.get', 'GetMulti', keys) as span:
+        with sentry_sdk.start_span('cache.get', 'get_multi', keys) as span:
             values = super().get_multi(keys)
             span.set_data('cache.hit', bool(values))
             return values
 
     def set(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', 'Set', key):
+        with cache_span('cache.set', 'set', key):
             return super().set(key, value, *args, **kwargs)
 
     def set_multi(self, mapping, *args, **kwargs):
-        with cache_span('cache.set', 'SetMulti', list(mapping)) as span:
+        with cache_span('cache.set', 'set_multi', list(mapping)) as span:
             return super().set_multi(mapping, *args, **kwargs)
 
     def add(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', 'Add', key):
+        with cache_span('cache.set', 'add', key):
             return super().add(key, value, *args, **kwargs)
 
     def replace(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', 'Replace', key):
+        with cache_span('cache.set', 'replace', key):
             return super().replace(key, value, *args, **kwargs)
