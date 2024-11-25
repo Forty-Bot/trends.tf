@@ -9,33 +9,27 @@ import psycopg2
 
 from ..sql import db_connect, db_init
 from ..util import sentry_init
-from .ad import create_ad_parser
 from .demos import create_demos_parser
 from .etf2l import create_etf2l_parser
-from .json import create_json_parser
 from .logs import create_logs_parser
 from .link_demos import create_link_demos_parser
 from .link_matches import create_link_matches_parser
 from .players import create_players_parser
 from .refresh import create_refresh_parser
 from .rgl import create_rgl_parser
-from .uploader import create_uploader_parser
 from .weapons import create_weapons_parser
 
 def create_parser():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers()
-    create_ad_parser(sub)
     create_demos_parser(sub)
     create_etf2l_parser(sub)
-    create_json_parser(sub)
     create_link_demos_parser(sub)
     create_link_matches_parser(sub)
     create_logs_parser(sub)
     create_players_parser(sub)
     create_refresh_parser(sub)
     create_rgl_parser(sub)
-    create_uploader_parser(sub)
     create_weapons_parser(sub)
     parser.add_argument("database", default="postgresql:///trends", metavar="DATABASE",
                         help="Database URL to connect to")
