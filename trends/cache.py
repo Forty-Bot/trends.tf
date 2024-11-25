@@ -36,8 +36,8 @@ def cache_span(category, op, key):
 class TracingClient(pylibmc.Client):
     def get(self, key, default=None):
         with cache_span('cache.get', 'Get', key) as span:
-            value = super().get(key, None)
-            if value is None:
+            value = super().get(key, _sentinel)
+            if value is _sentinel:
                 span.set_data('cache.hit', False)
                 return default
             else:
@@ -53,7 +53,7 @@ class TracingClient(pylibmc.Client):
 
     def set(self, key, value, *args, **kwargs):
         with cache_span('cache.set', 'Set', key):
-            return super().set(key, None, *args, **kwargs)
+            return super().set(key, value, *args, **kwargs)
 
     def set_multi(self, mapping, *args, **kwargs):
         with cache_span('cache.set', 'SetMulti', list(mapping)) as span:
@@ -61,8 +61,8 @@ class TracingClient(pylibmc.Client):
 
     def add(self, key, value, *args, **kwargs):
         with cache_span('cache.set', 'Add', key):
-            return super().add(key, None, *args, **kwargs)
+            return super().add(key, value, *args, **kwargs)
 
     def replace(self, key, value, *args, **kwargs):
         with cache_span('cache.set', 'Replace', key):
-            return super().replace(key, None, *args, **kwargs)
+            return super().replace(key, value, *args, **kwargs)
