@@ -53,7 +53,7 @@ def sentry_init(**kwargs):
     defaults = {
         'release': version,
         'integrations': [FlaskIntegration()],
-        'traces_sample_rate': 0.002,
+        'traces_sample_rate': 0.02,
         'send_default_pii': True,
     }
 
