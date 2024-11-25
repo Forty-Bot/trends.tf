@@ -27,6 +27,12 @@ class NoopClient:
     def replace(self, key, value, *args, **kwargs):
         return False
 
+    def gets(self, key):
+        return None, None
+
+    def cas(self, key, value, cas, time=0):
+        raise pylibmc.NotFound
+
 @contextlib.contextmanager
 def cache_span(category, op, key):
     sentry_sdk.add_breadcrumb(type='query', category=category, message=key)
@@ -68,3 +74,17 @@ class TracingClient(pylibmc.Client):
     def replace(self, key, value, *args, **kwargs):
         with cache_span('cache.set', 'replace', key):
             return super().replace(key, value, *args, **kwargs)
+
+    def gets(self, key, default=None):
+        with cache_span('cache.get', 'gets', key) as span:
+            value, cas = super().gets(key)
+            if value is None and cas is None:
+                span.set_data('cache.hit', False)
+                return None, None
+            else:
+                span.set_data('cache.hit', True)
+                return value, cas
+
+    def cas(self, key, value, cas, time=0):
+        with cache_span('cache.set', 'cas', key):
+            return super().cas(key, value, cas, time)

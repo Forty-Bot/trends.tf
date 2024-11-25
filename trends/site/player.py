@@ -4,6 +4,7 @@
 from collections import defaultdict
 
 import flask
+import pylibmc
 
 from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, \
                   get_pagination, last_modified
@@ -33,7 +34,7 @@ def get_overview():
 
     mc = get_mc()
     key = "overview_{}".format(flask.g.steamid)
-    player_overview = mc.get(key)
+    player_overview, cas = mc.gets(key)
     if player_overview and player_overview['last_active'] == last_active:
         flask.g.player = player_overview
         return
@@ -65,7 +66,13 @@ def get_overview():
 
     for row in cur:
         flask.g.player = row
-        mc.set(key, row)
+        if cas is None:
+            mc.add(key, row)
+        else:
+            try:
+                mc.cas(key, row, cas)
+            except pylibmc.NotFound:
+                pass
         break
     else:
         flask.abort(404)

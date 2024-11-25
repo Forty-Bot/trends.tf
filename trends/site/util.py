@@ -78,7 +78,7 @@ def get_mc():
     servers = flask.current_app.config['MEMCACHED_SERVERS']
     if servers:
         try:
-            mc = TracingClient(servers.split(','), binary=True)
+            mc = TracingClient(servers.split(','), binary=True, behaviors={ 'cas': True })
             # pylibmc doesn't actually connect until we make a request. Force a connection failure
             # up front so we can log it and use a fallback client
             mc.get('connection_test')

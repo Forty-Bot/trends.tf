@@ -2,12 +2,14 @@
 # Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
 
 import collections
+from contextlib import contextmanager
 import random
 import urllib.parse
 
 from flask.testing import EnvironBuilder
 import hypothesis
 from hypothesis import assume, given, strategies as st
+import pylibmc
 import pytest
 from python_testing_crawler import Allow, Crawler, Rule, Request
 from werkzeug.datastructures import MultiDict
@@ -15,6 +17,7 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_encode
 
 from trends.steamid import SteamID
+import trends.site.player
 from trends.site.wsgi import create_app
 from trends.util import classes, League
 
@@ -368,3 +371,91 @@ def test_api_logs(client):
         players = log['blue']['players'] + log['red']['players']
         assert "76561198330799279" in players
         assert "76561198046130018" in players
+
+class MockClient:
+    def __init__(self, responses, values):
+        self.responses = responses
+        self.values = values
+
+    def _check(self, act_cmd, act_args, value=None):
+        exp_cmd, exp_args, resp = self.responses.pop()
+        assert act_cmd == exp_cmd
+        assert act_args == exp_args
+        self.values.append(value)
+        if isinstance(resp, BaseException):
+            raise resp
+        return resp
+
+    def gets(self, key):
+        return self._check('gets', (key,))
+
+    def add(self, key, value):
+        return self._check('add', (key,), value)
+
+    def cas(self, key, value, cas, time=0):
+        return self._check('cas', (key, cas, time), value)
+
+class MockServer:
+    def __init__(self, responses, values):
+        self.responses = responses
+        self.values = values
+
+    def gets(self, key, value, cas):
+        self.responses.appendleft(('gets', (key,), (value, cas)))
+
+    def add(self, key, result):
+        self.responses.appendleft(('add', (key,), result))
+
+    def cas(self, key, cas, result, time=0):
+        self.responses.appendleft(('cas', (key, cas, time), result))
+
+@contextmanager
+def mock_cache(monkeypatch):
+    responses = collections.deque()
+    values = []
+
+    client = MockClient(responses, values)
+    server = MockServer(responses, values)
+    with monkeypatch.context() as ctx:
+        ctx.setattr(trends.site.player, 'get_mc', lambda: client)
+        yield server
+
+    assert not len(responses)
+
+def test_player_cache(client, players, monkeypatch):
+    def check(resp):
+        assert resp.status_code == uncached.status_code
+        assert resp.headers == uncached.headers
+        assert resp.data == uncached.data
+
+    for steamid in players[:10]:
+        key = f"overview_{steamid}"
+        path = f"/player/{steamid}/"
+
+        # Cache miss
+        with mock_cache(monkeypatch) as server:
+            server.gets(key, None, None)
+            server.add(key, True)
+            uncached = client.get(path)
+            if uncached.status_code == 404:
+                server.responses.clear()
+                continue
+            value = server.values[1]
+
+        # Cache hit
+        with mock_cache(monkeypatch) as server:
+            server.gets(key, value, 0)
+            check(client.get(path))
+
+        # Stale cache with racing update
+        value['last_active'] -= 1
+        with mock_cache(monkeypatch) as server:
+            server.gets(key, value, 0)
+            server.cas(key, 0, False)
+            check(client.get(path))
+
+        # Stale cache with racing delete
+        with mock_cache(monkeypatch) as server:
+            server.gets(key, value, 0)
+            server.cas(key, 0, pylibmc.NotFound)
+            check(client.get(path))
