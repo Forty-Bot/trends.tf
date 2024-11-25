@@ -7,6 +7,7 @@ import sys
 
 import psycopg2
 
+from ..cache import mc_connect
 from ..sql import db_connect, db_init
 from ..util import sentry_init
 from .demos import create_demos_parser
@@ -33,6 +34,8 @@ def create_parser():
     create_weapons_parser(sub)
     parser.add_argument("database", default="postgresql:///trends", metavar="DATABASE",
                         help="Database URL to connect to")
+    parser.add_argument("memcached", default="127.0.0.1:11211", metavar="MEMCACHED",
+                        help="A comma-separated list of memcached servers to connect to")
     parser.add_argument("-v", "--verbose", action='count', default=0, dest='verbosity',
                         help=("Print additional debug information. May be specified multiple "
                               "times for increased verbosity."))
@@ -65,4 +68,7 @@ def main():
         with c.cursor() as cur:
             cur.execute("ROLLBACK;")
 
-    args.importer(args, c)
+    mc = mc_connect(args.memcached)
+    mc.get("connection_test")
+
+    args.importer(args, c, mc)

@@ -160,7 +160,7 @@ def create_rgl_parser(sub):
     b.add_argument("-p", "--skip", type=int, default=0,
                    help="Skip the first SKIP matches")
 
-def import_rgl_cli(args, c):
+def import_rgl_cli(args, c, mc):
     with sentry_sdk.start_transaction(op="import", name="rgl_matches"):
         if 'new' in args and args.new:
             with c.cursor() as cur:

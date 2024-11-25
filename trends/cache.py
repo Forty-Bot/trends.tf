@@ -88,3 +88,8 @@ class TracingClient(pylibmc.Client):
     def cas(self, key, value, cas, time=0):
         with cache_span('cache.set', 'cas', key):
             return super().cas(key, value, cas, time)
+
+def mc_connect(servers):
+    if servers:
+        return TracingClient(servers.split(','), binary=True, behaviors={ 'cas': True })
+    return NoopClient()

@@ -199,7 +199,7 @@ def create_weapons_parser(sub):
                                 "master/tf/scripts/items/items_game.txt",
                         help="Location to fetch items_game.txt from")
 
-def import_remote(args, c):
+def import_remote(args, c, mc):
     s = requests.Session()
     resp = s.head(args.url)
     resp.raise_for_status()

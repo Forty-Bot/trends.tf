@@ -94,7 +94,7 @@ def create_demos_parser(sub):
     l.add_argument("-i", "--id", action='append', type=int, metavar="DEMOID",
                    dest='demoids', help="Fetch demo DEMOID")
 
-def import_demos_cli(args, c):
+def import_demos_cli(args, c, mc):
     with sentry_sdk.start_transaction(op="import", name="demos"):
         if 'new' in args and args.new:
             with c.cursor() as cur:

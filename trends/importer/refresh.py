@@ -8,7 +8,7 @@ def create_refresh_parser(sub):
     link = sub.add_parser("refresh", help="Refresh materialized views")
     link.set_defaults(importer=refresh)
 
-def refresh(args, c):
+def refresh(args, c, mc):
     with c.cursor() as cur:
         for view in ('leaderboard_cube', 'medic_cube', 'map_popularity'):
             logging.info(f"REFRESH {view}")

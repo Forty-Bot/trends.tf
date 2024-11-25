@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 import sys
 
+from trends.cache import mc_connect
 import trends.importer.demos
 import trends.importer.logs
 import trends.importer.etf2l
@@ -30,10 +31,11 @@ class RGLSecondFetcher(RGLFileFetcher):
     def get_matchids(self):
         yield 4664
 
-def create_test_db(url):
+def create_test_db(url, memcached):
     # We use separate connections for importing because we use temporary tables which will alias
     # other queries.
     with db_connect(url) as c:
+        mc = mc_connect(memcached)
         cur = c.cursor()
         db_schema(cur)
         db_init(c)
@@ -110,16 +112,16 @@ def create_test_db(url):
         cur.execute("ANALYZE;")
         class args:
             since = datetime.fromtimestamp(0)
-        trends.importer.link_demos.link_logs(args, c)
-        trends.importer.link_matches.link_matches(args, c)
+        trends.importer.link_demos.link_logs(args, c, mc)
+        trends.importer.link_matches.link_matches(args, c, mc)
         cur.execute("ANALYZE;")
         # A second time to test partitioning log_json
         db_init(c)
-        trends.importer.refresh.refresh(None, c)
+        trends.importer.refresh.refresh(None, c, mc)
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <database url>", file=sys.stderr)
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
+        print(f"Usage: {sys.argv[0]} <database url> [<memcached urls>]", file=sys.stderr)
         sys.exit(1)
 
-    create_test_db(sys.argv[1])
+    create_test_db(sys.argv[1], sys.argv[2] if len(sys.argv) == 3 else "")

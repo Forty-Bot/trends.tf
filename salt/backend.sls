@@ -14,7 +14,8 @@
         [Service]
         Type=notify
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv logs bulk -c 200 postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv logs bulk -c 200 postgres:///trends \
+                  127.0.0.1:11211
         User=daemon
         WatchdogSec=60
 
@@ -39,7 +40,8 @@
         [Service]
         Type=simple
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer players -k ${STEAMKEY} -w 1 random postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer players -k ${STEAMKEY} -w 1 random \
+                  postgres:///trends 127.0.0.1:11211
         User=daemon
         Restart=on-failure
 
@@ -54,7 +56,7 @@
 
         [Service]
         Type=oneshot
-        ExecStart={{ prefix }}/bin/trends_importer -v refresh postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -v refresh postgres:///trends 127.0.0.1:11211
         User=daemon
 
 /etc/systemd/system/view_refresh.timer:
@@ -78,7 +80,8 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv weapons remote postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv weapons remote postgres:///trends \
+                  127.0.0.1:11211
         User=daemon
 
 /etc/systemd/system/weapon_import.timer:
@@ -102,7 +105,8 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv demos bulk -N postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv demos bulk -N postgres:///trends \
+                  127.0.0.1:11211
         User=daemon
 
 /etc/systemd/system/demo_import.timer:
@@ -126,7 +130,8 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv etf2l bulk -N postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv etf2l bulk -N postgres:///trends \
+                  127.0.0.1:11211
         User=daemon
 
 /etc/systemd/system/etf2l_import.timer:
@@ -150,7 +155,8 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv rgl bulk -N postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv rgl bulk -N postgres:///trends \
+                  127.0.0.1:11211
         User=daemon
 
 /etc/systemd/system/rgl_import.timer:
@@ -174,7 +180,8 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv link_demos postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv link_demos postgres:///trends \
+                  127.0.0.1:11211
         User=daemon
 
 /etc/systemd/system/link.timer:
@@ -198,7 +205,8 @@
         [Service]
         Type=oneshot
         EnvironmentFile=/etc/default/trends
-        ExecStart={{ prefix }}/bin/trends_importer -vv link_matches postgres:///trends
+        ExecStart={{ prefix }}/bin/trends_importer -vv link_matches postgres:///trends \
+                  127.0.0.1:11211
         User=daemon
 
 /etc/systemd/system/link_matches.timer:

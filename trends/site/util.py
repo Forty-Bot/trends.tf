@@ -14,7 +14,7 @@ from psycopg2.extras import NumericRange
 import pylibmc
 import werkzeug.exceptions, werkzeug.http
 
-from ..cache import NoopClient, TracingClient
+from ..cache import mc_connect, NoopClient
 from ..sql import db_connect
 from ..util import clamp
 
@@ -75,16 +75,14 @@ def view_updated(view, pretty=None):
 
 @global_context('mc_conn')
 def get_mc():
-    servers = flask.current_app.config['MEMCACHED_SERVERS']
-    if servers:
-        try:
-            mc = TracingClient(servers.split(','), binary=True, behaviors={ 'cas': True })
-            # pylibmc doesn't actually connect until we make a request. Force a connection failure
-            # up front so we can log it and use a fallback client
-            mc.get('connection_test')
-            return mc
-        except pylibmc.ConnectionError as error:
-            flask.current_app.logger.exception("Could not connect to memcached")
+    mc = mc_connect(flask.current_app.config['MEMCACHED_SERVERS'])
+    try:
+        # pylibmc doesn't actually connect until we make a request. Force a connection failure
+        # up front so we can log it and use a fallback client
+        mc.get('connection_test')
+        return mc
+    except pylibmc.ConnectionError as error:
+        flask.current_app.logger.exception("Could not connect to memcached")
     return NoopClient()
 
 @global_context('filters')

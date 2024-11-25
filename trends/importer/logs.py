@@ -799,7 +799,7 @@ def create_logs_parser(sub):
     logs.add_argument("-u", "--update-only", action='store_true',
                       help="Only update logs already in the database")
 
-def import_logs_cli(args, c):
+def import_logs_cli(args, c, mc):
     with sentry_sdk.start_transaction(op="import", name="logs"):
         return import_logs(c, args.fetcher(**vars(args)), args.update_only)
 

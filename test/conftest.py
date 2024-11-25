@@ -30,7 +30,7 @@ def database(request):
 
         with caplog_session(request) as caplog:
             with caplog.at_level(logging.ERROR):
-                create_test_db(database.url())
+                create_test_db(database.url(), None)
             if caplog.records:
                 pytest.fail("Error creating test database")
 

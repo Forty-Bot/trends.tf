@@ -45,7 +45,7 @@ def create_players_parser(sub):
 
 retries = urllib3.util.Retry(backoff_factor=1, status_forcelist=(requests.codes.too_many,))
 
-def import_players(args, c):
+def import_players(args, c, mc):
     if args.wait is None:
         if args.get_steamids == get_steamids_full:
             args.wait = 0

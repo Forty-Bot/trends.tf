@@ -11,7 +11,7 @@ def create_link_matches_parser(sub):
                    default=datetime.now() - timedelta(days=7), metavar="DATE",
                    help="Only link logs created before DATE")
 
-def link_matches(args, c):
+def link_matches(args, c, mc):
     with c.cursor() as cur:
         since = int(args.since.timestamp())
         cur.execute("BEGIN;")

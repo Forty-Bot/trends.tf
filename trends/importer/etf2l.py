@@ -146,7 +146,7 @@ def create_etf2l_parser(sub):
     b.add_argument("-p", "--page", type=int, default=1,
                    help="Start at a particular page")
 
-def import_etf2l_cli(args, c):
+def import_etf2l_cli(args, c, mc):
     with sentry_sdk.start_transaction(op="import", name="etf2l_matches"):
         if 'new' in args and args.new:
             with c.cursor() as cur:

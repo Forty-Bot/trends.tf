@@ -11,7 +11,7 @@ def create_link_demos_parser(sub):
                    default=datetime.now() - timedelta(hours=8), metavar="DATE",
                    help="Only link logs created before DATE")
 
-def link_logs(args, c):
+def link_logs(args, c, mc):
     with c.cursor() as cur:
         since = int(args.since.timestamp())
         cur.execute("BEGIN;")
