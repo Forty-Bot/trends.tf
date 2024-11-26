@@ -67,10 +67,10 @@ def get_overview():
     for row in cur:
         flask.g.player = row
         if cas is None:
-            mc.add(key, row)
+            mc.add(key, row, time=86400)
         else:
             try:
-                mc.cas(key, row, cas)
+                mc.cas(key, row, cas, time=86400)
             except pylibmc.NotFound:
                 pass
         break

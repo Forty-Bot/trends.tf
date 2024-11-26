@@ -389,8 +389,8 @@ class MockClient:
     def gets(self, key):
         return self._check('gets', (key,))
 
-    def add(self, key, value):
-        return self._check('add', (key,), value)
+    def add(self, key, value, time=0):
+        return self._check('add', (key, time), value)
 
     def cas(self, key, value, cas, time=0):
         return self._check('cas', (key, cas, time), value)
@@ -403,8 +403,8 @@ class MockServer:
     def gets(self, key, value, cas):
         self.responses.appendleft(('gets', (key,), (value, cas)))
 
-    def add(self, key, result):
-        self.responses.appendleft(('add', (key,), result))
+    def add(self, key, result, time=0):
+        self.responses.appendleft(('add', (key, time), result))
 
     def cas(self, key, cas, result, time=0):
         self.responses.appendleft(('cas', (key, cas, time), result))
@@ -435,7 +435,7 @@ def test_player_cache(client, players, monkeypatch):
         # Cache miss
         with mock_cache(monkeypatch) as server:
             server.gets(key, None, None)
-            server.add(key, True)
+            server.add(key, True, time=86400)
             uncached = client.get(path)
             if uncached.status_code == 404:
                 server.responses.clear()
@@ -451,11 +451,11 @@ def test_player_cache(client, players, monkeypatch):
         value['last_active'] -= 1
         with mock_cache(monkeypatch) as server:
             server.gets(key, value, 0)
-            server.cas(key, 0, False)
+            server.cas(key, 0, False, time=86400)
             check(client.get(path))
 
         # Stale cache with racing delete
         with mock_cache(monkeypatch) as server:
             server.gets(key, value, 0)
-            server.cas(key, 0, pylibmc.NotFound)
+            server.cas(key, 0, pylibmc.NotFound, time=86400)
             check(client.get(path))
