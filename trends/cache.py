@@ -54,7 +54,7 @@ class TracingClient(pylibmc.Client):
 
     def get_multi(self, keys):
         keys = list(keys)
-        with sentry_sdk.start_span('cache.get', 'get_multi', keys) as span:
+        with cache_span('cache.get', 'get_multi', keys) as span:
             values = super().get_multi(keys)
             span.set_data('cache.hit', bool(values))
             return values
