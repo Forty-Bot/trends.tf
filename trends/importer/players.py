@@ -89,10 +89,8 @@ def import_players(args, c):
             cur.execute("COMMIT;")
             logging.info("ok")
         except requests.exceptions.HTTPError as e:
-            # Bail on client errors, except for rate-limiting
-            if e.response.status_code == requests.codes.too_many:
-                logging.warning("Being rate-limited (429 response)")
-            elif e.response.status_code < 500:
+            # Bail on client errors
+            if e.response.status_code < 500:
                 raise
             else:
                 # Otherwise just log and try again later
