@@ -55,6 +55,7 @@ def import_players(args, c):
     s = requests.session()
     s.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
     cur = c.cursor()
+    successes = 0
     for steamids in args.get_steamids(c):
         try:
             url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/"
@@ -87,6 +88,7 @@ def import_players(args, c):
                            FROM player_update
                            WHERE player_update.steamid64::BIGINT = player.steamid64;""")
             cur.execute("COMMIT;")
+            successes += 1
             logging.info("ok")
         except requests.exceptions.HTTPError as e:
             # Bail on client errors
@@ -96,7 +98,8 @@ def import_players(args, c):
                 # Otherwise just log and try again later
                 logging.exception("Could not fetch player info")
         except requests.exceptions.RetryError:
-            logging.warning("Being rate-limited (Ten 429 responses!)")
+            logging.warning(f"Being rate-limited (Ten 429 responses!), {successes=}")
+            successes = 0
         except OSError:
             logging.exception("Could not fetch player info")
         except (ValueError, KeyError):
