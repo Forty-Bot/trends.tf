@@ -174,15 +174,17 @@ def import_transfers(c, t):
                AND np2.id < np1.id""")
     c.execute("INSERT INTO name (name) SELECT name FROM new_player ON CONFLICT DO NOTHING;")
     c.execute(
-        """INSERT INTO player (steamid64, nameid, avatarhash, eu_playerid) SELECT
-               steamid64,
-               (SELECT nameid FROM name WHERE name = new_player.name),
-               avatarhash,
-               eu_playerid
-           FROM new_player
-           ON CONFLICT (steamid64)
-           DO UPDATE SET
-               eu_playerid = coalesce(EXCLUDED.eu_playerid, player.eu_playerid);""")
+        """WITH player AS (INSERT INTO player (steamid64, nameid, avatarhash, eu_playerid) SELECT
+                   steamid64,
+                   (SELECT nameid FROM name WHERE name = new_player.name),
+                   avatarhash,
+                   eu_playerid
+               FROM new_player
+               ON CONFLICT (steamid64)
+               DO UPDATE SET
+                   eu_playerid = coalesce(EXCLUDED.eu_playerid, player.eu_playerid)
+               RETURNING steamid64
+           ) INSERT INTO cache_purge_player SELECT steamid64 FROM player;""")
     c.execute("DROP TABLE new_player;")
 
     # OK, here's the dance:

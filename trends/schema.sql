@@ -942,3 +942,9 @@ INSERT INTO materialized_view (oid) VALUES
 	('medic_cube'::REGCLASS),
 	('map_popularity'::REGCLASS)
 ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS cache_purge_player (
+	steamid64 BIGINT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS cache_purge_player_pkey ON cache_purge_player (steamid64);

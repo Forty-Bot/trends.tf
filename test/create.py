@@ -73,7 +73,7 @@ def create_test_db(url, memcached):
                 3384488,
             )
         }
-        trends.importer.logs.import_logs(c, FileFetcher(logs=logfiles), False)
+        trends.importer.logs.import_logs(c, mc, FileFetcher(logs=logfiles), False)
 
     with db_connect(url) as c:
         demofiles = (f"{os.path.dirname(__file__)}/demos/demo_{demoid}.json" for demoid in (
@@ -100,7 +100,7 @@ def create_test_db(url, memcached):
     with db_connect(url) as c:
         fetcher = ETF2LFileFetcher(results=f"{os.path.dirname(__file__)}/etf2l/results.json",
                                    xferdir=f"{os.path.dirname(__file__)}/etf2l/")
-        trends.importer.etf2l.import_etf2l(c, fetcher)
+        trends.importer.etf2l.import_etf2l(c, mc, fetcher)
 
     with db_connect(url) as c:
         dir = f"{os.path.dirname(__file__)}/rgl"

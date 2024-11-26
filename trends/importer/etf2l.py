@@ -11,6 +11,7 @@ import time
 from psycopg2.extras import NumericRange
 import sentry_sdk
 
+from ..cache import purge_players
 from .fetch import ETF2LFileFetcher, ETF2LBulkFetcher, FetchError
 from .league import *
 from ..sql import db_connect
@@ -155,10 +156,9 @@ def import_etf2l_cli(args, c, mc):
                        FROM match
                        WHERE league = 'etf2l';""");
                 args.since = datetime.fromtimestamp(cur.fetchone()[0])
-        return import_etf2l(c, args.fetcher(**vars(args)))
+        return import_etf2l(c, mc, args.fetcher(**vars(args)))
 
-
-def import_etf2l(c, fetcher):
+def import_etf2l(c, mc, fetcher):
     cur = c.cursor()
     count = 0
     for result in filter_matchids(c, fetcher.get_results()):
@@ -202,6 +202,7 @@ def import_etf2l(c, fetcher):
                     import_team(cur, team)
                 import_match(cur, res)
                 cur.execute("COMMIT;")
+            purge_players(c, mc)
         except FetchError:
             continue
         except (IndexError, KeyError, psycopg2.errors.UniqueViolation):

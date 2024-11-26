@@ -9,6 +9,8 @@ import requests, requests.adapters
 import psycopg2, psycopg2.extras
 import urllib3.util
 
+from ..cache import purge_players
+
 def get_steamids_full(c):
     last_steamid = 0
     cur = c.cursor()
@@ -81,13 +83,21 @@ def import_players(args, c, mc):
                                name
                            FROM player_update
                            ON CONFLICT DO NOTHING;""")
-            cur.execute("""UPDATE player
-                           SET
-                              nameid = (SELECT nameid FROM name WHERE name = player_update.name),
-                              avatarhash = player_update.avatarhash
-                           FROM player_update
-                           WHERE player_update.steamid64::BIGINT = player.steamid64;""")
+            cur.execute("""WITH player AS (UPDATE player
+                               SET
+                                  nameid = (SELECT nameid
+                                      FROM name
+                                      WHERE name = player_update.name
+                                  ),
+                                  avatarhash = player_update.avatarhash
+                               FROM player_update
+                               WHERE player_update.steamid64::BIGINT = player.steamid64
+                               RETURNING steamid64
+                           ) INSERT INTO cache_purge_player (steamid64)
+                           SELECT steamid64
+                           FROM player;""")
             cur.execute("COMMIT;")
+            purge_players(c, mc)
             successes += 1
             logging.info("ok")
         except requests.exceptions.HTTPError as e:

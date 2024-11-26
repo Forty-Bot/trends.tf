@@ -10,6 +10,7 @@ import psycopg2
 import sentry_sdk
 import systemd_watchdog
 
+from ..cache import purge_players
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
 from ..sql import disable_tracing, delete_logs, log_tables, publicize, table_columns
@@ -747,6 +748,13 @@ def update_ks(cur):
                    WHERE pse.logid = new.logid
                        AND pse.playerid = new.playerid;""")
 
+def prepare_purge(cur):
+    cur.execute("""INSERT INTO cache_purge_player (steamid64)
+                   SELECT steamid64
+                   FROM player_stats_backing
+                   JOIN player USING (playerid)
+                   GROUP BY steamid64;""")
+
 def create_logs_parser(sub):
     class LogAction(argparse.Action):
         def __init__(self, option_strings, dest, **kwargs):
@@ -801,9 +809,9 @@ def create_logs_parser(sub):
 
 def import_logs_cli(args, c, mc):
     with sentry_sdk.start_transaction(op="import", name="logs"):
-        return import_logs(c, args.fetcher(**vars(args)), args.update_only)
+        return import_logs(c, mc, args.fetcher(**vars(args)), args.update_only)
 
-def import_logs(c, fetcher, update_only):
+def import_logs(c, mc, fetcher, update_only):
     cur = c.cursor()
     wd = systemd_watchdog.watchdog()
 
@@ -852,8 +860,10 @@ def import_logs(c, fetcher, update_only):
             update_acc(cur)
             update_ks(cur)
             publicize(c, log_tables)
+            prepare_purge(cur)
             cur.execute("COMMIT;")
             logging.info("Committed %s imported log(s)...", count)
+        purge_players(c, mc)
 
     count = 0
     start = datetime.now()

@@ -4,6 +4,8 @@
 from datetime import datetime, timedelta
 import logging
 
+from ..cache import purge_players
+
 def create_link_matches_parser(sub):
     link = sub.add_parser("link_matches", help="Link logs and matches")
     link.set_defaults(importer=link_matches)
@@ -90,5 +92,12 @@ def link_matches(args, c, mc):
                            team1_is_red = log_matches.team1_is_red
                        FROM log_matches
                        WHERE log.logid = log_matches.logid;""")
+        cur.execute("""INSERT INTO cache_purge_player (steamid64)
+                       SELECT steamid64
+                       FROM log_matches
+                       JOIN player_stats USING (logid)
+                       JOIN player USING (playerid)
+                       GROUP BY steamid64;""")
         cur.execute("COMMIT;")
         logging.info(f"Linked {count} logs")
+        purge_players(c, mc)

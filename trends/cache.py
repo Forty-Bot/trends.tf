@@ -33,6 +33,12 @@ class NoopClient:
     def cas(self, key, value, cas, time=0):
         raise pylibmc.NotFound
 
+    def delete(self, key):
+        return False
+
+    def delete_multi(self, keys):
+        return False
+
 @contextlib.contextmanager
 def cache_span(category, op, key):
     sentry_sdk.add_breadcrumb(type='query', category=category, message=key)
@@ -89,7 +95,29 @@ class TracingClient(pylibmc.Client):
         with cache_span('cache.set', 'cas', key):
             return super().cas(key, value, cas, time)
 
+    def delete(self, key):
+        with cache_span('cache.delete', 'delete', key):
+            return super().delete(key)
+
+    # delete_multi just calls delete repeatedly
+
 def mc_connect(servers):
     if servers:
         return TracingClient(servers.split(','), binary=True, behaviors={ 'cas': True })
     return NoopClient()
+
+def purge_players(c, mc):
+    with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
+        while True:
+            cur.execute("BEGIN;")
+            cur.execute("""SELECT steamid64
+                           FROM cache_purge_player
+                           FOR UPDATE SKIP LOCKED
+                           LIMIT 1000;""")
+            players = tuple(row[0] for row in cur)
+            if not len(players):
+                return
+
+            mc.delete_multi(f"overview_{steamid}" for steamid in players)
+            cur.execute("DELETE FROM cache_purge_player WHERE steamid64 IN %s;", (players,))
+            cur.execute("COMMIT;")
