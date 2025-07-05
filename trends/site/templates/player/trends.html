@@ -7,7 +7,7 @@
 {% block title %}Trends - {{ super() }}{% endblock %}
 {% block head %}
 	{{ super() }}
-	<script type="text/javascript" defer>steamid64 = "{{ g.player['steamid64'] }}";</script>
+	<script type="text/javascript" defer>steamid64 = "{{ g.steamid }}";</script>
 	<script id="trend-data" type="application/json">{{ trends | tojson }}</script>
 	<script type="module"
 	 src="{{ url_for('static', filename="vendor/chart.min.js") }}"></script>

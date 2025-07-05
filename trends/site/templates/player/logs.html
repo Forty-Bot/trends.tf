@@ -41,7 +41,7 @@
 		'sentries': "Sentry score",
 		'captures': "Captures",
 	   }) }}
-	<form id="combine" action="{{ url_for('root.log_form', _anchor=g.player['steamid64']) }}">
+	<form id="combine" action="{{ url_for('root.log_form', _anchor=g.steamid) }}">
 		<button type="submit">Combine selected logs</button>
 	</form>
 	{{ navigation(logs) }}
