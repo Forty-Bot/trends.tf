@@ -725,6 +725,57 @@
         "id": 2946,
         "tier": 3
       }
+    },
+    {
+      "week": 10,
+      "clan2": {
+        "steam": {
+          "group": null,
+          "avatar": "http://etf2l.org/images/avatars/650f88abe8f32.png"
+        },
+        "name": "Ora Elektro",
+        "country": "Norway",
+        "url": "https://api.etf2l.org/team/28783",
+        "id": 28783,
+        "drop": 0
+      },
+      "clan1": {
+        "drop": 0,
+        "url": "https://api.etf2l.org/team/29691",
+        "id": 29691,
+        "country": "European",
+        "name": "SVIFT",
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/6823657a9afea.jpg",
+          "group": null
+        }
+      },
+      "time": 1575492414,
+      "r2": 0,
+      "division": {
+        "skill_contrib": 28,
+        "name": "Premiership",
+        "tier": 0,
+        "id": 2522
+      },
+      "round": "Grand Finals",
+      "competition": {
+        "type": "6v6",
+        "url": "https://api.etf2l.org/competition/643.json",
+        "id": 643,
+        "name": "Season 34 Top Tiers: Powered by The Community",
+        "category": "6v6 Season"
+      },
+      "id": 77318,
+      "defaultwin": 0,
+      "r1": 6,
+      "maps": [
+        "variable",
+        "variable",
+        "variable",
+        "variable",
+        "variable"
+      ]
     }
   ],
   "page": {

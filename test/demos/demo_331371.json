@@ -1,0 +1,158 @@
+{
+  "id": 331371,
+  "url": "https://freezer.demos.tf/1e/a5/1ea5ed227b5628b24b14218990b99fa9_match-20191204-2116-cp_granary_pro_rc8.dem",
+  "name": "match-20191204-2116-cp_granary_pro_rc8.dem",
+  "server": "serveme.tf (#966558)",
+  "duration": 1814,
+  "nick": "SourceTV Demo",
+  "map": "cp_granary_pro_rc8",
+  "time": 1575495985,
+  "red": "RED",
+  "blue": "BLU",
+  "redScore": 1,
+  "blueScore": 2,
+  "playerCount": 12,
+  "uploader": {
+    "id": 16377,
+    "steamid": "serveme.tf",
+    "name": "serveme.tf"
+  },
+  "hash": "1ea5ed227b5628b24b14218990b99fa9",
+  "backend": "fridge",
+  "path": "/demos/1e/a5/1ea5ed227b5628b24b14218990b99fa9_match-20191204-2116-cp_granary_pro_rc8.dem",
+  "private_until": null,
+  "players": [
+    {
+      "id": 4251639,
+      "user_id": 3302,
+      "name": "ØRA Nevo",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198033396021",
+      "kills": 22,
+      "assists": 7,
+      "deaths": 17
+    },
+    {
+      "id": 4251634,
+      "user_id": 15037,
+      "name": "Ascent seeds",
+      "team": "blue",
+      "class": "medic",
+      "steamid": "76561198306706523",
+      "kills": 0,
+      "assists": 15,
+      "deaths": 7
+    },
+    {
+      "id": 4251637,
+      "user_id": 6261,
+      "name": "Ascent papi",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198075312767",
+      "kills": 19,
+      "assists": 4,
+      "deaths": 20
+    },
+    {
+      "id": 4251631,
+      "user_id": 1755,
+      "name": "ØRA Eemes",
+      "team": "red",
+      "class": "demoman",
+      "steamid": "76561198047850812",
+      "kills": 12,
+      "assists": 7,
+      "deaths": 12
+    },
+    {
+      "id": 4251640,
+      "user_id": 787,
+      "name": "Ascent iatgink",
+      "team": "blue",
+      "class": "soldier",
+      "steamid": "76561198058822614",
+      "kills": 16,
+      "assists": 4,
+      "deaths": 21
+    },
+    {
+      "id": 4251633,
+      "user_id": 8649,
+      "name": "Ascent klassy",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198066409475",
+      "kills": 21,
+      "assists": 9,
+      "deaths": 15
+    },
+    {
+      "id": 4251629,
+      "user_id": 11177,
+      "name": "Ascent toemas_",
+      "team": "blue",
+      "class": "scout",
+      "steamid": "76561198156188209",
+      "kills": 19,
+      "assists": 16,
+      "deaths": 11
+    },
+    {
+      "id": 4251632,
+      "user_id": 7788,
+      "name": "ØRA YeeHaw",
+      "team": "red",
+      "class": "scout",
+      "steamid": "76561198063275767",
+      "kills": 24,
+      "assists": 12,
+      "deaths": 20
+    },
+    {
+      "id": 4251630,
+      "user_id": 8945,
+      "name": "ØRA ama",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198133526074",
+      "kills": 13,
+      "assists": 6,
+      "deaths": 19
+    },
+    {
+      "id": 4251636,
+      "user_id": 5139,
+      "name": "Ascent LUKASTANK",
+      "team": "blue",
+      "class": "demoman",
+      "steamid": "76561198084583387",
+      "kills": 20,
+      "assists": 8,
+      "deaths": 15
+    },
+    {
+      "id": 4251635,
+      "user_id": 21101,
+      "name": "ØRA shock",
+      "team": "red",
+      "class": "medic",
+      "steamid": "76561198253170562",
+      "kills": 2,
+      "assists": 12,
+      "deaths": 9
+    },
+    {
+      "id": 4251638,
+      "user_id": 17000,
+      "name": "ØRA Azunis (world class nut)",
+      "team": "red",
+      "class": "soldier",
+      "steamid": "76561198012122476",
+      "kills": 16,
+      "assists": 7,
+      "deaths": 19
+    }
+  ]
+}

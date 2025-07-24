@@ -1,0 +1,2347 @@
+{
+  "version": 3,
+  "teams": {
+    "Red": {
+      "score": 1,
+      "kills": 87,
+      "deaths": 0,
+      "dmg": 37216,
+      "charges": 13,
+      "drops": 0,
+      "firstcaps": 3,
+      "caps": 14
+    },
+    "Blue": {
+      "score": 2,
+      "kills": 82,
+      "deaths": 0,
+      "dmg": 33925,
+      "charges": 11,
+      "drops": 2,
+      "firstcaps": 1,
+      "caps": 14
+    }
+  },
+  "length": 1769,
+  "players": {
+    "[U:1:173260346]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 12,
+          "assists": 6,
+          "deaths": 16,
+          "dmg": 7955,
+          "weapon": {
+            "tf_projectile_rocket": {
+              "kills": 12,
+              "dmg": 7955,
+              "avg_dmg": 51.65584415584416,
+              "shots": 551,
+              "hits": 154
+            },
+            "unique_pickaxe_escape": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 76,
+              "hits": 0
+            }
+          },
+          "total_time": 1765
+        }
+      ],
+      "kills": 12,
+      "deaths": 16,
+      "assists": 6,
+      "suicides": 0,
+      "kapd": "1.1",
+      "kpd": "0.8",
+      "dmg": 7955,
+      "dmg_real": 530,
+      "dt": 6977,
+      "dt_real": 431,
+      "hr": 7569,
+      "lks": 4,
+      "as": 6,
+      "dapd": 497,
+      "dapm": 269,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 47,
+      "medkits_hp": 1714,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 8339,
+      "cpc": 2,
+      "ic": 0
+    },
+    "[U:1:106143747]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "scout",
+          "kills": 18,
+          "assists": 8,
+          "deaths": 14,
+          "dmg": 4749,
+          "weapon": {
+            "scout_sword": {
+              "kills": 0,
+              "dmg": 47,
+              "avg_dmg": 11.75,
+              "shots": 58,
+              "hits": 4
+            },
+            "the_winger": {
+              "kills": 0,
+              "dmg": 94,
+              "avg_dmg": 13.428571428571429,
+              "shots": 28,
+              "hits": 7
+            },
+            "scattergun": {
+              "kills": 17,
+              "dmg": 4608,
+              "avg_dmg": 25.18032786885246,
+              "shots": 271,
+              "hits": 183
+            },
+            "world": {
+              "kills": 1,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": 1505
+        },
+        {
+          "type": "engineer",
+          "kills": 1,
+          "assists": 0,
+          "deaths": 0,
+          "dmg": 240,
+          "weapon": {
+            "wrench_jag": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 238,
+              "hits": 0
+            },
+            "shotgun_primary": {
+              "kills": 0,
+              "dmg": 43,
+              "avg_dmg": 8.6,
+              "shots": 13,
+              "hits": 5
+            },
+            "obj_sentrygun3": {
+              "kills": 1,
+              "dmg": 51,
+              "avg_dmg": 17,
+              "shots": 0,
+              "hits": 3
+            },
+            "pistol": {
+              "kills": 0,
+              "dmg": 44,
+              "avg_dmg": 8.8,
+              "shots": 11,
+              "hits": 5
+            },
+            "obj_sentrygun": {
+              "kills": 0,
+              "dmg": 102,
+              "avg_dmg": 17,
+              "shots": 0,
+              "hits": 6
+            }
+          },
+          "total_time": 264
+        }
+      ],
+      "kills": 19,
+      "deaths": 14,
+      "assists": 8,
+      "suicides": 0,
+      "kapd": "1.9",
+      "kpd": "1.4",
+      "dmg": 4989,
+      "dmg_real": 745,
+      "dt": 4323,
+      "dt_real": 485,
+      "hr": 4002,
+      "lks": 6,
+      "as": 0,
+      "dapd": 356,
+      "dapm": 169,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 14,
+      "medkits_hp": 318,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 9337,
+      "cpc": 12,
+      "ic": 0
+    },
+    "[U:1:195922481]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "scout",
+          "kills": 14,
+          "assists": 15,
+          "deaths": 10,
+          "dmg": 5126,
+          "weapon": {
+            "scout_sword": {
+              "kills": 1,
+              "dmg": 35,
+              "avg_dmg": 35,
+              "shots": 168,
+              "hits": 1
+            },
+            "scattergun": {
+              "kills": 10,
+              "dmg": 4925,
+              "avg_dmg": 21.04700854700855,
+              "shots": 318,
+              "hits": 234
+            },
+            "world": {
+              "kills": 2,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "the_winger": {
+              "kills": 1,
+              "dmg": 166,
+              "avg_dmg": 12.76923076923077,
+              "shots": 82,
+              "hits": 13
+            }
+          },
+          "total_time": 1585
+        },
+        {
+          "type": "sniper",
+          "kills": 1,
+          "assists": 0,
+          "deaths": 0,
+          "dmg": 450,
+          "weapon": {
+            "sniperrifle": {
+              "kills": 1,
+              "dmg": 450,
+              "avg_dmg": 450,
+              "shots": 3,
+              "hits": 1
+            },
+            "club": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 10,
+              "hits": 0
+            }
+          },
+          "total_time": 62
+        },
+        {
+          "type": "heavyweapons",
+          "kills": 0,
+          "assists": 0,
+          "deaths": 1,
+          "dmg": 131,
+          "weapon": {
+            "tomislav": {
+              "kills": 0,
+              "dmg": 131,
+              "avg_dmg": 8.1875,
+              "shots": 58,
+              "hits": 16
+            }
+          },
+          "total_time": 46
+        }
+      ],
+      "kills": 15,
+      "deaths": 11,
+      "assists": 15,
+      "suicides": 0,
+      "kapd": "2.7",
+      "kpd": "1.4",
+      "dmg": 5707,
+      "dmg_real": 923,
+      "dt": 5865,
+      "dt_real": 427,
+      "hr": 8919,
+      "lks": 4,
+      "as": 0,
+      "dapd": 518,
+      "dapm": 193,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 9,
+      "medkits_hp": 302,
+      "backstabs": 0,
+      "headshots": 1,
+      "headshots_hit": 1,
+      "sentries": 0,
+      "heal": 16650,
+      "cpc": 4,
+      "ic": 0,
+      "medicstats": {
+        "avg_uber_length": 1095.629090909091
+      }
+    },
+    "[U:1:73130293]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "scout",
+          "kills": 18,
+          "assists": 6,
+          "deaths": 14,
+          "dmg": 5180,
+          "weapon": {
+            "scattergun": {
+              "kills": 15,
+              "dmg": 5138,
+              "avg_dmg": 26.348717948717947,
+              "shots": 260,
+              "hits": 195
+            },
+            "world": {
+              "kills": 2,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            },
+            "the_winger": {
+              "kills": 1,
+              "dmg": 42,
+              "avg_dmg": 21,
+              "shots": 24,
+              "hits": 2
+            },
+            "scout_sword": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 22,
+              "hits": 0
+            }
+          },
+          "total_time": 1523
+        },
+        {
+          "type": "sniper",
+          "kills": 3,
+          "assists": 1,
+          "deaths": 1,
+          "dmg": 1372,
+          "weapon": {
+            "sniperrifle": {
+              "kills": 3,
+              "dmg": 1372,
+              "avg_dmg": 196,
+              "shots": 12,
+              "hits": 7
+            }
+          },
+          "total_time": 151
+        },
+        {
+          "type": "spy",
+          "kills": 1,
+          "assists": 0,
+          "deaths": 0,
+          "dmg": 450,
+          "weapon": {
+            "knife": {
+              "kills": 1,
+              "dmg": 450,
+              "avg_dmg": 450,
+              "shots": 2,
+              "hits": 1
+            }
+          },
+          "total_time": 42
+        }
+      ],
+      "kills": 22,
+      "deaths": 15,
+      "assists": 7,
+      "suicides": 0,
+      "kapd": "1.9",
+      "kpd": "1.5",
+      "dmg": 7109,
+      "dmg_real": 899,
+      "dt": 4961,
+      "dt_real": 653,
+      "hr": 4569,
+      "lks": 5,
+      "as": 0,
+      "dapd": 473,
+      "dapm": 241,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 20,
+      "medkits_hp": 464,
+      "backstabs": 1,
+      "headshots": 2,
+      "headshots_hit": 4,
+      "sentries": 0,
+      "heal": 10920,
+      "cpc": 10,
+      "ic": 0
+    },
+    "[U:1:115047039]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 18,
+          "assists": 4,
+          "deaths": 20,
+          "dmg": 7948,
+          "weapon": {
+            "tf_projectile_rocket": {
+              "kills": 15,
+              "dmg": 7948,
+              "avg_dmg": 54.43835616438356,
+              "shots": 506,
+              "hits": 146
+            },
+            "unique_pickaxe_escape": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 108,
+              "hits": 0
+            },
+            "world": {
+              "kills": 3,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": 1769
+        }
+      ],
+      "kills": 18,
+      "deaths": 20,
+      "assists": 4,
+      "suicides": 0,
+      "kapd": "1.1",
+      "kpd": "0.9",
+      "dmg": 7948,
+      "dmg_real": 559,
+      "dt": 8732,
+      "dt_real": 930,
+      "hr": 7026,
+      "lks": 3,
+      "as": 5,
+      "dapd": 397,
+      "dapm": 269,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 36,
+      "medkits_hp": 1354,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 2,
+      "ic": 0
+    },
+    "[U:1:51856748]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 16,
+          "assists": 7,
+          "deaths": 18,
+          "dmg": 7056,
+          "weapon": {
+            "quake_rl": {
+              "kills": 16,
+              "dmg": 7056,
+              "avg_dmg": 56.448,
+              "shots": 447,
+              "hits": 125
+            },
+            "unique_pickaxe_escape": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 2,
+              "hits": 0
+            }
+          },
+          "total_time": 1768
+        }
+      ],
+      "kills": 16,
+      "deaths": 18,
+      "assists": 7,
+      "suicides": 0,
+      "kapd": "1.3",
+      "kpd": "0.9",
+      "dmg": 7056,
+      "dmg_real": 671,
+      "dt": 6755,
+      "dt_real": 1328,
+      "hr": 5575,
+      "lks": 3,
+      "as": 7,
+      "dapd": 392,
+      "dapm": 239,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 59,
+      "medkits_hp": 2033,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 2381,
+      "cpc": 1,
+      "ic": 0
+    },
+    "[U:1:346440795]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "medic",
+          "kills": 0,
+          "assists": 14,
+          "deaths": 7,
+          "dmg": 376,
+          "weapon": {
+            "crusaders_crossbow": {
+              "kills": 0,
+              "dmg": 311,
+              "avg_dmg": 51.833333333333336,
+              "shots": 125,
+              "hits": 6
+            },
+            "ubersaw": {
+              "kills": 0,
+              "dmg": 65,
+              "avg_dmg": 65,
+              "shots": 2,
+              "hits": 1
+            }
+          },
+          "total_time": 1769
+        }
+      ],
+      "kills": 0,
+      "deaths": 7,
+      "assists": 14,
+      "suicides": 0,
+      "kapd": "2.0",
+      "kpd": "0.0",
+      "dmg": 376,
+      "dmg_real": 0,
+      "dt": 3432,
+      "dt_real": 318,
+      "hr": 0,
+      "lks": 0,
+      "as": 0,
+      "dapd": 53,
+      "dapm": 12,
+      "ubers": 11,
+      "ubertypes": {
+        "medigun": 11
+      },
+      "drops": 2,
+      "medkits": 1,
+      "medkits_hp": 30,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 33037,
+      "cpc": 4,
+      "ic": 0,
+      "medicstats": {
+        "advantages_lost": 3,
+        "biggest_advantage_lost": 98,
+        "deaths_with_95_99_uber": 1,
+        "avg_time_before_healing": 8.409090909090908,
+        "avg_time_to_build": 73.8529411764706,
+        "avg_time_before_using": 66.18181818181819,
+        "avg_uber_length": 6.8
+      }
+    },
+    "[U:1:87585084]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "demoman",
+          "kills": 12,
+          "assists": 7,
+          "deaths": 10,
+          "dmg": 7238,
+          "weapon": {
+            "tf_projectile_pipe_remote": {
+              "kills": 5,
+              "dmg": 4254,
+              "avg_dmg": 55.246753246753244,
+              "shots": 448,
+              "hits": 77
+            },
+            "iron_bomber": {
+              "kills": 7,
+              "dmg": 2984,
+              "avg_dmg": 67.81818181818181,
+              "shots": 232,
+              "hits": 44
+            },
+            "bottle": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 4,
+              "hits": 0
+            }
+          },
+          "total_time": 1769
+        }
+      ],
+      "kills": 12,
+      "deaths": 10,
+      "assists": 7,
+      "suicides": 0,
+      "kapd": "1.9",
+      "kpd": "1.2",
+      "dmg": 7238,
+      "dmg_real": 469,
+      "dt": 6418,
+      "dt_real": 223,
+      "hr": 7827,
+      "lks": 3,
+      "as": 1,
+      "dapd": 723,
+      "dapm": 245,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 29,
+      "medkits_hp": 1150,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 8142,
+      "cpc": 4,
+      "ic": 0
+    },
+    "[U:1:98556886]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "soldier",
+          "kills": 13,
+          "assists": 3,
+          "deaths": 20,
+          "dmg": 6636,
+          "weapon": {
+            "quake_rl": {
+              "kills": 13,
+              "dmg": 5574,
+              "avg_dmg": 48.469565217391306,
+              "shots": 378,
+              "hits": 115
+            },
+            "blackbox": {
+              "kills": 0,
+              "dmg": 952,
+              "avg_dmg": 41.391304347826086,
+              "shots": 60,
+              "hits": 23
+            },
+            "unique_pickaxe_escape": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 10,
+              "hits": 0
+            },
+            "dumpster_device": {
+              "kills": 0,
+              "dmg": 110,
+              "avg_dmg": 55,
+              "shots": 11,
+              "hits": 2
+            }
+          },
+          "total_time": 1768
+        }
+      ],
+      "kills": 13,
+      "deaths": 20,
+      "assists": 3,
+      "suicides": 0,
+      "kapd": "0.8",
+      "kpd": "0.7",
+      "dmg": 6636,
+      "dmg_real": 522,
+      "dt": 6250,
+      "dt_real": 555,
+      "hr": 4813,
+      "lks": 3,
+      "as": 13,
+      "dapd": 331,
+      "dapm": 225,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 66,
+      "medkits_hp": 2277,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 5718,
+      "cpc": 3,
+      "ic": 0
+    },
+    "[U:1:292904834]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "medic",
+          "kills": 2,
+          "assists": 11,
+          "deaths": 6,
+          "dmg": 732,
+          "weapon": {
+            "crusaders_crossbow": {
+              "kills": 2,
+              "dmg": 667,
+              "avg_dmg": 60.63636363636363,
+              "shots": 131,
+              "hits": 11
+            },
+            "ubersaw": {
+              "kills": 0,
+              "dmg": 65,
+              "avg_dmg": 65,
+              "shots": 4,
+              "hits": 1
+            }
+          },
+          "total_time": 1769
+        }
+      ],
+      "kills": 2,
+      "deaths": 6,
+      "assists": 11,
+      "suicides": 0,
+      "kapd": "2.2",
+      "kpd": "0.3",
+      "dmg": 732,
+      "dmg_real": 68,
+      "dt": 2879,
+      "dt_real": 209,
+      "hr": 0,
+      "lks": 2,
+      "as": 0,
+      "dapd": 122,
+      "dapm": 24,
+      "ubers": 13,
+      "ubertypes": {
+        "medigun": 13
+      },
+      "drops": 0,
+      "medkits": 3,
+      "medkits_hp": 105,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 31927,
+      "cpc": 4,
+      "ic": 0,
+      "medicstats": {
+        "deaths_with_95_99_uber": 0,
+        "advantages_lost": 2,
+        "biggest_advantage_lost": 27,
+        "deaths_within_20s_after_uber": 1,
+        "avg_time_before_healing": 10.636363636363635,
+        "avg_time_to_build": 57.30769230769231,
+        "avg_time_before_using": 41.30769230769231,
+        "avg_uber_length": 6.707692307692308
+      }
+    },
+    "[U:1:103010039]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "scout",
+          "kills": 23,
+          "assists": 11,
+          "deaths": 17,
+          "dmg": 6978,
+          "weapon": {
+            "the_winger": {
+              "kills": 4,
+              "dmg": 289,
+              "avg_dmg": 15.210526315789474,
+              "shots": 72,
+              "hits": 19
+            },
+            "scattergun": {
+              "kills": 17,
+              "dmg": 6689,
+              "avg_dmg": 24.323636363636364,
+              "shots": 364,
+              "hits": 275
+            },
+            "scout_sword": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 72,
+              "hits": 0
+            },
+            "world": {
+              "kills": 2,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": 1702
+        },
+        {
+          "type": "heavyweapons",
+          "kills": 0,
+          "assists": 1,
+          "deaths": 0,
+          "dmg": 148,
+          "weapon": {
+            "tomislav": {
+              "kills": 0,
+              "dmg": 148,
+              "avg_dmg": 6.434782608695652,
+              "shots": 88,
+              "hits": 23
+            },
+            "gloves_running_urgently": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 4,
+              "hits": 0
+            }
+          },
+          "total_time": 24
+        }
+      ],
+      "kills": 23,
+      "deaths": 17,
+      "assists": 12,
+      "suicides": 0,
+      "kapd": "2.1",
+      "kpd": "1.4",
+      "dmg": 7126,
+      "dmg_real": 619,
+      "dt": 5935,
+      "dt_real": 383,
+      "hr": 6268,
+      "lks": 4,
+      "as": 0,
+      "dapd": 419,
+      "dapm": 241,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 15,
+      "medkits_hp": 308,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 4,
+      "ic": 0
+    },
+    "[U:1:124317659]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "demoman",
+          "kills": 17,
+          "assists": 7,
+          "deaths": 15,
+          "dmg": 8269,
+          "weapon": {
+            "tf_projectile_pipe_remote": {
+              "kills": 14,
+              "dmg": 5140,
+              "avg_dmg": 60.470588235294116,
+              "shots": 524,
+              "hits": 85
+            },
+            "iron_bomber": {
+              "kills": 2,
+              "dmg": 3129,
+              "avg_dmg": 69.53333333333333,
+              "shots": 231,
+              "hits": 45
+            },
+            "bottle": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 2,
+              "hits": 0
+            },
+            "player": {
+              "kills": 1,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 0,
+              "hits": 0
+            }
+          },
+          "total_time": 1769
+        }
+      ],
+      "kills": 17,
+      "deaths": 15,
+      "assists": 7,
+      "suicides": 0,
+      "kapd": "1.6",
+      "kpd": "1.1",
+      "dmg": 8269,
+      "dmg_real": 478,
+      "dt": 8614,
+      "dt_real": 541,
+      "hr": 8277,
+      "lks": 4,
+      "as": 1,
+      "dapd": 551,
+      "dapm": 280,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 33,
+      "medkits_hp": 1113,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 5371,
+      "cpc": 3,
+      "ic": 0
+    }
+  },
+  "names": {
+    "[U:1:173260346]": "ØRA ama",
+    "[U:1:106143747]": "Ascent klassy",
+    "[U:1:195922481]": "Ascent toemas_",
+    "[U:1:73130293]": "ØRA Nevo",
+    "[U:1:115047039]": "Ascent papi",
+    "[U:1:51856748]": "ØRA Azunis (world class nut)",
+    "[U:1:346440795]": "Ascent seeds",
+    "[U:1:87585084]": "ØRA Eemes",
+    "[U:1:98556886]": "Ascent iatgink",
+    "[U:1:292904834]": "ØRA shock",
+    "[U:1:103010039]": "ØRA YeeHaw",
+    "[U:1:124317659]": "Ascent LUKASTANK"
+  },
+  "rounds": [
+    {
+      "start_time": 1575490567,
+      "winner": "Red",
+      "team": {
+        "Blue": {
+          "score": 0,
+          "kills": 22,
+          "dmg": 11688,
+          "ubers": 2
+        },
+        "Red": {
+          "score": 1,
+          "kills": 31,
+          "dmg": 12965,
+          "ubers": 5
+        }
+      },
+      "events": [
+        {
+          "type": "medic_death",
+          "time": 29,
+          "team": "Red",
+          "steamid": "[U:1:292904834]",
+          "killer": "[U:1:115047039]"
+        },
+        {
+          "type": "pointcap",
+          "time": 63,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "pointcap",
+          "time": 111,
+          "team": "Blue",
+          "point": 3
+        },
+        {
+          "type": "drop",
+          "time": 162,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]"
+        },
+        {
+          "type": "medic_death",
+          "time": 162,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]",
+          "killer": "[U:1:51856748]"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 206,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "pointcap",
+          "time": 228,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 327,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 361,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "pointcap",
+          "time": 381,
+          "team": "Blue",
+          "point": 3
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 393,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "medic_death",
+          "time": 409,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]",
+          "killer": "[U:1:51856748]"
+        },
+        {
+          "type": "pointcap",
+          "time": 420,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "medic_death",
+          "time": 444,
+          "team": "Red",
+          "steamid": "[U:1:292904834]",
+          "killer": "[U:1:115047039]"
+        },
+        {
+          "type": "pointcap",
+          "time": 447,
+          "team": "Red",
+          "point": 2
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 606,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 625,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 668,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "medic_death",
+          "time": 675,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]",
+          "killer": "[U:1:87585084]"
+        },
+        {
+          "type": "pointcap",
+          "time": 688,
+          "team": "Red",
+          "point": 1
+        },
+        {
+          "type": "round_win",
+          "time": 688,
+          "team": "Red"
+        }
+      ],
+      "players": {
+        "[U:1:87585084]": {
+          "team": "Red",
+          "kills": 4,
+          "dmg": 2814
+        },
+        "[U:1:103010039]": {
+          "team": "Red",
+          "kills": 10,
+          "dmg": 2979
+        },
+        "[U:1:195922481]": {
+          "team": "Blue",
+          "kills": 5,
+          "dmg": 1676
+        },
+        "[U:1:73130293]": {
+          "team": "Red",
+          "kills": 5,
+          "dmg": 1776
+        },
+        "[U:1:98556886]": {
+          "team": "Blue",
+          "kills": 4,
+          "dmg": 2432
+        },
+        "[U:1:106143747]": {
+          "team": "Blue",
+          "kills": 2,
+          "dmg": 1214
+        },
+        "[U:1:115047039]": {
+          "team": "Blue",
+          "kills": 4,
+          "dmg": 2946
+        },
+        "[U:1:173260346]": {
+          "team": "Red",
+          "kills": 6,
+          "dmg": 3025
+        },
+        "[U:1:51856748]": {
+          "team": "Red",
+          "kills": 6,
+          "dmg": 2032
+        },
+        "[U:1:346440795]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 146
+        },
+        "[U:1:292904834]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 339
+        },
+        "[U:1:124317659]": {
+          "team": "Blue",
+          "kills": 7,
+          "dmg": 3274
+        }
+      },
+      "firstcap": "Red",
+      "length": 688
+    },
+    {
+      "start_time": 1575491265,
+      "winner": "Blue",
+      "team": {
+        "Blue": {
+          "score": 1,
+          "kills": 16,
+          "dmg": 4973,
+          "ubers": 3
+        },
+        "Red": {
+          "score": 1,
+          "kills": 13,
+          "dmg": 5459,
+          "ubers": 2
+        }
+      },
+      "events": [
+        {
+          "type": "medic_death",
+          "time": 726,
+          "team": "Red",
+          "steamid": "[U:1:292904834]",
+          "killer": "[U:1:98556886]"
+        },
+        {
+          "type": "medic_death",
+          "time": 729,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]",
+          "killer": "[U:1:173260346]"
+        },
+        {
+          "type": "pointcap",
+          "time": 770,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 832,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 839,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "medic_death",
+          "time": 841,
+          "team": "Red",
+          "steamid": "[U:1:292904834]",
+          "killer": "[U:1:124317659]"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 898,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "pointcap",
+          "time": 917,
+          "team": "Blue",
+          "point": 3
+        },
+        {
+          "type": "pointcap",
+          "time": 926,
+          "team": "Blue",
+          "point": 4
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 934,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "pointcap",
+          "time": 950,
+          "team": "Red",
+          "point": 4
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 990,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "pointcap",
+          "time": 994,
+          "team": "Blue",
+          "point": 4
+        },
+        {
+          "type": "pointcap",
+          "time": 997,
+          "team": "Blue",
+          "point": 5
+        },
+        {
+          "type": "round_win",
+          "time": 997,
+          "team": "Blue"
+        }
+      ],
+      "players": {
+        "[U:1:87585084]": {
+          "team": "Red",
+          "kills": 3,
+          "dmg": 1285
+        },
+        "[U:1:106143747]": {
+          "team": "Blue",
+          "kills": 5,
+          "dmg": 652
+        },
+        "[U:1:195922481]": {
+          "team": "Blue",
+          "kills": 2,
+          "dmg": 763
+        },
+        "[U:1:73130293]": {
+          "team": "Red",
+          "kills": 4,
+          "dmg": 943
+        },
+        "[U:1:115047039]": {
+          "team": "Blue",
+          "kills": 6,
+          "dmg": 1038
+        },
+        "[U:1:103010039]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 489
+        },
+        "[U:1:98556886]": {
+          "team": "Blue",
+          "kills": 1,
+          "dmg": 1334
+        },
+        "[U:1:51856748]": {
+          "team": "Red",
+          "kills": 3,
+          "dmg": 1032
+        },
+        "[U:1:173260346]": {
+          "team": "Red",
+          "kills": 3,
+          "dmg": 1598
+        },
+        "[U:1:124317659]": {
+          "team": "Blue",
+          "kills": 2,
+          "dmg": 1186
+        },
+        "[U:1:292904834]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 112
+        },
+        "[U:1:346440795]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        }
+      },
+      "firstcap": "Red",
+      "length": 299
+    },
+    {
+      "start_time": 1575491574,
+      "winner": "Blue",
+      "team": {
+        "Blue": {
+          "score": 2,
+          "kills": 29,
+          "dmg": 11397,
+          "ubers": 4
+        },
+        "Red": {
+          "score": 1,
+          "kills": 24,
+          "dmg": 12139,
+          "ubers": 4
+        }
+      },
+      "events": [
+        {
+          "type": "medic_death",
+          "time": 1037,
+          "team": "Red",
+          "steamid": "[U:1:292904834]",
+          "killer": "[U:1:98556886]"
+        },
+        {
+          "type": "pointcap",
+          "time": 1070,
+          "team": "Blue",
+          "point": 3
+        },
+        {
+          "type": "pointcap",
+          "time": 1084,
+          "team": "Blue",
+          "point": 4
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1094,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1134,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "medic_death",
+          "time": 1151,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]",
+          "killer": "[U:1:51856748]"
+        },
+        {
+          "type": "pointcap",
+          "time": 1155,
+          "team": "Red",
+          "point": 4
+        },
+        {
+          "type": "pointcap",
+          "time": 1177,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1255,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "pointcap",
+          "time": 1287,
+          "team": "Blue",
+          "point": 3
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1344,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1400,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1402,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "pointcap",
+          "time": 1406,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1494,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1494,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "pointcap",
+          "time": 1508,
+          "team": "Blue",
+          "point": 3
+        },
+        {
+          "type": "pointcap",
+          "time": 1522,
+          "team": "Blue",
+          "point": 4
+        },
+        {
+          "type": "pointcap",
+          "time": 1528,
+          "team": "Blue",
+          "point": 5
+        },
+        {
+          "type": "round_win",
+          "time": 1528,
+          "team": "Blue"
+        }
+      ],
+      "players": {
+        "[U:1:124317659]": {
+          "team": "Blue",
+          "kills": 5,
+          "dmg": 2475
+        },
+        "[U:1:87585084]": {
+          "team": "Red",
+          "kills": 1,
+          "dmg": 1705
+        },
+        "[U:1:195922481]": {
+          "team": "Blue",
+          "kills": 5,
+          "dmg": 2179
+        },
+        "[U:1:106143747]": {
+          "team": "Blue",
+          "kills": 8,
+          "dmg": 2148
+        },
+        "[U:1:73130293]": {
+          "team": "Red",
+          "kills": 9,
+          "dmg": 3214
+        },
+        "[U:1:115047039]": {
+          "team": "Blue",
+          "kills": 4,
+          "dmg": 2639
+        },
+        "[U:1:98556886]": {
+          "team": "Blue",
+          "kills": 7,
+          "dmg": 1840
+        },
+        "[U:1:173260346]": {
+          "team": "Red",
+          "kills": 3,
+          "dmg": 2584
+        },
+        "[U:1:51856748]": {
+          "team": "Red",
+          "kills": 4,
+          "dmg": 2617
+        },
+        "[U:1:103010039]": {
+          "team": "Red",
+          "kills": 7,
+          "dmg": 1916
+        },
+        "[U:1:292904834]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 103
+        },
+        "[U:1:346440795]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 116
+        }
+      },
+      "firstcap": "Blue",
+      "length": 521
+    },
+    {
+      "start_time": 1575492105,
+      "winner": "Blue",
+      "team": {
+        "Blue": {
+          "score": 2,
+          "kills": 15,
+          "dmg": 5867,
+          "ubers": 2
+        },
+        "Red": {
+          "score": 1,
+          "kills": 19,
+          "dmg": 6653,
+          "ubers": 2
+        }
+      },
+      "events": [
+        {
+          "type": "pointcap",
+          "time": 1586,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "pointcap",
+          "time": 1601,
+          "team": "Red",
+          "point": 2
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1606,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1610,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "pointcap",
+          "time": 1641,
+          "team": "Blue",
+          "point": 2
+        },
+        {
+          "type": "medic_death",
+          "time": 1651,
+          "team": "Red",
+          "steamid": "[U:1:292904834]",
+          "killer": "[U:1:115047039]"
+        },
+        {
+          "type": "pointcap",
+          "time": 1680,
+          "team": "Blue",
+          "point": 3
+        },
+        {
+          "type": "drop",
+          "time": 1695,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]"
+        },
+        {
+          "type": "medic_death",
+          "time": 1695,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]",
+          "killer": "[U:1:73130293]"
+        },
+        {
+          "type": "pointcap",
+          "time": 1746,
+          "team": "Red",
+          "point": 3
+        },
+        {
+          "type": "pointcap",
+          "time": 1764,
+          "team": "Red",
+          "point": 2
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1772,
+          "steamid": "[U:1:292904834]",
+          "team": "Red"
+        },
+        {
+          "type": "charge",
+          "medigun": "medigun",
+          "time": 1773,
+          "steamid": "[U:1:346440795]",
+          "team": "Blue"
+        },
+        {
+          "type": "medic_death",
+          "time": 1799,
+          "team": "Blue",
+          "steamid": "[U:1:346440795]",
+          "killer": "[U:1:103010039]"
+        },
+        {
+          "type": "round_win",
+          "time": 1799,
+          "team": "Blue"
+        }
+      ],
+      "players": {
+        "[U:1:87585084]": {
+          "team": "Red",
+          "kills": 4,
+          "dmg": 1434
+        },
+        "[U:1:124317659]": {
+          "team": "Blue",
+          "kills": 3,
+          "dmg": 1334
+        },
+        "[U:1:106143747]": {
+          "team": "Blue",
+          "kills": 4,
+          "dmg": 975
+        },
+        "[U:1:195922481]": {
+          "team": "Blue",
+          "kills": 3,
+          "dmg": 1089
+        },
+        "[U:1:73130293]": {
+          "team": "Red",
+          "kills": 4,
+          "dmg": 1176
+        },
+        "[U:1:103010039]": {
+          "team": "Red",
+          "kills": 6,
+          "dmg": 1742
+        },
+        "[U:1:173260346]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 748
+        },
+        "[U:1:115047039]": {
+          "team": "Blue",
+          "kills": 4,
+          "dmg": 1325
+        },
+        "[U:1:98556886]": {
+          "team": "Blue",
+          "kills": 1,
+          "dmg": 1030
+        },
+        "[U:1:51856748]": {
+          "team": "Red",
+          "kills": 3,
+          "dmg": 1375
+        },
+        "[U:1:292904834]": {
+          "team": "Red",
+          "kills": 2,
+          "dmg": 178
+        },
+        "[U:1:346440795]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 114
+        }
+      },
+      "firstcap": "Red",
+      "length": 261
+    }
+  ],
+  "healspread": {
+    "[U:1:346440795]": {
+      "[U:1:124317659]": 8277,
+      "[U:1:98556886]": 4813,
+      "[U:1:106143747]": 4002,
+      "[U:1:195922481]": 8919,
+      "[U:1:115047039]": 7026
+    },
+    "[U:1:292904834]": {
+      "[U:1:87585084]": 7827,
+      "[U:1:51856748]": 5575,
+      "[U:1:73130293]": 4569,
+      "[U:1:103010039]": 6268,
+      "[U:1:173260346]": 7569
+    }
+  },
+  "classkills": {
+    "[U:1:73130293]": {
+      "soldier": 17,
+      "scout": 3,
+      "demoman": 1,
+      "medic": 1
+    },
+    "[U:1:115047039]": {
+      "medic": 3,
+      "soldier": 11,
+      "scout": 4
+    },
+    "[U:1:173260346]": {
+      "demoman": 3,
+      "scout": 2,
+      "soldier": 6,
+      "medic": 1
+    },
+    "[U:1:51856748]": {
+      "soldier": 2,
+      "demoman": 3,
+      "medic": 3,
+      "scout": 8
+    },
+    "[U:1:195922481]": {
+      "soldier": 4,
+      "scout": 7,
+      "demoman": 3,
+      "sniper": 1
+    },
+    "[U:1:103010039]": {
+      "scout": 7,
+      "soldier": 9,
+      "demoman": 5,
+      "heavyweapons": 1,
+      "medic": 1
+    },
+    "[U:1:98556886]": {
+      "scout": 5,
+      "soldier": 4,
+      "medic": 2,
+      "demoman": 2
+    },
+    "[U:1:87585084]": {
+      "soldier": 6,
+      "scout": 3,
+      "medic": 1,
+      "demoman": 2
+    },
+    "[U:1:106143747]": {
+      "scout": 10,
+      "soldier": 7,
+      "demoman": 2
+    },
+    "[U:1:124317659]": {
+      "soldier": 8,
+      "scout": 5,
+      "demoman": 3,
+      "medic": 1
+    },
+    "[U:1:292904834]": {
+      "demoman": 1,
+      "scout": 1
+    }
+  },
+  "classdeaths": {
+    "[U:1:98556886]": {
+      "scout": 15,
+      "soldier": 2,
+      "demoman": 2,
+      "sniper": 1
+    },
+    "[U:1:292904834]": {
+      "soldier": 5,
+      "demoman": 1
+    },
+    "[U:1:124317659]": {
+      "soldier": 6,
+      "scout": 6,
+      "demoman": 2,
+      "medic": 1
+    },
+    "[U:1:115047039]": {
+      "soldier": 6,
+      "demoman": 4,
+      "scout": 8,
+      "sniper": 2
+    },
+    "[U:1:51856748]": {
+      "scout": 6,
+      "demoman": 5,
+      "soldier": 7
+    },
+    "[U:1:106143747]": {
+      "scout": 6,
+      "soldier": 6,
+      "demoman": 1,
+      "medic": 1
+    },
+    "[U:1:195922481]": {
+      "scout": 5,
+      "soldier": 4,
+      "demoman": 2
+    },
+    "[U:1:73130293]": {
+      "soldier": 5,
+      "demoman": 4,
+      "sniper": 1,
+      "scout": 5
+    },
+    "[U:1:103010039]": {
+      "scout": 11,
+      "demoman": 1,
+      "soldier": 4,
+      "engineer": 1
+    },
+    "[U:1:346440795]": {
+      "soldier": 4,
+      "demoman": 1,
+      "spy": 1,
+      "scout": 1
+    },
+    "[U:1:173260346]": {
+      "demoman": 3,
+      "soldier": 8,
+      "scout": 5
+    },
+    "[U:1:87585084]": {
+      "demoman": 3,
+      "scout": 5,
+      "soldier": 2
+    }
+  },
+  "classkillassists": {
+    "[U:1:73130293]": {
+      "soldier": 21,
+      "demoman": 3,
+      "scout": 4,
+      "medic": 1
+    },
+    "[U:1:115047039]": {
+      "medic": 3,
+      "scout": 7,
+      "soldier": 11,
+      "demoman": 1
+    },
+    "[U:1:98556886]": {
+      "medic": 4,
+      "scout": 6,
+      "soldier": 4,
+      "demoman": 2
+    },
+    "[U:1:173260346]": {
+      "demoman": 4,
+      "scout": 5,
+      "soldier": 8,
+      "medic": 1
+    },
+    "[U:1:51856748]": {
+      "soldier": 6,
+      "demoman": 4,
+      "medic": 3,
+      "scout": 10
+    },
+    "[U:1:195922481]": {
+      "soldier": 14,
+      "scout": 9,
+      "demoman": 6,
+      "sniper": 1
+    },
+    "[U:1:103010039]": {
+      "scout": 10,
+      "soldier": 16,
+      "demoman": 6,
+      "medic": 2,
+      "heavyweapons": 1
+    },
+    "[U:1:87585084]": {
+      "soldier": 8,
+      "demoman": 6,
+      "scout": 4,
+      "medic": 1
+    },
+    "[U:1:292904834]": {
+      "soldier": 4,
+      "scout": 3,
+      "heavyweapons": 1,
+      "demoman": 4,
+      "medic": 1
+    },
+    "[U:1:106143747]": {
+      "scout": 15,
+      "soldier": 9,
+      "demoman": 3
+    },
+    "[U:1:124317659]": {
+      "soldier": 11,
+      "scout": 9,
+      "demoman": 3,
+      "medic": 1
+    },
+    "[U:1:346440795]": {
+      "soldier": 7,
+      "scout": 4,
+      "medic": 1,
+      "sniper": 1,
+      "demoman": 1
+    }
+  },
+  "chat": [
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "ETF2L config (2016-01-26) loaded."
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "* Please check that the settings are correct for this game mode!"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "* You must record POV demos and take screenshots of all results."
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "can we chill for 30 mins?"
+    },
+    {
+      "steamid": "[U:1:346440795]",
+      "name": "Ascent seeds",
+      "msg": "!rcon changelevel cp_granary_pro_rc8 "
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "i need to install halo"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "urgh"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "Live stats configured..."
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "can we decide this with krunker 1v1s instead?"
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "done."
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "you think you have swag on kunker"
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "name": "Ascent klassy",
+      "msg": "10 ping monka"
+    },
+    {
+      "steamid": "[U:1:115047039]",
+      "name": "Ascent papi",
+      "msg": "beast"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "i do"
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "good job pepelaugh"
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "*joke"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "i haven't played in like 6 months but i'm still the uncontested beast"
+    },
+    {
+      "steamid": "[U:1:124317659]",
+      "name": "Ascent LUKASTANK",
+      "msg": "wasnt that last server better? :D"
+    },
+    {
+      "steamid": "Console",
+      "name": "Console",
+      "msg": "casters ready whenever"
+    },
+    {
+      "steamid": "[U:1:87585084]",
+      "name": "ØRA Eemes",
+      "msg": "go!"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "well this is cringe, i'm gonna be late for my cs go br game"
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "name": "Ascent klassy",
+      "msg": "gink getting milkl"
+    },
+    {
+      "steamid": "[U:1:87585084]",
+      "name": "ØRA Eemes",
+      "msg": "lol"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "i can help"
+    },
+    {
+      "steamid": "[U:1:346440795]",
+      "name": "Ascent seeds",
+      "msg": "gink getting milked*"
+    },
+    {
+      "steamid": "[U:1:115047039]",
+      "name": "Ascent papi",
+      "msg": "gink: Claire foy zomfggg"
+    },
+    {
+      "steamid": "[U:1:173260346]",
+      "name": "ØRA ama",
+      "msg": "hf"
+    },
+    {
+      "steamid": "[U:1:292904834]",
+      "name": "ØRA shock",
+      "msg": "gl hf"
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "name": "Ascent klassy",
+      "msg": "eeeeemes"
+    },
+    {
+      "steamid": "[U:1:73130293]",
+      "name": "ØRA Nevo",
+      "msg": "gink.."
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "name": "Ascent klassy",
+      "msg": "LOL"
+    },
+    {
+      "steamid": "[U:1:124317659]",
+      "name": "Ascent LUKASTANK",
+      "msg": "hmmmm"
+    },
+    {
+      "steamid": "[U:1:124317659]",
+      "name": "Ascent LUKASTANK",
+      "msg": "interesting"
+    },
+    {
+      "steamid": "[U:1:103010039]",
+      "name": "ØRA YeeHaw",
+      "msg": "(⌐■_■) Have a Cookie Rookie (⌐■_■)"
+    },
+    {
+      "steamid": "[U:1:103010039]",
+      "name": "ØRA YeeHaw",
+      "msg": "a"
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "name": "Ascent klassy",
+      "msg": "lol easy"
+    },
+    {
+      "steamid": "[U:1:87585084]",
+      "name": "ØRA Eemes",
+      "msg": "apes"
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "WOAH"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "n-"
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "name": "Ascent klassy",
+      "msg": "eeeeemes"
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "*DEAD* ØRA Eemes :  apes"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "nt (nice trade!)"
+    },
+    {
+      "steamid": "[U:1:346440795]",
+      "name": "Ascent seeds",
+      "msg": "wp"
+    },
+    {
+      "steamid": "[U:1:346440795]",
+      "name": "Ascent seeds",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:115047039]",
+      "name": "Ascent papi",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:73130293]",
+      "name": "ØRA Nevo",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:292904834]",
+      "name": "ØRA shock",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:173260346]",
+      "name": "ØRA ama",
+      "msg": "ggs!!"
+    },
+    {
+      "steamid": "[U:1:195922481]",
+      "name": "Ascent toemas_",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:103010039]",
+      "name": "ØRA YeeHaw",
+      "msg": "LOL"
+    },
+    {
+      "steamid": "[U:1:124317659]",
+      "name": "Ascent LUKASTANK",
+      "msg": "holy fuck"
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "name": "Ascent klassy",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:103010039]",
+      "name": "ØRA YeeHaw",
+      "msg": "gg"
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "name": "ØRA Azunis (world class nut)",
+      "msg": "ØRA eskimo : ur gonna lose"
+    }
+  ],
+  "info": {
+    "map": "cp_granary_pro_rc8",
+    "supplemental": true,
+    "total_length": 1769,
+    "hasRealDamage": true,
+    "hasWeaponDamage": true,
+    "hasAccuracy": true,
+    "hasHP": true,
+    "hasHP_real": true,
+    "hasHS": true,
+    "hasHS_hit": true,
+    "hasBS": true,
+    "hasCP": true,
+    "hasSB": false,
+    "hasDT": true,
+    "hasAS": true,
+    "hasHR": true,
+    "hasIntel": false,
+    "AD_scoring": false,
+    "notifications": [],
+    "title": "serveme.tf #966558 - BLU vs RED",
+    "date": 1575495980,
+    "uploader": {
+      "id": "76561197960497430",
+      "name": "Arie - VanillaTF2.org",
+      "info": "TFTrue v4.79"
+    }
+  },
+  "killstreaks": [
+    {
+      "steamid": "[U:1:73130293]",
+      "streak": 3,
+      "time": 26
+    },
+    {
+      "steamid": "[U:1:51856748]",
+      "streak": 3,
+      "time": 391
+    },
+    {
+      "steamid": "[U:1:115047039]",
+      "streak": 3,
+      "time": 817
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "streak": 3,
+      "time": 975
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "streak": 3,
+      "time": 1046
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "streak": 3,
+      "time": 1250
+    },
+    {
+      "steamid": "[U:1:106143747]",
+      "streak": 3,
+      "time": 1605
+    }
+  ],
+  "success": true
+}
