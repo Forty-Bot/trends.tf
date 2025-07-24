@@ -16,9 +16,13 @@ from werkzeug.datastructures import MultiDict
 from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_encode
 
-from trends.steamid import SteamID
+import trends
+from trends.cache import mc_connect
+from trends.importer.link_matches import link_matches
 import trends.site.player
-from trends.site.wsgi import create_app
+from trends.site import wsgi
+from trends.sql import db_connect
+from trends.steamid import SteamID
 from trends.util import classes, League
 
 from . import util
@@ -379,3 +383,99 @@ def test_api_logs(client):
         assert "76561198330799279" in players
         assert "76561198046130018" in players
 
+@contextmanager
+def check_purge(db, cache, extra=()):
+    mc = mc_connect(cache)
+    util.refresh(db, mc)
+
+    # populate the cache with old data
+    client = create_app(db, cache).test_client()
+    crawler = create_crawler(client, initial=("/", *extra))
+    crawler.crawl()
+
+    # mutate the database
+    yield
+
+    responses = []
+    def store(node, resp):
+        resp.headers.remove("Date")
+        responses.append((node, resp.status, resp.headers, resp.data))
+        return True
+
+    # collect the cached data
+    initial = [node.path for node in crawler.graph.map.values() if node.requested]
+    crawler = create_crawler(client, initial=initial, check_response_handlers=(store,))
+    crawler.crawl()
+
+    # make sure the uncached data matches the cached data
+    mc.flush_all()
+    for node, status, headers, data in responses:
+        resp = crawler.make_request(node)
+        resp.headers.remove("Date")
+        assert resp.status == status, node.path
+
+        # check data first, since it is more-likely to be interesting
+        try:
+            assert resp.data.decode('utf-8') == data.decode('utf-8'), node.path
+        except UnicodeDecodeError:
+            assert resp.data == data, node.path
+
+        # FIXME FIXME
+        resp.headers.remove("Last-Modified")
+        headers.remove("Last-Modified")
+        assert resp.headers == headers, node.path
+
+@pytest.fixture
+def db():
+    with util.database() as database:
+        yield database.url()
+
+@pytest.fixture
+def cache(tmp_path_factory):
+    with util.memcached(tmp_path_factory.mktemp("memcached")) as socket:
+        yield socket
+
+def test_cache_log(db, cache):
+    mc = mc_connect(cache)
+    util.import_logs(db, mc, 2297225)
+    with check_purge(db, cache, extra=("/api/v1/maps",)):
+        util.import_logs(db, mc, 2297197)
+        util.refresh(db, mc)
+
+def test_cache_demos(db, cache):
+    mc = mc_connect(cache)
+    util.import_logs(db, mc, 2297225)
+    with check_purge(db, cache):
+        util.import_demos(db, mc, 273469)
+
+@pytest.mark.parametrize('before,link', ((False, False), (False, True), (True, False)))
+def test_cache_etf2l(db, cache, before, link):
+    mc = mc_connect(cache)
+    if before:
+        util.import_etf2l(db, mc, 77318, link=link)
+    util.import_logs(db, mc, 2408491)
+    with check_purge(db, cache):
+        util.import_etf2l(db, mc, 77326, link=link)
+
+def test_cache_etf2l_link(db, cache):
+    mc = mc_connect(cache)
+    util.import_etf2l(db, mc, 77326)
+    util.import_logs(db, mc, 2408491)
+    with check_purge(db, cache), db_connect(db) as c:
+        link_matches(util.SinceEpoch, c, mc)
+
+@pytest.mark.parametrize('before,link', ((False, False), (False, True), (True, False)))
+def test_cache_rgl(db, cache, before, link):
+    mc = mc_connect(cache)
+    if before:
+        util.import_rgl(db, mc, 3058, link=link)
+    util.import_logs(db, mc, 2297225)
+    with check_purge(db, cache):
+        util.import_rgl(db, mc, 3009, link=link)
+
+def test_cache_rgl_link(db, cache):
+    mc = mc_connect(cache)
+    util.import_rgl(db, mc, 3009)
+    util.import_logs(db, mc, 2297225)
+    with check_purge(db, cache), db_connect(db) as c:
+        link_matches(util.SinceEpoch, c, mc)

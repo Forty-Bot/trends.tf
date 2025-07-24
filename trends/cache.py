@@ -39,6 +39,9 @@ class NoopClient:
     def delete_multi(self, keys):
         return False
 
+    def flush_all(self):
+        return True
+
 @contextlib.contextmanager
 def cache_span(category, op, key):
     sentry_sdk.add_breadcrumb(type='query', category=category, message=key)
