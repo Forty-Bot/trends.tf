@@ -36,7 +36,7 @@ def create_app(database, memcached):
     })
     return app
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def client(database, memcached):
     return create_app(database.url(), memcached).test_client()
 
