@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install OS dependencies
+      - name: Install act-only OS dependencies
         if: ${{ env.ACT }}
         run: |
           sudo mkdir -p /etc/postgresql-common/createcluster.d/
@@ -16,6 +16,9 @@ jobs:
             sudo tee /etc/postgresql-common/createcluster.d/override.conf
           sudo apt-get update
           sudo apt-get install -y python3-dev postgresql
+      - name: Install OS dependencies
+        run: |
+          sudo apt-get install -y libmemcached-dev memcached
       - name: Get pip cache dir
         id: pip-cache
         run: |
