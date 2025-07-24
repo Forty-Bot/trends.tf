@@ -16,7 +16,7 @@ import werkzeug.exceptions, werkzeug.http
 
 from ..cache import mc_connect, NoopClient
 from ..sql import db_connect
-from ..util import clamp
+from ..util import clamp, League
 
 def last_modified(since):
     if flask.current_app.debug:
@@ -92,7 +92,10 @@ def get_filter_params():
 
     params['class'] = args.get('class', type=str)
     params['format'] = args.get('format', type=str)
-    params['league'] = args.get('league', type=str)
+    try:
+        params['league'] = League(args.get('league', type=str))
+    except ValueError:
+        params['league'] = None
     params['comp'] = args.get('comp', type=str)
     params['divid'] = args.get('divid', type=int)
     params['updated'] = args.get('updated_since', type=int)
