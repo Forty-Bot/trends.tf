@@ -1,12 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
+# Copyright (C) 2020, 25 Sean Anderson <seanga2@gmail.com>
 
 import contextlib
 
 import pylibmc
 import sentry_sdk
-
-_sentinel = object()
 
 class NoopClient:
     def get(self, key, default=None):
@@ -50,8 +48,8 @@ def cache_span(category, op, key):
 class TracingClient(pylibmc.Client):
     def get(self, key, default=None):
         with cache_span('cache.get', 'get', key) as span:
-            value = super().get(key, _sentinel)
-            if value is _sentinel:
+            value = super().get(key, self)
+            if value is self:
                 span.set_data('cache.hit', False)
                 return default
             else:
