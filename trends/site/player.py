@@ -9,6 +9,7 @@ import pylibmc
 from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, \
                   get_pagination, last_modified
 from ..util import clamp, classes
+from ..cache import cache_result
 
 player = flask.Blueprint('player', __name__)
 
@@ -16,40 +17,23 @@ player = flask.Blueprint('player', __name__)
 def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
 
-@player.before_request
-def get_overview():
+@cache_result("overview_{}")
+def _get_overview(mc, steamid64):
     cur = get_db().cursor()
-    cur.execute("SELECT playerid, eu_playerid, last_active FROM player WHERE steamid64 = %s;",
-                (flask.g.steamid,))
-    for flask.g.playerid, flask.g.etf2lid, last_active in cur:
-        if not last_active:
-            flask.abort(404)
-
-        # FIXME: this is not really accurate...
-        if resp := last_modified(last_active):
-            return resp
-        break
-    else:
-        flask.abort(404)
-
-    mc = get_mc()
-    key = "overview_{}".format(flask.g.steamid)
-    player_overview, cas = mc.gets(key)
-    if player_overview and player_overview['last_active'] == last_active:
-        flask.g.player = player_overview
-        return
-
     cur.execute(
         """SELECT
-               *,
+               playerid,
+               eu_playerid,
+               last_active,
                name,
                avatarhash,
+               overview.*,
                (wins + 0.5 * ties) /
                    (wins + losses + ties) AS winrate,
                (round_wins + 0.5 * round_ties) /
                    (round_wins + round_losses + round_ties) AS round_winrate
-           FROM (
-                SELECT
+           FROM player
+           CROSS JOIN LATERAL (SELECT
                     count(*) AS logs,
                     sum(wins) AS round_wins,
                     sum(losses) AS round_losses,
@@ -58,24 +42,25 @@ def get_overview():
                     sum((wins < losses)::INT) AS losses,
                     sum((wins = losses)::INT) AS ties
                 FROM player_stats
-                WHERE playerid = %(playerid)s
+                WHERE playerid = player.playerid
            ) AS overview
-           JOIN player ON (logs != 0)
            JOIN name USING (nameid)
-           WHERE playerid = %(playerid)s;""", { 'playerid': flask.g.playerid })
+           WHERE logs != 0 AND steamid64 = %s;""", (steamid64,))
 
-    for row in cur:
-        flask.g.player = row
-        if cas is None:
-            mc.add(key, row, time=86400)
-        else:
-            try:
-                mc.cas(key, row, cas, time=86400)
-            except pylibmc.NotFound:
-                pass
-        break
-    else:
+    row = cur.fetchone()
+    if row is None:
         flask.abort(404)
+    return row
+
+@player.before_request
+def get_overview():
+    overview = _get_overview(get_mc(), flask.g.steamid)
+    if resp := last_modified(overview['last_active']):
+        return resp
+
+    flask.g.player = overview
+    flask.g.playerid = overview['playerid']
+    flask.g.etf2lid = overview['eu_playerid']
 
 # The base set of column filters for most queries in this file
 base_filter_columns = frozenset({'league', 'formatid', 'title', 'mapid', 'time', 'logid'})

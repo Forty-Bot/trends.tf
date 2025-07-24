@@ -2,6 +2,8 @@
 # Copyright (C) 2020, 25 Sean Anderson <seanga2@gmail.com>
 
 import contextlib
+from functools import wraps
+import logging
 
 import pylibmc
 import sentry_sdk
@@ -99,23 +101,58 @@ class TracingClient(pylibmc.Client):
 
     # delete_multi just calls delete repeatedly
 
+    def flush_all(self):
+        sentry_sdk.add_breadcrumb(type='query', category='cache.clear')
+        with sentry_sdk.start_span(op='cache.clear') as span:
+            return super().flush_all()
+
 def mc_connect(servers):
     if servers:
         return TracingClient(servers.split(','), binary=True, behaviors={ 'cas': True })
     return NoopClient()
 
-def purge_players(c, mc):
+def cache_result(key_template, timeout=120, expire=86400):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(mc, *args, **kwargs):
+            key = key_template.format(*args, **kwargs)
+            val, cas = mc.gets(key)
+            if val is not None:
+                return val
+
+            if cas is None:
+                # Add a dummy value so we can delete it if we have to purge
+                mc.add(key, None, time=timeout)
+
+                val, cas = mc.gets(key)
+                # Did someone else fill the cache in the meantime?
+                if val is not None:
+                    return val
+
+            val = f(mc, *args, **kwargs)
+            try:
+                if cas is not None:
+                    mc.cas(key, val, cas, time=expire)
+            except pylibmc.NotFound:
+                pass
+            return val
+        return wrapper
+    return decorator
+
+def purge(c, mc, col, table, keys):
     with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
         while True:
             cur.execute("BEGIN;")
-            cur.execute("""SELECT steamid64
-                           FROM cache_purge_player
-                           FOR UPDATE SKIP LOCKED
-                           LIMIT 1000;""")
-            players = tuple(row[0] for row in cur)
-            if not len(players):
+            cur.execute(f"SELECT {col} FROM {table} FOR UPDATE SKIP LOCKED LIMIT 1000;")
+            vals = tuple(row[0] for row in cur)
+            if not len(vals):
                 return
 
-            mc.delete_multi(f"overview_{steamid}" for steamid in players)
-            cur.execute("DELETE FROM cache_purge_player WHERE steamid64 IN %s;", (players,))
+            for key in keys:
+                mc.delete_multi(key.format(val) for val in vals)
+            cur.execute(f"DELETE FROM {table} WHERE {col} IN %s;", (vals,))
             cur.execute("COMMIT;")
+            logging.info("Purged %s value(s) from %s", len(vals), table)
+
+def purge_players(c, mc):
+    purge(c, mc, 'steamid64', 'cache_purge_player', ("overview_{}",))
