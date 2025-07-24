@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
 
-from contextlib import contextmanager
+from contextlib import contextmanager, closing
 import logging
 import os
+import shutil
+import subprocess
+import time
 
 import pytest
 from testing.postgresql import Postgresql
@@ -11,26 +14,19 @@ from testing.postgresql import Postgresql
 import trends
 from trends.sql import db_connect
 from .create import create_test_db
-
-@contextmanager
-def caplog_session(request):
-    request.node.add_report_section = lambda *args: None
-    logging_plugin = request.config.pluginmanager.getplugin('logging-plugin')
-    for _ in logging_plugin.pytest_runtest_setup(request.node):
-       yield pytest.LogCaptureFixture(request.node, _ispytest=True)
+from . import util
 
 @pytest.fixture(scope='session')
-def database(request):
-    postgres_args = Postgresql.DEFAULT_SETTINGS['postgres_args']
-    postgres_args += " -c full_page_writes=off"
-    with Postgresql(postgres_args=postgres_args) as database:
-        with db_connect(database.url()) as c:
-            with open(f"{os.path.dirname(trends.__file__)}/bloom.sql") as bloom:
-                c.cursor().execute(bloom.read())
+def memcached(tmp_path_factory):
+    with util.memcached(tmp_path_factory.mktemp("memcached")) as socket:
+        yield socket
 
-        with caplog_session(request) as caplog:
+@pytest.fixture(scope='session')
+def database(request, memcached):
+    with util.database() as database:
+        with util.caplog_session(request) as caplog:
             with caplog.at_level(logging.ERROR):
-                create_test_db(database.url(), None)
+                create_test_db(database.url(), memcached)
             if caplog.records:
                 pytest.fail("Error creating test database")
 
@@ -38,7 +34,7 @@ def database(request):
 
 @pytest.fixture(scope='session')
 def connection(database):
-    with db_connect(database.url()) as c:
+    with closing(db_connect(database.url())) as c:
         yield c
 
 @pytest.fixture(scope='session')

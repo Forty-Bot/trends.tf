@@ -158,10 +158,10 @@ def import_etf2l_cli(args, c, mc):
                 args.since = datetime.fromtimestamp(cur.fetchone()[0])
         return import_etf2l(c, mc, args.fetcher(**vars(args)))
 
-def import_etf2l(c, mc, fetcher):
+def import_etf2l(c, mc, fetcher, filter=filter_matchids):
     cur = c.cursor()
     count = 0
-    for result in filter_matchids(c, fetcher.get_results()):
+    for result in filter(c, fetcher.get_results()):
         try:
             res = parse_result(result)
             for team in res['teams']:

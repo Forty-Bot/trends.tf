@@ -15,6 +15,8 @@ import trends.importer.rgl
 from trends.importer.fetch import DemoFileFetcher, ETF2LFileFetcher, FileFetcher, RGLFileFetcher
 from trends.sql import db_connect, db_init, db_schema
 
+from . import util
+
 # Pretend these two teams aren't linked so we can test combining them
 class RGLFirstFetcher(RGLFileFetcher):
     def get_team(self, teamid):
@@ -34,90 +36,90 @@ class RGLSecondFetcher(RGLFileFetcher):
 def create_test_db(url, memcached):
     # We use separate connections for importing because we use temporary tables which will alias
     # other queries.
+    mc = mc_connect(memcached)
     with db_connect(url) as c:
-        mc = mc_connect(memcached)
         cur = c.cursor()
         db_schema(cur)
         db_init(c)
 
-        logfiles = { logid: f"{os.path.dirname(__file__)}/logs/log_{logid}.json"
-            for logid in (
-                30099,
-                2297197,
-                2297225,
-                2297265,
-                2344272,
-                2344306,
-                2344331,
-                2344354,
-                2344383,
-                2344394,
-                2344394,
-                2392536,
-                2392557,
-                2401045,
-                2408458,
-                2408491,
-                2500876,
-                2506954,
-                2600722,
-                2818814,
-                2844704,
-                2878546,
-                2931193,
-                3027588,
-                3069780,
-                3124976,
-                3302963,
-                3302982,
-                3384488,
-            )
-        }
-        trends.importer.logs.import_logs(c, mc, FileFetcher(logs=logfiles), False)
+    util.import_logs(url, mc,
+        30099,
+        2297197,
+        2297225,
+        2297265,
+        2344272,
+        2344306,
+        2344331,
+        2344354,
+        2344383,
+        2344394,
+        2392536,
+        2392557,
+        2401045,
+        2408458,
+        2408491,
+        2500876,
+        2506954,
+        2600722,
+        2818814,
+        2844704,
+        2878546,
+        2931193,
+        3027588,
+        3069780,
+        3124976,
+        3302963,
+        3302982,
+        3384488,
+    )
 
-    with db_connect(url) as c:
-        demofiles = (f"{os.path.dirname(__file__)}/demos/demo_{demoid}.json" for demoid in (
-            273469,
-            273477,
-            292844,
-            292859,
-            292868,
-            292885,
-            318447,
-            322265,
-            322285,
-            375937,
-            585088,
-            609093,
-            640794,
-            737954,
-            776712,
-            902137,
-            902150,
-        ))
-        trends.importer.demos.import_demos(c, DemoFileFetcher(demos=demofiles))
+    util.import_demos(url, mc,
+        273469,
+        273477,
+        292844,
+        292859,
+        292868,
+        292885,
+        318447,
+        322265,
+        322285,
+        375937,
+        585088,
+        609093,
+        640794,
+        737954,
+        776712,
+        902137,
+        902150,
+    )
 
-    with db_connect(url) as c:
-        fetcher = ETF2LFileFetcher(results=f"{os.path.dirname(__file__)}/etf2l/results.json",
-                                   xferdir=f"{os.path.dirname(__file__)}/etf2l/")
-        trends.importer.etf2l.import_etf2l(c, mc, fetcher)
+    util.import_etf2l(url, mc,
+            1,
+            2,
+           10,
+           34,
+           51,
+           53,
+          812,
+         7976,
+         7977,
+        14773,
+        34005,
+        77326,
+        84221,
+        88524,
+    )
 
-    with db_connect(url) as c:
-        dir = f"{os.path.dirname(__file__)}/rgl"
-        trends.importer.rgl.import_rgl(c, RGLFirstFetcher(dir=dir))
-        trends.importer.rgl.import_rgl(c, RGLSecondFetcher(dir=dir),
-                                       filter=trends.importer.rgl.no_filter_matchids)
-    with db_connect(url) as c:
-        cur = c.cursor()
-        cur.execute("ANALYZE;")
-        class args:
-            since = datetime.fromtimestamp(0)
-        trends.importer.link_demos.link_logs(args, c, mc)
-        trends.importer.link_matches.link_matches(args, c, mc)
-        cur.execute("ANALYZE;")
-        # A second time to test partitioning log_json
-        db_init(c)
-        trends.importer.refresh.refresh(None, c, mc)
+    util.import_rgl(url, mc,
+         3009,
+         3058,
+         3099,
+         3412,
+         4664,
+        26935,
+    )
+
+    util.refresh(url, mc)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2 or len(sys.argv) > 3:
