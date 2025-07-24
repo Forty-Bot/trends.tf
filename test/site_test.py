@@ -21,19 +21,20 @@ import trends.site.player
 from trends.site.wsgi import create_app
 from trends.util import classes, League
 
-@pytest.fixture(scope='session')
-def app(database):
-    app = create_app()
+from . import util
+
+def create_app(database, memcached):
+    app = wsgi.create_app()
     app.config.update({
         'TESTING': True,
-        'DATABASE': database.url(),
-        'MEMCACHED_SERVERS': "",
+        'DATABASE': database,
+        'MEMCACHED_SERVERS': memcached,
     })
     return app
 
-@pytest.fixture(scope='session')
-def client(app):
-    return app.test_client()
+@pytest.fixture
+def client(database, memcached):
+    return create_app(database.url(), memcached).test_client()
 
 class RandomEndpointSelector:
     def __init__(self, client, scale):
@@ -54,10 +55,10 @@ class RandomEndpointSelector:
             return True
         return False
 
-def test_crawl(client):
-    crawler = Crawler(
+def create_crawler(client, initial=('/',), **kwargs):
+    return Crawler(
         client=client,
-        initial_paths=('/',),
+        initial_paths=initial,
         path_attrs=('href', 'src'),
         rules=(
             Rule('a', '/.*', 'GET', Request()),
@@ -66,7 +67,10 @@ def test_crawl(client):
             Rule('img', '/.*', 'GET', Request()),
         ),
         should_process_handlers=(RandomEndpointSelector(client, 20),),
-    )
+        **kwargs)
+
+def test_crawl(client):
+    crawler = create_crawler(client)
     crawler.crawl()
 
     for node in crawler.graph.map.values():
