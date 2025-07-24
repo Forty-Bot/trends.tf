@@ -1,0 +1,281 @@
+{
+  "version": 3,
+  "teams": {
+    "Red": {
+      "score": 0,
+      "kills": 0,
+      "deaths": 0,
+      "dmg": 0,
+      "charges": 0,
+      "drops": 0,
+      "firstcaps": 0,
+      "caps": 0
+    },
+    "Blue": {
+      "score": 0,
+      "kills": 0,
+      "deaths": 0,
+      "dmg": 0,
+      "charges": 0,
+      "drops": 0,
+      "firstcaps": 0,
+      "caps": 0
+    }
+  },
+  "length": 59,
+  "players": {
+    "[U:1:1171588839]": {
+      "team": "Blue",
+      "class_stats": [
+        {
+          "type": "scout",
+          "kills": 0,
+          "assists": 0,
+          "deaths": 2,
+          "dmg": 0,
+          "weapon": {
+            "atomizer": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 4,
+              "hits": 0
+            },
+            "force_a_nature": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 2,
+              "hits": 0
+            },
+            "sandman": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 7,
+              "hits": 0
+            }
+          },
+          "total_time": 316
+        }
+      ],
+      "kills": 0,
+      "deaths": 2,
+      "assists": 0,
+      "suicides": 2,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 0,
+      "dmg_real": 0,
+      "dt": 0,
+      "dt_real": 0,
+      "hr": 0,
+      "lks": 0,
+      "as": 0,
+      "dapd": 0,
+      "dapm": 0,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 2,
+      "medkits_hp": 33,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 0
+    },
+    "[U:1:56200820]": {
+      "team": "Red",
+      "class_stats": [
+        {
+          "type": "scout",
+          "kills": 0,
+          "assists": 0,
+          "deaths": 1,
+          "dmg": 0,
+          "weapon": {
+            "force_a_nature": {
+              "kills": 0,
+              "dmg": 0,
+              "avg_dmg": 0,
+              "shots": 6,
+              "hits": 0
+            }
+          },
+          "total_time": 139
+        }
+      ],
+      "kills": 0,
+      "deaths": 1,
+      "assists": 0,
+      "suicides": 1,
+      "kapd": "0.0",
+      "kpd": "0.0",
+      "dmg": 0,
+      "dmg_real": 0,
+      "dt": 0,
+      "dt_real": 0,
+      "hr": 0,
+      "lks": 0,
+      "as": 0,
+      "dapd": 0,
+      "dapm": 0,
+      "ubers": 0,
+      "ubertypes": {},
+      "drops": 0,
+      "medkits": 0,
+      "medkits_hp": 0,
+      "backstabs": 0,
+      "headshots": 0,
+      "headshots_hit": 0,
+      "sentries": 0,
+      "heal": 0,
+      "cpc": 0,
+      "ic": 0
+    }
+  },
+  "names": {
+    "[U:1:1171588839]": "Hugarami",
+    "[U:1:56200820]": "MONGOOS"
+  },
+  "rounds": [
+    {
+      "start_time": 1653163850,
+      "winner": null,
+      "team": {
+        "Blue": {
+          "score": 0,
+          "kills": 0,
+          "dmg": 0,
+          "ubers": 0
+        },
+        "Red": {
+          "score": 0,
+          "kills": 0,
+          "dmg": 0,
+          "ubers": 0
+        }
+      },
+      "events": [
+        {
+          "type": "round_win",
+          "time": 410,
+          "team": null
+        }
+      ],
+      "players": {
+        "[U:1:212699507]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:1171588839]": {
+          "team": "Blue",
+          "kills": 0,
+          "dmg": 0
+        },
+        "[U:1:56200820]": {
+          "team": "Red",
+          "kills": 0,
+          "dmg": 0
+        }
+      },
+      "firstcap": null,
+      "length": 59
+    }
+  ],
+  "healspread": {},
+  "classkills": {},
+  "classdeaths": {},
+  "classkillassists": {},
+  "chat": [
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "а че"
+    },
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "не прошло бля"
+    },
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "кайнда кринге"
+    },
+    {
+      "steamid": "[U:1:1171588839]",
+      "name": "Hugarami",
+      "msg": "( ͡° ͜ʖ ͡°)"
+    },
+    {
+      "steamid": "[U:1:1171588839]",
+      "name": "Hugarami",
+      "msg": "( ͡° ͜ʖ ͡°)"
+    },
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "гей момент какой т"
+    },
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "прост не меняет и усе"
+    },
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "nextmap есть, а жопы нет"
+    },
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "!nextmap"
+    },
+    {
+      "steamid": "[U:1:212699507]",
+      "name": "lightmanLP",
+      "msg": "nextmap"
+    },
+    {
+      "steamid": "[U:1:56200820]",
+      "name": "MONGOOS",
+      "msg": "were are you"
+    }
+  ],
+  "info": {
+    "map": "cp_badlands",
+    "supplemental": false,
+    "total_length": 59,
+    "hasRealDamage": false,
+    "hasWeaponDamage": false,
+    "hasAccuracy": true,
+    "hasHP": true,
+    "hasHP_real": true,
+    "hasHS": false,
+    "hasHS_hit": false,
+    "hasBS": false,
+    "hasCP": false,
+    "hasSB": false,
+    "hasDT": false,
+    "hasAS": false,
+    "hasHR": false,
+    "hasIntel": false,
+    "AD_scoring": false,
+    "notifications": [],
+    "title": "ke1tv - BLU vs RED",
+    "date": 1653160310,
+    "uploader": {
+      "id": "76561197960384370",
+      "name": "riseofabyss",
+      "info": "TFTrue v4.86"
+    }
+  },
+  "killstreaks": [],
+  "success": true
+}

@@ -1,5 +1,6 @@
 {# SPDX-License-Identifier: AGPL-3.0-only #}
 {# Copyright (C) 2020 Sean Anderson <seanga2@gmail.com> #}
+{% from "macros/format.html" import optformat %}
 {% from "macros/nav.html" import navbar %}
 {% from "macros/wlt.html" import wlt %}
 {% extends "base.html" %}
@@ -17,7 +18,7 @@
 		<td>{{ "{:.2%}".format(g.player['winrate']) }}</td>
 		<td>{{ wlt(g.player['round_wins'], g.player['round_losses'],
 			g.player['round_ties']) }}</td>
-		<td>{{ "{:.2%}".format(g.player['round_winrate']) }}</td>
+		<td>{{ optformat("{:.2%}", g.player['round_winrate']) }}</td>
 	</tr></tbody>
 </table>
 {% endmacro %}

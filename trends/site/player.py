@@ -31,7 +31,7 @@ def _get_overview(mc, steamid64):
                (wins + 0.5 * ties) /
                    (wins + losses + ties) AS winrate,
                (round_wins + 0.5 * round_ties) /
-                   (round_wins + round_losses + round_ties) AS round_winrate
+                   nullif(round_wins + round_losses + round_ties, 0) AS round_winrate
            FROM player
            CROSS JOIN LATERAL (SELECT
                     count(*) AS logs,
