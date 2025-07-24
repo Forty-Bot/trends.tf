@@ -33,9 +33,6 @@
 	{{ local_js("js/hider.js") }}
 	{{ local_js("js/sort.js") }}
 {% endblock %}
-{% macro div(dividend, divisor) %}
-	{{ divident / divisor if divisor }}
-{% endmacro %}
 {% macro weapon_table(steamid64, class, weapons) %}
 	{% for weapon in weapons %}
 		{% if loop.first %}
@@ -568,8 +565,8 @@
 						{{ classicon(cls, pct) }}
 					{% endfor %}
 				</td>
-				<td>{{ optformat("{:.0%}", healee['healing']
-							   / medic['healing']) }}</td>
+				<td>{{ optformat("{:.0%}", healee['healing'] / medic['healing']
+							   if medic['healing'] else None ) }}</td>
 				<td>{{ healee['hpm'] | int}}</td>
 				<td>{{ healee['healing'] }}</td>
 				<td colspan="9"></td>
