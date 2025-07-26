@@ -237,7 +237,7 @@ def log(logids):
                    'pct', classes.duration * 1.0 / nullif(logs.duration, 0),
                    'tot_duration', logs.duration,
                    'weapon_stats', weapon_stats
-               ) ORDER BY classes.duration DESC) AS class_stats
+               ) ORDER BY classes.duration DESC, classid ASC) AS class_stats
            FROM (SELECT
                    playerid,
                    classid,
@@ -273,7 +273,7 @@ def log(logids):
                    'hits', hits,
                    'acc', hits * 1.0 / nullif(shots, 0),
                    'dps', dmg * 1.0 / nullif(shots, 0)
-               ) ORDER BY dmg DESC) AS weapon_stats
+               ) ORDER BY dmg DESC, weaponid ASC) AS weapon_stats
            FROM (SELECT
                    playerid,
                    classid,
@@ -456,7 +456,7 @@ def log(logids):
                               'soldier', soldier,
                               'spy', spy,
                               'total', total
-                          ) ORDER BY total DESC) AS events
+                          ) ORDER BY total DESC, steamid64 ASC) AS events
                       FROM (SELECT
                               eventid,
                               playerid,
