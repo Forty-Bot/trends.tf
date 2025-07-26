@@ -47,9 +47,7 @@ def import_demo(c, demo):
                          %s,
                          (SELECT nameid FROM name WHERE name = %s),
                          %s
-                     ) ON CONFLICT (steamid64)
-                     DO UPDATE SET
-                         last_active = greatest(player.last_active, EXCLUDED.last_active);""",
+                     ) ON CONFLICT DO NOTHING;""",
                   (steamid, player['name'], demo['time']))
         players.append(steamid)
 
