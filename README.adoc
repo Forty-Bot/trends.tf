@@ -137,6 +137,7 @@ I would like to fix this at some point. Then, create a file `/etc/default/trends
 
 ----
 STEAMKEY=<steam API key>
+MEMCACHED_SERVERS=/run/memcached/socket
 ----
 
 with your https://steamcommunity.com/dev/apikey[Steam API key]. If you are using sentry, you can

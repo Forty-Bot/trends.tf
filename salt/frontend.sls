@@ -45,12 +45,28 @@ memcached:
   pkg.installed:
     - refresh: False
 
+/etc/systemd/system/memcached.service.d/override.conf:
+  file.managed:
+    - makedirs: True
+    - contents: |
+        [Service]
+        ExecStart=
+        ExecStart=/usr/bin/memcached -s /run/memcached/socket -a 0777 \
+                  -P /run/memcached/memcached.pid
+        User=memcache
+
+memcached_service:
+  module.run:
+    - name: service.systemctl_reload
+    - onchanges:
+      - /etc/systemd/system/memcached.service.d/override.conf
+
 memcached.service:
   service.running:
     - enable: True
     - reload: True
     - requires:
-      - memcached
+      - memcached_service
 
 {% if grains.os_family == 'Debian' %}
  {% set python = "python3" %}

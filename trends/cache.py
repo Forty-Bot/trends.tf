@@ -111,7 +111,7 @@ class TracingClient(pylibmc.Client):
 
 def mc_connect(servers):
     if servers:
-        return TracingClient(servers.split(','), binary=True, behaviors={ 'cas': True })
+        return TracingClient(servers.split(','), binary=False, behaviors={ 'cas': True })
     return NoopClient()
 
 def cache_result(key_template, timeout=120, expire=86400):
