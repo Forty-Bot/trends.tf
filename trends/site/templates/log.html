@@ -566,8 +566,8 @@
 					{% endfor %}
 				</td>
 				<td>{{ optformat("{:.0%}", healee['healing'] / medic['healing']
-							   if medic['healing'] else None ) }}</td>
-				<td>{{ healee['hpm'] | int}}</td>
+							   if medic['healing'] else None) }}</td>
+				<td>{{ healee['hpm'] | int }}</td>
 				<td>{{ healee['healing'] }}</td>
 				<td colspan="9"></td>
 				{{ duration_col(healee['duration']) }}
@@ -642,7 +642,7 @@
 			<td class="left {{ streak.team | lower }}">{{ streak.team }}</td>
 			<td class="left">
 				{{ playerlink(streak.steamid64, streak.name,
-					      players[streak.steamid64]) }}
+					      players[streak.steamid64].avatarhash) }}
 			</td>
 			<td>{{ streak.kills }}</td>
 		</tr>
