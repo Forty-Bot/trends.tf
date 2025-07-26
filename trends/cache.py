@@ -42,17 +42,25 @@ class NoopClient:
     def flush_all(self):
         return True
 
-@contextlib.contextmanager
-def cache_span(category, op, key):
-    sentry_sdk.add_breadcrumb(type='query', category=category, message=key)
-    with sentry_sdk.start_span(op=category, description=f"{op} {key}") as span:
-        span.set_data('cache.operation', op)
-        span.set_data('cache.key', key)
-        yield span
-
 class TracingClient(pylibmc.Client):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._tracing_enabled = False
+
+    @contextlib.contextmanager
+    def _cache_span(self, category, op, key):
+        if self._tracing_enabled:
+            yield
+            return
+
+        sentry_sdk.add_breadcrumb(type='query', category=category, message=key)
+        with sentry_sdk.start_span(op=category, description=f"{op} {key}") as span:
+            span.set_data('cache.operation', op)
+            span.set_data('cache.key', key)
+            yield span
+
     def get(self, key, default=None):
-        with cache_span('cache.get', 'get', key) as span:
+        with self._cache_span('cache.get', 'get', key) as span:
             value = super().get(key, self)
             if value is self:
                 span.set_data('cache.hit', False)
@@ -63,29 +71,29 @@ class TracingClient(pylibmc.Client):
 
     def get_multi(self, keys):
         keys = list(keys)
-        with cache_span('cache.get', 'get_multi', keys) as span:
+        with self._cache_span('cache.get', 'get_multi', keys) as span:
             values = super().get_multi(keys)
             span.set_data('cache.hit', bool(values))
             return values
 
     def set(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', 'set', key):
+        with self._cache_span('cache.set', 'set', key):
             return super().set(key, value, *args, **kwargs)
 
     def set_multi(self, mapping, *args, **kwargs):
-        with cache_span('cache.set', 'set_multi', list(mapping)) as span:
+        with self._cache_span('cache.set', 'set_multi', list(mapping)) as span:
             return super().set_multi(mapping, *args, **kwargs)
 
     def add(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', 'add', key):
+        with self._cache_span('cache.set', 'add', key):
             return super().add(key, value, *args, **kwargs)
 
     def replace(self, key, value, *args, **kwargs):
-        with cache_span('cache.set', 'replace', key):
+        with self._cache_span('cache.set', 'replace', key):
             return super().replace(key, value, *args, **kwargs)
 
     def gets(self, key, default=None):
-        with cache_span('cache.get', 'gets', key) as span:
+        with self._cache_span('cache.get', 'gets', key) as span:
             value, cas = super().gets(key)
             if value is None and cas is None:
                 span.set_data('cache.hit', False)
@@ -95,14 +103,20 @@ class TracingClient(pylibmc.Client):
                 return value, cas
 
     def cas(self, key, value, cas, time=0):
-        with cache_span('cache.set', 'cas', key):
+        with self._cache_span('cache.set', 'cas', key):
             return super().cas(key, value, cas, time)
 
     def delete(self, key):
-        with cache_span('cache.delete', 'delete', key):
+        with self._cache_span('cache.delete', 'delete', key):
             return super().delete(key)
 
-    # delete_multi just calls delete repeatedly
+    def delete_multi(self, keys):
+        with self._cache_span('cache.delete', 'delete_multi', keys) as span:
+            self._tracing_disabled = True
+            try:
+                return super().delete_multi(keys)
+            finally:
+                self._tracing_disabled = False
 
     def flush_all(self):
         sentry_sdk.add_breadcrumb(type='query', category='cache.clear')
