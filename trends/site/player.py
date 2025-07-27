@@ -50,7 +50,7 @@ def _get_overview(mc, steamid64):
     row = cur.fetchone()
     if row is None:
         flask.abort(404)
-    return row
+    return dict(row)
 
 @player.before_request
 def get_overview():
