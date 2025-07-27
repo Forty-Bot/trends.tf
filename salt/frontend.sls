@@ -418,13 +418,23 @@ munin_node:
       - nginx.service
 
 {% set memcached_suffixes = ('rates', 'bytes', 'counters') %}
-{% for suffix in ('rates', 'bytes', 'counters') %}
+{% for suffix in memcached_suffixes %}
 /etc/munin/plugins/memcached_{{ suffix }}:
-  file.symlink:
-    - target: /usr/share/munin/plugins/memcached_
+  file.managed:
+    - source: salt://memcached_
+    - mode: 755
+    - follow_symlinks: False
     - require:
       - munin_node
 {% endfor %}
+
+/etc/munin/plugin-conf.d/zzz-memcached:
+  file.managed:
+    - contents: |
+        [memcached_*]
+        env.server /run/memcached/socket
+    - require:
+      - munin_node
 
 munin_node_conf:
   file.replace:
@@ -440,6 +450,7 @@ munin-node.service:
     - enable: True
     - require:
       - munin_node_conf
+      - /etc/munin/plugin-conf.d/zzz-memcached
       {% for suffix in memcached_suffixes %}
       - /etc/munin/plugins/memcached_{{ suffix }}
       {% endfor %}
