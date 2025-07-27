@@ -110,10 +110,10 @@ def get_log(mc, logid):
                    LEFT JOIN format USING (formatid)
                    JOIN map USING (mapid)
                    WHERE logid = %(logid)s;""", params)
-    log['summary'] = cur.fetchone()
-    if not log['summary']:
-        return log
-    log['summary'] = dict(log['summary'])
+    if s := cur.fetchone():
+        log['summary'] = dict(s)
+    else:
+        return {}
 
     cur.execute("""SELECT
                        league,
@@ -388,8 +388,7 @@ def log(logids):
     logs = {}
     mc = get_mc()
     for logid in dict.fromkeys(logids):
-        log = get_log(mc, logid)
-        if log['summary']:
+        if log := get_log(mc, logid):
             logs[logid] = log
 
     if not logs:
