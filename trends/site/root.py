@@ -131,17 +131,17 @@ def get_log(mc, logid):
                        forfeit,
                        maps,
                        full_logs
-                   FROM log
-                   JOIN match_pretty USING (league, matchid)
-                   LEFT JOIN (SELECT
+                   FROM match_pretty AS match
+                   LEFT JOIN LATERAL (SELECT
                            league,
                            matchid,
                            array_agg(logid) AS full_logs
-                       FROM log
-                       WHERE logid = %(logid)s OR duplicate_of ISNULL
+                       FROM log_nodups
+                       WHERE league = match.league AND matchid = match.matchid
                        GROUP BY league, matchid
                    ) AS fl USING (league, matchid)
-                   WHERE logid = %(logid)s;""", params)
+                   WHERE league = %s AND matchid = %s;""",
+                (log['summary']['league'], log['summary']['matchid']))
     if m := cur.fetchone():
         log['match'] = dict(m)
 
@@ -419,11 +419,10 @@ def log(logids):
             continue
 
         key = m['league'], m['matchid']
-        if key in matches:
-            matches[key]['full_logs'].add(logid)
-        else:
+        if key not in matches:
             m['full_logs'] = set(m['full_logs'])
             matches[key] = m
+        matches[key]['full_logs'].add(logid)
 
     for m in matches.values():
         m['other_logs'] = list(m['full_logs'].difference(logid_set))
