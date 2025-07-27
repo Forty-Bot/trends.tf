@@ -533,7 +533,7 @@ def log(logids):
                         WHERE logid IN %(logids)s
                     ) AS chat
                     JOIN log USING (logid)
-                    JOIN player USING (playerid)
+                    LEFT JOIN player USING (playerid)
                     GROUP BY logid, title
                     ORDER BY array_position(%(llogids)s, logid);""", params)
 
