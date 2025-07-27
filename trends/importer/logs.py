@@ -10,7 +10,7 @@ import psycopg2
 import sentry_sdk
 import systemd_watchdog
 
-from ..cache import purge_players
+from ..cache import purge_logs, purge_players
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
 from ..sql import disable_tracing, delete_logs, log_tables, publicize, table_columns
@@ -749,6 +749,7 @@ def update_ks(cur):
                        AND pse.playerid = new.playerid;""")
 
 def prepare_purge(cur):
+    cur.execute("INSERT INTO cache_purge_log (logid) SELECT logid FROM log;")
     cur.execute("""INSERT INTO cache_purge_player (steamid64)
                    SELECT steamid64
                    FROM player_stats_backing
@@ -863,6 +864,7 @@ def import_logs(c, mc, fetcher, update_only):
             publicize(c, log_tables)
             cur.execute("COMMIT;")
             logging.info("Committed %s imported log(s)...", count)
+        purge_logs(c, mc)
         purge_players(c, mc)
 
     count = 0

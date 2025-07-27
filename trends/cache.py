@@ -156,7 +156,7 @@ def cache_result(key_template, timeout=120, expire=86400):
         return wrapper
     return decorator
 
-def purge(c, mc, col, table, keys):
+def purge(c, mc, col, table, key):
     with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
         while True:
             cur.execute("BEGIN;")
@@ -165,11 +165,13 @@ def purge(c, mc, col, table, keys):
             if not len(vals):
                 return
 
-            for key in keys:
-                mc.delete_multi(key.format(val) for val in vals)
+            mc.delete_multi(key.format(val) for val in vals)
             cur.execute(f"DELETE FROM {table} WHERE {col} IN %s;", (vals,))
             cur.execute("COMMIT;")
             logging.info("Purged %s value(s) from %s", len(vals), table)
 
+def purge_logs(c, mc):
+    purge(c, mc, 'logid', 'cache_purge_log', "log_{}")
+
 def purge_players(c, mc):
-    purge(c, mc, 'steamid64', 'cache_purge_player', ("overview_{}",))
+    purge(c, mc, 'steamid64', 'cache_purge_player', "overview_{}")

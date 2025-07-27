@@ -948,3 +948,9 @@ CREATE TABLE IF NOT EXISTS cache_purge_player (
 );
 
 CREATE INDEX IF NOT EXISTS cache_purge_player_pkey ON cache_purge_player (steamid64);
+
+CREATE TABLE IF NOT EXISTS cache_purge_log (
+	logid INT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS cache_purge_log_pkey ON cache_purge_log (logid);

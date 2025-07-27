@@ -97,6 +97,7 @@ def import_players(args, c, mc):
                            SELECT steamid64
                            FROM player;""")
             cur.execute("COMMIT;")
+            # Technically we should purge logs as well, but I don't think it matters too much
             purge_players(c, mc)
             successes += 1
             logging.info("ok")

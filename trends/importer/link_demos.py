@@ -46,5 +46,6 @@ def link_logs(args, c, mc):
                            updated = greatest(extract(EPOCH FROM now())::BIGINT, log.updated + 1)
                        FROM linked
                        WHERE log.logid = linked.logid;""")
+        cur.execute("INSERT INTO cache_purge_log (logid) SELECT logid FROM linked;")
         cur.execute("COMMIT;")
         logging.info(f"Linked {count} logs")
