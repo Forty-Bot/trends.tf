@@ -404,7 +404,7 @@ def log(logids):
                 'Blue': 2,
                 None: 500
         }
-        teams = (team_map[player['teams'].get(str(logid))] for logid in logs)
+        teams = (team_map[player['teams'].get(logid)] for logid in logs)
         names = player.get('names', ())
         if classes := player.get('class_stats'):
             classes = tuple(cls['classid'] for cls in classes)
@@ -486,7 +486,7 @@ def log(logids):
                 if c['lks'] is None or (u['lks'] is not None and u['lks'] > c['lks']):
                     c['lks'] = u['lks']          
 
-                c['teams'][str(logid)] = u['team']
+                c['teams'][logid] = u['team']
                 c['names'].add(u['name'])
 
                 for uc in u['class_stats'] or ():
@@ -516,7 +516,7 @@ def log(logids):
                 c['dt'] = u['dt']
                 c['healing'] = u['healing']
                 c['lks'] = u['lks']
-                c['teams'] = { str(logid): u['team'] }
+                c['teams'] = { logid: u['team'] }
                 c['names'] = set((u['name'],))
                 c['steamid64'] = steamid
                 c['class_stats'] = {}
@@ -592,7 +592,7 @@ def log(logids):
                 if c[stat] is None or (u[stat] is not None and u[stat] > c[stat]):
                     c[stat] = u[stat]
 
-                c['teams'][str(logid)] = u['team']
+                c['teams'][logid] = u['team']
                 for uh in u['healees'] or ():
                     steamid = uh['steamid64']
                     if steamid in c['healees']:
@@ -611,7 +611,7 @@ def log(logids):
                 c = { stat: u[stat] for stat in stats }
                 c['steamid64'] = steamid
                 c['biggest_advantage_lost'] = u['biggest_advantage_lost']
-                c['teams'] = { str(logid): u['team'] }
+                c['teams'] = { logid: u['team'] }
                 c['healees'] = { healee['steamid64']: healee for healee in u['healees'] or () }
                 medics[steamid] = c
 

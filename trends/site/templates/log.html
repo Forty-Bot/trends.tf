@@ -138,13 +138,13 @@
 {% set team_map = { 'Red': 1, 'Blue': 2, None: 500 } %}
 {% macro team_cols(player, medic=None) %}
 	{% set teamids = [] %}
-	{% for logid in logids | map('string') %}
+	{% for logid in logids %}
 		{% if not medic or medic['teams'][logid] %}
 			{% do teamids.append(team_map[player['teams'].get(logid)]) %}
 		{% endif %}
 	{% endfor %}
 
-	{% for logid in logids | map('string') %}
+	{% for logid in logids %}
 		{% if not medic or medic['teams'][logid] %}
 			{% set team = player['teams'][logid] %}
 		{% endif %}
