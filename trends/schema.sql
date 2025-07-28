@@ -954,3 +954,10 @@ CREATE TABLE IF NOT EXISTS cache_purge_log (
 );
 
 CREATE INDEX IF NOT EXISTS cache_purge_log_pkey ON cache_purge_log (logid);
+
+CREATE TABLE IF NOT EXISTS cache_purge_match (
+	league LEAGUE NOT NULL,
+	matchid INT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS cache_purge_match_pkey ON cache_purge_match (league, matchid);

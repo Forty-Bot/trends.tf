@@ -12,6 +12,7 @@ import time
 from psycopg2.extras import NumericRange
 import sentry_sdk
 
+from ..cache import purge_matches
 from .fetch import FetchError, RGLBulkFetcher, RGLFileFetcher
 from .league import *
 from ..sql import db_connect
@@ -169,10 +170,10 @@ def import_rgl_cli(args, c, mc):
                        FROM match
                        WHERE league = 'rgl';""");
                 args.since = datetime.fromtimestamp(cur.fetchone()[0])
-        return import_rgl(c, args.fetcher(**vars(args)),
+        return import_rgl(c, mc, args.fetcher(**vars(args)),
                           no_filter_matchids if args.reimport else filter_matchids)
 
-def import_rgl(c, fetcher, filter=filter_matchids):
+def import_rgl(c, mc, fetcher, filter=filter_matchids):
     @functools.cache
     def get_season(seasonid):
         return parse_season(fetcher.get_season(seasonid))
@@ -238,6 +239,7 @@ def import_rgl(c, fetcher, filter=filter_matchids):
                 res['score1'] = res['teams'][0]['score']
                 res['score2'] = res['teams'][1]['score']
                 import_match(cur, res)
+                purge_matches(c, mc)
                 cur.execute("COMMIT;")
         except FetchError:
             continue

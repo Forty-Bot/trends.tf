@@ -5,6 +5,7 @@ import contextlib
 from functools import wraps
 import logging
 
+import psycopg2.extras
 import pylibmc
 import sentry_sdk
 
@@ -160,23 +161,26 @@ def cache_result(key_template, timeout=120, expire=86400):
         return wrapper
     return decorator
 
-def purge(c, mc, col, table, key):
+def purge(c, mc, cols, table, key):
     with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
         while True:
             cur.execute("BEGIN;")
-            cur.execute(f"SELECT {col} FROM {table} FOR UPDATE SKIP LOCKED LIMIT 1000;")
-            vals = tuple(row[0] for row in cur)
-            if not len(vals):
+            cur.execute(f"SELECT {cols} FROM {table} FOR UPDATE SKIP LOCKED LIMIT 1000;")
+            vals = list(cur)
+            if not vals:
                 return
 
-            with sentry_sdk.start_span(op='cache.remove') as span:
-                mc.delete_multi(key.format(val) for val in vals)
-            cur.execute(f"DELETE FROM {table} WHERE {col} IN %s;", (vals,))
+            mc.delete_multi(key.format(*val) for val in vals)
+            psycopg2.extras.execute_values(cur,
+                f"DELETE FROM {table} WHERE ROW({cols}) IN (%s);", vals)
             cur.execute("COMMIT;")
             logging.info("Purged %s value(s) from %s", len(vals), table)
 
 def purge_logs(c, mc):
-    purge(c, mc, 'logid', 'cache_purge_log', "log_{}")
+    purge(c, mc, 'logid, 0', 'cache_purge_log', "log_{}")
+
+def purge_matches(c, mc):
+    purge(c, mc, 'league, matchid', 'cache_purge_match', "match_{}_{}")
 
 def purge_players(c, mc):
-    purge(c, mc, 'steamid64', 'cache_purge_player', "overview_{}")
+    purge(c, mc, 'steamid64, 0', 'cache_purge_player', "overview_{}")

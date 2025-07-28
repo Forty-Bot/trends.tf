@@ -90,7 +90,7 @@ def import_rgl(url, mc, *matchids, link=True):
 
     with db_connect(url) as c:
         fetcher = trends.importer.fetch.RGLFileFetcher(dir=f"{os.path.dirname(__file__)}/rgl")
-        trends.importer.rgl.import_rgl(c, fetcher, filter=filter)
+        trends.importer.rgl.import_rgl(c, mc, fetcher, filter=filter)
         if link:
             c.cursor().execute("ANALYZE;")
             trends.importer.link_matches.link_matches(SinceEpoch, c, mc)

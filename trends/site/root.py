@@ -116,36 +116,6 @@ def get_log(mc, logid):
         return {}
 
     cur.execute("""SELECT
-                       league,
-                       matchid,
-                       compid,
-                       comp,
-                       div,
-                       round,
-                       teamid1,
-                       teamid2,
-                       team1,
-                       team2,
-                       score1,
-                       score2,
-                       forfeit,
-                       maps,
-                       full_logs
-                   FROM match_pretty AS match
-                   LEFT JOIN LATERAL (SELECT
-                           league,
-                           matchid,
-                           array_agg(logid) AS full_logs
-                       FROM log_nodups
-                       WHERE league = match.league AND matchid = match.matchid
-                       GROUP BY league, matchid
-                   ) AS fl USING (league, matchid)
-                   WHERE league = %s AND matchid = %s;""",
-                (log['summary']['league'], log['summary']['matchid']))
-    if m := cur.fetchone():
-        log['match'] = dict(m)
-
-    cur.execute("""SELECT
                        logid,
                        seq,
                        duration,
@@ -378,6 +348,40 @@ def get_log(mc, logid):
 
     return log
 
+@cache_result("match_{}_{}")
+def get_match(mc, league, matchid):
+    cur = get_db().cursor()
+    cur.execute("""SELECT
+                       league,
+                       matchid,
+                       compid,
+                       comp,
+                       div,
+                       round,
+                       teamid1,
+                       teamid2,
+                       team1,
+                       team2,
+                       score1,
+                       score2,
+                       forfeit,
+                       maps,
+                       full_logs
+                   FROM match_pretty AS match
+                   LEFT JOIN LATERAL (SELECT
+                           league,
+                           matchid,
+                           array_agg(logid) AS full_logs
+                       FROM log_nodups
+                       WHERE league = match.league AND matchid = match.matchid
+                       GROUP BY league, matchid
+                   ) AS fl USING (league, matchid)
+                   WHERE league = %s AND matchid = %s;""", (league, matchid))
+
+    if m := cur.fetchone():
+        return dict(m)
+    return {}
+
 @root.route('/log/<intlist:logids>')
 def log(logids):
     if not logids:
@@ -414,7 +418,7 @@ def log(logids):
     matches = {}
     logid_set = set(logids)
     for logid, log in logs.items():
-        if (m := log.get('match')) is None:
+        if not (m := get_match(mc, log['summary']['league'], log['summary']['matchid'])):
             continue
 
         key = m['league'], m['matchid']

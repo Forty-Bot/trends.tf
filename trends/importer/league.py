@@ -370,7 +370,5 @@ def import_match(c, m):
                 WHERE league = %(league)s
                     AND matchid = %(matchid)s;""", m)
         cur.execute(
-            """INSERT INTO cache_purge_log (logid)
-               SELECT logid
-               FROM log
-               WHERE league = %(league)s AND matchid = %(matchid)s;""", m)
+            """INSERT INTO cache_purge_match (league, matchid)
+               VALUES (%(league)s, %(matchid)s);""", m)
