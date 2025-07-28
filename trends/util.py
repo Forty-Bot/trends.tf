@@ -5,6 +5,7 @@ import enum
 import itertools
 import pkg_resources
 
+import flask
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -54,10 +55,16 @@ def sentry_init(**kwargs):
     except pkg_resources.DistributionNotFound:
         version = None
 
+    try:
+        debug = flask.current_app.debug
+    except RuntimeError:
+        debug = False
+
     defaults = {
+        'environment': 'development' if debug else 'production' ,
         'release': version,
         'integrations': [FlaskIntegration()],
-        'traces_sample_rate': 0.02,
+        'traces_sample_rate': 1 if debug else 0.02,
         'send_default_pii': True,
     }
 
