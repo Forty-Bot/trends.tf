@@ -4,6 +4,7 @@
 import contextlib
 from functools import wraps
 import logging
+import zlib
 
 import psycopg2.extras
 import pylibmc
@@ -119,6 +120,12 @@ class TracingClient(pylibmc.Client):
            span.set_data('db.system', 'memcached')
            span.set_data('db.operation', 'flush_all')
            return super().flush_all()
+
+    def serialize(self, value):
+        data, flag = super().serialize(value)
+        if len(data) > 2000 and not flag & 8:
+            return zlib.compress(data), flag | 8
+        return data, flag
 
 def mc_connect(servers):
     if servers:
