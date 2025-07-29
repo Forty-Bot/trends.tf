@@ -2,12 +2,13 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 from collections import defaultdict
+import secrets
 
 import flask
 import pylibmc
 
 from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, \
-                  get_pagination, last_modified
+                  get_pagination, last_modified, hash_object
 from ..util import clamp, classes
 from ..cache import cache_result
 
@@ -49,12 +50,18 @@ def _get_overview(mc, steamid64):
 
     row = cur.fetchone()
     if row is None:
-        flask.abort(404)
-    return dict(row)
+        return {}
+
+    row = dict(row)
+    row['version'] = secrets.token_bytes(32)
+    return row
 
 @player.before_request
 def get_overview():
     overview = _get_overview(get_mc(), flask.g.steamid)
+    if not overview:
+        flask.abort(404)
+
     if resp := last_modified(overview['last_active']):
         return resp
 
@@ -106,7 +113,9 @@ log_order_map = {
     **log_joined_order_map,
 }
 
-def get_logs(c, playerid, filters, extra=False, order_clause="logid DESC", limit=100, offset=0):
+@cache_result("player_logs_{}_{}")
+def _get_logs(mc, steamid64, digest, playerid, params):
+    filters, extra, order_clause, limit, offset = params
     real_offset = offset
     filter_clauses = get_filter_clauses(filters, 'primary_classid', 'league', 'formatid', 'title',
                                         'mapid', 'time', 'logid', 'duplicate_of')
@@ -126,7 +135,7 @@ def get_logs(c, playerid, filters, extra=False, order_clause="logid DESC", limit
     else:
         extra_cols = ""
 
-    logs = c.cursor()
+    logs = get_db().cursor()
     logs.execute(
         f"""SELECT
                ps.logid,
@@ -178,7 +187,13 @@ def get_logs(c, playerid, filters, extra=False, order_clause="logid DESC", limit
             'offset': offset,
             'real_offset': real_offset
         })
-    return logs
+    return [dict(log) for log in logs]
+
+def get_logs(extra=False, order_clause="logid DESC", limit=100, offset=0):
+    player = flask.g.player
+    params = get_filter_params(), extra, order_clause, limit, offset
+    digest = hash_object(player.get('version', b''), params)
+    return _get_logs(get_mc(), flask.g.steamid, digest, player['playerid'], params)
 
 def get_teams(c, filters, order_clause="rto DESC", limit=10, offset=0):
     inner_clauses = get_filter_clauses(filters, 'league', date_range='rostered')
@@ -369,7 +384,7 @@ def overview(steamid):
                ) AS names
                JOIN name USING (nameid)""", (flask.g.playerid,))
 
-    logs = get_logs(c, flask.g.playerid, filters, limit=25)
+    logs = get_logs(limit=25)
     teams = get_teams(c, filters)
     return flask.render_template("player/overview.html", logs=logs, classes=classes,
                                  formats=formats, aliases=aliases, teams=teams)
@@ -379,9 +394,8 @@ def logs(steamid):
     limit, offset = get_pagination()
     filters = get_filter_params()
     order, order_clause = get_order(log_order_map, 'logid')
-    logs = get_logs(get_db(), flask.g.playerid, filters, extra=True, order_clause=order_clause,
-                    limit=limit, offset=offset)
-    return flask.render_template("player/logs.html", logs=logs.fetchall())
+    logs = get_logs(extra=True, limit=limit, offset=offset)
+    return flask.render_template("player/logs.html", logs=logs)
 
 @player.route('/teams')
 def teams(steamid):

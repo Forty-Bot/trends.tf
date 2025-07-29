@@ -1,11 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2021 Sean Anderson <seanga2@gmail.com>
 
+import base64
 from functools import wraps
 from collections import namedtuple
 from datetime import datetime, timedelta
 from dateutil import tz
+from hashlib import blake2b
 from itertools import islice
+import pickle
 import sys
 
 import flask
@@ -155,6 +158,10 @@ def get_filter_params():
         params['date_range'] = NumericRange(upper=params['date_to_ts'], bounds='(]')
 
     return params
+
+def hash_object(version, obj):
+    digest = blake2b(pickle.dumps(obj, protocol=5), key=version, digest_size=36).digest()
+    return base64.urlsafe_b64encode(digest).decode('ascii')
 
 def get_filter_clauses(params, *valid_columns, **column_map):
     clauses = []
