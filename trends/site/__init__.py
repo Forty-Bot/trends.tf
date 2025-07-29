@@ -4,5 +4,5 @@
 from ..util import sentry_init
 from .wsgi import create_app
 
-sentry_init()
 application = create_app()
+sentry_init(debug=application.debug, environment=application.env)

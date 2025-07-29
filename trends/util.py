@@ -49,19 +49,13 @@ def chunk(iterable, n):
             return
         yield itertools.chain((first,), slice)
 
-def sentry_init(**kwargs):
+def sentry_init(debug=False, **kwargs):
     try:
         version = pkg_resources.require("trends.tf")[0].version
     except pkg_resources.DistributionNotFound:
         version = None
 
-    try:
-        debug = flask.current_app.debug
-    except RuntimeError:
-        debug = False
-
     defaults = {
-        'environment': 'development' if debug else 'production' ,
         'release': version,
         'integrations': [FlaskIntegration()],
         'traces_sample_rate': 1 if debug else 0.02,
