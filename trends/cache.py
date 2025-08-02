@@ -6,6 +6,7 @@ from functools import wraps
 import logging
 import zlib
 
+from mpmetrics import Counter
 import psycopg2.extras
 import pylibmc
 import sentry_sdk
@@ -133,16 +134,21 @@ def mc_connect(servers):
         return TracingClient(servers.split(','), binary=False, behaviors={ 'cas': True })
     return NoopClient()
 
+CACHE_ACCESS = Counter('memcached_request', "Total memcached requests", ['key_template'])
+CACHE_HIT = Counter('memcached_request_hit', "Successful memcached requests", ['key_template'])
+
 def cache_result(key_template, timeout=120, expire=86400):
     def decorator(f):
         @wraps(f)
         def wrapper(mc, *args, **kwargs):
             key = key_template.format(*args, **kwargs)
             with sentry_sdk.start_span(op='cache.get', description=key) as span:
+                CACHE_ACCESS.labels(key_template).inc()
                 span.set_data('cache.key', key)
                 val, cas = mc.gets(key)
                 if val is not None:
                     span.set_data('cache.hit', True)
+                    CACHE_HIT.labels(key_template).inc()
                     return val
 
                 if cas is None:
@@ -153,6 +159,7 @@ def cache_result(key_template, timeout=120, expire=86400):
                     # Did someone else fill the cache in the meantime?
                     if val is not None:
                         span.set_data('cache.hit', True)
+                        CACHE_HIT.labels(key_template).inc()
                         return val
 
                 span.set_data('cache.hit', False)
