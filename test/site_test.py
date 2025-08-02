@@ -46,6 +46,8 @@ class RandomEndpointSelector:
         self.mapper = client.application.url_map.bind_to_environ(builder.get_environ())
         self.scale = scale
         self.remaining = collections.defaultdict(lambda: scale)
+        self.remaining['root.log'] = scale * 3
+        self.remaining['player.overview'] = scale * 2
 
     def __call__(self, node):
         try:
