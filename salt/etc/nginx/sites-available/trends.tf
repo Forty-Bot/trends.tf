@@ -46,7 +46,7 @@ server {
 	{{ security }}
 	add_header Content-Security-Policy   "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
 
-	if ($http_user_agent ~ 'Amazon|bing|Bytedance|Bytespider|facebook') {
+	if ($http_user_agent ~ 'Aliyun|Amazon|bing|Bytedance|Bytespider|facebook') {
 		return 403;
 	}
 
