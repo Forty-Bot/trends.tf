@@ -124,7 +124,8 @@ class TracingClient(pylibmc.Client):
     def serialize(self, value):
         data, flag = super().serialize(value)
         if len(data) > 2000 and not flag & 8:
-            return zlib.compress(data), flag | 8
+            with sentry_sdk.start_span(op='function', description='zlib.compress'):
+                return zlib.compress(data), flag | 8
         return data, flag
 
 def mc_connect(servers):
