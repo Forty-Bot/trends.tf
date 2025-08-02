@@ -776,6 +776,54 @@
         "variable",
         "variable"
       ]
+    },
+    {
+      "r1": 1,
+      "maps": [
+        "koth_product_final",
+        "koth_proplant_v8"
+      ],
+      "r2": 5,
+      "clan2": {
+        "steam": {
+          "avatar": "http://etf2l.org/images/avatars/6447c48331a09.jpg",
+          "group": null
+        },
+        "country": "Cyprus",
+        "url": "https://api.etf2l.org/team/33825",
+        "name": "Double Clutch",
+        "drop": 0,
+        "id": 33825
+      },
+      "division": {
+        "id": 2776,
+        "skill_contrib": 15,
+        "tier": 2,
+        "name": "Mid"
+      },
+      "time": 1660847400,
+      "round": "Week 2",
+      "defaultwin": 0,
+      "competition": {
+        "id": 812,
+        "category": "Highlander Season",
+        "url": "https://api.etf2l.org/competition/812.json",
+        "name": "Highlander Season 27",
+        "type": "Highlander"
+      },
+      "id": 84064,
+      "clan1": {
+        "id": 32244,
+        "drop": 0,
+        "name": "5 UAH",
+        "url": "https://api.etf2l.org/team/32244",
+        "country": "Ukraine",
+        "steam": {
+          "group": null,
+          "avatar": "http://etf2l.org/images/avatars/62d42252a7ea6.jpg"
+        }
+      },
+      "week": 2
     }
   ],
   "page": {

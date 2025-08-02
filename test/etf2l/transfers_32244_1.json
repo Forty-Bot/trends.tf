@@ -1,0 +1,2346 @@
+{
+  "status": {
+    "message": "OK",
+    "code": 200
+  },
+  "page": {
+    "page": 1,
+    "next_page_url": "https://api.etf2l.org/team/32244/transfers/2.json?per_page=100",
+    "entries_per_page": 100,
+    "total_pages": 2
+  },
+  "transfers": [
+    {
+      "type": "left",
+      "time": 1753464441,
+      "who": {
+        "name": "Shaka",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/94a46677d2c541cb0cd2467c465e496ebfc555a8_full.jpg",
+          "id": "STEAM_0:0:78449320",
+          "id64": "76561198117164368",
+          "id3": "U:1:156898640"
+        },
+        "country": "Ukraine",
+        "id": 131052,
+        "url": "https://api.etf2l.org/player/131052.json"
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id64": "76561199167409588",
+          "avatar": "https://avatars.steamstatic.com/77a002274930b26687331d4bdbb485ccd145662d_full.jpg",
+          "id": "STEAM_0:0:603571930",
+          "id3": "U:1:1207143860"
+        },
+        "name": "SHEEEEESH",
+        "url": "https://api.etf2l.org/player/143196.json",
+        "id": 143196,
+        "country": "Ukraine"
+      },
+      "time": 1753393724,
+      "type": "left"
+    },
+    {
+      "time": 1753382116,
+      "who": {
+        "name": "HellCat'",
+        "steam": {
+          "id64": "76561198052340132",
+          "avatar": "https://avatars.steamstatic.com/0f347560e1a4b60549f78798494238861e17af63_full.jpg",
+          "id": "STEAM_0:0:46037202",
+          "id3": "U:1:92074404"
+        },
+        "id": 102838,
+        "country": "Belarus",
+        "url": "https://api.etf2l.org/player/102838.json"
+      },
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1753355099,
+      "who": {
+        "name": "SoulJam",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/178bfeaa4fde7b08436ea33ec49b437b5b71c016_full.jpg",
+          "id": "STEAM_0:0:127952804",
+          "id64": "76561198216171336",
+          "id3": "U:1:255905608"
+        },
+        "country": "Ukraine",
+        "id": 137474,
+        "url": "https://api.etf2l.org/player/137474.json"
+      }
+    },
+    {
+      "who": {
+        "id": 144552,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/144552.json",
+        "name": "1112",
+        "steam": {
+          "id3": "U:1:211781085",
+          "id64": "76561198172046813",
+          "avatar": "https://avatars.steamstatic.com/b89e8a201fb71abfd1fd33905ad0f87af4042feb_full.jpg",
+          "id": "STEAM_0:1:105890542"
+        }
+      },
+      "time": 1753008710,
+      "type": "left"
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/142849.json",
+        "country": "Ukraine",
+        "id": 142849,
+        "steam": {
+          "id64": "76561199199303830",
+          "id": "STEAM_0:0:619519051",
+          "avatar": "https://avatars.steamstatic.com/46581980a1d2f0287dca6877db7f53e1fa58ca2f_full.jpg",
+          "id3": "U:1:1239038102"
+        },
+        "name": "Vertix"
+      },
+      "time": 1729781233,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "who": {
+        "name": "Alarm",
+        "steam": {
+          "id3": "U:1:122291424",
+          "avatar": "https://avatars.steamstatic.com/e1922132b1904954e5e518f4c70a2f6b20028991_full.jpg",
+          "id": "STEAM_0:0:61145712",
+          "id64": "76561198082557152"
+        },
+        "country": "Ukraine",
+        "id": 144467,
+        "url": "https://api.etf2l.org/player/144467.json"
+      },
+      "time": 1724074013
+    },
+    {
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        },
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "who": {
+        "name": "slowtown",
+        "steam": {
+          "id3": "U:1:148548823",
+          "id64": "76561198108814551",
+          "avatar": "https://avatars.steamstatic.com/a375104e406fff20bf30d237af60e95c65a191d7_full.jpg",
+          "id": "STEAM_0:1:74274411"
+        },
+        "id": 113262,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/113262.json"
+      },
+      "time": 1719076322,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        }
+      },
+      "time": 1719073389,
+      "who": {
+        "name": "SHEEEEESH",
+        "steam": {
+          "id64": "76561199167409588",
+          "avatar": "https://avatars.steamstatic.com/77a002274930b26687331d4bdbb485ccd145662d_full.jpg",
+          "id": "STEAM_0:0:603571930",
+          "id3": "U:1:1207143860"
+        },
+        "id": 143196,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/143196.json"
+      },
+      "type": "joined"
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026,
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill"
+      },
+      "time": 1719073375,
+      "who": {
+        "name": "chilly",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/40a614d34cf4c988842531b771a7dcfeb9cbd4bf_full.jpg",
+          "id": "STEAM_0:1:156660598",
+          "id64": "76561198273586925",
+          "id3": "U:1:313321197"
+        },
+        "id": 147684,
+        "country": "International",
+        "url": "https://api.etf2l.org/player/147684.json"
+      },
+      "type": "left"
+    },
+    {
+      "who": {
+        "steam": {
+          "id3": "U:1:92074404",
+          "id": "STEAM_0:0:46037202",
+          "avatar": "https://avatars.steamstatic.com/0f347560e1a4b60549f78798494238861e17af63_full.jpg",
+          "id64": "76561198052340132"
+        },
+        "name": "HellCat'",
+        "url": "https://api.etf2l.org/player/102838.json",
+        "id": 102838,
+        "country": "Belarus"
+      },
+      "time": 1718826996,
+      "type": "joined",
+      "by": {
+        "name": "yup.",
+        "steam": {
+          "id": "STEAM_0:1:127545225",
+          "avatar": "https://avatars.steamstatic.com/8b550eda6634395d017dc321b13b9cb7302303b9_full.jpg",
+          "id64": "76561198215356179",
+          "id3": "U:1:255090451"
+        },
+        "country": "Ukraine",
+        "id": 139242,
+        "url": "https://api.etf2l.org/player/139242.json"
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/139242.json",
+        "id": 139242,
+        "country": "Ukraine",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/8b550eda6634395d017dc321b13b9cb7302303b9_full.jpg",
+          "id": "STEAM_0:1:127545225",
+          "id64": "76561198215356179",
+          "id3": "U:1:255090451"
+        },
+        "name": "yup."
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/142849.json",
+        "country": "Ukraine",
+        "id": 142849,
+        "steam": {
+          "id3": "U:1:1239038102",
+          "id64": "76561199199303830",
+          "avatar": "https://avatars.steamstatic.com/46581980a1d2f0287dca6877db7f53e1fa58ca2f_full.jpg",
+          "id": "STEAM_0:0:619519051"
+        },
+        "name": "Vertix"
+      },
+      "time": 1717339679,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine"
+      },
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/132353.json",
+        "id": 132353,
+        "country": "Ukraine",
+        "steam": {
+          "id3": "U:1:188592952",
+          "id64": "76561198148858680",
+          "avatar": "https://avatars.steamstatic.com/66be79ca0b273a0d7b56299ff872db52e2e1986a_full.jpg",
+          "id": "STEAM_0:0:94296476"
+        },
+        "name": "WiopleX"
+      },
+      "time": 1716886461
+    },
+    {
+      "time": 1711915430,
+      "who": {
+        "name": "Vertix",
+        "steam": {
+          "id64": "76561199199303830",
+          "avatar": "https://avatars.steamstatic.com/46581980a1d2f0287dca6877db7f53e1fa58ca2f_full.jpg",
+          "id": "STEAM_0:0:619519051",
+          "id3": "U:1:1239038102"
+        },
+        "id": 142849,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/142849.json"
+      },
+      "type": "left"
+    },
+    {
+      "time": 1708073712,
+      "who": {
+        "name": "Denys",
+        "steam": {
+          "id64": "76561198306724854",
+          "id": "STEAM_0:0:173229563",
+          "avatar": "https://avatars.steamstatic.com/766181e826e5852faa3ce375c45d447d6fb1cf3d_full.jpg",
+          "id3": "U:1:346459126"
+        },
+        "country": "Ukraine",
+        "id": 142961,
+        "url": "https://api.etf2l.org/player/142961.json"
+      },
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "who": {
+        "name": "MGE DEN4IK",
+        "steam": {
+          "id3": "U:1:258913129",
+          "id64": "76561198219178857",
+          "id": "STEAM_0:1:129456564",
+          "avatar": "https://avatars.steamstatic.com/61586a19361dbc517049fe4ef3ceedcdd63f586c_full.jpg"
+        },
+        "id": 130819,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/130819.json"
+      },
+      "time": 1706099872
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026,
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill"
+      },
+      "type": "joined",
+      "time": 1705522148,
+      "who": {
+        "url": "https://api.etf2l.org/player/137474.json",
+        "id": 137474,
+        "country": "Ukraine",
+        "steam": {
+          "id64": "76561198216171336",
+          "avatar": "https://avatars.steamstatic.com/178bfeaa4fde7b08436ea33ec49b437b5b71c016_full.jpg",
+          "id": "STEAM_0:0:127952804",
+          "id3": "U:1:255905608"
+        },
+        "name": "SoulJam"
+      }
+    },
+    {
+      "time": 1705520675,
+      "who": {
+        "url": "https://api.etf2l.org/player/131375.json",
+        "id": 131375,
+        "country": "Ukraine",
+        "steam": {
+          "id64": "76561198241805504",
+          "avatar": "https://avatars.steamstatic.com/334022f7e1966dbd2c11fd69064c4d940cef92e7_full.jpg",
+          "id": "STEAM_0:0:140769888",
+          "id3": "U:1:281539776"
+        },
+        "name": "MechaZS"
+      },
+      "type": "left"
+    },
+    {
+      "time": 1705248885,
+      "who": {
+        "steam": {
+          "id3": "U:1:258913129",
+          "id64": "76561198219178857",
+          "avatar": "https://avatars.steamstatic.com/61586a19361dbc517049fe4ef3ceedcdd63f586c_full.jpg",
+          "id": "STEAM_0:1:129456564"
+        },
+        "name": "MGE DEN4IK",
+        "url": "https://api.etf2l.org/player/130819.json",
+        "country": "Ukraine",
+        "id": 130819
+      },
+      "type": "joined",
+      "by": {
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id64": "76561197994147052"
+        }
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026,
+        "steam": {
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill"
+      },
+      "type": "joined",
+      "who": {
+        "id": 139286,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/139286.json",
+        "name": "sup?",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/59068c2a907cb90c7e45cf5dc4332959fb11141c_full.jpg",
+          "id": "STEAM_0:0:189435057",
+          "id64": "76561198339135842",
+          "id3": "U:1:378870114"
+        }
+      },
+      "time": 1704487295
+    },
+    {
+      "by": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026
+      },
+      "time": 1704487047,
+      "who": {
+        "id": 133685,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/133685.json",
+        "name": "Mishka",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/d99bd019ab9905b1822041d5220067259b54496e_full.jpg",
+          "id": "STEAM_0:1:200372392",
+          "id64": "76561198361010513",
+          "id3": "U:1:400744785"
+        }
+      },
+      "type": "joined"
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine"
+      },
+      "time": 1704291444,
+      "who": {
+        "steam": {
+          "id3": "U:1:313321197",
+          "id64": "76561198273586925",
+          "avatar": "https://avatars.steamstatic.com/40a614d34cf4c988842531b771a7dcfeb9cbd4bf_full.jpg",
+          "id": "STEAM_0:1:156660598"
+        },
+        "name": "chilly",
+        "url": "https://api.etf2l.org/player/147684.json",
+        "country": "International",
+        "id": 147684
+      },
+      "type": "joined"
+    },
+    {
+      "time": 1703934105,
+      "who": {
+        "name": "Shaka",
+        "steam": {
+          "id3": "U:1:156898640",
+          "id": "STEAM_0:0:78449320",
+          "avatar": "https://avatars.steamstatic.com/94a46677d2c541cb0cd2467c465e496ebfc555a8_full.jpg",
+          "id64": "76561198117164368"
+        },
+        "id": 131052,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/131052.json"
+      },
+      "type": "joined",
+      "by": {
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        }
+      }
+    },
+    {
+      "who": {
+        "steam": {
+          "id3": "U:1:346459126",
+          "id": "STEAM_0:0:173229563",
+          "avatar": "https://avatars.steamstatic.com/766181e826e5852faa3ce375c45d447d6fb1cf3d_full.jpg",
+          "id64": "76561198306724854"
+        },
+        "name": "Denys",
+        "url": "https://api.etf2l.org/player/142961.json",
+        "id": 142961,
+        "country": "Ukraine"
+      },
+      "time": 1703875987,
+      "type": "joined",
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052"
+        },
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json"
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026,
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662"
+        },
+        "name": "Tranduill"
+      },
+      "type": "joined",
+      "time": 1703710963,
+      "who": {
+        "steam": {
+          "id3": "U:1:281539776",
+          "id64": "76561198241805504",
+          "id": "STEAM_0:0:140769888",
+          "avatar": "https://avatars.steamstatic.com/334022f7e1966dbd2c11fd69064c4d940cef92e7_full.jpg"
+        },
+        "name": "MechaZS",
+        "url": "https://api.etf2l.org/player/131375.json",
+        "country": "Ukraine",
+        "id": 131375
+      }
+    },
+    {
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id3": "U:1:33881324"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "time": 1703103466,
+      "who": {
+        "name": "panfractal",
+        "steam": {
+          "id3": "U:1:236141238",
+          "id": "STEAM_0:0:118070619",
+          "avatar": "https://avatars.steamstatic.com/1e33473a1f34014fe548af2485774ad80c6e5072_full.jpg",
+          "id64": "76561198196406966"
+        },
+        "country": "Ukraine",
+        "id": 132015,
+        "url": "https://api.etf2l.org/player/132015.json"
+      },
+      "type": "joined"
+    },
+    {
+      "by": {
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        }
+      },
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/146761.json",
+        "country": "Ukraine",
+        "id": 146761,
+        "steam": {
+          "id64": "76561198856753348",
+          "id": "STEAM_0:0:448243810",
+          "avatar": "https://avatars.steamstatic.com/8454dc9bfe9cd7b15bc5b1c7f4bfd79147854c46_full.jpg",
+          "id3": "U:1:896487620"
+        },
+        "name": "t0xic0r"
+      },
+      "time": 1701451430
+    },
+    {
+      "by": {
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        }
+      },
+      "type": "joined",
+      "time": 1701063477,
+      "who": {
+        "name": "Vertix",
+        "steam": {
+          "id64": "76561199199303830",
+          "id": "STEAM_0:0:619519051",
+          "avatar": "https://avatars.steamstatic.com/46581980a1d2f0287dca6877db7f53e1fa58ca2f_full.jpg",
+          "id3": "U:1:1239038102"
+        },
+        "country": "Ukraine",
+        "id": 142849,
+        "url": "https://api.etf2l.org/player/142849.json"
+      }
+    },
+    {
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/8b550eda6634395d017dc321b13b9cb7302303b9_full.jpg",
+          "id": "STEAM_0:1:127545225",
+          "id64": "76561198215356179",
+          "id3": "U:1:255090451"
+        },
+        "name": "yup.",
+        "url": "https://api.etf2l.org/player/139242.json",
+        "country": "Ukraine",
+        "id": 139242
+      },
+      "time": 1701009109,
+      "type": "joined"
+    },
+    {
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id64": "76561198082557152",
+          "avatar": "https://avatars.steamstatic.com/e1922132b1904954e5e518f4c70a2f6b20028991_full.jpg",
+          "id": "STEAM_0:0:61145712",
+          "id3": "U:1:122291424"
+        },
+        "name": "Alarm",
+        "url": "https://api.etf2l.org/player/144467.json",
+        "id": 144467,
+        "country": "Ukraine"
+      },
+      "time": 1700341848,
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id64": "76561197994147052"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine"
+      }
+    },
+    {
+      "who": {
+        "name": "1112",
+        "steam": {
+          "id3": "U:1:211781085",
+          "avatar": "https://avatars.steamstatic.com/b89e8a201fb71abfd1fd33905ad0f87af4042feb_full.jpg",
+          "id": "STEAM_0:1:105890542",
+          "id64": "76561198172046813"
+        },
+        "country": "Ukraine",
+        "id": 144552,
+        "url": "https://api.etf2l.org/player/144552.json"
+      },
+      "time": 1700308527,
+      "type": "joined",
+      "by": {
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        }
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026
+      },
+      "type": "joined",
+      "time": 1700307776,
+      "who": {
+        "url": "https://api.etf2l.org/player/131394.json",
+        "country": "Ukraine",
+        "id": 131394,
+        "steam": {
+          "id64": "76561198399118863",
+          "avatar": "https://avatars.steamstatic.com/3b89385f9b56e734a55d5bf24cd8e2562d02470a_full.jpg",
+          "id": "STEAM_0:1:219426567",
+          "id3": "U:1:438853135"
+        },
+        "name": "alteR"
+      }
+    },
+    {
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id64": "76561198392093998",
+          "avatar": "https://avatars.steamstatic.com/9b3e3a9a641351e9cf24d574b84574de708d2cc5_full.jpg",
+          "id": "STEAM_0:0:215914135",
+          "id3": "U:1:431828270"
+        },
+        "name": "Inverdo",
+        "url": "https://api.etf2l.org/player/133941.json",
+        "country": "Ukraine",
+        "id": 133941
+      },
+      "time": 1700163353,
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026,
+        "steam": {
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill"
+      }
+    },
+    {
+      "type": "joined",
+      "who": {
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        },
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "time": 1700082426,
+      "by": {
+        "id": 135503,
+        "country": "Armenia",
+        "url": "https://api.etf2l.org/player/135503.json",
+        "name": "kilikia",
+        "steam": {
+          "id3": "U:1:389995942",
+          "id": "STEAM_0:0:194997971",
+          "avatar": "https://avatars.steamstatic.com/501b1636d1badfc30e576c863472233f189db696_full.jpg",
+          "id64": "76561198350261670"
+        }
+      }
+    },
+    {
+      "type": "left",
+      "who": {
+        "id": 133221,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/133221.json",
+        "name": "elrond69",
+        "steam": {
+          "id3": "U:1:859222463",
+          "id64": "76561198819488191",
+          "avatar": "https://avatars.steamstatic.com/570845757f3a0f25a120b8caf04e70d69ac1c32c_full.jpg",
+          "id": "STEAM_0:1:429611231"
+        }
+      },
+      "time": 1682796559
+    },
+    {
+      "type": "left",
+      "time": 1678392471,
+      "who": {
+        "url": "https://api.etf2l.org/player/62337.json",
+        "id": 62337,
+        "country": "Ukraine",
+        "steam": {
+          "id64": "76561198015118904",
+          "avatar": "https://avatars.steamstatic.com/98d04fc410ee32dce430e5ba1b525852fa57cb8b_full.jpg",
+          "id": "STEAM_0:0:27426588",
+          "id3": "U:1:54853176"
+        },
+        "name": "rea"
+      }
+    },
+    {
+      "who": {
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        },
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "time": 1673470761,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "who": {
+        "steam": {
+          "id3": "U:1:311922993",
+          "id": "STEAM_0:1:155961496",
+          "avatar": "https://avatars.steamstatic.com/4480c71b42928c8c21bcd1a3bddca69bb26717b3_full.jpg",
+          "id64": "76561198272188721"
+        },
+        "name": "sOfty",
+        "url": "https://api.etf2l.org/player/141230.json",
+        "country": "Ukraine",
+        "id": 141230
+      },
+      "time": 1669148292
+    },
+    {
+      "time": 1663868499,
+      "who": {
+        "url": "https://api.etf2l.org/player/136716.json",
+        "id": 136716,
+        "country": "Belarus",
+        "steam": {
+          "id64": "76561198398371080",
+          "avatar": "https://avatars.steamstatic.com/8d9d2a1c8394d5e87eea34d6596686155c5d213e_full.jpg",
+          "id": "STEAM_0:0:219052676",
+          "id3": "U:1:438105352"
+        },
+        "name": "Gorlyscho"
+      },
+      "type": "left"
+    },
+    {
+      "time": 1663635086,
+      "who": {
+        "name": "MGE DEN4IK",
+        "steam": {
+          "id64": "76561198219178857",
+          "id": "STEAM_0:1:129456564",
+          "avatar": "https://avatars.steamstatic.com/61586a19361dbc517049fe4ef3ceedcdd63f586c_full.jpg",
+          "id3": "U:1:258913129"
+        },
+        "country": "Ukraine",
+        "id": 130819,
+        "url": "https://api.etf2l.org/player/130819.json"
+      },
+      "type": "left"
+    },
+    {
+      "who": {
+        "name": "Creeeeeeme",
+        "steam": {
+          "id": "STEAM_0:0:5130397",
+          "avatar": "https://avatars.steamstatic.com/3d2fd909cc3de7f1ab64094c6d47f8ece587ebc9_full.jpg",
+          "id64": "76561197970526522",
+          "id3": "U:1:10260794"
+        },
+        "country": "Ukraine",
+        "id": 139255,
+        "url": "https://api.etf2l.org/player/139255.json"
+      },
+      "time": 1663617808,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "who": {
+        "name": "Serik",
+        "steam": {
+          "id64": "76561197998883586",
+          "id": "STEAM_0:0:19308929",
+          "avatar": "https://avatars.steamstatic.com/92fc82679040ebd1cfffcd95bb0d110cd45229fd_full.jpg",
+          "id3": "U:1:38617858"
+        },
+        "country": "Kazakhstan",
+        "id": 138921,
+        "url": "https://api.etf2l.org/player/138921.json"
+      },
+      "time": 1663616884,
+      "by": {
+        "steam": {
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026
+      }
+    },
+    {
+      "by": {
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        }
+      },
+      "type": "left",
+      "who": {
+        "name": "firing.squad",
+        "steam": {
+          "id3": "U:1:107134426",
+          "id64": "76561198067400154",
+          "id": "STEAM_0:0:53567213",
+          "avatar": "https://avatars.steamstatic.com/b56320f31015faf96fe29f6068d66541eef211c9_full.jpg"
+        },
+        "country": "Russia",
+        "id": 91293,
+        "url": "https://api.etf2l.org/player/91293.json"
+      },
+      "time": 1663616880
+    },
+    {
+      "type": "left",
+      "time": 1663616875,
+      "who": {
+        "steam": {
+          "id3": "U:1:303121388",
+          "id64": "76561198263387116",
+          "id": "STEAM_0:0:151560694",
+          "avatar": "https://avatars.steamstatic.com/980a3a2ba0faf4112a45e5ce6cdf3b2f2f4910d7_full.jpg"
+        },
+        "name": "karell",
+        "url": "https://api.etf2l.org/player/131907.json",
+        "id": 131907,
+        "country": "Russia"
+      },
+      "by": {
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id3": "U:1:33881324"
+        }
+      }
+    },
+    {
+      "who": {
+        "country": "Russia",
+        "id": 132132,
+        "url": "https://api.etf2l.org/player/132132.json",
+        "name": "Fin",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/a96a27866bf6d6cd2cd3a741350ebaccf27b8153_full.jpg",
+          "id": "STEAM_0:0:64926094",
+          "id64": "76561198090117916",
+          "id3": "U:1:129852188"
+        }
+      },
+      "time": 1663593297,
+      "type": "left"
+    },
+    {
+      "time": 1663588947,
+      "who": {
+        "country": "Ukraine",
+        "id": 137025,
+        "url": "https://api.etf2l.org/player/137025.json",
+        "name": "Doge",
+        "steam": {
+          "id64": "76561198288857894",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id3": "U:1:328592166"
+        }
+      },
+      "type": "left"
+    },
+    {
+      "time": 1663531984,
+      "who": {
+        "url": "https://api.etf2l.org/player/107961.json",
+        "id": 107961,
+        "country": "Russia",
+        "steam": {
+          "id64": "76561198032132542",
+          "avatar": "https://avatars.steamstatic.com/9e21f50aff3004ce4a31f17f1b0de48cc7cb4c71_full.jpg",
+          "id": "STEAM_0:0:35933407",
+          "id3": "U:1:71866814"
+        },
+        "name": "Ritz"
+      },
+      "type": "left",
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      }
+    },
+    {
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "type": "left",
+      "time": 1663531979,
+      "who": {
+        "steam": {
+          "id3": "U:1:1223450353",
+          "avatar": "https://avatars.steamstatic.com/b8eba9854a1c4f98a8cf040876b2ca298e41c3c8_full.jpg",
+          "id": "STEAM_0:1:611725176",
+          "id64": "76561199183716081"
+        },
+        "name": "Denrax",
+        "url": "https://api.etf2l.org/player/136714.json",
+        "country": "Russia",
+        "id": 136714
+      }
+    },
+    {
+      "type": "left",
+      "time": 1663531619,
+      "who": {
+        "country": "Russia",
+        "id": 137024,
+        "url": "https://api.etf2l.org/player/137024.json",
+        "name": "Demnotta",
+        "steam": {
+          "id3": "U:1:862559745",
+          "id64": "76561198822825473",
+          "id": "STEAM_0:1:431279872",
+          "avatar": "https://avatars.steamstatic.com/271b9b1859e262e853a1eb5973ab4ba11d6bcfca_full.jpg"
+        }
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill"
+      }
+    },
+    {
+      "type": "left",
+      "who": {
+        "id": 139950,
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/139950.json",
+        "name": "Sabr",
+        "steam": {
+          "id3": "U:1:846542936",
+          "id": "STEAM_0:0:423271468",
+          "avatar": "https://avatars.steamstatic.com/d20626042f8190243daa878d2d2718f912247afd_full.jpg",
+          "id64": "76561198806808664"
+        }
+      },
+      "time": 1663424949
+    },
+    {
+      "who": {
+        "name": "Sabr",
+        "steam": {
+          "id64": "76561198806808664",
+          "avatar": "https://avatars.steamstatic.com/d20626042f8190243daa878d2d2718f912247afd_full.jpg",
+          "id": "STEAM_0:0:423271468",
+          "id3": "U:1:846542936"
+        },
+        "id": 139950,
+        "country": "Kazakhstan",
+        "url": "https://api.etf2l.org/player/139950.json"
+      },
+      "time": 1662309658,
+      "type": "joined",
+      "by": {
+        "steam": {
+          "id3": "U:1:328592166",
+          "id64": "76561198288857894",
+          "id": "STEAM_0:0:164296083",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg"
+        },
+        "name": "Doge",
+        "url": "https://api.etf2l.org/player/137025.json",
+        "id": 137025,
+        "country": "Ukraine"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1661791905,
+      "who": {
+        "country": "Russia",
+        "id": 137496,
+        "url": "https://api.etf2l.org/player/137496.json",
+        "name": "Husky",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/a118d08775961fa972dbc257f58a5b45969f3f77_full.jpg",
+          "id": "STEAM_0:0:108047511",
+          "id64": "76561198176360750",
+          "id3": "U:1:216095022"
+        }
+      }
+    },
+    {
+      "who": {
+        "id": 134828,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/134828.json",
+        "name": "spice kot",
+        "steam": {
+          "id64": "76561198827833022",
+          "id": "STEAM_0:0:433783647",
+          "avatar": "https://avatars.steamstatic.com/14d70aae66dbc4295d32d6e970780a7ffa324162_full.jpg",
+          "id3": "U:1:867567294"
+        }
+      },
+      "time": 1661715667,
+      "type": "left"
+    },
+    {
+      "who": {
+        "name": "333res",
+        "steam": {
+          "id64": "76561198148106704",
+          "id": "STEAM_0:0:93920488",
+          "avatar": "https://avatars.steamstatic.com/6847929193f7a70095323d3e722f98ca61154293_full.jpg",
+          "id3": "U:1:187840976"
+        },
+        "id": 129592,
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/129592.json"
+      },
+      "time": 1661367684,
+      "type": "left"
+    },
+    {
+      "by": {
+        "country": "Ukraine",
+        "id": 137025,
+        "url": "https://api.etf2l.org/player/137025.json",
+        "name": "Doge",
+        "steam": {
+          "id64": "76561198288857894",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id3": "U:1:328592166"
+        }
+      },
+      "time": 1661325057,
+      "who": {
+        "steam": {
+          "id3": "U:1:859222463",
+          "id": "STEAM_0:1:429611231",
+          "avatar": "https://avatars.steamstatic.com/570845757f3a0f25a120b8caf04e70d69ac1c32c_full.jpg",
+          "id64": "76561198819488191"
+        },
+        "name": "elrond69",
+        "url": "https://api.etf2l.org/player/133221.json",
+        "id": 133221,
+        "country": "Ukraine"
+      },
+      "type": "joined"
+    },
+    {
+      "by": {
+        "country": "Ukraine",
+        "id": 137025,
+        "url": "https://api.etf2l.org/player/137025.json",
+        "name": "Doge",
+        "steam": {
+          "id3": "U:1:328592166",
+          "id64": "76561198288857894",
+          "id": "STEAM_0:0:164296083",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg"
+        }
+      },
+      "type": "joined",
+      "time": 1661282972,
+      "who": {
+        "url": "https://api.etf2l.org/player/131907.json",
+        "country": "Russia",
+        "id": 131907,
+        "steam": {
+          "id3": "U:1:303121388",
+          "avatar": "https://avatars.steamstatic.com/980a3a2ba0faf4112a45e5ce6cdf3b2f2f4910d7_full.jpg",
+          "id": "STEAM_0:0:151560694",
+          "id64": "76561198263387116"
+        },
+        "name": "karell"
+      }
+    },
+    {
+      "type": "joined",
+      "time": 1660508070,
+      "who": {
+        "url": "https://api.etf2l.org/player/137024.json",
+        "country": "Russia",
+        "id": 137024,
+        "steam": {
+          "id3": "U:1:862559745",
+          "avatar": "https://avatars.steamstatic.com/271b9b1859e262e853a1eb5973ab4ba11d6bcfca_full.jpg",
+          "id": "STEAM_0:1:431279872",
+          "id64": "76561198822825473"
+        },
+        "name": "Demnotta"
+      },
+      "by": {
+        "url": "https://api.etf2l.org/player/137025.json",
+        "id": 137025,
+        "country": "Ukraine",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id64": "76561198288857894",
+          "id3": "U:1:328592166"
+        },
+        "name": "Doge"
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        },
+        "name": "Tranduill"
+      },
+      "who": {
+        "name": "LintaR",
+        "steam": {
+          "id3": "U:1:93060226",
+          "id": "STEAM_0:0:46530113",
+          "avatar": "https://avatars.steamstatic.com/3b9c48e28eadd7a94ec2dce4b6375a27cda529c2_full.jpg",
+          "id64": "76561198053325954"
+        },
+        "id": 111170,
+        "country": "European",
+        "url": "https://api.etf2l.org/player/111170.json"
+      },
+      "time": 1660487907,
+      "type": "left"
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine"
+      },
+      "time": 1660478198,
+      "who": {
+        "name": "rea",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/98d04fc410ee32dce430e5ba1b525852fa57cb8b_full.jpg",
+          "id": "STEAM_0:0:27426588",
+          "id64": "76561198015118904",
+          "id3": "U:1:54853176"
+        },
+        "id": 62337,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/62337.json"
+      },
+      "type": "joined"
+    },
+    {
+      "by": {
+        "country": "Ukraine",
+        "id": 137025,
+        "url": "https://api.etf2l.org/player/137025.json",
+        "name": "Doge",
+        "steam": {
+          "id3": "U:1:328592166",
+          "id64": "76561198288857894",
+          "id": "STEAM_0:0:164296083",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg"
+        }
+      },
+      "type": "joined",
+      "time": 1660322924,
+      "who": {
+        "url": "https://api.etf2l.org/player/134828.json",
+        "id": 134828,
+        "country": "Ukraine",
+        "steam": {
+          "id3": "U:1:867567294",
+          "id64": "76561198827833022",
+          "avatar": "https://avatars.steamstatic.com/14d70aae66dbc4295d32d6e970780a7ffa324162_full.jpg",
+          "id": "STEAM_0:0:433783647"
+        },
+        "name": "spice kot"
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026
+      },
+      "type": "joined",
+      "time": 1660236703,
+      "who": {
+        "country": "Ukraine",
+        "id": 139255,
+        "url": "https://api.etf2l.org/player/139255.json",
+        "name": "Creeeeeeme",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/3d2fd909cc3de7f1ab64094c6d47f8ece587ebc9_full.jpg",
+          "id": "STEAM_0:0:5130397",
+          "id64": "76561197970526522",
+          "id3": "U:1:10260794"
+        }
+      }
+    },
+    {
+      "by": {
+        "name": "Doge",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id64": "76561198288857894",
+          "id3": "U:1:328592166"
+        },
+        "id": 137025,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/137025.json"
+      },
+      "time": 1660218959,
+      "who": {
+        "country": "Russia",
+        "id": 132132,
+        "url": "https://api.etf2l.org/player/132132.json",
+        "name": "Fin",
+        "steam": {
+          "id64": "76561198090117916",
+          "avatar": "https://avatars.steamstatic.com/a96a27866bf6d6cd2cd3a741350ebaccf27b8153_full.jpg",
+          "id": "STEAM_0:0:64926094",
+          "id3": "U:1:129852188"
+        }
+      },
+      "type": "joined"
+    },
+    {
+      "time": 1660127279,
+      "who": {
+        "url": "https://api.etf2l.org/player/139255.json",
+        "country": "Ukraine",
+        "id": 139255,
+        "steam": {
+          "id3": "U:1:10260794",
+          "id64": "76561197970526522",
+          "id": "STEAM_0:0:5130397",
+          "avatar": "https://avatars.steamstatic.com/3d2fd909cc3de7f1ab64094c6d47f8ece587ebc9_full.jpg"
+        },
+        "name": "Creeeeeeme"
+      },
+      "type": "left"
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/131034.json",
+        "id": 131034,
+        "country": "Russia",
+        "steam": {
+          "id3": "U:1:205097719",
+          "id": "STEAM_0:1:102548859",
+          "avatar": "https://avatars.steamstatic.com/e3a6e9b9042f922831d962f89c3ff6823aee69f2_full.jpg",
+          "id64": "76561198165363447"
+        },
+        "name": "kirai"
+      },
+      "time": 1660065044,
+      "type": "left"
+    },
+    {
+      "time": 1659552940,
+      "who": {
+        "steam": {
+          "id64": "76561198049622646",
+          "id": "STEAM_0:0:44678459",
+          "avatar": "https://avatars.steamstatic.com/ab47c5f4a3e3135ec0a269bbf26118133b476be0_full.jpg",
+          "id3": "U:1:89356918"
+        },
+        "name": "tenshi",
+        "url": "https://api.etf2l.org/player/141728.json",
+        "country": "Russia",
+        "id": 141728
+      },
+      "type": "left"
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/137025.json",
+        "id": 137025,
+        "country": "Ukraine",
+        "steam": {
+          "id3": "U:1:328592166",
+          "id64": "76561198288857894",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083"
+        },
+        "name": "Doge"
+      },
+      "who": {
+        "name": "Ritz",
+        "steam": {
+          "id3": "U:1:71866814",
+          "id64": "76561198032132542",
+          "id": "STEAM_0:0:35933407",
+          "avatar": "https://avatars.steamstatic.com/9e21f50aff3004ce4a31f17f1b0de48cc7cb4c71_full.jpg"
+        },
+        "id": 107961,
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/107961.json"
+      },
+      "time": 1659260621,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "time": 1659202769,
+      "who": {
+        "steam": {
+          "id3": "U:1:311922993",
+          "id": "STEAM_0:1:155961496",
+          "avatar": "https://avatars.steamstatic.com/4480c71b42928c8c21bcd1a3bddca69bb26717b3_full.jpg",
+          "id64": "76561198272188721"
+        },
+        "name": "sOfty",
+        "url": "https://api.etf2l.org/player/141230.json",
+        "country": "Ukraine",
+        "id": 141230
+      },
+      "type": "joined"
+    },
+    {
+      "time": 1659168827,
+      "who": {
+        "country": "Russia",
+        "id": 137857,
+        "url": "https://api.etf2l.org/player/137857.json",
+        "name": "celestial",
+        "steam": {
+          "id64": "76561198868842349",
+          "avatar": "https://avatars.steamstatic.com/7ace418e93f1860be16506139a3e8963230c5282_full.jpg",
+          "id": "STEAM_0:1:454288310",
+          "id3": "U:1:908576621"
+        }
+      },
+      "type": "left"
+    },
+    {
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/3d2fd909cc3de7f1ab64094c6d47f8ece587ebc9_full.jpg",
+          "id": "STEAM_0:0:5130397",
+          "id64": "76561197970526522",
+          "id3": "U:1:10260794"
+        },
+        "name": "Creeeeeeme",
+        "url": "https://api.etf2l.org/player/139255.json",
+        "country": "Ukraine",
+        "id": 139255
+      },
+      "time": 1659120996,
+      "type": "joined",
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      }
+    },
+    {
+      "type": "left",
+      "time": 1659035447,
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/14d70aae66dbc4295d32d6e970780a7ffa324162_full.jpg",
+          "id": "STEAM_0:0:433783647",
+          "id64": "76561198827833022",
+          "id3": "U:1:867567294"
+        },
+        "name": "spice kot",
+        "url": "https://api.etf2l.org/player/134828.json",
+        "country": "Ukraine",
+        "id": 134828
+      }
+    },
+    {
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id64": "76561197994147052"
+        },
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "who": {
+        "name": "MGE DEN4IK",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/61586a19361dbc517049fe4ef3ceedcdd63f586c_full.jpg",
+          "id": "STEAM_0:1:129456564",
+          "id64": "76561198219178857",
+          "id3": "U:1:258913129"
+        },
+        "country": "Ukraine",
+        "id": 130819,
+        "url": "https://api.etf2l.org/player/130819.json"
+      },
+      "time": 1659023905,
+      "type": "joined"
+    },
+    {
+      "time": 1659004131,
+      "who": {
+        "url": "https://api.etf2l.org/player/133221.json",
+        "id": 133221,
+        "country": "Ukraine",
+        "steam": {
+          "id3": "U:1:859222463",
+          "avatar": "https://avatars.steamstatic.com/570845757f3a0f25a120b8caf04e70d69ac1c32c_full.jpg",
+          "id": "STEAM_0:1:429611231",
+          "id64": "76561198819488191"
+        },
+        "name": "elrond69"
+      },
+      "type": "left"
+    },
+    {
+      "by": {
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        }
+      },
+      "who": {
+        "url": "https://api.etf2l.org/player/91293.json",
+        "country": "Russia",
+        "id": 91293,
+        "steam": {
+          "id3": "U:1:107134426",
+          "id64": "76561198067400154",
+          "avatar": "https://avatars.steamstatic.com/b56320f31015faf96fe29f6068d66541eef211c9_full.jpg",
+          "id": "STEAM_0:0:53567213"
+        },
+        "name": "firing.squad"
+      },
+      "time": 1658937733,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:328592166",
+          "id64": "76561198288857894",
+          "id": "STEAM_0:0:164296083",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg"
+        },
+        "name": "Doge",
+        "url": "https://api.etf2l.org/player/137025.json",
+        "country": "Ukraine",
+        "id": 137025
+      },
+      "who": {
+        "country": "Russia",
+        "id": 136714,
+        "url": "https://api.etf2l.org/player/136714.json",
+        "name": "Denrax",
+        "steam": {
+          "id3": "U:1:1223450353",
+          "avatar": "https://avatars.steamstatic.com/b8eba9854a1c4f98a8cf040876b2ca298e41c3c8_full.jpg",
+          "id": "STEAM_0:1:611725176",
+          "id64": "76561199183716081"
+        }
+      },
+      "time": 1658853908,
+      "type": "joined"
+    },
+    {
+      "by": {
+        "steam": {
+          "id64": "76561198288857894",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id3": "U:1:328592166"
+        },
+        "name": "Doge",
+        "url": "https://api.etf2l.org/player/137025.json",
+        "id": 137025,
+        "country": "Ukraine"
+      },
+      "type": "joined",
+      "time": 1658780203,
+      "who": {
+        "url": "https://api.etf2l.org/player/137496.json",
+        "id": 137496,
+        "country": "Russia",
+        "steam": {
+          "id64": "76561198176360750",
+          "avatar": "https://avatars.steamstatic.com/a118d08775961fa972dbc257f58a5b45969f3f77_full.jpg",
+          "id": "STEAM_0:0:108047511",
+          "id3": "U:1:216095022"
+        },
+        "name": "Husky"
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/137025.json",
+        "id": 137025,
+        "country": "Ukraine",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id64": "76561198288857894",
+          "id3": "U:1:328592166"
+        },
+        "name": "Doge"
+      },
+      "type": "joined",
+      "time": 1658422180,
+      "who": {
+        "url": "https://api.etf2l.org/player/138921.json",
+        "country": "Kazakhstan",
+        "id": 138921,
+        "steam": {
+          "id64": "76561197998883586",
+          "avatar": "https://avatars.steamstatic.com/92fc82679040ebd1cfffcd95bb0d110cd45229fd_full.jpg",
+          "id": "STEAM_0:0:19308929",
+          "id3": "U:1:38617858"
+        },
+        "name": "Serik"
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026,
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662"
+        },
+        "name": "Tranduill"
+      },
+      "time": 1658249599,
+      "who": {
+        "steam": {
+          "id3": "U:1:859222463",
+          "id64": "76561198819488191",
+          "avatar": "https://avatars.steamstatic.com/570845757f3a0f25a120b8caf04e70d69ac1c32c_full.jpg",
+          "id": "STEAM_0:1:429611231"
+        },
+        "name": "elrond69",
+        "url": "https://api.etf2l.org/player/133221.json",
+        "id": 133221,
+        "country": "Ukraine"
+      },
+      "type": "joined"
+    },
+    {
+      "type": "joined",
+      "time": 1658081401,
+      "who": {
+        "steam": {
+          "id3": "U:1:908576621",
+          "id64": "76561198868842349",
+          "avatar": "https://avatars.steamstatic.com/7ace418e93f1860be16506139a3e8963230c5282_full.jpg",
+          "id": "STEAM_0:1:454288310"
+        },
+        "name": "celestial",
+        "url": "https://api.etf2l.org/player/137857.json",
+        "country": "Russia",
+        "id": 137857
+      },
+      "by": {
+        "id": 137025,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/137025.json",
+        "name": "Doge",
+        "steam": {
+          "id64": "76561198288857894",
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id3": "U:1:328592166"
+        }
+      }
+    },
+    {
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/141728.json",
+        "country": "Russia",
+        "id": 141728,
+        "steam": {
+          "id3": "U:1:89356918",
+          "id64": "76561198049622646",
+          "id": "STEAM_0:0:44678459",
+          "avatar": "https://avatars.steamstatic.com/ab47c5f4a3e3135ec0a269bbf26118133b476be0_full.jpg"
+        },
+        "name": "tenshi"
+      },
+      "time": 1657258091,
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id64": "76561197994147052"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine"
+      }
+    },
+    {
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026
+      },
+      "time": 1657041688,
+      "who": {
+        "url": "https://api.etf2l.org/player/131034.json",
+        "id": 131034,
+        "country": "Russia",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/e3a6e9b9042f922831d962f89c3ff6823aee69f2_full.jpg",
+          "id": "STEAM_0:1:102548859",
+          "id64": "76561198165363447",
+          "id3": "U:1:205097719"
+        },
+        "name": "kirai"
+      },
+      "type": "joined"
+    },
+    {
+      "who": {
+        "url": "https://api.etf2l.org/player/128555.json",
+        "id": 128555,
+        "country": "Russia",
+        "steam": {
+          "id3": "U:1:383388538",
+          "id64": "76561198343654266",
+          "avatar": "https://avatars.steamstatic.com/d8e59a0b9cce2c3a8ba0e22b9a88e51018357261_full.jpg",
+          "id": "STEAM_0:0:191694269"
+        },
+        "name": "Ragz"
+      },
+      "time": 1656846420,
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "who": {
+        "steam": {
+          "id": "STEAM_0:0:430849499",
+          "avatar": "https://avatars.steamstatic.com/c2ed90f0d394669eb52ba5119a6199d346e0c8c6_full.jpg",
+          "id64": "76561198821964726",
+          "id3": "U:1:861698998"
+        },
+        "name": "Aydef",
+        "url": "https://api.etf2l.org/player/134456.json",
+        "country": "Russia",
+        "id": 134456
+      },
+      "time": 1655894081
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id64": "76561197994147052"
+        },
+        "name": "Tranduill"
+      },
+      "type": "joined",
+      "who": {
+        "steam": {
+          "id64": "76561198148106704",
+          "avatar": "https://avatars.steamstatic.com/6847929193f7a70095323d3e722f98ca61154293_full.jpg",
+          "id": "STEAM_0:0:93920488",
+          "id3": "U:1:187840976"
+        },
+        "name": "333res",
+        "url": "https://api.etf2l.org/player/129592.json",
+        "country": "Russia",
+        "id": 129592
+      },
+      "time": 1655403573
+    },
+    {
+      "type": "left",
+      "who": {
+        "name": "vitamin4il",
+        "steam": {
+          "id3": "U:1:138485237",
+          "id64": "76561198098750965",
+          "avatar": "https://avatars.steamstatic.com/8c326528c914c83e7678605cedd838a87438c2f8_full.jpg",
+          "id": "STEAM_0:1:69242618"
+        },
+        "country": "Russia",
+        "id": 132560,
+        "url": "https://api.etf2l.org/player/132560.json"
+      },
+      "time": 1654927792,
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine"
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine",
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill"
+      },
+      "type": "joined",
+      "time": 1654923124,
+      "who": {
+        "name": "spice kot",
+        "steam": {
+          "id3": "U:1:867567294",
+          "id": "STEAM_0:0:433783647",
+          "avatar": "https://avatars.steamstatic.com/14d70aae66dbc4295d32d6e970780a7ffa324162_full.jpg",
+          "id64": "76561198827833022"
+        },
+        "id": 134828,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/134828.json"
+      }
+    },
+    {
+      "time": 1654842293,
+      "who": {
+        "name": "Ragz",
+        "steam": {
+          "id64": "76561198343654266",
+          "avatar": "https://avatars.steamstatic.com/d8e59a0b9cce2c3a8ba0e22b9a88e51018357261_full.jpg",
+          "id": "STEAM_0:0:191694269",
+          "id3": "U:1:383388538"
+        },
+        "country": "Russia",
+        "id": 128555,
+        "url": "https://api.etf2l.org/player/128555.json"
+      },
+      "type": "joined",
+      "by": {
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "country": "Ukraine",
+        "id": 94026
+      }
+    },
+    {
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      },
+      "type": "joined",
+      "who": {
+        "name": "LintaR",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/3b9c48e28eadd7a94ec2dce4b6375a27cda529c2_full.jpg",
+          "id": "STEAM_0:0:46530113",
+          "id64": "76561198053325954",
+          "id3": "U:1:93060226"
+        },
+        "country": "European",
+        "id": 111170,
+        "url": "https://api.etf2l.org/player/111170.json"
+      },
+      "time": 1654717911
+    },
+    {
+      "type": "joined",
+      "who": {
+        "url": "https://api.etf2l.org/player/136716.json",
+        "country": "Belarus",
+        "id": 136716,
+        "steam": {
+          "id": "STEAM_0:0:219052676",
+          "avatar": "https://avatars.steamstatic.com/8d9d2a1c8394d5e87eea34d6596686155c5d213e_full.jpg",
+          "id64": "76561198398371080",
+          "id3": "U:1:438105352"
+        },
+        "name": "Gorlyscho"
+      },
+      "time": 1654547179,
+      "by": {
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        }
+      }
+    },
+    {
+      "by": {
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill"
+      },
+      "time": 1653932905,
+      "who": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/1454c7d29372359bf8b4b3f42b4158b837f41c9c_full.jpg",
+          "id": "STEAM_0:0:164296083",
+          "id64": "76561198288857894",
+          "id3": "U:1:328592166"
+        },
+        "name": "Doge",
+        "url": "https://api.etf2l.org/player/137025.json",
+        "id": 137025,
+        "country": "Ukraine"
+      },
+      "type": "joined"
+    },
+    {
+      "type": "joined",
+      "time": 1653931437,
+      "who": {
+        "id": 134456,
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/134456.json",
+        "name": "Aydef",
+        "steam": {
+          "id64": "76561198821964726",
+          "id": "STEAM_0:0:430849499",
+          "avatar": "https://avatars.steamstatic.com/c2ed90f0d394669eb52ba5119a6199d346e0c8c6_full.jpg",
+          "id3": "U:1:861698998"
+        }
+      },
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id3": "U:1:33881324",
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662"
+        },
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json"
+      }
+    },
+    {
+      "type": "left",
+      "who": {
+        "id": 138046,
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/138046.json",
+        "name": "damag198",
+        "steam": {
+          "id3": "U:1:293011136",
+          "id64": "76561198253276864",
+          "id": "STEAM_0:0:146505568",
+          "avatar": "https://avatars.steamstatic.com/40436fed922f24c0bd9dd4f227c6a4964f40c8df_full.jpg"
+        }
+      },
+      "time": 1653929468,
+      "by": {
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        },
+        "name": "Tranduill",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "id": 94026,
+        "country": "Ukraine"
+      }
+    },
+    {
+      "time": 1653670251,
+      "who": {
+        "name": "Fishtip",
+        "steam": {
+          "id3": "U:1:247955969",
+          "id64": "76561198208221697",
+          "avatar": "https://avatars.steamstatic.com/7e4d450ca47fcb328aa68da512e2e667761465ae_full.jpg",
+          "id": "STEAM_0:1:123977984"
+        },
+        "country": "International",
+        "id": 136706,
+        "url": "https://api.etf2l.org/player/136706.json"
+      },
+      "type": "left",
+      "by": {
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id3": "U:1:33881324"
+        },
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json"
+      }
+    },
+    {
+      "by": {
+        "id": 138046,
+        "country": "Russia",
+        "url": "https://api.etf2l.org/player/138046.json",
+        "name": "damag198",
+        "steam": {
+          "id3": "U:1:293011136",
+          "id64": "76561198253276864",
+          "id": "STEAM_0:0:146505568",
+          "avatar": "https://avatars.steamstatic.com/40436fed922f24c0bd9dd4f227c6a4964f40c8df_full.jpg"
+        }
+      },
+      "time": 1653669890,
+      "who": {
+        "id": 94026,
+        "country": "Ukraine",
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "id64": "76561197994147052",
+          "id": "STEAM_0:0:16940662",
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id3": "U:1:33881324"
+        }
+      },
+      "type": "joined"
+    },
+    {
+      "time": 1647356149,
+      "who": {
+        "steam": {
+          "id3": "U:1:405790252",
+          "id64": "76561198366055980",
+          "id": "STEAM_0:0:202895126",
+          "avatar": "https://avatars.steamstatic.com/5d22a55b86285a77775e906967619e4ab9833a0a_full.jpg"
+        },
+        "name": "elegardo",
+        "url": "https://api.etf2l.org/player/139694.json",
+        "id": 139694,
+        "country": "Belarus"
+      },
+      "type": "left"
+    },
+    {
+      "time": 1647100245,
+      "who": {
+        "url": "https://api.etf2l.org/player/102838.json",
+        "country": "Belarus",
+        "id": 102838,
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/0f347560e1a4b60549f78798494238861e17af63_full.jpg",
+          "id": "STEAM_0:0:46037202",
+          "id64": "76561198052340132",
+          "id3": "U:1:92074404"
+        },
+        "name": "HellCat'"
+      },
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "time": 1646821187,
+      "who": {
+        "country": "Russia",
+        "id": 91293,
+        "url": "https://api.etf2l.org/player/91293.json",
+        "name": "firing.squad",
+        "steam": {
+          "id": "STEAM_0:0:53567213",
+          "avatar": "https://avatars.steamstatic.com/b56320f31015faf96fe29f6068d66541eef211c9_full.jpg",
+          "id64": "76561198067400154",
+          "id3": "U:1:107134426"
+        }
+      }
+    },
+    {
+      "type": "left",
+      "who": {
+        "steam": {
+          "id3": "U:1:438105352",
+          "id64": "76561198398371080",
+          "id": "STEAM_0:0:219052676",
+          "avatar": "https://avatars.steamstatic.com/8d9d2a1c8394d5e87eea34d6596686155c5d213e_full.jpg"
+        },
+        "name": "Gorlyscho",
+        "url": "https://api.etf2l.org/player/136716.json",
+        "country": "Belarus",
+        "id": 136716
+      },
+      "time": 1645213913
+    },
+    {
+      "time": 1644949012,
+      "who": {
+        "steam": {
+          "id3": "U:1:861698998",
+          "avatar": "https://avatars.steamstatic.com/c2ed90f0d394669eb52ba5119a6199d346e0c8c6_full.jpg",
+          "id": "STEAM_0:0:430849499",
+          "id64": "76561198821964726"
+        },
+        "name": "Aydef",
+        "url": "https://api.etf2l.org/player/134456.json",
+        "country": "Russia",
+        "id": 134456
+      },
+      "type": "left"
+    },
+    {
+      "type": "left",
+      "who": {
+        "country": "Ukraine",
+        "id": 94026,
+        "url": "https://api.etf2l.org/player/94026.json",
+        "name": "Tranduill",
+        "steam": {
+          "avatar": "https://avatars.steamstatic.com/83f9e78f7448b76b65b6c48ad633e76f5e09da7d_full.jpg",
+          "id": "STEAM_0:0:16940662",
+          "id64": "76561197994147052",
+          "id3": "U:1:33881324"
+        }
+      },
+      "time": 1644610455
+    },
+    {
+      "type": "left",
+      "who": {
+        "url": "https://api.etf2l.org/player/128555.json",
+        "country": "Russia",
+        "id": 128555,
+        "steam": {
+          "id": "STEAM_0:0:191694269",
+          "avatar": "https://avatars.steamstatic.com/d8e59a0b9cce2c3a8ba0e22b9a88e51018357261_full.jpg",
+          "id64": "76561198343654266",
+          "id3": "U:1:383388538"
+        },
+        "name": "Ragz"
+      },
+      "time": 1643375279
+    }
+  ]
+}

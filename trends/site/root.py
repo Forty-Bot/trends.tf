@@ -551,7 +551,7 @@ def log(logids):
             cls['dpm'] = cls['dmg'] * 60 / cls['duration'] if cls['duration'] else None
 
             cls['weapon_stats'] = sorted(cls['weapon_stats'].values(), reverse=True,
-                                         key=lambda w: (w['dmg'], -w['weaponid']))
+                                         key=lambda w: (w['dmg'] or 0, -w['weaponid']))
             for weapon in cls['weapon_stats']:
                 if weapon['shots']:
                     weapon['acc'] = weapon['hits'] / weapon['shots']
