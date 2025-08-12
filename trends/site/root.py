@@ -418,12 +418,11 @@ def log(logids):
     matches = {}
     logid_set = set(logids)
     for logid, log in logs.items():
-        if not (m := get_match(mc, log['summary']['league'], log['summary']['matchid'])):
-            continue
-
-        key = m['league'], m['matchid']
+        key = log['summary']['league'], log['summary']['matchid']
         if key not in matches:
-            m['full_logs'] = set(m['full_logs'] or ())
+            if not (m := get_match(mc, *key)):
+                continue
+            m['full_logs'] = set(m['full_logs'])
             matches[key] = m
         matches[key]['full_logs'].add(logid)
 
