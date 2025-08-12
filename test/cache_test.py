@@ -106,3 +106,17 @@ def test_no_dummy(mock_cache):
     server.gets('foo', None, 0)
     server.cas('foo', 0, pylibmc.NotFound, time=86400)
     assert one(client) == 1
+
+def test_get_error(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', None, None)
+    server.add('foo', pylibmc.Error(), time=120)
+    assert one(client) == 1
+
+def test_set_error(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', None, None)
+    server.add('foo', True, time=120)
+    server.gets('foo', None, 0)
+    server.cas('foo', 0, pylibmc.Error(), time=86400)
+    assert one(client) == 1

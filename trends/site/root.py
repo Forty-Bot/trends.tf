@@ -423,7 +423,7 @@ def log(logids):
 
         key = m['league'], m['matchid']
         if key not in matches:
-            m['full_logs'] = set(m['full_logs'])
+            m['full_logs'] = set(m['full_logs'] or ())
             matches[key] = m
         matches[key]['full_logs'].add(logid)
 

@@ -145,23 +145,25 @@ def cache_result(key_template, timeout=120, expire=86400):
             with sentry_sdk.start_span(op='cache.get', description=key) as span:
                 CACHE_ACCESS.labels(key_template).inc()
                 span.set_data('cache.key', key)
-                val, cas = mc.gets(key)
-                if val is not None:
-                    span.set_data('cache.hit', True)
-                    CACHE_HIT.labels(key_template).inc()
-                    return val
-
-                if cas is None:
-                    # Add a dummy value so we can delete it if we have to purge
-                    mc.add(key, None, time=timeout)
-
+                try:
                     val, cas = mc.gets(key)
-                    # Did someone else fill the cache in the meantime?
                     if val is not None:
                         span.set_data('cache.hit', True)
                         CACHE_HIT.labels(key_template).inc()
                         return val
 
+                    if cas is None:
+                        # Add a dummy value so we can delete it if we have to purge
+                        mc.add(key, None, time=timeout)
+
+                        val, cas = mc.gets(key)
+                        # Did someone else fill the cache in the meantime?
+                        if val is not None:
+                            span.set_data('cache.hit', True)
+                            CACHE_HIT.labels(key_template).inc()
+                            return val
+                except pylibmc.Error:
+                    logging.exception("Could not get %s", key)
                 span.set_data('cache.hit', False)
 
             val = f(mc, *args, **kwargs)
@@ -170,8 +172,8 @@ def cache_result(key_template, timeout=120, expire=86400):
                     with sentry_sdk.start_span(op='cache.put', description=key) as span:
                         span.set_data('cache.key', key)
                         mc.cas(key, val, cas, time=expire)
-            except pylibmc.NotFound:
-                pass
+            except pylibmc.Error:
+                logging.exception("Could not set %s", key)
             return val
         return wrapper
     return decorator
