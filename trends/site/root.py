@@ -6,7 +6,7 @@ from collections import defaultdict
 import flask
 from mpmetrics.flask import PrometheusMetrics
 
-from ..cache import cache_result
+from .. import cache
 from .common import get_logs, search_players, logs_last_modified
 from .util import get_db, get_filter_params, get_filter_clauses, get_mc, get_order, \
                   get_pagination, last_modified
@@ -85,7 +85,7 @@ def log_form():
         flask.abort(404)
     return flask.redirect(flask.url_for('.log', logids=logids), 301)
 
-@cache_result("log_{}")
+@cache.mutable("log_{}")
 def get_log(mc, logid):
     log = {}
     params = { 'logid': logid }
@@ -348,7 +348,7 @@ def get_log(mc, logid):
 
     return log
 
-@cache_result("match_{}_{}")
+@cache.mutable("match_{}_{}")
 def get_match(mc, league, matchid):
     cur = get_db().cursor()
     cur.execute("""SELECT

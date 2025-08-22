@@ -7,10 +7,10 @@ import secrets
 import flask
 import pylibmc
 
+from .. import cache
 from .util import get_db, get_mc, get_filter_params, get_filter_clauses, get_order, \
                   get_pagination, last_modified, hash_object
 from ..util import clamp, classes
-from ..cache import cache_result
 
 player = flask.Blueprint('player', __name__)
 
@@ -18,7 +18,7 @@ player = flask.Blueprint('player', __name__)
 def get_player(endpoint, values):
     flask.g.steamid = values['steamid']
 
-@cache_result("overview_{}")
+@cache.mutable("overview_{}")
 def _get_overview(mc, steamid64):
     cur = get_db().cursor()
     cur.execute(
@@ -113,7 +113,7 @@ log_order_map = {
     **log_joined_order_map,
 }
 
-@cache_result("player_logs_{}_{}")
+@cache.mutable("player_logs_{}_{}")
 def _get_logs(mc, steamid64, digest, playerid, params):
     filters, extra, order_clause, limit, offset = params
     real_offset = offset

@@ -3,7 +3,7 @@ import collections
 import pylibmc
 import pytest
 
-from trends.cache import cache_result
+from trends import cache
 
 class MockClient:
     def __init__(self, responses, values):
@@ -53,14 +53,14 @@ def mock_cache():
 
     assert not len(responses)
 
-@cache_result('foo')
+@cache.mutable('foo')
 def one(mc):
     return 1
 
 class E(Exception):
     pass
 
-@cache_result('foo')
+@cache.mutable('foo')
 def error(mc):
     raise E
 

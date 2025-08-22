@@ -137,7 +137,7 @@ def mc_connect(servers):
 CACHE_ACCESS = Counter('memcached_request', "Total memcached requests", ['key_template'])
 CACHE_HIT = Counter('memcached_request_hit', "Successful memcached requests", ['key_template'])
 
-def cache_result(key_template, timeout=120, expire=86400):
+def mutable(key_template, timeout=120, expire=86400):
     def decorator(f):
         @wraps(f)
         def wrapper(mc, *args, **kwargs):
