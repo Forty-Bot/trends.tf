@@ -40,7 +40,7 @@ def trace_template_error(app, exception):
 
 class EnvConfig:
     DATABASE = "postgresql:///trends"
-    TIMEOUT = 60000
+    TIMEOUT = 20000
     MEMCACHED_SERVERS = "127.0.0.1:11211"
 
     def __init__(self):

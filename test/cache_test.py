@@ -72,7 +72,7 @@ def test_hit(mock_cache):
 def test_miss_fill(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
-    server.add('foo', True, time=120)
+    server.add('foo', True, time=30)
     server.gets('foo', None, 0)
     server.cas('foo', 0, True, time=86400)
     assert one(client) == 1
@@ -80,7 +80,7 @@ def test_miss_fill(mock_cache):
 def test_miss_error(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
-    server.add('foo', True, time=120)
+    server.add('foo', True, time=30)
     server.gets('foo', None, 0)
     with pytest.raises(E):
         assert error(client)
@@ -88,21 +88,21 @@ def test_miss_error(mock_cache):
 def test_late_hit(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
-    server.add('foo', False, time=120)
+    server.add('foo', False, time=30)
     server.gets('foo', 2, 0)
     assert one(client) == 2
 
 def test_no_cas(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
-    server.add('foo', True, time=120)
+    server.add('foo', True, time=30)
     server.gets('foo', None, None)
     assert one(client) == 1
 
 def test_no_dummy(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
-    server.add('foo', True, time=120)
+    server.add('foo', True, time=30)
     server.gets('foo', None, 0)
     server.cas('foo', 0, pylibmc.NotFound, time=86400)
     assert one(client) == 1
@@ -110,13 +110,13 @@ def test_no_dummy(mock_cache):
 def test_get_error(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
-    server.add('foo', pylibmc.Error(), time=120)
+    server.add('foo', pylibmc.Error(), time=30)
     assert one(client) == 1
 
 def test_set_error(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
-    server.add('foo', True, time=120)
+    server.add('foo', True, time=30)
     server.gets('foo', None, 0)
     server.cas('foo', 0, pylibmc.Error(), time=86400)
     assert one(client) == 1
