@@ -394,7 +394,7 @@ def logs(steamid):
     limit, offset = get_pagination()
     filters = get_filter_params()
     order, order_clause = get_order(log_order_map, 'logid')
-    logs = get_logs(extra=True, limit=limit, offset=offset)
+    logs = get_logs(extra=True, order_clause=order_clause, limit=limit, offset=offset)
     return flask.render_template("player/logs.html", logs=logs)
 
 @player.route('/teams')
