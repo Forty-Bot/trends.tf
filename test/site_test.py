@@ -425,9 +425,6 @@ def check_purge(db, cache, extra=()):
         except UnicodeDecodeError:
             assert resp.data == data, node.path
 
-        # FIXME FIXME
-        resp.headers.remove("Last-Modified")
-        headers.remove("Last-Modified")
         assert resp.headers == headers, node.path
 
 @pytest.fixture

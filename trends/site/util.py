@@ -22,12 +22,10 @@ from ..sql import db_connect
 from ..util import clamp, League
 
 def last_modified(since):
-    if flask.current_app.debug:
-        return None
+    if flask.current_app.debug or since is None:
+        return
 
-    if since is None:
-        flask.g.last_modified = datetime.now(tz.UTC)
-    elif isinstance(since, datetime):
+    if isinstance(since, datetime):
         flask.g.last_modified = since
     else:
         flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
