@@ -108,7 +108,7 @@ def log_form():
 
 @cache.mutable("log_{}")
 def get_log(mc, logid):
-    log = {}
+    log = { 'version': cache.version(mc) }
     params = { 'logid': logid }
     cur = get_db().cursor()
 
@@ -387,6 +387,7 @@ def get_match(mc, league, matchid):
                        score2,
                        forfeit,
                        maps,
+                       fetched,
                        full_logs
                    FROM match_pretty AS match
                    LEFT JOIN LATERAL (SELECT
@@ -400,7 +401,9 @@ def get_match(mc, league, matchid):
                    WHERE league = %s AND matchid = %s;""", (league, matchid))
 
     if m := cur.fetchone():
-        return dict(m)
+        m = dict(m)
+        m['version'] = cache.version(mc)
+        return m
     return {}
 
 @root.route('/log/<intlist:logids>')
@@ -418,7 +421,29 @@ def log(logids):
 
     if not logs:
         flask.abort(404)
-    if resp := last_modified(max(log['summary']['updated'] for log in logs.values())):
+
+    matches = {}
+    logid_set = set(logids)
+    for logid, log in logs.items():
+        key = log['summary']['league'], log['summary']['matchid']
+        if key not in matches:
+            if not (m := get_match(mc, *key)):
+                continue
+            m['full_logs'] = set(m['full_logs'])
+            matches[key] = m
+        matches[key]['full_logs'].add(logid)
+
+    since = 0
+    etag = ([], [])
+    for log in logs.values():
+        since = max(since, log['summary']['updated'])
+        etag[0].append(log['version'])
+    for m in matches.values():
+        since = max(since, m['fetched'])
+        etag[1].append(m['version'])
+
+    # Weak because logs/matches are not invalidated on avatar changes
+    if resp := last_modified(since or None, etag, weak=True):
         return resp
 
     def player_key(player):
@@ -435,17 +460,6 @@ def log(logids):
         else:
             classes = (500,)
         return (*teams, classes, names)
-
-    matches = {}
-    logid_set = set(logids)
-    for logid, log in logs.items():
-        key = log['summary']['league'], log['summary']['matchid']
-        if key not in matches:
-            if not (m := get_match(mc, *key)):
-                continue
-            m['full_logs'] = set(m['full_logs'])
-            matches[key] = m
-        matches[key]['full_logs'].add(logid)
 
     for m in matches.values():
         m['other_logs'] = list(m['full_logs'].difference(logid_set))
