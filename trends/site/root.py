@@ -70,8 +70,10 @@ def api():
 
 @root.route('/search')
 def search():
-    q = flask.request.args.get('q', '', str)
+    if resp := last_modified(None, cache.players_version(get_mc())):
+        return resp
 
+    q = flask.request.args.get('q', '', str)
     try:
         steamid = SteamID(q)
         cur = get_db().cursor()

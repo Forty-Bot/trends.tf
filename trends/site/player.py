@@ -2,7 +2,6 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 from collections import defaultdict
-import secrets
 
 import flask
 import pylibmc
@@ -53,7 +52,7 @@ def _get_overview(mc, steamid64):
         return {}
 
     row = dict(row)
-    row['version'] = secrets.token_bytes(16)
+    row['version'] = cache.version(mc)
     return row
 
 @player.before_request

@@ -4,6 +4,7 @@
 import contextlib
 from functools import wraps
 import logging
+import secrets
 import zlib
 
 from mpmetrics import Counter
@@ -178,6 +179,43 @@ def mutable(key_template, timeout=30, expire=86400):
         return wrapper
     return decorator
 
+def immutable(key_template, expire=86400):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(mc, *args, **kwargs):
+            key = key_template.format(*args, **kwargs)
+            with sentry_sdk.start_span(op='cache.get', description=key) as span:
+                CACHE_ACCESS.labels(key_template).inc()
+                span.set_data('cache.key', key)
+                try:
+                    val = mc.get(key)
+                    if val is not None:
+                        span.set_data('cache.hit', True)
+                        CACHE_HIT.labels(key_template).inc()
+                        return val
+                except pylibmc.Error:
+                    logging.exception("Could not get %s", key)
+                span.set_data('cache.hit', False)
+
+            val = f(mc, *args, **kwargs)
+            try:
+                with sentry_sdk.start_span(op='cache.put', description=key) as span:
+                    span.set_data('cache.key', key)
+                    mc.set(key, val, time=expire)
+            except pylibmc.Error:
+                logging.exception("Could not set %s", key)
+            return val
+        return wrapper
+    return decorator
+
+def version(mc):
+    return secrets.token_bytes(16)
+
+# Not really immutable, but doesn't depend on postgres so we can update it directly
+for prefix in ('logs', 'matches', 'players'):
+    key = f"{prefix}_version"
+    vars()[key] = immutable(key, expire=0)(version)
+
 def purge(c, mc, cols, table, key):
     with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
         while True:
@@ -193,13 +231,25 @@ def purge(c, mc, cols, table, key):
             cur.execute("COMMIT;")
             logging.info("Purged %s value(s) from %s", len(vals), table)
 
+def _update_version(mc, prefix):
+    key = f"{prefix}_version"
+    try:
+        with sentry_sdk.start_span(op='cache.put', description=key) as span:
+            span.set_data('cache.key', key)
+            mc.set(key, version(mc))
+    except pylibmc.Error:
+        logging.exception("Could not set %s", key)
+
 def purge_logs(c, mc):
+    _update_version(mc, 'logs')
     mc.delete("index")
     purge(c, mc, 'logid, 0', 'cache_purge_log', "log_{}")
 
 def purge_matches(c, mc):
+    _update_version(mc, 'matches')
     purge(c, mc, 'league, matchid', 'cache_purge_match', "match_{}_{}")
 
 def purge_players(c, mc):
+    _update_version(mc, 'players')
     mc.delete("index")
     purge(c, mc, 'steamid64, 0', 'cache_purge_player', "overview_{}")
