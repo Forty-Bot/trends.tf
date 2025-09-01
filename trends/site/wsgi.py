@@ -122,8 +122,9 @@ class StaticHashDefaults:
         if not os.path.isfile(filename):
             return
 
-        mtime, hash = self.cache.get(filename, (None, None))
-        if mtime == os.path.getmtime(filename):
+        cache_mtime, hash = self.cache.get(filename, (None, None))
+        mtime = os.path.getmtime(filename)
+        if cache_mtime == mtime:
             values['h'] = hash
             return
 
