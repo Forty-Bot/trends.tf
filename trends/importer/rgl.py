@@ -12,7 +12,7 @@ import time
 from psycopg2.extras import NumericRange
 import sentry_sdk
 
-from ..cache import purge_matches
+from ..cache import purge_matches, purge_players
 from .fetch import FetchError, RGLBulkFetcher, RGLFileFetcher
 from .league import *
 from ..sql import db_connect
@@ -240,6 +240,7 @@ def import_rgl(c, mc, fetcher, filter=filter_matchids):
                 res['score2'] = res['teams'][1]['score']
                 import_match(cur, res)
                 purge_matches(c, mc)
+                purge_players(c, mc)
                 cur.execute("COMMIT;")
         except FetchError:
             continue

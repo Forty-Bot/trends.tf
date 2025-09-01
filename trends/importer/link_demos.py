@@ -4,6 +4,8 @@
 from datetime import datetime, timedelta
 import logging
 
+from ..cache import purge_logs, purge_players
+
 def create_link_demos_parser(sub):
     link = sub.add_parser("link_demos", help="Link logs and demos")
     link.set_defaults(importer=link_logs)
@@ -47,5 +49,13 @@ def link_logs(args, c, mc):
                        FROM linked
                        WHERE log.logid = linked.logid;""")
         cur.execute("INSERT INTO cache_purge_log (logid) SELECT logid FROM linked;")
+        cur.execute("""INSERT INTO cache_purge_player (steamid64)
+                       SELECT steamid64
+                       FROM linked
+                       JOIN player_stats USING (logid)
+                       JOIN player USING (playerid)
+                       GROUP BY steamid64;""")
         cur.execute("COMMIT;")
         logging.info(f"Linked {count} logs")
+        purge_logs(c, mc)
+        purge_players(c, mc)

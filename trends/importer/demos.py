@@ -10,6 +10,7 @@ import psycopg2
 import sentry_sdk
 
 from .fetch import DemoFileFetcher, DemoListFetcher, DemoBulkFetcher
+from ..cache import purge_players
 from ..steamid import SteamID
 from ..sql import disable_tracing, publicize
 from .. import util
@@ -49,6 +50,7 @@ def import_demo(c, demo):
                          %s
                      ) ON CONFLICT DO NOTHING;""",
                   (steamid, player['name'], demo['time']))
+        c.execute("INSERT INTO cache_purge_player (steamid64) VALUES (%s);", (steamid,))
         players.append(steamid)
 
     demo['players'] = players
@@ -102,9 +104,9 @@ def import_demos_cli(args, c, mc):
             with c.cursor() as cur:
                 cur.execute("SELECT min(time) + 6 * 60 * 60 FROM demo;");
                 args.until = cur.fetchone()[0]
-        return import_demos(c, args.fetcher(**vars(args)))
+        return import_demos(c, mc, args.fetcher(**vars(args)))
 
-def import_demos(c, fetcher):
+def import_demos(c, mc, fetcher):
     cur = c.cursor()
 
     # Create a temporary tables for bulk inserts
@@ -119,6 +121,7 @@ def import_demos(c, fetcher):
             publicize(c, (('demo', 'demoid'),))
             cur.execute("COMMIT;")
             logging.info("Committed %s imported demo(s)...", count)
+        purge_players(c, mc)
 
     count = 0
     start = datetime.now()

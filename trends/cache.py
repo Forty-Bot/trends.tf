@@ -194,10 +194,12 @@ def purge(c, mc, cols, table, key):
             logging.info("Purged %s value(s) from %s", len(vals), table)
 
 def purge_logs(c, mc):
+    mc.delete("index")
     purge(c, mc, 'logid, 0', 'cache_purge_log', "log_{}")
 
 def purge_matches(c, mc):
     purge(c, mc, 'league, matchid', 'cache_purge_match', "match_{}_{}")
 
 def purge_players(c, mc):
+    mc.delete("index")
     purge(c, mc, 'steamid64, 0', 'cache_purge_player', "overview_{}")

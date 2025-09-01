@@ -14,23 +14,27 @@ from ..steamid import SteamID
 
 root = flask.Blueprint('root', __name__)
 
+@cache.mutable("index")
+def _index(mc):
+    cur = get_db().cursor()
+    cur.execute("""SELECT
+                       max(time) AS newest,
+                       min(time) AS oldest
+                   FROM log;""")
+    minmax = cur.fetchone()
+
+    cur.execute("""SELECT count(*) FROM log
+                   UNION ALL
+                   SELECT count(*) FROM player""")
+    logs, players = (row[0] for row in cur)
+    return minmax, logs, players
+
 @root.route('/')
 def index():
-    c = get_db()
-    minmax = c.cursor()
-    minmax.execute("""SELECT
-                          max(time) AS newest,
-                          min(time) AS oldest
-                      FROM log;""")
-    minmax = minmax.fetchone()
-    if resp := last_modified(minmax['newest']):
+    minmax, logs, players = _index(get_mc())
+    if resp := last_modified(minmax['newest'], (minmax, logs, players)):
         return resp
 
-    counts = c.cursor()
-    counts.execute("""SELECT count(*) FROM log
-                      UNION ALL
-                      SELECT count(*) FROM player""")
-    logs, players = (row[0] for row in counts)
     return flask.render_template("index.html", minmax=minmax, logs=logs, players=players)
 
 @root.route('/favicon.ico')

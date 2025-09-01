@@ -63,7 +63,7 @@ def import_demos(url, mc, *demoids):
     with db_connect(url) as c:
         demofiles = (f"{os.path.dirname(__file__)}/demos/demo_{demoid}.json" for demoid in demoids)
         fetcher = trends.importer.fetch.DemoFileFetcher(demos=demofiles)
-        trends.importer.demos.import_demos(c, fetcher)
+        trends.importer.demos.import_demos(c, mc, fetcher)
 
     with db_connect(url) as c:
         c.cursor().execute("ANALYZE;")

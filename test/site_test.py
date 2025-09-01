@@ -447,9 +447,11 @@ def test_cache_log(db, cache):
         util.import_logs(db, mc, 2297197)
         util.refresh(db, mc)
 
-def test_cache_demos(db, cache):
+@pytest.mark.parametrize('before', (False, True))
+def test_cache_demos(db, cache, before):
     mc = mc_connect(cache)
-    util.import_logs(db, mc, 2297225)
+    if before:
+        util.import_logs(db, mc, 2297225)
     with check_purge(db, cache):
         util.import_demos(db, mc, 273469)
 
