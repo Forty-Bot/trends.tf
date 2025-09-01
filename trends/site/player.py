@@ -53,7 +53,7 @@ def _get_overview(mc, steamid64):
         return {}
 
     row = dict(row)
-    row['version'] = secrets.token_bytes(32)
+    row['version'] = secrets.token_bytes(16)
     return row
 
 @player.before_request
@@ -62,7 +62,7 @@ def get_overview():
     if not overview:
         flask.abort(404)
 
-    if resp := last_modified(overview['last_active']):
+    if resp := last_modified(overview['last_active'], overview['version']):
         return resp
 
     flask.g.player = overview

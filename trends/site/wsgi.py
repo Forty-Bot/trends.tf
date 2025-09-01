@@ -154,17 +154,18 @@ def html_handler(error):
         return json_handler(error)
     return flask.render_template("error.html", error=error), error.code
 
-@player.after_request
-def set_last_modified(resp):
+def set_validators(resp):
     if 'last_modified' in flask.g:
         resp.last_modified = flask.g.last_modified
+    if 'etag' in flask.g:
+        resp.headers["ETag"] = flask.g.etag
     return resp
 
 def create_app():
     app = flask.Flask(__name__)
     app.config.from_object(EnvConfig())
 
-    app.after_request(set_last_modified)
+    app.after_request(set_validators)
     app.teardown_appcontext(put_db)
     app.url_defaults(StaticHashDefaults(app))
     app.url_map.converters['intlist'] = IntListConverter

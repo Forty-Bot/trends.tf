@@ -6,7 +6,7 @@ from functools import wraps
 from collections import namedtuple
 from datetime import datetime, timedelta
 from dateutil import tz
-from hashlib import blake2b
+from hashlib import blake2b, sha256
 from itertools import islice
 import pickle
 import sys
@@ -21,17 +21,24 @@ from ..cache import mc_connect, NoopClient
 from ..sql import db_connect
 from ..util import clamp, League
 
-def last_modified(since):
-    if flask.current_app.debug or since is None:
+def last_modified(since, etag=None, weak=True):
+    if flask.current_app.debug:
         return
 
     if isinstance(since, datetime):
         flask.g.last_modified = since
-    else:
-        flask.g.last_modified = datetime.fromtimestamp(since, tz.UTC)
+    elif since is not None:
+        since = datetime.fromtimestamp(since, tz.UTC)
+        flask.g.last_modified = since
 
-    if not werkzeug.http.is_resource_modified(flask.request.environ,
-                                              last_modified=flask.g.last_modified):
+    if etag is not None:
+        if not isinstance(etag, bytes):
+            etag = pickle.dumps(etag, protocol=5)
+        etag = sha256(etag).digest()[:16].hex()
+        flask.g.etag = f'W/"{etag}' if weak else f'"{etag}"'
+
+    if not werkzeug.http.is_resource_modified(flask.request.environ, etag=etag,
+                                              last_modified=since):
         return "", 304
 
 def global_context(name):

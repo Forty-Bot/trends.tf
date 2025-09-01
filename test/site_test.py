@@ -425,6 +425,9 @@ def check_purge(db, cache, extra=()):
         except UnicodeDecodeError:
             assert resp.data == data, node.path
 
+        # The etags will all change after we flush the cache, but that's just pessimistic
+        resp.headers.remove("ETag")
+        headers.remove("ETag")
         assert resp.headers == headers, node.path
 
 @pytest.fixture
