@@ -3,36 +3,12 @@
 
 import flask
 
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
-                  last_modified
+from .. import cache
+from .util import get_db, get_filter_params, get_filter_clauses, get_mc, get_order, \
+                  get_pagination, last_modified
 
 def logs_last_modified():
-    filters = get_filter_params()
-    filter_clauses = get_filter_clauses(filters, 'title', 'formatid', 'mapid', 'time', 'logid',
-                                        'updated', 'league', 'duplicate_of')
-
-    db = get_db()
-    cur = db.cursor()
-    if filters['date_to_ts'] is not None:
-        # Postgres doesn't use log_time to filter on date_to_ts so we get a bad plan if date_to_ts
-        # is too far in the past (as we end up doing a full scan of log_updated). Give the planner a
-        # hint that it should use log_time instead. We pay the price by always reading 1000 rows.
-        query = f"""WITH log AS MATERIALIZED (SELECT
-                            updated
-                        FROM log
-                        WHERE TRUE
-                            {filter_clauses}
-                        ORDER BY updated DESC
-                        LIMIT 1000
-                    ) SELECT max(updated) FROM log;"""
-    else:
-        query = f"""SELECT max(updated)
-                        FROM log
-                        WHERE TRUE
-                            {filter_clauses};"""
-
-    cur.execute(query, filters)
-    return last_modified(cur.fetchone()[0])
+    return last_modified(None, cache.logs_version(get_mc()))
 
 def get_logs(view):
     limit, offset = get_pagination()
