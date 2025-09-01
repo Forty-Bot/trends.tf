@@ -208,26 +208,31 @@ def immutable(key_template, expire=86400):
         return wrapper
     return decorator
 
-def version(mc):
+def version(mc, *args):
     return secrets.token_bytes(16)
 
 # Not really immutable, but doesn't depend on postgres so we can update it directly
-for prefix in ('logs', 'matches', 'players'):
+for prefix in ('logs', 'players'):
     key = f"{prefix}_version"
     vars()[key] = immutable(key, expire=0)(version)
 
-def purge(c, mc, cols, table, key):
+matches_version = immutable("matches_{}_version", expire=0)(version)
+
+def purge(c, mc, col, table, prefix, cond="TRUE"):
     with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
         while True:
             cur.execute("BEGIN;")
-            cur.execute(f"SELECT {cols} FROM {table} FOR UPDATE SKIP LOCKED LIMIT 1000;")
-            vals = list(cur)
+            cur.execute(
+                f"""SELECT {col}
+                    FROM {table}
+                    WHERE {cond}
+                    FOR UPDATE SKIP LOCKED LIMIT 1000;""")
+            vals = tuple(row[0] for row in cur)
             if not vals:
                 return
 
-            mc.delete_multi(key.format(*val) for val in vals)
-            psycopg2.extras.execute_values(cur,
-                f"DELETE FROM {table} WHERE ROW({cols}) IN (%s);", vals)
+            mc.delete_multi(prefix + str(val) for val in vals)
+            cur.execute(f"DELETE FROM {table} WHERE {cond} AND {col} IN %s;", (vals,))
             cur.execute("COMMIT;")
             logging.info("Purged %s value(s) from %s", len(vals), table)
 
@@ -243,13 +248,13 @@ def _update_version(mc, prefix):
 def purge_logs(c, mc):
     _update_version(mc, 'logs')
     mc.delete("index")
-    purge(c, mc, 'logid, 0', 'cache_purge_log', "log_{}")
+    purge(c, mc, 'logid', 'cache_purge_log', "log_")
 
-def purge_matches(c, mc):
-    _update_version(mc, 'matches')
-    purge(c, mc, 'league, matchid', 'cache_purge_match', "match_{}_{}")
+def purge_matches(c, mc, league):
+    _update_version(mc, f"matches_{league}")
+    purge(c, mc, 'matchid', 'cache_purge_match', f"match_{league}_", f"league = '{league}'")
 
 def purge_players(c, mc):
     _update_version(mc, 'players')
     mc.delete("index")
-    purge(c, mc, 'steamid64, 0', 'cache_purge_player', "overview_{}")
+    purge(c, mc, 'steamid64', 'cache_purge_player', "overview_")

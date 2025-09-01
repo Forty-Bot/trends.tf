@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import logging
 
 from ..cache import purge_logs, purge_matches, purge_players
+from ..util import League
 
 def create_link_matches_parser(sub):
     link = sub.add_parser("link_matches", help="Link logs and matches")
@@ -105,5 +106,6 @@ def link_matches(args, c, mc):
         cur.execute("COMMIT;")
         logging.info(f"Linked {count} logs")
         purge_logs(c, mc)
-        purge_matches(c, mc)
+        for league in League:
+            purge_matches(c, mc, league)
         purge_players(c, mc)

@@ -239,7 +239,7 @@ def import_rgl(c, mc, fetcher, filter=filter_matchids):
                 res['score1'] = res['teams'][0]['score']
                 res['score2'] = res['teams'][1]['score']
                 import_match(cur, res)
-                purge_matches(c, mc)
+                purge_matches(c, mc, 'rgl')
                 purge_players(c, mc)
                 cur.execute("COMMIT;")
         except FetchError:

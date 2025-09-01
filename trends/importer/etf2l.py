@@ -202,7 +202,7 @@ def import_etf2l(c, mc, fetcher, filter=filter_matchids):
                     import_team(cur, team)
                 import_match(cur, res)
                 cur.execute("COMMIT;")
-            purge_matches(c, mc)
+            purge_matches(c, mc, 'etf2l')
             purge_players(c, mc)
         except FetchError:
             continue
