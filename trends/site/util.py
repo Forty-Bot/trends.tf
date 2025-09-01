@@ -17,6 +17,7 @@ from psycopg2.extras import NumericRange
 import pylibmc
 import werkzeug.exceptions, werkzeug.http
 
+from .. import cache
 from ..cache import mc_connect, NoopClient
 from ..sql import db_connect
 from ..util import clamp, League
@@ -66,21 +67,6 @@ def put_db(exception):
     if db := flask.g.pop('db_conn', None):
         db.close()
 
-def view_updated(view, pretty=None):
-    c = get_db()
-    with c.cursor() as cur:
-        cur.execute("SELECT pg_try_advisory_lock_shared(%s::REGCLASS::BIGINT)", (view,))
-        if not cur.fetchone()[0]:
-            msg = f"The {pretty or view} is being refreshed. Please try again later"
-            raise werkzeug.exceptions.ServiceUnavailable(msg)
-
-        cur.execute("""SELECT last_updated
-                       FROM materialized_view
-                       WHERE oid = %s::REGCLASS;""", (view,))
-        row = cur.fetchone()
-        if row[0] is not None:
-            return last_modified(row[0])
-
 @global_context('mc_conn')
 def get_mc():
     mc = mc_connect(flask.current_app.config['MEMCACHED_SERVERS'])
@@ -92,6 +78,26 @@ def get_mc():
     except pylibmc.ConnectionError as error:
         flask.current_app.logger.exception("Could not connect to memcached")
     return NoopClient()
+
+@cache.mutable("view_{}")
+def _view_updated(mc, view):
+    c = get_db()
+    with c.cursor() as cur:
+        cur.execute("""SELECT last_updated
+                       FROM materialized_view
+                       WHERE oid = %s::REGCLASS;""", (view,))
+        return cur.fetchone()[0]
+
+def view_updated(view, pretty=None):
+    if resp := last_modified(_view_updated(get_mc(), view)):
+        return resp
+
+    c = get_db()
+    with c.cursor() as cur:
+        cur.execute("SELECT pg_try_advisory_lock_shared(%s::REGCLASS::BIGINT)", (view,))
+        if not cur.fetchone()[0]:
+            msg = f"The {pretty or view} is being refreshed. Please try again later"
+            raise werkzeug.exceptions.ServiceUnavailable(msg)
 
 @global_context('filters')
 def get_filter_params():

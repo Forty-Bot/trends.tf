@@ -20,3 +20,9 @@ def refresh(args, c, mc):
                     WHERE oid = %s::REGCLASS;""", (view,))
             cur.execute(f"REFRESH MATERIALIZED VIEW {view}")
             cur.execute("COMMIT;")
+            for _ in range(10):
+                try:
+                    mc.delete(f"view_{view}")
+                    break
+                except pylibmc.Error:
+                    pass
