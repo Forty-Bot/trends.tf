@@ -2,6 +2,8 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 from collections import defaultdict
+import os
+from hashlib import sha256
 
 import flask
 from mpmetrics.flask import PrometheusMetrics
@@ -41,17 +43,30 @@ def index():
 def favicon():
     return flask.redirect(flask.url_for('static', filename="img/favicon.ico"), 301)
 
+template_validator_cache = {}
+def render_static_template(template_name):
+    try:
+        mtime, hash = template_validator_cache[template_name]
+    except:
+        template = flask.current_app.jinja_env.get_template(template_name)
+        mtime = os.path.getmtime(template.filename)
+        hash = sha256()
+        with open(template.filename, 'rb') as file:
+            hash.update(file.read())
+        hash = hash.digest()
+        template_validator_cache[template_name] = (mtime, hash)
+
+    if resp := last_modified(mtime, hash, weak=False):
+        return resp
+    return flask.render_template(template_name)
+
 @root.route('/about')
 def about():
-    resp = flask.make_response(flask.render_template("about.html"))
-    resp.cache_control.max_age = 300
-    return resp
+    return render_static_template("about.html")
 
 @root.route('/apidoc')
 def api():
-    resp = flask.make_response(flask.render_template("api.html"))
-    resp.cache_control.max_age = 300
-    return resp
+    return render_static_template("api.html")
 
 @root.route('/search')
 def search():
