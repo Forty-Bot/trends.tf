@@ -369,6 +369,6 @@ def import_match(c, m):
                    fetched = greatest(fetched, %(fetched)s)
                 WHERE league = %(league)s
                     AND matchid = %(matchid)s;""", m)
-        cur.execute(
-            """INSERT INTO cache_purge_match (league, matchid)
-               VALUES (%(league)s, %(matchid)s);""", m)
+    c.execute(
+        """INSERT INTO cache_purge_match (league, matchid)
+           VALUES (%(league)s, %(matchid)s);""", m)
