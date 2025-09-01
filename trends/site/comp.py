@@ -3,8 +3,10 @@
 
 import flask
 
+from .. import cache
 from .common import get_matches, get_players
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
+from .util import get_db, get_filter_params, get_filter_clauses, get_mc, get_order, \
+                  get_pagination, last_modified \
 
 comp = flask.Blueprint('comp', __name__)
 
@@ -12,28 +14,36 @@ comp = flask.Blueprint('comp', __name__)
 def get_compid(endpoint, values):
     flask.g.compid = values['compid']
 
-@comp.before_request
-def get_comp():
+@cache.mutable("comp_{}_{}")
+def _get_comp(mc, league, compid):
     db = get_db()
-    comp = db.cursor()
-    comp.execute(
+    cur = db.cursor()
+    cur.execute(
         """SELECT
                name,
                format
            FROM competition
            JOIN format USING (formatid)
-           WHERE league = %s AND compid = %s;""", (flask.g.league, flask.g.compid))
-    flask.g.comp = comp.fetchone()
-    if flask.g.comp is None:
-        flask.abort(404)
+           WHERE league = %s AND compid = %s;""", (league, compid))
+    comp = cur.fetchone()
+    if comp is None:
+        return None, None, None
 
-    divs = db.cursor()
-    divs.execute(
+    cur.execute(
         """SELECT json_object_agg(divid, division ORDER BY tier ASC, division DESC)
            FROM division
            JOIN div_name USING (div_nameid)
-           WHERE league=%s AND compid=%s;""", (flask.g.league, flask.g.compid))
-    flask.g.divs = divs.fetchone()[0] or {}
+           WHERE league=%s AND compid=%s;""", (league, compid))
+    return comp, cur.fetchone()[0] or {}, cache.version(mc)
+
+@comp.before_request
+def get_comp():
+    flask.g.comp, flask.g.divs, etag = _get_comp(get_mc(), flask.g.league, flask.g.compid)
+    if flask.g.comp is None:
+        flask.abort(404)
+
+    if resp := last_modified(None, etag):
+        return resp
 
 @comp.route('/')
 def overview(league, compid):

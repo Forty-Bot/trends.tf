@@ -3,9 +3,10 @@
 
 import flask
 
+from .. import cache
 from .common import get_players
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination, \
-                  last_modified
+from .util import get_db, get_filter_params, get_filter_clauses, get_mc, get_order, \
+                  get_pagination, last_modified
 
 team = flask.Blueprint('team', __name__)
 
@@ -13,8 +14,8 @@ team = flask.Blueprint('team', __name__)
 def get_teamid(endpoint, values):
     flask.g.teamid = values['teamid']
 
-@team.before_request
-def get_comp():
+@cache.mutable("team_{}_{}")
+def _get_team(mc, league, teamid):
     db = get_db()
     cur = db.cursor()
     cur.execute(
@@ -32,20 +33,11 @@ def get_comp():
            FROM team_comp_backing
            WHERE league = %(league)s AND rgl_teamid = %(teamid)s
            UNION ALL
-           SELECT NULL, NULL, NULL, NULL, NULL;""",
-        { 'league': flask.g.league, 'teamid': flask.g.teamid })
+           SELECT NULL, NULL, NULL, NULL, NULL;""", { 'league': league, 'teamid': teamid })
 
-    flask.g.team = cur.fetchone()
-    if flask.g.team['teamid'] is None:
-        flask.abort(404)
-    elif flask.g.team['teamid'] != flask.g.teamid:
-        args = flask.request.args | flask.request.view_args
-        args['teamid'] = flask.g.team['teamid']
-        return flask.redirect(flask.url_for(flask.request.endpoint, **args), 301)
-
-    # FIXME: not quite accurate when we display logs
-    if resp := last_modified(flask.g.team['fetched']):
-        return resp
+    team = cur.fetchone()
+    if team['teamid'] is None:
+        return None, None, None
 
     cur.execute(
         """SELECT
@@ -60,8 +52,21 @@ def get_comp():
                    total(rounds_lost) AS rounds_lost
                FROM match_wlt
                WHERE league = %s AND teamid = %s
-           ) AS wlt;""", (flask.g.league, flask.g.teamid))
-    flask.g.team_wlt = cur.fetchone()
+           ) AS wlt;""", (league, teamid))
+    return team, cur.fetchone(), cache.version(mc)
+
+@team.before_request
+def get_team():
+    flask.g.team, flask.g.team_wlt, etag = _get_team(get_mc(), flask.g.league, flask.g.teamid)
+    if flask.g.team['teamid'] is None:
+        flask.abort(404)
+    if flask.g.team['teamid'] != flask.g.teamid:
+        args = flask.request.args | flask.request.view_args
+        args['teamid'] = flask.g.team['teamid']
+        return flask.redirect(flask.url_for(flask.request.endpoint, **args), 301)
+
+    if resp := last_modified(None, etag):
+        return resp
 
 def get_matches(league, teamid, filters, order_clause="scheduled DESC", limit=100, offset=0):
     filter_clauses = get_filter_clauses(filters, comp='competition.name', time='scheduled')

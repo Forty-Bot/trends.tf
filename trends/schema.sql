@@ -955,6 +955,20 @@ CREATE TABLE IF NOT EXISTS cache_purge_log (
 
 CREATE INDEX IF NOT EXISTS cache_purge_log_pkey ON cache_purge_log (logid);
 
+CREATE TABLE IF NOT EXISTS cache_purge_comp (
+	league LEAGUE NOT NULL,
+	compid INT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS cache_purge_comp_pkey ON cache_purge_comp (league, compid);
+
+CREATE TABLE IF NOT EXISTS cache_purge_team (
+	league LEAGUE NOT NULL,
+	teamid INT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS cache_purge_team_pkey ON cache_purge_team (league, teamid);
+
 CREATE TABLE IF NOT EXISTS cache_purge_match (
 	league LEAGUE NOT NULL,
 	matchid INT NOT NULL

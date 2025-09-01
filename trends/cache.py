@@ -216,7 +216,8 @@ for prefix in ('logs', 'players'):
     key = f"{prefix}_version"
     vars()[key] = immutable(key, expire=0)(version)
 
-matches_version = immutable("matches_{}_version", expire=0)(version)
+for prefix in ('comps', 'teams', 'matches'):
+    vars()[f"{prefix}_version"] = immutable(f"{prefix}_{{}}_version", expire=0)(version)
 
 def purge(c, mc, col, table, prefix, cond="TRUE"):
     with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
@@ -249,6 +250,14 @@ def purge_logs(c, mc):
     _update_version(mc, 'logs')
     mc.delete("index")
     purge(c, mc, 'logid', 'cache_purge_log', "log_")
+
+def purge_comps(c, mc, league):
+    _update_version(mc, f"comps_{league}")
+    purge(c, mc, 'compid', 'cache_purge_comp', f"comp_{league}_", f"league = '{league}'")
+
+def purge_teams(c, mc, league):
+    _update_version(mc, f"teams_{league}")
+    purge(c, mc, 'teamid', 'cache_purge_team', f"team_{league}_", f"league = '{league}'")
 
 def purge_matches(c, mc, league):
     _update_version(mc, f"matches_{league}")

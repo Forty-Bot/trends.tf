@@ -37,6 +37,8 @@ def import_compdiv(c, cd):
                (SELECT div_nameid FROM div_name WHERE division = %(division)s), %(tier)s
            ) ON CONFLICT DO NOTHING;""", cd)
 
+    c.execute("INSERT INTO cache_purge_comp (league, compid) VALUES (%(league)s, %(compid)s);", cd)
+
 def combine_teams(c, league, teamids):
     """Combine teams
     Combine the teams specified into one team. This may occasionally be necessary when RGL teams are
@@ -151,6 +153,8 @@ def import_team(c, t):
 
     if 'updates' in t and t['updates']:
         import_transfers(c, t)
+
+    c.execute("INSERT INTO cache_purge_team (league, teamid) VALUES (%(league)s, %(teamid)s);", t)
 
 def import_transfers(c, t):
     # Load new players...
@@ -372,3 +376,6 @@ def import_match(c, m):
     c.execute(
         """INSERT INTO cache_purge_match (league, matchid)
            VALUES (%(league)s, %(matchid)s);""", m)
+    c.execute("INSERT INTO cache_purge_comp (league, compid) VALUES (%(league)s, %(compid)s);", m)
+    c.execute("""INSERT INTO cache_purge_team (league, teamid)
+                 VALUES (%(league)s, %(teamid1)s), (%(league)s, %(teamid2)s);""", m)

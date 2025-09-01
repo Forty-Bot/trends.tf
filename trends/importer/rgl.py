@@ -12,7 +12,7 @@ import time
 from psycopg2.extras import NumericRange
 import sentry_sdk
 
-from ..cache import purge_matches, purge_players
+from ..cache import purge_comps, purge_matches, purge_players, purge_teams
 from .fetch import FetchError, RGLBulkFetcher, RGLFileFetcher
 from .league import *
 from ..sql import db_connect
@@ -239,6 +239,8 @@ def import_rgl(c, mc, fetcher, filter=filter_matchids):
                 res['score1'] = res['teams'][0]['score']
                 res['score2'] = res['teams'][1]['score']
                 import_match(cur, res)
+                purge_comps(c, mc, 'rgl')
+                purge_teams(c, mc, 'rgl')
                 purge_matches(c, mc, 'rgl')
                 purge_players(c, mc)
                 cur.execute("COMMIT;")
