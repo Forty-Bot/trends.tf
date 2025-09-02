@@ -34,7 +34,8 @@ class MockServer:
         self.values = values
 
     def gets(self, key, value, cas):
-        self.responses.appendleft(('gets', (key,), (value, cas)))
+        result = value if isinstance(value, BaseException) else (value, cas)
+        self.responses.appendleft(('gets', (key,), result))
 
     def add(self, key, result, time=0):
         self.responses.appendleft(('add', (key, time), result))
@@ -108,6 +109,11 @@ def test_no_dummy(mock_cache):
     assert one(client) == 1
 
 def test_get_error(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', pylibmc.Error(), None)
+    assert one(client) == 1
+
+def test_get_add_error(mock_cache):
     client, server = mock_cache
     server.gets('foo', None, None)
     server.add('foo', pylibmc.Error(), time=30)

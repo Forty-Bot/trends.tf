@@ -165,6 +165,7 @@ def mutable(key_template, timeout=30, expire=86400):
                             return val
                 except pylibmc.Error:
                     logging.exception("Could not get %s", key)
+                    cas = None
                 span.set_data('cache.hit', False)
 
             val = f(mc, *args, **kwargs)
