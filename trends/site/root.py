@@ -429,7 +429,7 @@ def log(logids):
         if key not in matches:
             if not (m := get_match(mc, *key)):
                 continue
-            m['full_logs'] = set(m['full_logs'])
+            m['full_logs'] = set(m['full_logs'] or ())
             matches[key] = m
         matches[key]['full_logs'].add(logid)
 

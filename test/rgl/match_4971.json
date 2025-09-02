@@ -1,0 +1,35 @@
+{
+  "matchId": 4971,
+  "seasonName": "HL Season 4",
+  "divisionName": "Amateur",
+  "divisionId": 348,
+  "seasonId": 65,
+  "regionId": 24,
+  "matchDate": "2019-11-22T02:30:00.000Z",
+  "matchName": "Seeding Match",
+  "isForfeit": false,
+  "winner": 5634,
+  "teams": [
+    {
+      "teamName": "Flippin Out",
+      "teamTag": "FLP",
+      "teamId": 5634,
+      "isHome": false,
+      "points": "2.34"
+    },
+    {
+      "teamName": "cats are epic",
+      "teamTag": ":3",
+      "teamId": 5603,
+      "isHome": true,
+      "points": "0.66"
+    }
+  ],
+  "maps": [
+    {
+      "mapName": "koth_product_rcx",
+      "homeScore": 2,
+      "awayScore": 4
+    }
+  ]
+}
