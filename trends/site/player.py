@@ -112,10 +112,9 @@ log_order_map = {
     **log_joined_order_map,
 }
 
-@cache.mutable("player_logs_{}_{}")
-def _get_logs(mc, steamid64, digest, playerid, params):
-    filters, extra, order_clause, limit, offset = params
+def get_logs(extra=False, order_clause="logid DESC", limit=100, offset=0):
     real_offset = offset
+    filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'primary_classid', 'league', 'formatid', 'title',
                                         'mapid', 'time', 'logid', 'duplicate_of')
     if not any(col in order_clause for col in log_joined_order_map.values()):
@@ -187,12 +186,6 @@ def _get_logs(mc, steamid64, digest, playerid, params):
             'real_offset': real_offset
         })
     return [dict(log) for log in logs]
-
-def get_logs(extra=False, order_clause="logid DESC", limit=100, offset=0):
-    player = flask.g.player
-    params = get_filter_params(), extra, order_clause, limit, offset
-    digest = hash_object(player.get('version', b''), params)
-    return _get_logs(get_mc(), flask.g.steamid, digest, player['playerid'], params)
 
 def get_teams(c, filters, order_clause="rto DESC", limit=10, offset=0):
     inner_clauses = get_filter_clauses(filters, 'league', date_range='rostered')
