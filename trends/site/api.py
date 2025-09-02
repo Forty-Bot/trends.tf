@@ -4,8 +4,9 @@
 import flask
 import werkzeug.exceptions
 
+from .. import cache
 from .common import get_logs, search_players, logs_last_modified
-from .util import get_db, get_pagination, view_updated
+from .util import get_db, get_mc, get_pagination, last_modified, view_updated
 
 api = flask.Blueprint('api', __name__)
 
@@ -16,13 +17,6 @@ def json_handler(error):
         'name': error.name,
         'description': error.description,
     }), error.code
-
-@api.after_request
-def do_cache(resp):
-    resp.add_etag()
-    if resp.cache_control.max_age is None:
-        resp.cache_control.max_age = 300
-    return resp
 
 def next_page(rows):
     args = flask.request.args.to_dict(flat=False)
@@ -62,5 +56,8 @@ def maps():
 
 @api.route('/players')
 def players():
+    if resp := last_modified(None, cache.players_version(get_mc())):
+        return resp
+
     q = flask.request.args.get('q', '', str)
     return flask.jsonify(players=[dict(player) for player in search_players(q)])
