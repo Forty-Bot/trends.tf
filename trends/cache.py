@@ -174,6 +174,8 @@ def mutable(key_template, timeout=30, expire=86400):
                     with sentry_sdk.start_span(op='cache.put', description=key) as span:
                         span.set_data('cache.key', key)
                         mc.cas(key, val, cas, time=expire)
+            except pylibmc.NotFound:
+                pass
             except pylibmc.Error:
                 logging.exception("Could not set %s", key)
             return val
