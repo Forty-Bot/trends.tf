@@ -3,10 +3,12 @@
 
 import flask
 
+from .. import cache
 from .common import get_matches
 from .comp import comp
 from .team import team
-from .util import get_db, get_filter_params, get_filter_clauses, get_order, get_pagination
+from .util import get_db, get_filter_params, get_filter_clauses, get_mc, get_order, \
+                  get_pagination, last_modified
 from ..util import League
 
 league = flask.Blueprint('league', __name__)
@@ -22,6 +24,9 @@ def get_league(endpoint, values):
 
 @league.route('/comps')
 def comps(league):
+    if resp := last_modified(None, cache.comps_version(get_mc(), league)):
+        return resp
+
     limit, offset = get_pagination()
     filters = get_filter_params()
     filter_clauses = get_filter_clauses(filters, 'name', 'format', 'timespan')
@@ -84,6 +89,9 @@ def comps(league):
 
 @league.route('/matches')
 def matches(league):
+    if resp := last_modified(None, cache.matches_version(get_mc(), league)):
+        return resp
+
     limit, offset = get_pagination()
     filters = get_filter_params()
 
