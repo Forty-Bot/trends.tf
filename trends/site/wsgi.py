@@ -2,6 +2,8 @@
 # Copyright (C) 2020-21 Sean Anderson <seanga2@gmail.com>
 
 import base64
+from datetime import datetime, timedelta
+from dateutil import tz
 from decimal import Decimal
 import gettext
 import hashlib
@@ -162,10 +164,28 @@ def set_validators(resp):
         resp.headers["ETag"] = flask.g.etag
     return resp
 
+def cache_control(resp):
+    if not 'max_age' in flask.g:
+        if resp.last_modified is not None:
+            delta = datetime.now(tz.UTC) - resp.last_modified
+            max_age = int(min(max(delta.total_seconds() / 120, 30), 24 * 60 * 60))
+        else:
+            max_age = 300
+    else:
+        max_age = flask.g.max_age
+
+    resp.cache_control.max_age = max_age
+    resp.cache_control['stale-while-revalidate'] = 30
+    resp.cache_control['stale-if-error'] = None
+    if flask.current_app.debug:
+        resp.cache_control.no_store = True
+    return resp
+
 def create_app():
     app = flask.Flask(__name__)
     app.config.from_object(EnvConfig())
 
+    app.after_request(cache_control)
     app.after_request(set_validators)
     app.teardown_appcontext(put_db)
     app.url_defaults(StaticHashDefaults(app))

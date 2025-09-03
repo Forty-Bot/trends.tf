@@ -8,6 +8,7 @@ from .util import get_db, get_filter_params, get_filter_clauses, get_mc, get_ord
                   get_pagination, last_modified
 
 def logs_last_modified():
+    flask.g.max_age = 30
     return last_modified(None, cache.logs_version(get_mc()))
 
 def get_logs(view):

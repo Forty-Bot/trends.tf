@@ -58,9 +58,7 @@ server {
 		uwsgi_cache_key $request_uri;
 		uwsgi_cache_lock on;
 		uwsgi_cache_lock_timeout 30s;
-		uwsgi_cache_use_stale error timeout;
 		uwsgi_cache_revalidate on;
-		uwsgi_cache_valid 30s;
 
 		limit_req zone=perip burst=30 nodelay;
 		limit_req_status 429;

@@ -23,9 +23,6 @@ from ..sql import db_connect
 from ..util import clamp, League
 
 def last_modified(since, etag=None, weak=True):
-    if flask.current_app.debug:
-        return
-
     if isinstance(since, datetime):
         flask.g.last_modified = since
     elif since is not None:

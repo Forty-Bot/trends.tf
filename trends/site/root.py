@@ -696,11 +696,12 @@ def log(logids):
     chats = [{ 'title': log['summary']['title'], 'messages': log['chat'] }
              for log in logs.values()]
 
-    return flask.render_template("log.html", logids=logs.keys(),
-                                 logs=[log['summary'] for log in logs.values()], matches=matches,
-                                 rounds=rounds, players=players, totals=totals,
-                                 medics=medics, events=events, killstreaks=killstreaks,
-                                 chats=chats)
+    resp = flask.make_response(flask.render_template("log.html",
+        logids=logs.keys(), logs=[log['summary'] for log in logs.values()], matches=matches,
+        rounds=rounds, players=players, totals=totals, medics=medics, events=events,
+        killstreaks=killstreaks, chats=chats))
+    resp.headers['X-Accel-Expires'] = 0
+    return resp
 
 metrics_extension = PrometheusMetrics.for_app_factory(group_by='endpoint', path=None)
 

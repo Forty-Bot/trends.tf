@@ -50,9 +50,7 @@ def maps():
            ORDER BY popularity DESC, mapid ASC
            LIMIT %s OFFSET %s;""", (limit, offset))
 
-    resp = flask.make_response(flask.jsonify(maps=[row[0] for row in maps]))
-    resp.cache_control.max_age = 86400
-    return resp
+    return flask.jsonify(maps=[row[0] for row in maps])
 
 @api.route('/players')
 def players():

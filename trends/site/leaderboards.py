@@ -101,10 +101,7 @@ def overview():
                            LEFT JOIN name USING (nameid)
                            ORDER BY {order_clause} NULLS LAST, logs DESC, playerid;""",
                         { **filters, 'grouping': grouping, 'limit': limit, 'offset': offset })
-    resp = flask.make_response(flask.render_template("leaderboards/overview.html",
-                               leaderboard=leaderboard.fetchall()))
-    resp.cache_control.max_age = 3600
-    return resp
+    return flask.render_template("leaderboards/overview.html", leaderboard=leaderboard.fetchall())
 
 @leaderboards.route('/medics')
 def medics():
@@ -251,7 +248,4 @@ def medics():
                        LEFT JOIN name USING (nameid)
                        ORDER BY {order_clause} NULLS LAST, logs DESC, playerid;""",
                         { **filters, 'grouping': grouping, 'limit': limit, 'offset': offset })
-    resp = flask.make_response(flask.render_template("leaderboards/medics.html",
-                               medics=medics.fetchall()))
-    resp.cache_control.max_age = 3600
-    return resp
+    return flask.render_template("leaderboards/medics.html", medics=medics.fetchall())
