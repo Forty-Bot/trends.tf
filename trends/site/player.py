@@ -152,8 +152,8 @@ def get_logs(extra=False, order_clause="logid DESC", limit=100, offset=0):
                dpm,
                dtm,
                acc,
-               hsg.healing * 60.0 / nullif(ps.duration, 0) AS hpm_given,
-               hsr.healing * 60.0 / nullif(ps.duration, 0) AS hpm_recieved,
+               hsg * 60.0 / nullif(ps.duration, 0) AS hpm_given,
+               hsr * 60.0 / nullif(ps.duration, 0) AS hpm_recieved,
                duplicate_of,
                demoid,
                league,
@@ -172,8 +172,6 @@ def get_logs(extra=False, order_clause="logid DESC", limit=100, offset=0):
            ) as ps
            JOIN map USING (mapid)
            LEFT JOIN format USING (formatid)
-           LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
-           LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
            {"LEFT JOIN player_stats_extra AS pse USING (logid, playerid)" if extra else ""}
            WHERE ps.playerid = %(playerid)s
            ORDER BY {order_clause} NULLS LAST, logid DESC
@@ -657,14 +655,12 @@ def trends(steamid):
                sum(ps.dmg) OVER win * 60.0 / nullif(sum(log.duration) OVER win, 0) AS dpm,
                sum(ps.dt) OVER win * 60.0 /
                    nullif(sum(nullelse(ps.dt, log.duration)) OVER win, 0) AS dtm,
-               sum(hsg.healing) OVER win * 60.0 /
-                   nullif(sum(nullelse(hsg.healing, log.duration)) OVER win, 0) AS hpm_given,
-               sum(hsr.healing) OVER win * 60.0 /
-                   nullif(sum(nullelse(hsr.healing, log.duration)) OVER win, 0) AS hpm_recieved
+               sum(hsg) OVER win * 60.0 /
+                   nullif(sum(nullelse(hsg, log.duration)) OVER win, 0) AS hpm_given,
+               sum(hsr) OVER win * 60.0 /
+                   nullif(sum(nullelse(hsr, log.duration)) OVER win, 0) AS hpm_recieved
            FROM log_nodups AS log
            JOIN player_stats AS ps USING (logid)
-           LEFT JOIN heal_stats_given AS hsg USING (logid, playerid)
-           LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
            WHERE ps.playerid = %(playerid)s
                {}
            WINDOW win AS (

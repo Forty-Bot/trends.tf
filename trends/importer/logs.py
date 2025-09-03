@@ -735,6 +735,36 @@ def update_acc(cur, bounds=None):
                  .format("WHERE logid BETWEEN %s AND %s" if bounds else ""),
               bounds)
 
+def update_healing(cur, bounds=()):
+    cur.execute("""UPDATE player_stats_backing AS ps SET
+                       hsg = new.hsg,
+                       hsr = new.hsr
+                   FROM (SELECT
+                           logid,
+                           playerid,
+                           hsg.healing as hsg,
+                           hsr.healing as hsr
+                       FROM (SELECT
+                               logid,
+                               healer AS playerid,
+                               sum(healing) AS healing
+                           FROM heal_stats
+                           {0}
+                           GROUP BY logid, healer
+                       ) AS hsg
+                       LEFT JOIN (SELECT
+                               logid,
+                               healee AS playerid,
+                               sum(healing) AS healing
+                           FROM heal_stats
+                           {0}
+                           GROUP BY logid, healee
+                       ) AS hsr USING (logid, playerid)
+                   ) as new
+                   WHERE ps.logid = new.logid
+                       AND ps.playerid = new.playerid;"""
+                 .format("WHERE logid BETWEEN %s AND %s" if bounds else ""), (*bounds, *bounds))
+
 def update_ks(cur):
     cur.execute("""UPDATE player_stats_extra AS pse SET
                        mks = new.mks
@@ -859,6 +889,7 @@ def import_logs(c, mc, fetcher, update_only):
             update_wlt(cur)
             update_player_classes(cur)
             update_acc(cur)
+            update_healing(cur)
             update_ks(cur)
             prepare_purge(cur)
             publicize(c, log_tables)

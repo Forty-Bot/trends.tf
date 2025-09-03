@@ -557,6 +557,8 @@ CREATE TABLE IF NOT EXISTS player_stats_backing (
 				     AND array_ndims(class_durations) = 1),
 	shots INT,
 	hits INT,
+	hsg INT,
+	hsr INT,
 	PRIMARY KEY (playerid, logid),
 	CHECK ((shots ISNULL) = (hits ISNULL)),
 	CHECK ((classids NOTNULL AND class_durations NOTNULL
@@ -664,20 +666,6 @@ CREATE INDEX IF NOT EXISTS heal_stats_healer ON heal_stats (healer);
 CREATE STATISTICS IF NOT EXISTS heal_stats (ndistinct)
 ON logid, healer
 FROM heal_stats;
-
-CREATE OR REPLACE VIEW heal_stats_given AS SELECT
-	logid,
-	healer AS playerid,
-	sum(healing) AS healing
-FROM heal_stats
-GROUP BY logid, healer;
-
-CREATE OR REPLACE VIEW heal_stats_received AS SELECT
-	logid,
-	healee AS playerid,
-	sum(healing) AS healing
-FROM heal_stats
-GROUP BY logid, healee;
 
 CREATE TABLE IF NOT EXISTS class_stats (
 	logid INT NOT NULL,

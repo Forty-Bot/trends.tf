@@ -158,7 +158,7 @@ def get_log(mc, logid):
         """SELECT
                steamid64,
                class_stats,
-               hsr.healing,
+               hsr AS healing,
                avatarhash,
                team,
                name,
@@ -181,7 +181,6 @@ def get_log(mc, logid):
            FROM log
            JOIN player_stats AS ps USING (logid)
            LEFT JOIN player_stats_extra AS pse USING (logid, playerid)
-           LEFT JOIN heal_stats_received AS hsr USING (logid, playerid)
            JOIN name USING (nameid)
            JOIN player USING (playerid)
            LEFT JOIN (SELECT
