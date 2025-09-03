@@ -158,7 +158,7 @@ def get_log(mc, logid):
         """SELECT
                steamid64,
                class_stats,
-               heal_stats.healing,
+               hsr.healing,
                avatarhash,
                team,
                name,
@@ -215,13 +215,6 @@ def get_log(mc, logid):
                JOIN class USING (classid)
                WHERE logid = %(logid)s
                GROUP BY playerid) AS cs USING (playerid)
-           LEFT JOIN (SELECT
-                    healee AS playerid,
-                    total(healing) AS healing
-                FROM heal_stats
-                WHERE logid = %(logid)s
-                GROUP BY healee
-           ) AS heal_stats USING (playerid)
            WHERE logid = %(logid)s;""", params)
     log['players'] = [dict(player) for player in cur]
 
