@@ -92,7 +92,7 @@ def import_players(args, c, mc):
                                   avatarhash = player_update.avatarhash
                                FROM player_update
                                WHERE player_update.steamid64::BIGINT = player.steamid64
-                               RETURNING steamid64
+                               RETURNING player.steamid64
                            ) INSERT INTO cache_purge_player (steamid64)
                            SELECT steamid64
                            FROM player;""")
