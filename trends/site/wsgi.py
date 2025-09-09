@@ -8,6 +8,7 @@ from decimal import Decimal
 import gettext
 import hashlib
 import os, os.path
+import re
 import sys
 
 import blinker
@@ -157,6 +158,24 @@ def html_handler(error):
         return json_handler(error)
     return flask.render_template("error.html", error=error), error.code
 
+
+CHROME_USER_AGENT = re.compile(r'Chrom(e|ium)/([0-9]{1,3})')
+CHROME_CH_UA = re.compile(r'"Chromium";v="([0-9]{1,3})"')
+
+def user_agent_filter():
+    if not (ua := flask.request.headers.get("User-Agent")):
+        return
+
+    if not (ua_match := CHROME_USER_AGENT.search(ua)):
+        return
+
+    if ch := flask.request.headers.get("Sec-CH-UA"):
+        if ch_match := CHROME_CH_UA.search(ch):
+            if int(ua_match[2]) == int(ch_match[1]):
+                return
+
+    return "", 403
+
 def set_validators(resp):
     if 'last_modified' in flask.g:
         resp.last_modified = flask.g.last_modified
@@ -185,6 +204,7 @@ def create_app():
     app = flask.Flask(__name__)
     app.config.from_object(EnvConfig())
 
+    app.before_request(user_agent_filter)
     app.after_request(cache_control)
     app.after_request(set_validators)
     app.teardown_appcontext(put_db)
