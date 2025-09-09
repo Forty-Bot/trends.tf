@@ -86,7 +86,10 @@ def _view_updated(mc, view):
         return cur.fetchone()[0]
 
 def view_updated(view, pretty=None):
-    if resp := last_modified(_view_updated(get_mc(), view)):
+    resp = last_modified(_view_updated(get_mc(), view))
+    max_age = flask.g.last_modified + timedelta(days=1) - datetime.now(tz.UTC)
+    flask.g.max_age = int(max(max_age, timedelta(seconds=30)).total_seconds())
+    if resp:
         return resp
 
     c = get_db()
