@@ -49,6 +49,15 @@ def chunk(iterable, n):
             return
         yield itertools.chain((first,), slice)
 
+def flask_sampler(ctx):
+    if ctx['parent_sampled'] is not None:
+        return float(ctx['parent_sampled'])
+
+    if 'wsgi_environ' in ctx and ctx['wsgi_environ']['REQUEST_URI'].startswith('/log/'):
+        return 0.0005
+
+    return 0.02
+
 def sentry_init(debug=False, **kwargs):
     try:
         version = pkg_resources.require("trends.tf")[0].version
@@ -58,7 +67,7 @@ def sentry_init(debug=False, **kwargs):
     defaults = {
         'release': version,
         'integrations': [FlaskIntegration()],
-        'traces_sample_rate': 1 if debug else 0.02,
+        'traces_sampler': (lambda ctx: 1.0) if debug else flask_sampler,
         'send_default_pii': True,
     }
 
