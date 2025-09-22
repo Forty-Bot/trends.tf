@@ -36,6 +36,7 @@ def no_filter_matchids(c, matchids):
 rgl_format_map = {
     'Sixes': 'sixes',
     'NR Sixes': 'sixes',
+    '6s': 'sixes',
     'P7': 'prolander',
     'Prolander': 'prolander',
     'Fresh Meat': 'prolander',
@@ -45,7 +46,7 @@ rgl_format_map = {
     'PASS Time': 'fours',
 }
 
-RE_NAME_FORMAT = re.compile(r"(Sixes|NR Sixes|P7|Prolander|Fresh Meat|HL|Newcomer Cup|PASS Time)")
+RE_NAME_FORMAT = re.compile(r"(Sixes|NR Sixes|6s|P7|Prolander|Fresh Meat|HL|Newcomer Cup|PASS Time)")
 def parse_season(season):
     try:
         fmt = rgl_format_map[season['formatName']]
