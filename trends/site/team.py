@@ -58,7 +58,7 @@ def _get_team(mc, league, teamid):
 @team.before_request
 def get_team():
     flask.g.team, flask.g.team_wlt, etag = _get_team(get_mc(), flask.g.league, flask.g.teamid)
-    if flask.g.team['teamid'] is None:
+    if flask.g.team is None:
         flask.abort(404)
     if flask.g.team['teamid'] != flask.g.teamid:
         args = flask.request.args | flask.request.view_args
