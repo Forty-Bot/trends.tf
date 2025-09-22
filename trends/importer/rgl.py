@@ -13,7 +13,7 @@ from psycopg2.extras import NumericRange
 import sentry_sdk
 
 from ..cache import purge_comps, purge_matches, purge_players, purge_teams
-from .fetch import FetchError, RGLBulkFetcher, RGLFileFetcher
+from .fetch import FetchError, RGLBulkFetcher, RGLFileFetcher, RGLListFetcher
 from .league import *
 from ..sql import db_connect
 from ..steamid import SteamID
@@ -163,6 +163,10 @@ def create_rgl_parser(sub):
                    help="Fetch up to COUNT matches, defaults to unlimited")
     b.add_argument("-p", "--skip", type=int, default=0,
                    help="Skip the first SKIP matches")
+    l = rgl_sub.add_parser("list", help="Import a list of matches from api.rgl.gg")
+    l.set_defaults(fetcher=RGLListFetcher)
+    l.add_argument("-m", "--match", action='append', type=int, metavar="MATCHID",
+                   dest='matchids', help="Fetch log LOGID")
 
 def import_rgl_cli(args, c, mc):
     with sentry_sdk.start_transaction(op="import", name="rgl_matches"):

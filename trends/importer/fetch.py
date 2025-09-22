@@ -617,3 +617,11 @@ class RGLBulkFetcher:
 
     def get_team(self, teamid):
         return self._get_data(f"{self.PREFIX}/teams/{teamid}")
+
+class RGLListFetcher(RGLBulkFetcher):
+    def __init__(self, matchids=None, **kwargs):
+        super().__init__()
+        self.matchids = matchids or iter(())
+
+    def get_matchids(self):
+        yield from self.matchids
