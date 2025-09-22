@@ -83,6 +83,8 @@ def parse_match(result):
     elif result['divisionId'] == 642:
         result['divisionId'] = 635
         result['divisionName'] = "Invite"
+    elif result['divisionId'] == 1049:
+        result['divisionName'] = "Unassigned"
 
     return {
         'league': 'rgl',
