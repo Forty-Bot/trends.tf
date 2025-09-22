@@ -25,7 +25,8 @@ class APIError(FetchError):
         super().__init__("logs.tf API request failed: %s".format(msg))
 
 retries = urllib3.util.Retry(total=4, backoff_factor=0.1,
-                             status_forcelist=(requests.codes.too_many,))
+                             status_forcelist=(requests.codes.too_many,),
+                             allowed_methods=None)
 
 def create_session():
         s = requests.Session()
