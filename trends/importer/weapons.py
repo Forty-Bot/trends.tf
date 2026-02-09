@@ -217,5 +217,5 @@ def import_remote(args, c, mc):
         import_weapons(c, resp.text)
         etag.write(resp.headers['etag'])
 
-def import_local(args, c):
+def import_local(args, c, mc):
     import_weapons(c, args.items.read())
