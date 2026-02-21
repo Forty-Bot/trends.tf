@@ -297,7 +297,7 @@ def get_players(league, compid, teamid, filters, limit=100, offset=0,
                        sum(shots) AS shots,
                        sum(duration) AS duration
                    FROM match
-                   JOIN log USING (league, matchid)
+                   JOIN log_nodups USING (league, matchid)
                    JOIN player_stats USING (logid)
                    JOIN map USING (mapid)
                    WHERE league = %(league)s
