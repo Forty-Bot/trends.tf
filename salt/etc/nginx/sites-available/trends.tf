@@ -6,11 +6,6 @@ upstream netdata {
 	keepalive 64;
 }
 
-map $http_upgrade $connection_upgrade {
-	default upgrade;
-	""      close;
-}
-
 {% set ssl %}
 ssl_certificate         {{ certdir }}/fullchain.pem;
 ssl_certificate_key     {{ certdir }}/privkey.pem;
