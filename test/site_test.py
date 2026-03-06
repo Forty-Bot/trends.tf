@@ -493,3 +493,73 @@ def test_cache_rgl_link(db, cache):
     util.import_logs(db, mc, 2297225)
     with check_purge(db, cache), db_connect(db) as c:
         link_matches(util.SinceEpoch, c, mc)
+
+@pytest.mark.parametrize('agent', (
+    None,
+    "Mozilla/5.0 (iPad;U;CPU OS 5_1_1 like Mac OS X; zh-cn)AppleWebKit/534.46.0"
+    "(KHTML, like Gecko)CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3",
+    "Opera/9.62 (Windows NT 5.1; U; zh-tw) Presto/2.1.1",
+    "Mozilla/5.0 (Windows NT 6.3; Win64; x64; Trident/7.0; TNJB; rv:11.0) like Gecko",
+    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; WOW64; Trident/4.0; SLCC2; "
+    ".NET CLR 2.0.50727; .NET4.0C; .NET4.0E; 360SE)",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 "
+    "(KHTML, like Gecko) Version/8.0 Mobile/12H321 Safari/600.1.4",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 "
+    "(KHTML, like Gecko) Version/8.0.7 Safari/600.7.12",
+    "Opera/9.80 (Windows NT 5.1; U; zh-sg) Presto/2.9.181 Version/12.00",
+    "Opera/9.63 (X11; Linux i686; U; ru) Presto/2.1.1",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:39.0) Gecko/20100101 Firefox/39.0",
+    "Mozilla/5.0 (Windows NT 6.1; rv:33.0) Gecko/20100101 Firefox/33.0",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Valve Steam Client Safari/537.36",
+    "Half-Life 2",
+))
+def test_ua_other(client, agent):
+    headers = {} if agent is None else { "User-Agent": agent }
+    assert client.get("/about", headers=headers).status_code == 200
+
+chrome = (
+    (44, "Mozilla/5.0 (Linux; Android 5.0.2; SM-T530NU Build/LRX22G) AppleWebKit/537.36 "
+         "(KHTML, like Gecko) Chrome/44.0.2403.133 Safari/537.36"),
+    (39, "Mozilla/5.0 (Linux; U; Android 4.4.3; en-us; KFTHWA Build/KTU84M) AppleWebKit/537.36 "
+         "(KHTML, like Gecko) Silk/3.68 like Chrome/39.0.2171.93 Safari/537.36"),
+    (33, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 "
+         "KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36"),
+    (45, "Mozilla/5.0 (Linux; Android 4.2.2; Le Pan TC802A Build/JDQ39) AppleWebKit/537.36 "
+         "KHTML, like Gecko) Chrome/45.0.2454.84 Safari/537.36"),
+    (42, "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 "
+         "KHTML, like Gecko) Chrome/42.0.0.9895 Safari/537.36"),
+    (44, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+         "KHTML, like Gecko) Ubuntu Chromium/44.0.2403.89 Chrome/44.0.2403.89 Safari/537.36"),
+    (121, "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 "
+          "KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.3"),
+    (115, "Mozilla/5.0 (Linux; Android 13; SAMSUNG SM-A326B) AppleWebKit/537.36 "
+          "KHTML, like Gecko) SamsungBrowser/23.0 Chrome/115.0.0.0 Mobile Safari/537.3"),
+    (115, "Mozilla/5.0 (Linux; Android 13; SAMSUNG SM-G780G) AppleWebKit/537.36 "
+          "KHTML, like Gecko) SamsungBrowser/23.0 Chrome/115.0.0.0 Mobile Safari/537.3"),
+    (121, "Mozilla/5.0 (Linux; Android 11; moto e20 Build/RONS31.267-94-14) AppleWebKit/537.36 "
+          "KHTML, like Gecko) Chrome/121.0.6167.178 Mobile Safari/537.3"),
+    (111, "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 "
+          "KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.3"),
+    (126, "Mozilla/5.0 (X11; Linux x86_64; Valve Steam GameOverlay/default/0) AppleWebKit/537.36 "
+          "(KHTML, like Gecko) Chrome/126.0.6478.183 Safari/537.36")
+)
+
+@pytest.mark.parametrize('version,agent', chrome)
+def test_ua_chrome(client, version, agent):
+    headers = {
+        "User-Agent": agent,
+        "Sec-CH-UA": f'" Not A;Brand";v="99", "Chromium";v="{version}", ".Not/A)Brand";v="99"',
+    }
+    assert client.get("/about", headers=headers).status_code == 200
+
+@pytest.mark.parametrize('version,agent', chrome)
+def test_ua_chrome_without_sec(client, version, agent):
+    assert client.get("/about", headers={ "User-Agent": agent }).status_code == 403
+
+@given(st.integers(0), st.sampled_from(chrome))
+def test_ua_chrome_wrong_version(client, wrong_version, chrome):
+    version, agent = chrome
+    assume(wrong_version != version)
+    headers={ "User-Agent": agent, "Sec-CH-UA": f'"Chromium";v="{wrong_version}"' }
+    assert client.get("/about", headers=headers).status_code == 403
