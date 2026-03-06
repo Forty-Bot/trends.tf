@@ -404,9 +404,16 @@ def check_purge(db, cache, extra=()):
     # mutate the database
     yield
 
+    def filter_headers(headers):
+        # These are both based on when the page was generated
+        headers.remove('Date')
+        headers.remove('Cache-Control')
+        # The etags will all change after we flush the cache, but that's just pessimistic
+        headers.remove('ETag')
+
     responses = []
     def store(node, resp):
-        resp.headers.remove("Date")
+        filter_headers(resp.headers)
         responses.append((node, resp.status, resp.headers, resp.data))
         return True
 
@@ -419,7 +426,7 @@ def check_purge(db, cache, extra=()):
     mc.flush_all()
     for node, status, headers, data in responses:
         resp = crawler.make_request(node)
-        resp.headers.remove("Date")
+        filter_headers(resp.headers)
         assert resp.status == status, node.path
 
         # check data first, since it is more-likely to be interesting
@@ -428,9 +435,6 @@ def check_purge(db, cache, extra=()):
         except UnicodeDecodeError:
             assert resp.data == data, node.path
 
-        # The etags will all change after we flush the cache, but that's just pessimistic
-        resp.headers.remove("ETag")
-        headers.remove("ETag")
         assert resp.headers == headers, node.path
 
 @pytest.fixture
