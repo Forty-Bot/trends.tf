@@ -128,6 +128,17 @@
 	automatically lift after one hour. Static content is not rate-limited.
 	</p>
 
+	<h3>403 errors</h3>
+	<p>
+	To prevent AI/bot scrapers from flooding the API, if a request's {{ pre("User-Agent") }} header is set to
+	Chrome/Chromium and no {{ pre("Sec-CH-UA") }} header is provided, the API will assume the request originated
+	from a bot/scraper and will return a 403. If you trigger too many 403 errors, your IP will be
+	blacklisted. If for whatever reason your {{ pre("User-Agent") }} header is forced to be Chrome/Chromium
+	and you cannot include the {{ pre("Sec-CH-UA") }} header in your request &#40;for example if you're making
+	the request from a Chromium browser extension&#41;, you may include the {{ pre("X-Not-A-Bot") }} header to
+	bypass the scraper detection.
+	</p>
+
 	<h2 id="params">Parameters</h2>
 	<p>
 	This section documents parameters with shared semantics across multiple endpoints.

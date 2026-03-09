@@ -171,6 +171,9 @@ def user_agent_filter():
     if ch := flask.request.headers.get("Sec-Fetch-Mode"):
         return
 
+    if bypass := flask.request.headers.get("X-Not-A-Bot"):
+        return
+
     return "", 403
 
 def set_validators(resp):

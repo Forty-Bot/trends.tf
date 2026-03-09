@@ -556,3 +556,11 @@ def test_ua_chrome(client, version, agent):
 @pytest.mark.parametrize('version,agent', chrome)
 def test_ua_chrome_without_sec(client, version, agent):
     assert client.get("/about", headers={ "User-Agent": agent }).status_code == 403
+
+@pytest.mark.parametrize('version,agent', chrome)
+def test_ua_chrome_with_bypass(client, version, agent):
+    headers = {
+        "User-Agent": agent,
+        "X-Not-A-Bot": "true", 
+    }
+    assert client.get("/about", headers=headers).status_code == 200
