@@ -12,7 +12,7 @@
 {% macro apidef(endpoint, version=1, method="GET") %}
 <h3 id="api-{{method }}-{{ endpoint }}-v{{ version }}">
 	{{ method }}
-	<a href="{{ url_for('api.{}'.format(endpoint)) }}">{{ pre(apipath(endpoint, version)) }}</a>
+	{{ pre(apipath(endpoint, version)) }}
 </h3>
 {% endmacro %}
 {% macro apiref(endpoint, version=1, method="GET") %}
@@ -255,6 +255,14 @@
 	<a href="https://demos.tf">demos.tf</a>.
 	</p>
 
+	{{ fielddef('duplicate_of') }}
+	<p>
+	An array of {{ fieldref('logid') }}s that this log is a duplicate of (which
+	may themselves be duplicates), if any. Duplicate logs are typically combined
+	or otherwise duplicated versions of other logs. They should not be used for
+	statistical purposes.
+	</p>
+
 	{{ fielddef('format') }}
 	<p>
 	A game format as one of the following values:
@@ -298,6 +306,14 @@
 	A relative URL to the next page of results. If the number of returned results is equal
 	to the {{ paramref('limit') }}, then this field may be non-{{ pre("null") }} even if the
 	next page is empty.
+	</p>
+
+	{{ fielddef('score') }}
+	<p>
+	The points scored by this team. This is the raw number as reported on the scoreboard, and does
+	not reflect rounds played. For instance, if there is a stalemate due to the round timer this
+	will not be reflected in either score, and if there is a stalemate due to the time limit this
+	will be an extra point for the winning team.
 	</p>
 
 	{{ fielddef('steamid64') }}
@@ -397,11 +413,7 @@
 			<dt>{{ pre('demoid') }} : option(number)</dt>
 			<dd>The linked {{ fieldref('demoid') }}, if any</dd>
 			<dt>{{ pre('duplicate_of') }} : option(array(number))</dt>
-			<dd>
-			An array of {{ fieldref('logid') }}s that this log is a duplicate of (which
-			may themselves be duplicates), if any. Duplicate logs are typically combined
-			or otherwise duplicated versions of other logs. They should not be used for
-			statistical purposes.
+			<dd>Logs that this is a {{ fieldref('duplicate_of') }}, if any.
 			</dd>
 			<dt>{{ pre('duration') }} : number</dt>
 			<dd>The duration of the log, in seconds</dd>
@@ -452,11 +464,7 @@
 				</dd>
 				<dt>{{ pre('score') }} : number</dt>
 				<dd>
-				The points scored by this team. This is the raw number as reported
-				on the scoreboard, and does not reflect rounds played. For instance,
-				if there is a stalemate due to the round timer this will not be
-				reflected in either score, and if there is a stalemate due to the
-				time limit this will be an extra point for the winning team.
+				This team's {{ fieldref('score') }}.
 				</dd>
 			</dl>
 			</p>
@@ -465,6 +473,58 @@
 		</p>
 		<dt>{{ pre('next_page') }} : option(string)<dt>
 		<dd>The {{ fieldref('next_page') }} of logs, if any</dd>
+	</dl>
+
+	{{ apidef('log/<logid>') }}
+	<p>
+	The {{ pre('/v1/log/<logid>') }} endpoint provides log information similar to what is presented
+	on individual logs' pages. For example, <a href="{{ url_for('api.log', logid='3302982') }}">
+	{{ pre('/v1/log/3302982') }}</a> returns information about
+	<a href="{{ url_for('root.log', logids=3302982) }}">Log 3302982</a>.
+	</p>
+
+	<h4>Arguments</h4>
+	<p>
+	The {{ pre('/v1/log/<logid>') }} endpoint requires the following arguments:
+	<ul>
+	<li>{{ fieldref('logid') }}</li>
+	</ul>
+
+	<h4>Response</h4>
+	<dl>
+		<dt>{{ pre('summary') }} : object<dt>
+		<dd>
+		<p>
+		The returned object contains the following:
+		<dl>
+			<dt>{{ pre('blue_score') }} : number</dt>
+			<dd>The blue team's {{ fieldref('score') }}.</dd>
+			<dt>{{ pre('demoid') }} : option(number)</dt>
+			<dd>The linked {{ fieldref('demoid') }}, if any</dd>
+			<dt>{{ pre('duplicate_of') }} : option(array(number))</dt>
+			<dd>Logs that this is a {{ fieldref('duplicate_of') }}, if any.</dd>
+			<dt>{{ pre('duration') }} : number</dt>
+			<dd>The duration of the log, in seconds</dd>
+			<dt>{{ pre('format') }} : option(string)</dt>
+			<dd>The {{ fieldref('format') }} of the log</dd>
+			<dt>{{ pre('league') }} : option(string)</dt>
+			<dd>The {{ fieldref('league') }} of the linked match, if any</dd>
+			<dt>{{ pre('logid') }} : number</dt>
+			<dd>The {{ fieldref('logid') }} of the log</dd>
+			<dt>{{ pre('map') }} : string</dt>
+			<dd>The (user-supplied) map this log was played on</dd>
+			<dt>{{ pre('matchid') }} : option(number)</dt>
+			<dd>The {{ fieldref('matchid') }} of the linked match, if any</dd>
+			<dt>{{ pre('red_score') }} : number</dt>
+			<dd>The red team's {{ fieldref('score') }}.</dd>
+			<dt>{{ pre('time') }} : number</dt>
+			<dd>The upload {{ fieldref('time') }} of the log</dd>
+			<dt>{{ pre('title') }} : string</dt>
+			<dd>The (user-supplied) title for the log</dd>
+			<dt>{{ pre('updated') }} : number</dt>
+			<dd>The {{ fieldref('time') }} this object was last modified</dd>
+		</dl>
+		</p>
 	</dl>
 	</div>
 {% endblock %}
