@@ -61,13 +61,13 @@ class RandomEndpointSelector:
             return True
         return False
 
-def create_crawler(client, initial=('/',), **kwargs):
+def create_crawler(client, initial=('/',), allow_404=False, **kwargs):
     return Crawler(
         client=client,
         initial_paths=initial,
         path_attrs=('href', 'src'),
         rules=(
-            Rule('a', '/.*', 'GET', Request()),
+            Rule('a', '/.*', 'GET', Allow((404,)) if allow_404 else Request()),
             Rule('a', '.*player.*', 'GET', Allow((404,))),
             Rule('link', '/.*', 'GET', Request()),
             Rule('img', '/.*', 'GET', Request()),
@@ -270,6 +270,46 @@ def test_dupes(connection):
     cur.execute("SELECT logid, duplicate_of FROM log WHERE duplicate_of NOTNULL")
     assert { logid: duplicate_of for logid, duplicate_of in cur } == duplicates
 
+LOG_VALID_KEYS = {
+    'demoid',
+    'duplicate_of',
+    'duration',
+    'format',
+    'league',
+    'logid',
+    'map',
+    'matchid',
+    'time',
+    'title',
+    'updated',
+}
+
+def test_api_log(client):
+    def get(id):
+        resp = client.get(f"api/v1/log/{id}")
+        assert resp.status_code == 200
+        resp = resp.json
+        return resp['summary']
+
+    logs = client.get("api/v1/logs", query_string={'view': 'players'}).json['logs']
+
+    for log in logs:
+        log2 = get(log['logid'])
+        # every key in log should have the same value in log2 (if it has a value)
+        for key in LOG_VALID_KEYS:
+            if log[key] is None:
+                assert log2[key] is None
+            else:
+                assert log2[key] == log[key]
+
+        assert log2['red_score'] == log['red']['score']
+        assert log2['blue_score'] == log['blue']['score']
+
+        assert 'team1_is_red' not in log2
+
+    # this log shouldn't exist and should always 404
+    assert client.get("api/v1/log/127").status_code == 404
+
 def test_api_logs(client):
     def get(**params):
         resp = client.get("api/v1/logs", query_string=params)
@@ -278,26 +318,13 @@ def test_api_logs(client):
         return resp['logs'], resp['next_page']
 
     logs, next_page = get()
-    valid_keys = {
-        'demoid',
-        'duplicate_of',
-        'duration',
-        'format',
-        'league',
-        'logid',
-        'map',
-        'matchid',
-        'time',
-        'title',
-        'updated',
-    }
 
     updated_pivot = 0
     for log in logs:
         logid = log['logid']
         assert logid is not None
 
-        assert set(log.keys()) == valid_keys
+        assert set(log.keys()) == LOG_VALID_KEYS
 
         unupdated = True
         if logid in linked_demos:
@@ -345,7 +372,7 @@ def test_api_logs(client):
     assert get(offset=len(logs)) == ([], None)
 
     for log in get(view='players')[0]:
-        assert set(log.keys()) == valid_keys | { 'red', 'blue' }
+        assert set(log.keys()) == LOG_VALID_KEYS | { 'red', 'blue' }
         for team in ('red', 'blue'):
             team = log[team]
             if log['league'] is None:
@@ -410,7 +437,7 @@ def check_purge(db, cache, extra=()):
 
     # populate the cache with old data
     client = create_app(db, cache).test_client()
-    crawler = create_crawler(client, initial=("/", *extra))
+    crawler = create_crawler(client, initial=("/", *extra), allow_404=True)
     crawler.crawl()
 
     # mutate the database
@@ -431,7 +458,8 @@ def check_purge(db, cache, extra=()):
 
     # collect the cached data
     initial = [node.path for node in crawler.graph.map.values() if node.requested]
-    crawler = create_crawler(client, initial=initial, check_response_handlers=(store,))
+    crawler = create_crawler(client, initial=initial, allow_404=True,
+                             check_response_handlers=(store,))
     crawler.crawl()
 
     # make sure the uncached data matches the cached data

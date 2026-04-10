@@ -7,6 +7,7 @@ import werkzeug.exceptions
 from .. import cache
 from .common import get_logs, search_players, logs_last_modified
 from .util import get_db, get_mc, get_pagination, last_modified, view_updated
+from .root import get_log
 
 api = flask.Blueprint('api', __name__)
 
@@ -27,6 +28,20 @@ def next_page(rows):
     if len(rows) == limit:
         args['offset'] = offset + limit
         return flask.url_for(flask.request.endpoint, **args)
+
+@api.route('/log/<int:logid>')
+def log(logid):
+    log = get_log(get_mc(), logid)
+
+    if not log:
+        return flask.abort(404)
+
+    if resp := last_modified(log['summary']['updated'], log['version'], weak=True):
+        return resp
+
+    summary = log['summary']
+    del summary['team1_is_red']
+    return flask.jsonify(summary=summary)
 
 @api.route('/logs')
 def logs():
