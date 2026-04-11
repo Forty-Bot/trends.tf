@@ -517,6 +517,7 @@ def test_cache_rgl_link(db, cache):
 def test_ua_other(client, agent):
     headers = {} if agent is None else { "User-Agent": agent }
     assert client.get("/about", headers=headers).status_code == 200
+    assert client.get("/api/v1/maps", headers=headers).status_code == 200
 
 chrome = (
     (44, "Mozilla/5.0 (Linux; Android 5.0.2; SM-T530NU Build/LRX22G) AppleWebKit/537.36 "
@@ -555,7 +556,9 @@ def test_ua_chrome(client, version, agent):
 
 @pytest.mark.parametrize('version,agent', chrome)
 def test_ua_chrome_without_sec(client, version, agent):
-    assert client.get("/about", headers={ "User-Agent": agent }).status_code == 403
+    headers = { "User-Agent": agent }
+    assert client.get("/about", headers=headers).status_code == 403
+    assert client.get("/api/v1/maps", headers=headers).status_code == 200
 
 @given(st.integers(0), st.sampled_from(chrome))
 def test_ua_chrome_wrong_version(client, wrong_version, chrome):

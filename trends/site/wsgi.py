@@ -163,6 +163,9 @@ CHROME_USER_AGENT = re.compile(r'Chrom(e|ium)/([0-9]{1,3})')
 CHROME_CH_UA = re.compile(r'"Chromium";v="([0-9]{1,3})"')
 
 def user_agent_filter():
+    if flask.request.path.startswith('/api/'):
+        return
+
     if not (ua := flask.request.headers.get("User-Agent")):
         return
 
