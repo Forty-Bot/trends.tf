@@ -513,6 +513,8 @@ def test_cache_rgl_link(db, cache):
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Valve Steam Client Safari/537.36",
     "Half-Life 2",
+    126, "Mozilla/5.0 (X11; Linux x86_64; Valve Steam GameOverlay/default/0) AppleWebKit/537.36 "
+          "(KHTML, like Gecko) Chrome/126.0.6478.183 Safari/537.36",
 ))
 def test_ua_other(client, agent):
     headers = {} if agent is None else { "User-Agent": agent }
@@ -542,8 +544,6 @@ chrome = (
           "KHTML, like Gecko) Chrome/121.0.6167.178 Mobile Safari/537.3"),
     (111, "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 "
           "KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.3"),
-    (126, "Mozilla/5.0 (X11; Linux x86_64; Valve Steam GameOverlay/default/0) AppleWebKit/537.36 "
-          "(KHTML, like Gecko) Chrome/126.0.6478.183 Safari/537.36")
 )
 
 @pytest.mark.parametrize('version,agent', chrome)

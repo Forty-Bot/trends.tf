@@ -159,7 +159,7 @@ def html_handler(error):
     return flask.render_template("error.html", error=error), error.code
 
 
-CHROME_USER_AGENT = re.compile(r'Chrom(e|ium)/([0-9]{1,3})')
+CHROME_USER_AGENT = re.compile(r'Valve Steam GameOverlay|Chrom(e|ium)/([0-9]{1,3})')
 CHROME_CH_UA = re.compile(r'"Chromium";v="([0-9]{1,3})"')
 
 def user_agent_filter():
@@ -169,7 +169,7 @@ def user_agent_filter():
     if not (ua := flask.request.headers.get("User-Agent")):
         return
 
-    if not (ua_match := CHROME_USER_AGENT.search(ua)):
+    if not (ua_match := CHROME_USER_AGENT.search(ua)) or ua_match[2] is None:
         return
 
     if ch := flask.request.headers.get("Sec-CH-UA"):
