@@ -179,6 +179,8 @@ CREATE TABLE IF NOT EXISTS league_team (
 	CHECK (equal(league_team_per_comp(league), fetched ISNULL, team_nameid ISNULL))
 );
 
+CREATE INDEX IF NOT EXISTS league_team_names ON league_team (team_nameid) INCLUDE (league, teamid);
+
 CREATE TABLE IF NOT EXISTS team_comp_backing (
 	league LEAGUE NOT NULL,
 	compid INT NOT NULL,
@@ -200,6 +202,8 @@ CREATE TABLE IF NOT EXISTS team_comp_backing (
 	CHECK (league_team_per_comp(league) OR avatarhash ISNULL),
 	CHECK (league_div_optional(league) OR (divid NOTNULL))
 );
+
+CREATE INDEX IF NOT EXISTS team_comp_names ON league_team (team_nameid) INCLUDE (league, teamid);
 
 CREATE OR REPLACE VIEW team_comp AS SELECT
 	league,

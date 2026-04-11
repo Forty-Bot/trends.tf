@@ -68,6 +68,33 @@ def about():
 def api():
     return render_static_template("api.html")
 
+def search_teams(q):
+    if len(q) < 3:
+        flask.abort(400, "Searches must contain at least 3 characters")
+
+    limit, offset = get_pagination(limit=25)
+    results = get_db().cursor()
+    results.execute(
+        """SELECT
+               league,
+               teamid,
+               (array_agg(team ORDER BY compid DESC))[1] AS name
+           FROM team_name
+           JOIN (SELECT
+                   league,
+                   teamid,
+                   compid,
+                   coalesce(tc.team_nameid, lt.team_nameid) AS team_nameid
+               FROM league_team AS lt
+               JOIN team_comp_backing AS tc USING (league, teamid)
+           ) AS team_comp USING (team_nameid)
+           WHERE team ILIKE %(q)s
+           GROUP BY league, teamid
+           ORDER BY max(similarity(team, %(q)s)) DESC, max(compid) DESC, league, teamid
+           LIMIT %(limit)s OFFSET %(offset)s;""",
+        { 'q': f"%{q}%", 'limit': limit, 'offset': offset})
+    return results
+
 @root.route('/search')
 def search():
     if resp := last_modified(None, cache.players_version(get_mc())):
@@ -88,7 +115,9 @@ def search():
     except ValueError:
         pass
 
-    return flask.render_template("search.html", q=q, results=search_players(q).fetchall())
+    teams = search_teams(q).fetchall()
+    players = search_players(q).fetchall()
+    return flask.render_template("search.html", q=q, teams=teams, players=players)
 
 @root.route('/leaderboard')
 def leaderboard():

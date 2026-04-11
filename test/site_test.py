@@ -170,7 +170,7 @@ def test_filter(client, logs, players, titles, maps, names, compids, teamids, co
     hypothesis.note(f"path={path} params={params}")
     assert client.get(path, query_string=params, follow_redirects=True).status_code < 500
 
-def test_search(client, connection):
+def test_player_search(client, connection):
     players = connection.cursor()
     players.execute("""SELECT steamid64, name
                        FROM player_stats
@@ -192,6 +192,18 @@ def test_search(client, connection):
             if len(player['name']) > 3:
                 resp = client.get(path, query_string={'q': player['name']})
                 assert str(player['steamid64']) in resp.get_data(as_text=True)
+
+def test_team_search(client, connection):
+    teams = connection.cursor()
+    teams.execute("""SELECT league, teamid, team_name
+                     FROM team_comp
+                     WHERE character_length(team_name) > 3
+                     LIMIT 10;""")
+    teams = teams.fetchall()
+
+    for team in teams:
+        resp = client.get("/search", query_string={'q': team['team_name']})
+        assert str(team['teamid']) in resp.get_data(as_text=True)
 
 linked_demos = {
     2297197: 273469,

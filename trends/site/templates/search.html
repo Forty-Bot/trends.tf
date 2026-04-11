@@ -3,18 +3,36 @@
 {% from "macros/icons.html" import playerlink %}
 {% from "macros/pagination.html" import navigation %}
 {% extends "base.html" %}
-{% block title %}Search results for {{ q }}- {{ super() }}{% endblock %}
+{% block title %}Search results for {{ q }} - {{ super() }}{% endblock %}
 {% block content %}
 	{{ super() }}
 	<h1>Search results for {{ q }}</h1>
-	{{ navigation(results) }}
+	{% if teams | length %}
+	<h2>Teams</h2>
+	{{ navigation(teams) }}
 	<ul>
-		{% for player in results %}
+		{% for team in teams %}
+		<li>
+			<a href="{{ url_for('league.team.overview', league=team['league'],
+					    teamid=team['teamid']) }}">
+				{{ team['name'] }}
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+	{{ navigation(teams) }}
+	{% endif %}
+	{% if players | length %}
+	<h2>Players</h2>
+	{{ navigation(players) }}
+	<ul>
+		{% for player in players %}
 		<li>
 			{{ playerlink(player.steamid64, player.name, player.avatarhash) -}}
 			({{ ", ".join(player.aliases) }})
 		</li>
 		{% endfor %}
 	</ul>
-	{{ navigation(results) }}
+	{{ navigation(players) }}
+	{% endif %}
 {% endblock %}
