@@ -236,7 +236,7 @@ def purge(c, mc, col, table, prefix, cond="TRUE"):
                 return
 
             mc.delete_multi(prefix + str(val) for val in vals)
-            cur.execute(f"DELETE FROM {table} WHERE {cond} AND {col} IN %s;", (vals,))
+            cur.execute(f"DELETE FROM {table} WHERE xmax = pg_current_xact_id()::XID;")
             cur.execute("COMMIT;")
             logging.info("Purged %s value(s) from %s", len(vals), table)
 
