@@ -549,10 +549,17 @@ chrome = (
 def test_ua_chrome(client, version, agent):
     headers = {
         "User-Agent": agent,
-        "Sec-Fetch-Mode": "navigate", 
+        "Sec-CH-UA": f'" Not A;Brand";v="99", "Chromium";v="{version}", ".Not/A)Brand";v="99"',
     }
     assert client.get("/about", headers=headers).status_code == 200
 
 @pytest.mark.parametrize('version,agent', chrome)
 def test_ua_chrome_without_sec(client, version, agent):
     assert client.get("/about", headers={ "User-Agent": agent }).status_code == 403
+
+@given(st.integers(0), st.sampled_from(chrome))
+def test_ua_chrome_wrong_version(client, wrong_version, chrome):
+    version, agent = chrome
+    assume(wrong_version != version)
+    headers={ "User-Agent": agent, "Sec-CH-UA": f'"Chromium";v="{wrong_version}"' }
+    assert client.get("/about", headers=headers).status_code == 403

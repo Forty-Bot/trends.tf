@@ -160,6 +160,7 @@ def html_handler(error):
 
 
 CHROME_USER_AGENT = re.compile(r'Chrom(e|ium)/([0-9]{1,3})')
+CHROME_CH_UA = re.compile(r'"Chromium";v="([0-9]{1,3})"')
 
 def user_agent_filter():
     if not (ua := flask.request.headers.get("User-Agent")):
@@ -168,8 +169,10 @@ def user_agent_filter():
     if not (ua_match := CHROME_USER_AGENT.search(ua)):
         return
 
-    if ch := flask.request.headers.get("Sec-Fetch-Mode"):
-        return
+    if ch := flask.request.headers.get("Sec-CH-UA"):
+        if ch_match := CHROME_CH_UA.search(ch):
+            if int(ua_match[2]) == int(ch_match[1]):
+                return
 
     return "", 403
 
