@@ -49,6 +49,7 @@ eu_type_map = {
     '1v1': 'other',
     '2on2': 'ultiduo',
     '2v2': 'ultiduo',
+    '4v4': 'fours',
     '6on6': 'sixes',
     '6v6': 'sixes',
     'National 6v6 Team': 'sixes',
