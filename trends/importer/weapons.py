@@ -162,7 +162,7 @@ def parse_weapons(items):
         ('rocketpack_stomp', "Manntreads", 'secondary'),
         ('rtd_toxic', "RTD Poison", 'action'),
         ('rtd_instant_kills', "RTD Instant Kill", 'action'),
-        ('samrevolver', "Big Kill", 'primary'),
+        ('samrevolver', "Big Kill", 'secondary'),
         ('scorchshot', "Execution", 'taunt'),
         ('shark', "Shark", 'environment'),
         ('short_stop', "Shortstop", 'primary'),
