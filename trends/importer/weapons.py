@@ -103,6 +103,7 @@ def parse_weapons(items):
     for base, name, slot in (
         ('bat', "Bat", 'melee'),
         ('bottle', "Bottle", 'melee'),
+        ('bonesaw', "Bonesaw", 'melee'),
         ('builder', "Sapper", 'building'),
         ('club', "Kukri", 'melee'),
         ('flamethrower', "Flamethrower", 'primary'),
