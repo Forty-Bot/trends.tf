@@ -106,6 +106,8 @@ def parse_weapons(items):
         ('bonesaw', "Bonesaw", 'melee'),
         ('builder', "Sapper", 'building'),
         ('club', "Kukri", 'melee'),
+        ('fireaxe', "Fire Axe", 'melee'),
+        ('fists', "Fists", 'melee'),
         ('flamethrower', "Flamethrower", 'primary'),
         ('grappling_hook', "Grappling Hook", 'action'),
         ('grenadelauncher', "Grenade Launcher", 'primary'),
