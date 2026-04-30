@@ -851,15 +851,33 @@ CREATE INDEX IF NOT EXISTS medic_bloom ON medic_cube
 	USING bloom (grouping, mapid, formatid, league)
 	WITH (col1=1, col2=1, col3=1, col5=1);
 
+DO $$ BEGIN
+	CREATE TYPE SLOT AS ENUM ();
+EXCEPTION WHEN duplicate_object THEN
+	NULL;
+END $$;
+
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'action';
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'building';
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'environment';
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'melee';
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'primary';
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'secondary';
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'sentry';
+ALTER TYPE SLOT ADD VALUE IF NOT EXISTS 'taunt';
+COMMIT;
+
 CREATE TABLE IF NOT EXISTS weapon (
 	weaponid SERIAL PRIMARY KEY,
 	weapon TEXT NOT NULL UNIQUE,
-	name TEXT
+	name TEXT,
+	slot SLOT
 );
 
 CREATE OR REPLACE VIEW weapon_pretty AS SELECT
 	weaponid,
-	coalesce(name, initcap(replace(weapon, '_', ' '))) AS weapon
+	coalesce(name, initcap(replace(weapon, '_', ' '))) AS weapon,
+	slot
 FROM weapon;
 
 CREATE TABLE IF NOT EXISTS weapon_stats (

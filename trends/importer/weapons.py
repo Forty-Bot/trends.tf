@@ -11,6 +11,17 @@ import time
 
 import requests
 
+SLOTS = frozenset((
+    'action',
+    'building',
+    'environment',
+    'melee',
+    'primary',
+    'secondary',
+    'sentry',
+    'taunt',
+))
+
 def items_to_json(items):
     # encapsulate in braces
     items = "{\n%s\n}" % items
@@ -30,156 +41,172 @@ def items_to_json(items):
     items = re.sub(r'}(\s*"[^"]*":)',  r'},\1', items)
     return json.loads(items)
 
-def import_weapons(c, items):
+def parse_weapons(items):
     items = items_to_json(items)
     weapons = {}
+    slots = {}
 
-    def set_base(name, weapon):
+    def set_base(name, slot, weapon):
         base = re.search(r'(tf_)?(weapon_)?(.*)', weapon).group(3)
-        weapons[base] = name
-        weapons["weapon_{}".format(base)] = name
-        weapons["tf_weapon_{}".format(base)] = name
+        for k in (base, f"weapon_{base}", f"tf_weapon_{base}"):
+            weapons[k] = name
+            if slot:
+                slots[k] = slot
 
-    def set_prefab(name, prefab_name, prefab):
-        set_base(name, prefab_name)
-        if logname := prefab.get('item_logname'):
-            weapons[logname] = name
-        if cls := prefab.get('item_class'):
-            set_base(name, cls)
+    def resolve(item):
+        if prefabs := item.get('prefab'):
+            for prefab_name in reversed(prefabs.split(' ')):
+                item = resolve(items['items_game']['prefabs'][prefab_name]) | item
+
+        return item
 
     for item in reversed(items['items_game']['items'].values()):
+        item = resolve(item)
         name = item['name']
+        slot = item.get('item_slot')
+
         if logname := item.get('item_logname'):
             weapons[logname] = name
-        if prefabs := item.get('prefab'):
-            for prefab_name in prefabs.split(' '):
-                set_prefab(name, prefab_name, items['items_game']['prefabs'][prefab_name])
-        if item_class := item.get('item_class'):
-            set_base(name, item_class)
+            if slot:
+                slots[logname] = slot
 
-    for prefab_name, prefab in items['items_game']['prefabs'].items():
-        if name := prefab.get('base_item_name'):
-            set_prefab(name, prefab_name, prefab)
+        if item_class := item.get('item_class'):
+            set_base(name, slot, item_class)
 
     for weapon, name in weapons.items():
         weapons[weapon] = re.search(r'(The )?(.*)', name).group(2)
 
-    for proj, name in {
-        'arrow': "Arrow",
-        'arrow_fire': "Flaming Arrow",
-        'balloffire': "Dragon's Fury Fireball",
-        'ball_ornament': "Wrap Assassin Ball",
-        'energy_ball': "Short Circuit Orb",
-        'flare': "Flare",
-        'flare_detonator': "Detonator Flare",
-        'grapplinghook': "Grappling Hook",
-        'healing_bolt': "Crusader's Crossbow Bolt",
-        'huntsman_flyingburn': "Flaming Arrow",
-        'mechanicalarmorb': "Short Circuit Orb",
-        'pipe': "Grenade",
-        'pipe_remote': "Stickybomb",
-        'promode': "Grenade",
-        'rocket': "Rocket",
-        'sentryrocket': "Sentry Rocket",
-        'sticky': "Stickybomb",
-    }.items():
-        weapons["deflect_{}".format(proj)] = "{} Reflect".format(name)
-        weapons["tf_projectile_{}".format(proj)] = name
+    for proj, name, slot in (
+        ('arrow', "Arrow", 'primary'),
+        ('arrow_fire', "Flaming Arrow", 'primary'),
+        ('balloffire', "Dragon's Fury Fireball", 'primary'),
+        ('ball_ornament', "Wrap Assassin Ball", 'melee'),
+        ('energy_ball', "Short Circuit Orb", 'secondary'),
+        ('flare', "Flare", 'secondary'),
+        ('flare_detonator', "Detonator Flare", 'secondary'),
+        ('grapplinghook', "Grappling Hook", 'action'),
+        ('healing_bolt', "Crusader's Crossbow Bolt", 'primary'),
+        ('huntsman_flyingburn', "Flaming Arrow", 'primary'),
+        ('mechanicalarmorb', "Short Circuit Orb", 'secondary'),
+        ('pipe', "Grenade", 'primary'),
+        ('pipe_remote', "Stickybomb", 'secondary'),
+        ('promode', "Grenade", 'primary'),
+        ('rocket', "Rocket", 'primary'),
+        ('sentryrocket', "Sentry Rocket", 'sentry'),
+        ('sticky', "Stickybomb", 'secondary'),
+    ):
+        weapons[f"deflect_{proj}"] = "{} Reflect".format(name)
+        weapons[f"tf_projectile_{proj}"] = name
+        slots[f"deflect_{proj}"] = 'primary'
+        slots[f"tf_projectile_{proj}"] = slot
 
-    for base, name in {
-        'bat': "Bat",
-        'bottle': "Bottle",
-        'builder': "Sapper",
-        'club': "Kukri",
-        'flamethrower': "Flamethrower",
-        'grappling_hook': "Grappling Hook",
-        'grenadelauncher': "Grenade Launcher",
-        'knife': "Knife",
-        'medigun': "Medi Gun",
-        'minigun': "Minigun",
-        'passtime_gun': "JACK",
-        'pipebomblauncher': "Stickybomb Launcher",
-        'pistol': "Pistol",
-        'revolver': "Revolver",
-        'rocketlauncher': "Rocket Launcher",
-        'scattergun': "Scattergun",
-        'shotgun': "Shotgun",
-        'shovel': "Shovel",
-        'smg': "SMG",
-        'sniperrifle': "Sniper Rifle",
-        'spellbook': "Spell",
-        'syringegun_medic': "Syringe Gun",
-        'wrench': "Wrench",
-    }.items():
-        set_base(name, base)
+    for base, name, slot in (
+        ('bat', "Bat", 'melee'),
+        ('bottle', "Bottle", 'melee'),
+        ('builder', "Sapper", 'building'),
+        ('club', "Kukri", 'melee'),
+        ('flamethrower', "Flamethrower", 'primary'),
+        ('grappling_hook', "Grappling Hook", 'action'),
+        ('grenadelauncher', "Grenade Launcher", 'primary'),
+        ('knife', "Knife", 'melee'),
+        ('medigun', "Medi Gun", 'secondary'),
+        ('minigun', "Minigun", 'primary'),
+        ('passtime_gun', "JACK", 'action'),
+        ('pipebomblauncher', "Stickybomb Launcher", 'secondary'),
+        ('pistol', "Pistol", 'secondary'),
+        ('revolver', "Revolver", 'secondary'),
+        ('rocketlauncher', "Rocket Launcher", 'primary'),
+        ('scattergun', "Scattergun", 'primary'),
+        ('shotgun', "Shotgun", 'secondary'), # Ambiguous :l
+        ('shovel', "Shovel", 'melee'),
+        ('smg', "SMG", 'secondary'),
+        ('sniperrifle', "Sniper Rifle", 'primary'),
+        ('spellbook', "Spell", 'action'),
+        ('syringegun_medic', "Syringe Gun", 'primary'),
+        ('wrench', "Wrench", 'melee'),
+    ):
+        set_base(name, slot, base)
 
     # The rest
-    weapons |= {
-        'bleed_kill': "Bleeding",
-        'dragons_fury_bonus': "Dragon's Fury Bonus",
-        'eyeball_rocket': "MONOCULUS Eye Projectile",
-        'loose_cannon_explosion': "Loose Cannon",
-        'maxgun': "Lugermorph",
-        'merasmus_player_bomb': "Bomb Head",
-        'obj_minisentry': "Mini-Sentry",
-        'obj_sentrygun': "Level 1 Sentry",
-        'obj_sentrygun2': "Level 2 Sentry",
-        'obj_sentrygun3': "Level 3 Sentry",
-        'passtime_ball': "JACK",
-        'pickaxe': "Pickaxe",
-        'pistol_scout': "Pistol",
-        'prop_physics': "Environment",
-        'point_hurt': "Necro Smasher",
-        'robot_arm_blender_kill': "Organ Grinder",
-        'robot_arm_combo_kill': "Gunslinger Crit",
-        'robot_arm_kill': "Gunslinger",
-        'rocketpack_stomp': "Manntreads",
-        'rtd_toxic': "RTD Poison",
-        'rtd_instant_kills': "RTD Instant Kill",
-        'samrevolver': "Big Kill",
-        'scorchshot': "Execution",
-        'short_stop': "Shortstop",
-        'shotgun_hwg': "Shotgun",
-        'shotgun_primary': "Shotgun",
-        'shotgun_pyro': "Shotgun",
-        'shotgun_soldier': "Shotgun",
-        'spellbook_athletic': "Minify",
-        'spellbook_bats': "Swarm of Bats",
-        'spellbook_blastjump': "Blast Jump",
-        'spellbook_boss': "Summon MONOCULUS",
-        'spellbook_fireball': "Fireball",
-        'spellbook_lightning': "Ball O' Lightning",
-        'spellbook_meteor': "Meteor Shower",
-        'spellbook_mirv': "Pumpkin MIRV",
-        'spellbook_skeleton': "Skeletons Horde",
-        'spellbook_teleport': "Shadow Leap",
-        'sticky_resistance': "Scottish Resistance",
-        'taunt_demoman': "Decapitation",
-        'taunt_engineer': "Organ Grinder",
-        'taunt_guitar_kill': "Dischord",
-        'taunt_heavy': "Showdown",
-        'taunt_medic': "Spinal Tap",
-        'taunt_pyro': "Hadouken",
-        'taunt_scout': "Home Run",
-        'taunt_sniper': "Skewer",
-        'taunt_soldier': "Kamikaze",
-        'taunt_soldier_lumbricus': "Kamikaze",
-        'taunt_spy': "Fencing",
-        'tf_pumpkin_bomb': "Pumpkin Bomb",
-        'tf_generic_bomb': "Explosion",
-        'the_rescue_ranger': "Rescue Ranger",
-        'trigger_hurt': "Environment",
-        'ullapool_caber_explosion': "Ullapool Caber",
-        'world': "Environment",
-        'world_spawn': "Environment Spawn",
-        'wrangler_kill': "Wrangled Sentry",
-    }
+    for logname, name, slot in (
+        ('bleed_kill', "Bleeding", 'environment'),
+        ('dragons_fury_bonus', "Dragon's Fury Bonus", 'primary'),
+        ('eyeball_rocket', "MONOCULUS Eye Projectile", 'primary'),
+        ('loose_cannon_explosion', "Loose Cannon", 'primary'),
+        ('maxgun', "Lugermorph", 'secondary'),
+        ('merasmus_player_bomb', "Bomb Head", 'action'),
+        ('obj_minisentry', "Mini-Sentry", 'sentry'),
+        ('obj_sentrygun', "Level 1 Sentry", 'sentry'),
+        ('obj_sentrygun2', "Level 2 Sentry", 'sentry'),
+        ('obj_sentrygun3', "Level 3 Sentry", 'sentry'),
+        ('passtime_ball', "JACK", 'action'),
+        ('pickaxe', "Pickaxe", 'melee'),
+        ('pistol_scout', "Pistol", 'secondary'),
+        ('prop_physics', "Environment", 'action'),
+        ('point_hurt', "Necro Smasher", 'melee'),
+        ('robot_arm_blender_kill', "Organ Grinder", 'taunt'),
+        ('robot_arm_combo_kill', "Gunslinger Crit", 'taunt'),
+        ('robot_arm_kill', "Gunslinger", 'taunt'),
+        ('rocketpack_stomp', "Manntreads", 'secondary'),
+        ('rtd_toxic', "RTD Poison", 'action'),
+        ('rtd_instant_kills', "RTD Instant Kill", 'action'),
+        ('samrevolver', "Big Kill", 'primary'),
+        ('scorchshot', "Execution", 'taunt'),
+        ('short_stop', "Shortstop", 'primary'),
+        ('shotgun_hwg', "Shotgun", 'secondary'),
+        ('shotgun_primary', "Shotgun", 'primary'),
+        ('shotgun_pyro', "Shotgun", 'secondary'),
+        ('shotgun_soldier', "Shotgun", 'secondary'),
+        ('spellbook_athletic', "Minify", 'action'),
+        ('spellbook_bats', "Swarm of Bats", 'action'),
+        ('spellbook_blastjump', "Blast Jump", 'action'),
+        ('spellbook_boss', "Summon MONOCULUS", 'action'),
+        ('spellbook_fireball', "Fireball", 'action'),
+        ('spellbook_lightning', "Ball O' Lightning", 'action'),
+        ('spellbook_meteor', "Meteor Shower", 'action'),
+        ('spellbook_mirv', "Pumpkin MIRV", 'action'),
+        ('spellbook_skeleton', "Skeletons Horde", 'action'),
+        ('spellbook_teleport', "Shadow Leap", 'action'),
+        ('sticky_resistance', "Scottish Resistance", 'secondary'),
+        ('taunt_demoman', "Decapitation", 'taunt'),
+        ('taunt_engineer', "Organ Grinder", 'taunt'),
+        ('taunt_guitar_kill', "Dischord", 'taunt'),
+        ('taunt_heavy', "Showdown", 'taunt'),
+        ('taunt_medic', "Spinal Tap", 'taunt'),
+        ('taunt_pyro', "Hadouken", 'taunt'),
+        ('taunt_scout', "Home Run", 'taunt'),
+        ('taunt_sniper', "Skewer", 'taunt'),
+        ('taunt_soldier', "Kamikaze", 'taunt'),
+        ('taunt_soldier_lumbricus', "Kamikaze", 'taunt'),
+        ('taunt_spy', "Fencing", 'taunt'),
+        ('tf_pumpkin_bomb', "Pumpkin Bomb", 'environment'),
+        ('tf_generic_bomb', "Explosion", 'environment'),
+        ('the_rescue_ranger', "Rescue Ranger", 'primary'),
+        ('trigger_hurt', "Environment", 'environment'),
+        ('ullapool_caber_explosion', "Ullapool Caber", 'melee'),
+        ('world', "Environment", 'environment'),
+        ('world_spawn', "Environment Spawn", 'environment'),
+        ('wrangler_kill', "Wrangled Sentry", 'sentry'),
+    ):
+        weapons[logname] = name
+        slots[logname] = slot
+
+    return weapons, slots
+
+def import_weapons(c, items):
+    weapons, slots = parse_weapons(items)
 
     cur = c.cursor()
     cur.execute("BEGIN;")
     for weapon, name in weapons.items():
-        name = re.search(r'(The )?(.*)', name).group(2)
-        cur.execute("UPDATE weapon SET name = %s WHERE weapon = %s;", (name, weapon))
+        slot = slots.get(weapon)
+        if slot not in SLOTS:
+            slot = None
+
+        cur.execute("""UPDATE weapon
+                       SET name = %s, slot = %s
+                       WHERE weapon = %s;""",
+                    (name, slot, weapon))
     cur.execute("COMMIT;")
 
 def create_weapons_parser(sub):
