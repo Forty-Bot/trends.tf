@@ -3,10 +3,12 @@
 {% from "macros/filter.html" import filter %}
 {% from "macros/format.html" import comma_col, duration_col, optformat, optint %}
 {% from "macros/js.html" import local_js %}
+{% from "macros/pretty.html" import slot_map %}
 {% extends "player/base.html" %}
 {% block title %}Weapons - {{ super() }}{% endblock %}
 {% block head %}
 	{{ super() }}
+	{{ local_js("js/hider.js") }}
 	{{ local_js("js/sort.js") }}
 {% endblock %}
 {% block content %}
@@ -15,8 +17,8 @@
 	{{ filter() }}
 {% macro header() %}
 <tr>
+	<th class="tree"></th>
 	<th>Weapon</th>
-	<th>Slot</th>
 	<th><abbr title="Kills per 30 minutes on class">
 		K/30
 	</abbr></th>
@@ -34,11 +36,15 @@
 {% endmacro %}
 	<table>
 		<thead class="sortable">{{ header() }}</thead>
-		<tbody>
+		<tbody class="hier">
 			{% for weapon in weapons %}
-			<tr>
-				<td class="left">{{ weapon['weapon'] }}</td>
-				<td class="left">{{ weapon['slot'] }}</td>
+			{% if weapon.weapon == None %}
+			<tr id="{{ weapon.slot }}" class="hider">
+			{% else %}
+			<tr class="{{ weapon.slot }} hidable">
+			{% endif %}
+				<td class="tree"></td>
+				<td class="left">{{ slot_map[weapon.slot] if weapon.weapon == None else weapon.weapon }}</td>
 				<td>{{ optformat("{:.1f}", weapon['k30']) }}</td>
 				<td>{{ optint(weapon['dpm']) }}</td>
 				<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
@@ -51,6 +57,10 @@
 				{{ comma_col(weapon['logs']) }}
 				{{ duration_col(weapon['duration']) }}
 			</tr>
+			{% if loop.last or weapon.weapon == None or
+			      loop.nextitem.weapon == None %}
+			      <tr class="{{ weapon.slot }} padding-row"></tr>
+		        {% endif %}
 			{% endfor %}
 		</tbody>
 		<tfoot class="sortable">{{ header() }}</tfoot>

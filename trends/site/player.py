@@ -610,12 +610,12 @@ def weapons(steamid):
     weapons = get_db().cursor()
     weapons.execute(
         """SELECT
+               slot,
                weapon,
-               initcap(slot::TEXT) AS slot,
                sum(ws.kills) * 30.0 * 60 / nullif(sum(cs.duration), 0) AS k30,
                sum(ws.dmg) * 60.0 / nullif(sum(cs.duration), 0) AS dpm,
-               sum(CASE WHEN ws.shots::BOOL THEN ws.dmg END) / nullif(sum(ws.shots), 0.0) AS dps,
-               sum(CASE WHEN ws.hits::BOOL THEN ws.dmg END) / nullif(sum(ws.hits), 0.0) AS dph,
+               sum(CASE WHEN ws.shots != 0 THEN ws.dmg END) / nullif(sum(ws.shots), 0.0) AS dps,
+               sum(CASE WHEN ws.hits != 0 THEN ws.dmg END) / nullif(sum(ws.hits), 0.0) AS dph,
                total(ws.hits) / nullif(sum(ws.shots), 0.0) AS acc,
                total(ws.kills) AS kills,
                total(cs.duration) AS duration,
@@ -623,14 +623,29 @@ def weapons(steamid):
                sum(ws.shots) AS shots,
                sum(ws.hits) AS hits,
                count(*) AS logs
-           FROM weapon_stats AS ws
-           JOIN weapon_pretty USING (weaponid)
-           JOIN class_stats AS cs USING (logid, playerid, classid)
-           JOIN log_nodups AS log USING (logid)
+           FROM (SELECT
+                   logid,
+                   classid,
+                   slot,
+                   weapon,
+                   sum(kills) AS kills,
+                   sum(dmg) AS dmg,
+                   sum(shots) AS shots,
+                   sum(hits) AS hits
+               FROM weapon_stats
+               JOIN weapon_pretty USING (weaponid)
+               JOIN log_nodups USING (logid)
+               WHERE playerid = %(playerid)s
+                   {}
+               GROUP BY GROUPING SETS (
+                   (logid, classid, slot),
+                   (logid, classid, slot, weapon)
+               )
+           ) AS ws
+           JOIN class_stats AS cs USING (logid, classid)
            WHERE playerid = %(playerid)s
-               {}
-           GROUP BY weapon, slot
-           ORDER BY weapon ASC NULLS LAST;""".format(filter_clauses),
+           GROUP BY slot, weapon
+           ORDER BY slot, weapon NULLS FIRST;""".format(filter_clauses),
         {'playerid': flask.g.playerid, **filters})
     return flask.render_template("player/weapons.html", weapons=weapons)
 
