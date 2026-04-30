@@ -611,6 +611,7 @@ def weapons(steamid):
     weapons.execute(
         """SELECT
                weapon,
+               initcap(slot::TEXT) AS slot,
                sum(ws.kills) * 30.0 * 60 / nullif(sum(cs.duration), 0) AS k30,
                sum(ws.dmg) * 60.0 / nullif(sum(cs.duration), 0) AS dpm,
                sum(CASE WHEN ws.shots::BOOL THEN ws.dmg END) / nullif(sum(ws.shots), 0.0) AS dps,
@@ -628,7 +629,7 @@ def weapons(steamid):
            JOIN log_nodups AS log USING (logid)
            WHERE playerid = %(playerid)s
                {}
-           GROUP BY weapon
+           GROUP BY weapon, slot
            ORDER BY weapon ASC NULLS LAST;""".format(filter_clauses),
         {'playerid': flask.g.playerid, **filters})
     return flask.render_template("player/weapons.html", weapons=weapons)

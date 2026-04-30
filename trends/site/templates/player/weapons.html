@@ -16,6 +16,7 @@
 {% macro header() %}
 <tr>
 	<th>Weapon</th>
+	<th>Slot</th>
 	<th><abbr title="Kills per 30 minutes on class">
 		K/30
 	</abbr></th>
@@ -37,6 +38,7 @@
 			{% for weapon in weapons %}
 			<tr>
 				<td class="left">{{ weapon['weapon'] }}</td>
+				<td class="left">{{ weapon['slot'] }}</td>
 				<td>{{ optformat("{:.1f}", weapon['k30']) }}</td>
 				<td>{{ optint(weapon['dpm']) }}</td>
 				<td>{{ optformat("{:.0%}", weapon['acc']) }}</td>
