@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import time
 
+import psycopg2
 import pytest
 from testing.postgresql import Postgresql
 
@@ -66,7 +67,13 @@ def import_demos(url, mc, *demoids):
         trends.importer.demos.import_demos(c, mc, fetcher)
 
     with db_connect(url) as c:
-        c.cursor().execute("ANALYZE;")
+        # I have no idea why this doesn't work the first time...
+        try:
+            c.cursor().execute("ANALYZE;")
+        except psycopg2.errors.UndefinedTable:
+            cur = c.cursor()
+            cur.execute("ROLLBACK;")
+            cur.execute("ANALYZE;")
         trends.importer.link_demos.link_logs(SinceEpoch, c, mc)
 
 def import_etf2l(url, mc, *matchids, link=True):
