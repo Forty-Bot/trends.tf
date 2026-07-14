@@ -136,7 +136,12 @@ def get_matches(compid, filters, limit=100, offset=0):
         filter_clauses = get_filter_clauses(filters, 'comp', 'divid', time='scheduled')
     else:
         filter_clauses = get_filter_clauses(filters, 'divid', time='scheduled')
-        filter_clauses += "\nAND compid = %(compid)s"
+        filter_clauses += """
+            AND (divid IN (SELECT divid
+                           FROM division
+                           WHERE league = %(league)s
+                               AND compid = %(compid)s
+                 ) OR (league_div_optional(%(league)s) AND divid ISNULL AND compid = %(compid)s))"""
     if filters['map']:
         maps = """JOIN (SELECT
                           mapid
