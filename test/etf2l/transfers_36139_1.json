@@ -1,14 +1,5 @@
 {
-  "status": {
-    "code": 200,
-    "message": "OK"
-  },
-  "page": {
-    "entries_per_page": 100,
-    "page": 1,
-    "total_pages": 1
-  },
-  "transfers": [
+  "data": [
     {
       "who": {
         "id": 147870,
@@ -1085,5 +1076,10 @@
         "id": 140182
       }
     }
-  ]
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 100
+  }
 }

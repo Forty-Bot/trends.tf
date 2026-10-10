@@ -1,9 +1,5 @@
 {
-  "status": {
-    "message": "OK",
-    "code": 200
-  },
-  "transfers": [
+  "data": [
     {
       "who": {
         "name": "Bit",
@@ -2013,11 +2009,9 @@
       }
     }
   ],
-  "page": {
-    "total_pages": 3,
-    "page": 2,
-    "next_page_url": "https://api.etf2l.org/team/15028/transfers/3.json?per_page=100",
-    "previous_page_url": "https://api.etf2l.org/team/15028/transfers/1.json?per_page=100",
-    "entries_per_page": 100
+  "meta": {
+    "current_page": 2,
+    "last_page": 3,
+    "per_page": 100
   }
 }

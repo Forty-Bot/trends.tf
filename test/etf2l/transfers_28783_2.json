@@ -1,5 +1,5 @@
 {
-  "transfers": [
+  "data": [
     {
       "by": {
         "id": 107810,
@@ -1105,14 +1105,9 @@
       "time": 1492558492
     }
   ],
-  "page": {
-    "total_pages": 2,
-    "page": 2,
-    "entries_per_page": 100,
-    "previous_page_url": "https://api.etf2l.org/team/28783/transfers/1.json?per_page=100"
-  },
-  "status": {
-    "message": "OK",
-    "code": 200
+  "meta": {
+    "current_page": 2,
+    "last_page": 2,
+    "per_page": 100
   }
 }

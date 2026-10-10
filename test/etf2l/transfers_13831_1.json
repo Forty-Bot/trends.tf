@@ -1,9 +1,5 @@
 {
-  "status": {
-    "code": 200,
-    "message": "OK"
-  },
-  "transfers": [
+  "data": [
     {
       "time": 1423663010,
       "type": "left",
@@ -1145,9 +1141,9 @@
       "time": 1319140061
     }
   ],
-  "page": {
-    "entries_per_page": 100,
-    "page": 1,
-    "total_pages": 1
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 100
   }
 }

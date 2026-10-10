@@ -1,5 +1,5 @@
 {
-  "transfers": [
+  "data": [
     {
       "who": {
         "country": "SouthAfrica",
@@ -537,13 +537,9 @@
       }
     }
   ],
-  "status": {
-    "code": 200,
-    "message": "OK"
-  },
-  "page": {
-    "total_pages": 1,
-    "page": 1,
-    "entries_per_page": 100
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 100
   }
 }

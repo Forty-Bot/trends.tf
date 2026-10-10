@@ -1,10 +1,5 @@
 {
-  "page": {
-    "page": 1,
-    "total_pages": 1,
-    "entries_per_page": 100
-  },
-  "transfers": [
+  "data": [
     {
       "who": {
         "country": "Netherlands",
@@ -302,8 +297,9 @@
       }
     }
   ],
-  "status": {
-    "message": "OK",
-    "code": 200
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 100
   }
 }

@@ -1,11 +1,5 @@
 {
-  "page": {
-    "page": 3,
-    "total_pages": 3,
-    "entries_per_page": 100,
-    "previous_page_url": "https://api.etf2l.org/team/6979/transfers/2.json?per_page=100"
-  },
-  "transfers": [
+  "data": [
     {
       "time": 1272229762,
       "type": "left",
@@ -1615,8 +1609,9 @@
       "type": "joined"
     }
   ],
-  "status": {
-    "message": "OK",
-    "code": 200
+  "meta": {
+    "current_page": 3,
+    "last_page": 3,
+    "per_page": 100
   }
 }

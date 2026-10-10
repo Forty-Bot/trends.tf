@@ -1,11 +1,5 @@
 {
-  "page": {
-    "next_page_url": "https://api.etf2l.org/team/298/transfers/2.json?per_page=100",
-    "entries_per_page": 100,
-    "total_pages": 2,
-    "page": 1
-  },
-  "transfers": [
+  "data": [
     {
       "who": {
         "url": "https://api.etf2l.org/player/125496.json",
@@ -2543,8 +2537,9 @@
       "time": 1234630618
     }
   ],
-  "status": {
-    "message": "OK",
-    "code": 200
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 100
   }
 }

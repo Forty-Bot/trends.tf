@@ -1,15 +1,5 @@
 {
-  "status": {
-    "message": "OK",
-    "code": 200
-  },
-  "page": {
-    "page": 1,
-    "next_page_url": "https://api.etf2l.org/team/32244/transfers/2.json?per_page=100",
-    "entries_per_page": 100,
-    "total_pages": 2
-  },
-  "transfers": [
+  "data": [
     {
       "type": "left",
       "time": 1753464441,
@@ -2342,5 +2332,10 @@
       },
       "time": 1643375279
     }
-  ]
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 100
+  }
 }

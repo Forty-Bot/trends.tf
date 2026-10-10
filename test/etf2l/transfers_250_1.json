@@ -1,10 +1,5 @@
 {
-  "page": {
-    "entries_per_page": 100,
-    "page": 1,
-    "total_pages": 1
-  },
-  "transfers": [
+  "data": [
     {
       "time": 1263581181,
       "type": "left",
@@ -1066,8 +1061,9 @@
       "type": "joined"
     }
   ],
-  "status": {
-    "code": 200,
-    "message": "OK"
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 100
   }
 }

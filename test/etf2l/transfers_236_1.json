@@ -1,5 +1,5 @@
 {
-  "transfers": [
+  "data": [
     {
       "type": "left",
       "time": 1257783837,
@@ -217,13 +217,9 @@
       }
     }
   ],
-  "page": {
-    "total_pages": 1,
-    "page": 1,
-    "entries_per_page": 100
-  },
-  "status": {
-    "message": "OK",
-    "code": 200
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 100
   }
 }

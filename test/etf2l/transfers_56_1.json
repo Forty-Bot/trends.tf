@@ -1,14 +1,5 @@
 {
-  "status": {
-    "message": "OK",
-    "code": 200
-  },
-  "page": {
-    "entries_per_page": 100,
-    "page": 1,
-    "total_pages": 1
-  },
-  "transfers": [
+  "data": [
     {
       "type": "left",
       "time": 1283371604,
@@ -1617,5 +1608,10 @@
       "time": 1214080714,
       "type": "joined"
     }
-  ]
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 100
+  }
 }

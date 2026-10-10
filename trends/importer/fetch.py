@@ -458,11 +458,11 @@ class ETF2LFileFetcher:
                 with open(path) as xferfile:
                     xfers = json.load(xferfile)
                 fetched = int(os.path.getmtime(path))
-                max_pages = xfers['page']['total_pages']
+                max_pages = xfers['meta']['last_page']
 
-                if not xfers['transfers']:
+                if not xfers['data']:
                     break
-                for xfer in xfers['transfers']:
+                for xfer in xfers['data']:
                     xfer['fetched'] = fetched
                     yield xfer
                 page += 1
@@ -476,23 +476,22 @@ class ETF2LBulkFetcher:
         self.count = count
         self.page = page
 
-    def _get_data(self, url, data_key, count=None, since=0, page=1):
+    def _get_data(self, url, meta_key, params=None, count=None, page=1):
         # Number of datums yielded (up to a maximum of count)
         yielded = 0
-        # The id we've seen. We assume new demos will all have higher demoids.
-        last_id = None
+        if params is None:
+            params = {}
+        params.setdefault('limit', 100)
 
         try:
             while True:
                 fetched = int(time.time())
-                resp = self.s.get(f"{url}/{page}.json", params={
-                    'per_page': 100,
-                    'since': since,
-                })
+                params['page'] = page
+                resp = self.s.get(url, params=params)
                 resp.raise_for_status()
 
                 resp = resp.json()
-                for datum in resp[data_key] or ():
+                for datum in resp.get('data') or resp[meta_key].get('data') or ():
                     datum['fetched'] = fetched
                     yield datum
                     yielded += 1
@@ -500,7 +499,7 @@ class ETF2LBulkFetcher:
                         return
 
                 # No new data this page; give up
-                if page >= resp['page']['total_pages']:
+                if page >= resp[meta_key]['last_page']:
                     return
 
                 page += 1
@@ -512,12 +511,12 @@ class ETF2LBulkFetcher:
             raise FetchError from e
 
     def get_results(self):
-        return self._get_data("https://api.etf2l.org/results", 'results', self.count,
-                              self.since, self.page)
+        return self._get_data("https://api-v2.etf2l.org/matches", 'results',
+                              { 'scheduled': 0, 'from': self.since }, self.count, self.page)
 
     def get_xfers(self, teamid, since=0):
-        return self._get_data(f"https://api.etf2l.org/team/{teamid}/transfers", 'transfers',
-                              since=since)
+        return self._get_data(f"https://api-v2.etf2l.org/transfers/transfers", 'meta',
+                              { 'team_id': teamid, 'from': since})
 
 class RGLFileFetcher:
     def __init__(self, dir, **kwargs):
@@ -562,8 +561,6 @@ class RGLBulkFetcher:
     def get_matchids(self):
         # Number of datums yielded (up to a maximum of count)
         yielded = 0
-        # The id we've seen. We assume new matches will all have higher matchids.
-        last_id = None
         skip = self.skip
 
         try:

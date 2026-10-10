@@ -1,5 +1,5 @@
 {
-  "transfers": [
+  "data": [
     {
       "type": "left",
       "who": {
@@ -2225,14 +2225,9 @@
       }
     }
   ],
-  "status": {
-    "code": 200,
-    "message": "OK"
-  },
-  "page": {
-    "page": 1,
-    "entries_per_page": 100,
-    "total_pages": 2,
-    "next_page_url": "https://api.etf2l.org/team/28783/transfers/2.json?per_page=100"
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 100
   }
 }

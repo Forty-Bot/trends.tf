@@ -1,5 +1,5 @@
 {
-  "transfers": [
+  "data": [
     {
       "who": {
         "id": 70142,
@@ -2405,14 +2405,9 @@
       }
     }
   ],
-  "page": {
-    "total_pages": 2,
-    "page": 1,
-    "next_page_url": "https://api.etf2l.org/team/29691/transfers/2.json?per_page=100",
-    "entries_per_page": 100
-  },
-  "status": {
-    "code": 200,
-    "message": "OK"
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 100
   }
 }
