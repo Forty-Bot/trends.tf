@@ -237,7 +237,7 @@ def import_rgl(c, mc, fetcher, filter=filter_matchids):
 
                 for team in res['teams']:
                     if 'league' in team:
-                        import_team(cur, team)
+                        import_team(cur, mc, team)
 
                 if res['teams'][0]['teamid'] > res['teams'][1]['teamid']:
                     res['teams'] = (res['teams'][1], res['teams'][0])

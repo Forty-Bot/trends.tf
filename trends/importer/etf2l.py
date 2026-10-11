@@ -200,7 +200,7 @@ def import_etf2l(c, mc, fetcher, filter=filter_matchids):
                 cur.execute("BEGIN;")
                 import_compdiv(cur, res)
                 for team in res['teams']:
-                    import_team(cur, team)
+                    import_team(cur, mc, team)
                 import_match(cur, res)
                 cur.execute("COMMIT;")
             purge_comps(c, mc, 'etf2l')

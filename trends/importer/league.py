@@ -5,6 +5,8 @@ import logging
 
 import psycopg2.extras
 
+from .. import cache
+
 def import_compdiv(c, cd):
     """Import division and its competition
     cd should be a dict with the following keys:
@@ -71,7 +73,7 @@ def combine_teams(c, league, teamids):
 
     return new_teamid
 
-def import_team(c, t):
+def import_team(c, mc, t):
     """Import a team
     The competition and division should already be imported. t should be a dict with the following
     keys:
@@ -152,11 +154,11 @@ def import_team(c, t):
                 fetched = greatest(EXCLUDED.fetched, team_comp_backing.fetched);""", t)
 
     if 'updates' in t and t['updates']:
-        import_transfers(c, t)
+        import_transfers(c, mc, t)
 
     c.execute("INSERT INTO cache_purge_team (league, teamid) VALUES (%(league)s, %(teamid)s);", t)
 
-def import_transfers(c, t):
+def import_transfers(c, mc, t):
     # Load new players...
     c.execute(
         """CREATE TEMP TABLE new_player (
@@ -177,6 +179,13 @@ def import_transfers(c, t):
            WHERE np1.steamid64 = np2.steamid64
                AND np2.id < np1.id""")
     c.execute("INSERT INTO name (name) SELECT name FROM new_player ON CONFLICT DO NOTHING;")
+    c.execute("""INSERT INTO cache_update_counter (counter, diff, version) SELECT
+                     'player'::CACHED_COUNTER,
+                     coalesce(sum((playerid ISNULL)::INT), 0),
+                     %s
+                 FROM new_player
+                 LEFT JOIN player USING (steamid64);""",
+                (cache.player_count_version(mc),));
     c.execute(
         """WITH player AS (INSERT INTO player (steamid64, nameid, avatarhash, eu_playerid) SELECT
                    steamid64,

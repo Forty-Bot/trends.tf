@@ -2,7 +2,7 @@
 # Copyright (C) 2020, 25 Sean Anderson <seanga2@gmail.com>
 
 import contextlib
-from functools import wraps
+import functools
 import logging
 import secrets
 import zlib
@@ -140,7 +140,7 @@ CACHE_HIT = Counter('memcached_request_hit', "Successful memcached requests", ['
 
 def mutable(key_template, timeout=30, expire=86400):
     def decorator(f):
-        @wraps(f)
+        @functools.wraps(f)
         def wrapper(mc, *args, **kwargs):
             key = key_template.format(*args, **kwargs)
             with sentry_sdk.start_span(op='cache.get', description=key) as span:
@@ -184,7 +184,7 @@ def mutable(key_template, timeout=30, expire=86400):
 
 def immutable(key_template, expire=86400):
     def decorator(f):
-        @wraps(f)
+        @functools.wraps(f)
         def wrapper(mc, *args, **kwargs):
             key = key_template.format(*args, **kwargs)
             with sentry_sdk.start_span(op='cache.get', description=key) as span:
@@ -223,7 +223,7 @@ for prefix in ('comps', 'teams', 'matches'):
     vars()[f"{prefix}_version"] = immutable(f"{prefix}_{{}}_version", expire=0)(version)
 
 def purge(c, mc, col, table, prefix, cond="TRUE"):
-    with (sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur):
+    with sentry_sdk.start_span(op='db.transaction', description="purge"), c.cursor() as cur:
         while True:
             cur.execute("BEGIN;")
             cur.execute(
@@ -249,9 +249,60 @@ def _update_version(mc, prefix):
     except pylibmc.Error:
         logging.exception("Could not set %s", key)
 
+def _update_counter(mc, key, diff, version, expire):
+    successful = False
+    while not successful:
+        val, cas = mc.gets(key)
+        if val is None or val['version'] != version:
+            if cas is not None:
+                mc.delete(key)
+                logging.info("Purged %s (wrong version)", key)
+            return
+
+        val['val'] += diff
+        try:
+            successful = mc.cas(key, val, cas, time=expire)
+        except pylibmc.NotFound:
+            return
+    logging.info("Updated %s += %s", key, diff)
+
+def update_counters(c, mc, expire=86400):
+    with sentry_sdk.start_span(op='db.transaction', description="update"), c.cursor() as cur:
+        while True:
+            cur.execute("BEGIN;")
+            cur.execute(
+                """SELECT
+                       counter,
+                       sum(diff),
+                       every_val(version)
+                   FROM (SELECT counter, diff, version
+                       FROM cache_update_counter
+                       FOR UPDATE SKIP LOCKED LIMIT 1000
+                   ) AS cache
+                   GROUP BY counter;""")
+
+            any_updates = False
+            for counter, diff, version in cur:
+                any_updates = True
+                key = f"{counter}_count"
+                if version is None:
+                    mc.delete(key)
+                    logging.info("Purged %s (did not exist at commit time)", key)
+                else:
+                    _update_counter(mc, key, diff, bytes(version), expire)
+
+            if not any_updates:
+                return
+
+            cur.execute(
+                """DELETE FROM cache_update_counter
+                   WHERE xmax = pg_current_xact_id()::XID;""")
+            cur.execute("COMMIT;")
+
 def purge_logs(c, mc):
     _update_version(mc, 'logs')
-    mc.delete("index")
+    update_counters(c, mc)
+    mc.delete("log_time_extrema")
     purge(c, mc, 'logid', 'cache_purge_log', "log_")
 
 def purge_comps(c, mc, league):
@@ -268,5 +319,25 @@ def purge_matches(c, mc, league):
 
 def purge_players(c, mc):
     _update_version(mc, 'players')
-    mc.delete("index")
+    update_counters(c, mc)
     purge(c, mc, 'steamid64', 'cache_purge_player', "overview_")
+
+@mutable("{counter:}_count")
+def count(mc, *, counter):
+    from .site.util import get_db
+    with get_db().cursor() as cur:
+        cur.execute(f"SELECT count(*) FROM {counter};")
+        return {
+            'val': cur.fetchone()[0],
+            'version': version(mc),
+        }
+
+def counter_version(mc, counter):
+    val = mc.get(f"{counter}_count")
+    if val is None:
+        return None
+    return val['version']
+
+for counter in ('log', 'player'):
+    vars()[f"{counter}_count"] = functools.partial(count, counter=counter)
+    vars()[f"{counter}_count_version"] = functools.partial(counter_version, counter=counter)

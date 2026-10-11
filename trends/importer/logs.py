@@ -10,7 +10,7 @@ import psycopg2
 import sentry_sdk
 import systemd_watchdog
 
-from ..cache import purge_logs, purge_players
+from ..cache import player_count_version, log_count_version, purge_logs, purge_players
 from .fetch import ListFetcher, BulkFetcher, FileFetcher, ReverseFetcher, CloneLogsFetcher
 from ..steamid import SteamID
 from ..sql import disable_tracing, delete_logs, log_tables, publicize, table_columns
@@ -52,7 +52,7 @@ def filter_logids(c, logids, update_only=False):
             if not update_only if not row['exists'] else row['newer']:
                 yield row['logid']
 
-def import_log(c, logid, log):
+def import_log(c, mc, logid, log):
     """Import a log into the database.
 
     :param sqlite3.Connection c: The database connection
@@ -99,12 +99,15 @@ def import_log(c, logid, log):
     # If we're still negative, use the sum of (positive) rounds
     info['duration'] = round_length if length <= 0 else length
 
+    players_created = 0
     c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", info)
     c.execute("INSERT INTO name (name) VALUES (%(uploader_name)s) ON CONFLICT DO NOTHING;", info)
     c.execute("""INSERT INTO player (steamid64, nameid) VALUES (
                      %(uploader_steamid)s,
                      (SELECT nameid FROM name WHERE name = %(uploader_name)s)
-                 ) ON CONFLICT (steamid64) DO NOTHING;""", info)
+                 ) ON CONFLICT (steamid64) DO NOTHING
+                 RETURNING 1;""", info)
+    players_created += bool(c.fetchall())
     c.execute("SELECT playerid FROM player WHERE steamid64 = %(uploader_steamid)s;", info)
     info['uploader_playerid'] = c.fetchone()[0]
     c.execute("""INSERT INTO log (
@@ -188,10 +191,12 @@ def import_log(c, logid, log):
                          %(time)s
                      ) ON CONFLICT (steamid64)
                      DO UPDATE SET
-                         last_active = greatest(player.last_active, EXCLUDED.last_active);""",
+                         last_active = greatest(player.last_active, EXCLUDED.last_active)
+                     RETURNING playerid, xmax = 0;""",
                   player)
-        c.execute("SELECT playerid FROM player WHERE steamid64 = %(steamid)s;", player)
-        player['playerid'] = c.fetchone()[0]
+        row = c.fetchone()
+        player['playerid'] = row[0]
+        players_created += row[1]
         c.execute("""INSERT INTO player_stats_backing (
                          logid, playerid, team, nameid, kills, assists, deaths, dmg, dt
                      ) VALUES (
@@ -386,11 +391,18 @@ def import_log(c, logid, log):
         if steamid:
             c.execute("""INSERT INTO player (steamid64, nameid) VALUES (
                              %s, (SELECT nameid FROM name WHERE name = %s)
-                         ) ON CONFLICT (steamid64) DO NOTHING;""", (steamid, msg['name']))
+                         ) ON CONFLICT (steamid64) DO NOTHING
+                         RETURNING 1;""", (steamid, msg['name']))
+            players_created += bool(c.fetchall())
         c.execute("""INSERT INTO chat (logid, playerid, seq, msg)
                      VALUES (
                          %s, (SELECT playerid FROM player WHERE steamid64 = %s), %s, %s
                      );""", (logid, steamid, seq, msg['msg']))
+
+    if players_created:
+        c.execute("""INSERT INTO cache_update_counter (counter, diff, version)
+                     VALUES ('player'::CACHED_COUNTER, %s, %s);""",
+                  (players_created, player_count_version(mc)))
 
     for (healer, healees) in log['healspread'].items():
         try:
@@ -778,7 +790,14 @@ def update_ks(cur):
                    WHERE pse.logid = new.logid
                        AND pse.playerid = new.playerid;""")
 
-def prepare_purge(cur):
+def prepare_purge(cur, mc):
+    cur.execute("""INSERT INTO cache_update_counter (counter, diff, version) SELECT
+                       'log'::CACHED_COUNTER,
+                       coalesce(sum((log.logid ISNULL)::INT), 0),
+                       %s::BYTEA
+                   FROM log AS new_log
+                   LEFT JOIN public.log USING (logid);""",
+                (log_count_version(mc),));
     cur.execute("INSERT INTO cache_purge_log (logid) SELECT logid FROM log;")
     cur.execute("""INSERT INTO cache_purge_player (steamid64)
                    SELECT steamid64
@@ -891,7 +910,7 @@ def import_logs(c, mc, fetcher, update_only):
             update_acc(cur)
             update_healing(cur)
             update_ks(cur)
-            prepare_purge(cur)
+            prepare_purge(cur, mc)
             publicize(c, log_tables)
             cur.execute("COMMIT;")
             logging.info("Committed %s imported log(s)...", count)
@@ -913,7 +932,7 @@ def import_logs(c, mc, fetcher, update_only):
             cur.execute("BEGIN;")
             cur.execute("SAVEPOINT import;")
             try:
-                import_log(c.cursor(), logid, log)
+                import_log(c.cursor(), mc, logid, log)
             except (IndexError, KeyError, psycopg2.errors.NumericValueOutOfRange):
                 logging.exception("Could not parse log %s", logid)
                 cur.execute("ROLLBACK TO SAVEPOINT import;")

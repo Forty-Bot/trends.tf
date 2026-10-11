@@ -10,7 +10,7 @@ import psycopg2
 import sentry_sdk
 
 from .fetch import DemoFileFetcher, DemoListFetcher, DemoBulkFetcher
-from ..cache import purge_players
+from ..cache import player_count_version, purge_players
 from ..steamid import SteamID
 from ..sql import disable_tracing, publicize
 from .. import util
@@ -27,7 +27,7 @@ def filter_demoids(c, demoids):
                    WHERE public.demo.demoid IS NULL""", ((demoid,) for demoid in demoids))
             yield from (row[0] for row in cur)
 
-def import_demo(c, demo):
+def import_demo(c, mc, demo):
     players = []
     for player in demo['players']:
         # Probably nothing useful here
@@ -48,9 +48,14 @@ def import_demo(c, demo):
                          %s,
                          (SELECT nameid FROM name WHERE name = %s),
                          %s
-                     ) ON CONFLICT DO NOTHING;""",
+                     ) ON CONFLICT DO NOTHING
+                     RETURNING 1;""",
                   (steamid, player['name'], demo['time']))
-        c.execute("INSERT INTO cache_purge_player (steamid64) VALUES (%s);", (steamid,))
+        if c.fetchall():
+            c.execute("""INSERT INTO cache_update_counter (counter, diff, version)
+                         VALUES ('player'::CACHED_COUNTER, 1, %s);""",
+                        (player_count_version(mc),));
+            c.execute("INSERT INTO cache_purge_player (steamid64) VALUES (%s);", (steamid,))
         players.append(steamid)
 
     demo['players'] = players
@@ -134,7 +139,7 @@ def import_demos(c, mc, fetcher):
              disable_tracing():
             cur.execute("BEGIN;")
             try:
-                import_demo(c.cursor(), demo)
+                import_demo(c.cursor(), mc, demo)
             except (IndexError, KeyError, psycopg2.errors.NumericValueOutOfRange):
                 logging.exception("Could not parse demo %s", demoid)
                 cur.execute("ROLLBACK;")

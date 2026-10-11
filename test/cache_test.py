@@ -28,6 +28,9 @@ class MockClient:
     def cas(self, key, value, cas, time=0):
         return self._check('cas', (key, cas, time), value)
 
+    def delete(self, key):
+        return self._check('delete', (key,))
+
 class MockServer:
     def __init__(self, responses, values):
         self.responses = responses
@@ -42,6 +45,9 @@ class MockServer:
 
     def cas(self, key, cas, result, time=0):
         self.responses.appendleft(('cas', (key, cas, time), result))
+
+    def delete(self, key, result=True):
+        self.responses.appendleft(('delete', (key,), result))
 
 @pytest.fixture
 def mock_cache():
@@ -126,3 +132,43 @@ def test_set_error(mock_cache):
     server.gets('foo', None, 0)
     server.cas('foo', 0, pylibmc.Error(), time=86400)
     assert one(client) == 1
+
+def test_counter_hit(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', { 'val': 0, 'version': 0 }, 0)
+    server.cas('foo', 0, True, 86400)
+    cache._update_counter(client, 'foo', 1, 0, 86400)
+    assert client.values == [None, { 'val': 1, 'version': 0 }]
+
+def test_counter_miss(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', None, None)
+    cache._update_counter(client, 'foo', 1, 0, 86400)
+
+def test_counter_hit_updating(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', None, 0)
+    server.delete('foo')
+    cache._update_counter(client, 'foo', 1, 0, 86400)
+
+def test_counter_hit_wrong_version(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', { 'val': 0, 'version': 1 }, 0)
+    server.delete('foo')
+    cache._update_counter(client, 'foo', 1, 0, 86400)
+
+def test_counter_updated(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', { 'val': 0, 'version': 0 }, 0)
+    server.cas('foo', 0, False, 86400)
+    server.gets('foo', { 'val': 1, 'version': 0 }, 1)
+    server.cas('foo', 1, True, 86400)
+    cache._update_counter(client, 'foo', 1, 0, 86400)
+    assert client.values == [None, { 'val': 1, 'version': 0 }, None, { 'val': 2, 'version': 0 }]
+
+def test_counter_late_miss(mock_cache):
+    client, server = mock_cache
+    server.gets('foo', { 'val': 0, 'version': 0 }, 0)
+    server.cas('foo', 0, pylibmc.NotFound, 86400)
+    cache._update_counter(client, 'foo', 1, 0, 86400)
+    assert client.values == [None, { 'val': 1, 'version': 0 }]
