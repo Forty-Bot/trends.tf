@@ -28,37 +28,38 @@ def filter_demoids(c, demoids):
             yield from (row[0] for row in cur)
 
 def import_demo(c, mc, demo):
-    players = []
+    players = {}
     for player in demo['players']:
         # Probably nothing useful here
         if player['team'] not in ('red', 'blue'):
             continue
 
         try:
-            steamid = SteamID(player['steamid'])
+            players[SteamID(player['steamid'])] = player['name']
         except ValueError:
             continue
 
-        c.execute("INSERT INTO name (name) VALUES (%(name)s) ON CONFLICT DO NOTHING;", player)
-        c.execute("""INSERT INTO player (
-                         steamid64,
-                         nameid,
-                         last_active
-                     ) VALUES (
-                         %s,
-                         (SELECT nameid FROM name WHERE name = %s),
-                         %s
-                     ) ON CONFLICT DO NOTHING
-                     RETURNING 1;""",
-                  (steamid, player['name'], demo['time']))
-        if c.fetchall():
-            c.execute("""INSERT INTO cache_update_counter (counter, diff, version)
-                         VALUES ('player'::CACHED_COUNTER, 1, %s);""",
-                        (player_count_version(mc),));
-            c.execute("INSERT INTO cache_purge_player (steamid64) VALUES (%s);", (steamid,))
-        players.append(steamid)
+    psycopg2.extras.execute_values(c, "INSERT INTO new_player (steamid64, name) VALUES %s;",
+                                   players.items())
+    c.execute("INSERT INTO name (name) SELECT name FROM new_player ON CONFLICT DO NOTHING;")
+    c.execute("""INSERT INTO player (steamid64, nameid, last_active) SELECT
+                     steamid64,
+                     nameid,
+                     %s
+                 FROM new_player
+                 JOIN name USING (name)
+                 ON CONFLICT DO NOTHING
+                 RETURNING steamid64;""",
+              (demo['time'],))
+    if new := list(c.fetchall()):
+        psycopg2.extras.execute_values(c, "INSERT INTO cache_purge_player (steamid64) VALUES %s;",
+                                       new)
+        c.execute("""INSERT INTO cache_update_counter (counter, diff, version)
+                     VALUES ('player'::CACHED_COUNTER, %s, %s);""",
+                  (len(new), player_count_version(mc)));
+    c.execute("TRUNCATE new_player;")
 
-    demo['players'] = players
+    demo['players'] = list(players.keys())
     c.execute("INSERT INTO map (map) VALUES (%(map)s) ON CONFLICT DO NOTHING;", demo)
     c.execute("""INSERT INTO demo (
                      demoid, url, server, duration, mapid, time, red_name, blue_name, red_score,
@@ -119,6 +120,7 @@ def import_demos(c, mc, fetcher):
                        LIKE demo INCLUDING ALL EXCLUDING INDEXES,
                        PRIMARY KEY (demoid)
                    );""")
+    cur.execute("CREATE TEMP TABLE new_player (steamid64 BIGINT, name TEXT);")
 
     def commit():
         with sentry_sdk.start_span(op='db.transaction', description="commit"):
