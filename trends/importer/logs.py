@@ -237,12 +237,12 @@ def import_log(c, mc, logid, log):
             # difference between the sum of this event and the event in player_stats
             c.execute("""INSERT INTO event_stats (
                              logid, playerid, eventid, demoman, engineer, heavyweapons, medic,
-                             pyro, scout, sniper, soldier, spy
+                             pyro, scout, sniper, soldier, spy, civilian
                          ) VALUES (
                              %(logid)s, %(playerid)s,
                              (SELECT eventid FROM event WHERE event = %(event)s), %(demoman)s,
                              %(engineer)s, %(heavyweapons)s, %(medic)s, %(pyro)s, %(scout)s,
-                             %(sniper)s, %(soldier)s, %(spy)s
+                             %(sniper)s, %(soldier)s, %(spy)s, %(civilian)s
                          );""", events)
 
         for cls in player['class_stats']:

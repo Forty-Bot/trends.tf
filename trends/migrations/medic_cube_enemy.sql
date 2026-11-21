@@ -31,6 +31,7 @@ CREATE MATERIALIZED VIEW medic_cube AS SELECT
 	sum(healing_medic) AS healing_medic,
 	sum(healing_sniper) AS healing_sniper,
 	sum(healing_spy) AS healing_spy,
+	sum(healing_civilian) AS healing_civilian,
 	sum(healing_enemy) AS healing_enemy,
 	sum(healing_other) AS healing_other
 FROM log_nodups AS log
@@ -49,6 +50,7 @@ LEFT JOIN (SELECT
 		sum(CASE WHEN class = 'medic' THEN healing END) AS healing_medic,
 		sum(CASE WHEN class = 'sniper' THEN healing END) AS healing_sniper,
 		sum(CASE WHEN class = 'spy' THEN healing END) AS healing_spy,
+		sum(CASE WHEN class = 'civilian' THEN healing END) AS healing_civilian,
 		sum(CASE WHEN healer_stats.team != healee_stats.team THEN healing END)
 			AS healing_enemy,
 		sum(CASE WHEN class ISNULL THEN healing END) AS healing_other

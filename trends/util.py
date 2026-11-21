@@ -18,7 +18,8 @@ classes = (
     'scout',
     'sniper',
     'soldier',
-    'spy'
+    'spy',
+    'civilian'
 )
 
 events = {
