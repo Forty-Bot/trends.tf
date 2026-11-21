@@ -345,8 +345,9 @@ def get_log(mc, logid):
                            'sniper', sniper,
                            'soldier', soldier,
                            'spy', spy,
+                           'civilian', civilian,
                            'total', demoman + engineer + heavyweapons + medic + pyro +
-                                    scout + sniper + soldier + spy
+                                    scout + sniper + soldier + spy + civilian
                        )) AS events
                    FROM event_stats
                    JOIN player USING (playerid)
@@ -696,6 +697,7 @@ def log(logids):
         'medic',
         'sniper',
         'spy',
+        'civilian',
         'total',
     )
     for event in ('kill', 'death', 'assist'):

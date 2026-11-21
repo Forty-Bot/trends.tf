@@ -331,6 +331,7 @@ def overview(steamid):
                WHERE TRUE
                    {}
                GROUP BY classid
+               HAVING class != 'civilian' OR total(duration) > 0
                ORDER BY classid
            ) AS classes;""".format(get_filter_clauses(filters, 'class')),
         { 'playerid': flask.g.playerid, **filters})
@@ -579,7 +580,8 @@ def totals(steamid):
                        total(scout) AS scout,
                        total(sniper) AS sniper,
                        total(soldier) AS soldier,
-                       total(spy) AS spy
+                       total(spy) AS spy,
+                       sum(civilian) AS civilian
                    FROM event
                    LEFT JOIN event_stats USING (eventid)
                    LEFT JOIN log_nodups AS log USING (logid)
